@@ -1,0 +1,4 @@
+{
+  /* Build level tsconfig to generate Core Foundation output. */
+  "extends": "./tsconfig.common.json",
+}

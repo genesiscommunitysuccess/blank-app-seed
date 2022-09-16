@@ -1,0 +1,17 @@
+/* index.ejs styling */
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+fast-router {
+  padding-top: 60px;
+}
+
+:not(:defined) {
+  visibility: hidden;
+}

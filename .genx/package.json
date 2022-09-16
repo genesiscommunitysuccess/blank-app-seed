@@ -1,0 +1,11 @@
+{
+  "name": "genx-config",
+  "description": "Used by @genesislcap/foundation-cli.",
+  "version": "0.0.1",
+  "private": true,
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@genesislcap/foundation-cli": "^1.0.0",
+    "yargs-parser": "^20.2.7"
+  }
+}

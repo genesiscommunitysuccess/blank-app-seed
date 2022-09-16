@@ -1,0 +1,14 @@
+.idea/
+target/
+.settings/
+.project
+.classpath
+*.iml
+*.ignore
+*~
+.DS_STORE
+
+#gradle
+.gradle
+**/build/
+!src/**/build/

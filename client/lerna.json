@@ -1,0 +1,22 @@
+{
+  "version": "0.0.1",
+  "npmClient": "npm",
+  "useWorkspaces": false,
+  "packages": [
+    "desktop",
+    "mobile",
+    "web"
+  ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.md"
+      ]
+    },
+    "bootstrap": {
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
+    }
+  }
+}

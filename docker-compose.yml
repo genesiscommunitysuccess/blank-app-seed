@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  gsf:
+    tty: true
+    container_name: gsf
+    build:
+      context: server/jvm/
+      dockerfile: Dockerfile
+    networks:
+      qs_network:
+        aliases:
+          - localnode
+    volumes:
+      - ./server/jvm/{{appName}}-site-specific/src/main/resources/cfg/:/home/{{appName}}/run/site-specific/cfg
+      - ./server/jvm/{{appName}}-script-config/src/main/resources/scripts:/home/{{appName}}/run/{{appName}}/scripts
+      - ./server/jvm/{{appName}}-config/src/main/resources/cfg:/home/{{appName}}/run/{{appName}}/cfg
+    ports:
+      - '9064:9064'
+      - '1337:22'
+      - '5432:5432'
+  nginx-proxy:
+    ports:
+      - '80:80'
+      - '443:443'
+    container_name: nginx
+    build:
+      context: server/nginx/
+      dockerfile: Dockerfile
+    networks:
+      - qs_network
+  frontend:
+    container_name: frontend
+    build:
+      context: client/
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/web:/app/web
+    ports:
+      - '6060:6060'
+    entrypoint: [ "/bin/bash" , "-c", "npm run dev:docker && tail -f /dev/null" ]
+    networks:
+      - qs_network
+networks:
+  qs_network:
+    driver: bridge

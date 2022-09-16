@@ -1,0 +1,1 @@
+description = "genesis-generated-dao"
