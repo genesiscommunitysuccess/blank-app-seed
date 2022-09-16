@@ -7,6 +7,9 @@ RUN ["/bin/bash", "-c", "echo 'y' | yum install openssh-server"]
 RUN if [ $(uname -m) = "x86_64" ] ; then (echo 'y' | yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm) \
     ; else (echo 'y' | yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-aarch64/pgdg-redhat-repo-latest.noarch.rpm) ; fi
 RUN ["/bin/bash", "-c", "echo 'y' | yum install -y --nogpgcheck postgresql14-server"]
+RUN if [ $(uname -m) = "aarch64" ] ; then yum -y install epel-release ; fi
+RUN if [ $(uname -m) = "aarch64" ] ; then yum -y install lmdb ; fi
+RUN if [ $(uname -m) = "aarch64" ] ; then ln -s /usr/lib64/liblmdb.so.0.0.0 /usr/lib64/liblmdb.so ; fi
 RUN ["/bin/bash", "-c", "useradd {{appName}}"]
 RUN ["/bin/bash", "-c", "echo {{appName}}:{{appName}} | chpasswd"]
 RUN ["/bin/bash", "-c", "usermod -aG wheel {{appName}}"]
