@@ -68,8 +68,6 @@ module.exports = async (data, utils) => {
     // packageFile.set('dependencies', replaceObjectKeys(packageFile.get('dependencies'), `${prefixTarget}-`, prefixReplacement));
     packageFile.save();
   };
-  updateLernaPackage(`${directory}/client/desktop/package.json`);
-  updateLernaPackage(`${directory}/client/mobile/package.json`);
   updateLernaPackage(`${directory}/client/web/package.json`);
 
   /**
