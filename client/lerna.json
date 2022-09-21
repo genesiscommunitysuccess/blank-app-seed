@@ -3,8 +3,6 @@
   "npmClient": "npm",
   "useWorkspaces": false,
   "packages": [
-    "desktop",
-    "mobile",
     "web"
   ],
   "command": {
