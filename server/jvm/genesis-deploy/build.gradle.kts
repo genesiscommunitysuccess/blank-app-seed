@@ -15,7 +15,7 @@ dependencies {
     implementation(
         group = "global.genesis",
         name = "auth-distribution",
-        version = "{{genesisVersion}}",
+        version = "{{authVersion}}",
         classifier = "bin",
         ext = "zip"
     )
