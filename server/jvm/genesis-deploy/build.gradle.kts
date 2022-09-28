@@ -26,7 +26,3 @@ dependencies {
     api(project(":{{appName}}-site-specific", "distribution"))
     // Add additional dependencies on other external distributions here
 }
-
-task("copyDistributions", Copy::class) {
-    from(configurations.default.filter { it.name.contains("distribution") }).into("$buildDir/distributions")
-}
