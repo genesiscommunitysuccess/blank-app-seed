@@ -1,0 +1,14 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/__tests__
+**/__test__
+**/.tmp
+**/bootstrap
+**/coverage
+**/dist
+**/temp
+**/storybook-static
+**/*.d.ts
+**/*.md
