@@ -1,5 +1,5 @@
-import {css} from '@microsoft/fast-element';
-import {mixinCardTitle} from './typography';
+import { css } from '@microsoft/fast-element';
+import { mixinCardTitle } from './typography';
 
 export const stylesCardHeading = css`
   header h1 {

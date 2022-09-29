@@ -1,9 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {appStyleRules} = require('../rules/styleRules');
-const {appFileRules} = require('../rules/fileRules');
-const {appScriptRules} = require('../rules/scriptRules');
+const { appStyleRules } = require('../rules/styleRules');
+const { appFileRules } = require('../rules/fileRules');
+const { appScriptRules } = require('../rules/scriptRules');
 
 const readFile = (filePath) => {
   if (!filePath) return '';
@@ -31,10 +31,7 @@ module.exports = {
     // new CleanWebpackPlugin(), // TODO: FUI-294 - Investigate working directory error
     new MiniCssExtractPlugin(),
     new webpack.WatchIgnorePlugin({
-      paths: [
-        /\.js$/,
-        /\.d\.ts$/,
-      ],
+      paths: [/\.js$/, /\.d\.ts$/],
     }),
   ],
   output: {

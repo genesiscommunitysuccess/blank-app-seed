@@ -1,6 +1,6 @@
-import {html, ref} from '@microsoft/fast-element';
-import type {ViewTemplate} from '@microsoft/fast-element';
-import type {MainApplication} from './main';
+import { html, ref } from '@microsoft/fast-element';
+import type { ViewTemplate } from '@microsoft/fast-element';
+import type { MainApplication } from './main';
 
 export const DynamicTemplate: ViewTemplate<MainApplication> = html`
   <zero-design-system-provider ${ref('provider')}>

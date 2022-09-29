@@ -1,4 +1,4 @@
-import {DI} from '@microsoft/fast-foundation';
+import { DI } from '@microsoft/fast-foundation';
 
 export const HostENV = DI.createInterface<string>();
 

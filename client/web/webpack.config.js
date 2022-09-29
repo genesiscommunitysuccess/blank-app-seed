@@ -1,12 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
-const {merge} = require('webpack-merge');
-const {ModuleFederationPlugin} = webpack.container;
+const { merge } = require('webpack-merge');
+const { ModuleFederationPlugin } = webpack.container;
 const DashboardPlugin = require('@module-federation/dashboard-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const commonDev = require('../.build/webpack/config/webpack.common.js');
-const {devServers} = require('../.build/webpack/config/devServers');
-const {getFederatedPkgName, getRemoteEntry, remoteEntryFilename: filename} = require('../.build/webpack/config/utils');
+const { devServers } = require('../.build/webpack/config/devServers');
+const {
+  getFederatedPkgName,
+  getRemoteEntry,
+  remoteEntryFilename: filename,
+} = require('../.build/webpack/config/utils');
 const pkg = require('./package.json');
 
 const port = pkg.config.PORT;
@@ -56,8 +60,8 @@ const mergedConfig = merge(commonDev, {
       filename: 'info.html',
       inject: false,
       /**
-      * Passing arbitrary data to the template for display
-      */
+       * Passing arbitrary data to the template for display
+       */
       moduleFederationDetails: JSON.stringify(moduleFederationOptions, undefined, jsonIndentSpace),
     }),
     new HtmlWebpackPlugin({

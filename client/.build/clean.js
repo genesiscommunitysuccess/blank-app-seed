@@ -10,7 +10,7 @@ const path = require('path');
 const rimraf = require('./rimraf');
 
 // will refuse to delete / or c:\
-const isRoot = arg => /^(\/|[a-zA-Z]:\\)$/.test(path.resolve(arg));
+const isRoot = (arg) => /^(\/|[a-zA-Z]:\\)$/.test(path.resolve(arg));
 const filterOutRoot = (arg) => {
   const ok = !isRoot(arg);
   if (!ok) {
@@ -20,20 +20,19 @@ const filterOutRoot = (arg) => {
   return ok;
 };
 
-const args = process.argv.slice(2)
-  .filter(arg => !!arg && filterOutRoot(arg));
+const args = process.argv.slice(2).filter((arg) => !!arg && filterOutRoot(arg));
 
 const go = (n) => {
   if (n >= args.length) {
     return;
   }
-  rimraf(args[n], {disableGlob: true}, (er) => {
+  rimraf(args[n], { disableGlob: true }, (er) => {
     if (er) {
       throw er;
     }
     const removePath = path.resolve(process.cwd(), args[n]);
     console.log(removePath, 'removed');
-    go(n+1);
+    go(n + 1);
   });
 };
 

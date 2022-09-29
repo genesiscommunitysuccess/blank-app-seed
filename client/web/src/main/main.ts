@@ -1,14 +1,14 @@
-import {Connect, ConnectConfig, defaultConnectConfig} from '@genesislcap/foundation-comms';
-import {Navigation} from '@genesislcap/foundation-header';
-import {baseLayerLuminance, StandardLuminance} from '@microsoft/fast-components';
-import {FASTElement, customElement, observable} from '@microsoft/fast-element';
-import {Container, inject, Registration} from '@microsoft/fast-foundation';
-import {DefaultRouteRecognizer} from '@microsoft/fast-router';
-import {DynamicTemplate as template, LoadingTemplate, MainTemplate} from './main.template';
-import {MainStyles as styles} from './main.styles';
-import {MainRouterConfig} from '../routes';
+import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
+import { Navigation } from '@genesislcap/foundation-header';
+import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
+import { FASTElement, customElement, observable } from '@microsoft/fast-element';
+import { Container, inject, Registration } from '@microsoft/fast-foundation';
+import { DefaultRouteRecognizer } from '@microsoft/fast-router';
+import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
+import { MainStyles as styles } from './main.styles';
+import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
-import {logger} from '../utils';
+import { logger } from '../utils';
 
 const name = 'blank-app';
 

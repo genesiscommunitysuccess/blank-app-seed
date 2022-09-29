@@ -3,7 +3,7 @@
 // May cause adverse affects with webpack.
 
 const path = require('path');
-const {merge} = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const common = require('./webpack.common.js');
 
@@ -11,9 +11,7 @@ const vendorCacheGroup = {
   vendor: {
     test: /[\\/]node_modules[\\/]/,
     name: (module) => {
-      const packageName = module.context.match(
-        /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-      )[1];
+      const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
       // npm package names are URL-safe, but some servers don't like @ symbols
       return `npm.${packageName.replace('@', '')}`;
     },
