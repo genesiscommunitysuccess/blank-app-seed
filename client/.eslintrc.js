@@ -6,7 +6,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  extends: ['google'],
+  extends: ['google', 'plugin:prettier/recommended'],
   ignorePatterns: ['**/dist/**'],
   rules: {
     'jsx-quotes': ['error', 'prefer-double'],
@@ -68,8 +68,6 @@ module.exports = {
     'no-plusplus': ['error'],
     'guard-for-in': ['error'],
     'no-return-await': ['error'],
-    indent: ['error', 2, { SwitchCase: 1 }],
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     'padded-blocks': 'off',
   },
   overrides: [

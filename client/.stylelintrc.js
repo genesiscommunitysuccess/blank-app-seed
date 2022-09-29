@@ -1,6 +1,6 @@
 module.exports = {
   customSyntax: 'postcss-syntax',
-  extends: ['stylelint-config-standard'],
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
   includes: ['*.styles.ts'],
   rules: {
     'function-name-case': [
