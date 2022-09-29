@@ -7,12 +7,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": [
-      "DOM",
-      "ES2015",
-      "ES2016",
-      "ES2017"
-    ],
+    "lib": ["DOM", "ES2015", "ES2016", "ES2017"],
     "module": "ESNext",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -26,8 +21,5 @@
     "strictNullChecks": false,
     "target": "ES2015"
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

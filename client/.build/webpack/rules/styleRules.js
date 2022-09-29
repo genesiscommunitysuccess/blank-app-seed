@@ -34,42 +34,23 @@ const postCSSLoader = () => ({
   },
 });
 
-const headCssPatterns = [
-  /main\.css$/i,
-  /head\.css$/i,
-  /index\.css$/i,
-];
+const headCssPatterns = [/main\.css$/i, /head\.css$/i, /index\.css$/i];
 
 const appStyleRules = {
   headCss: () => ({
     test: /\.css$/i,
     include: headCssPatterns,
-    use: [
-      'style-loader',
-      cssLoader(),
-      postCSSLoader(),
-    ],
+    use: ['style-loader', cssLoader(), postCSSLoader()],
   }),
   css: (useHash = true) => ({
     test: /\.css$/i,
-    exclude: [
-      ...headCssPatterns,
-    ],
-    use: [
-      cssLoader(),
-      postCSSLoader(),
-    ],
+    exclude: [...headCssPatterns],
+    use: [cssLoader(), postCSSLoader()],
   }),
   sass: (useHash = true) => ({
     test: /\.(sa|sc)ss$/i,
-    exclude: [
-      ...headCssPatterns,
-    ],
-    use: [
-      cssLoader(2),
-      postCSSLoader(),
-      'sass-loader',
-    ],
+    exclude: [...headCssPatterns],
+    use: [cssLoader(2), postCSSLoader(), 'sass-loader'],
   }),
 };
 

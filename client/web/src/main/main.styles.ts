@@ -1,5 +1,5 @@
-import {css} from '@microsoft/fast-element';
-import {stylesFontFaces} from '../styles';
+import { css } from '@microsoft/fast-element';
+import { stylesFontFaces } from '../styles';
 import './main.css';
 
 export const MainStyles = css`

@@ -1,6 +1,6 @@
-const {merge} = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const {devServers} = require('./devServers.js');
+const { devServers } = require('./devServers.js');
 
 module.exports = merge(common, {
   mode: 'development',
