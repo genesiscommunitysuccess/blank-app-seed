@@ -1,52 +1,15 @@
 const {mavenArtifactVersionRegex} = require('./validators');
 
 module.exports = async (inquirer, prevAns = {}) => {
-    () => console.log(`Enter Genesis Server version`);
     const {
-      genesisVersion = prevAns.genesisVersion,
-      authVersion = prevAns.authVersion,
-      deployPluginVersion = prevAns.deployPluginVersion,
-      kotlinVersion = prevAns.kotlinVersion,
       groupId = prevAns.groupId,
       applicationVersion = prevAns.applicationVersion
     } = await inquirer.prompt([
       {
-        name: 'genesisVersion',
-        type: 'input',
-        message: 'Genesis Server version',
-        when: !prevAns.pkgScope,
-        default: '6.1.6',
-        validate: mavenArtifactVersionRegex,
-      },
-      {
-        name: 'authVersion',
-        type: 'input',
-        message: 'Auth Server version',
-        when: !prevAns.authVersion,
-        default: '6.1.4',
-        validate: mavenArtifactVersionRegex,
-      },
-      {
-        name: 'deployPluginVersion',
-        type: 'input',
-        message: 'Genesis Deploy plugin version',
-        when: !prevAns.genesisVersion,
-        default:'6.1.6',
-        validate: mavenArtifactVersionRegex,
-      },
-      {
-        name: 'kotlinVersion',
-        type: 'input',
-        message: 'Kotlin version',
-        when: !prevAns.deployPluginVersion,
-        default:'1.6.10',
-        validate: mavenArtifactVersionRegex,
-      },
-      {
         name: 'groupId',
         type: 'input',
         message: 'Group Id',
-        when: !prevAns.kotlinVersion,
+        when: !prevAns.pkgScope,
         default:'global.genesis'
       },
       {
@@ -59,10 +22,6 @@ module.exports = async (inquirer, prevAns = {}) => {
       },
     ]);
     return {
-      genesisVersion,
-      authVersion,
-      deployPluginVersion,
-      kotlinVersion,
       groupId,
       applicationVersion
     };

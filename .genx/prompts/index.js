@@ -32,7 +32,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   const {baseDsPackage, dsName} = await dsPrompts(inquirer, prevAns);
   almostThere();
   const {apiHost} = await apiPrompts(inquirer, prevAns)
-  const {genesisVersion, authVersion, deployPluginVersion, kotlinVersion, groupId, applicationVersion} = await genesisServerPrompts(inquirer, prevAns);
+  const {groupId, applicationVersion} = await genesisServerPrompts(inquirer, prevAns);
 
   return {
     apiHost,
@@ -40,10 +40,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     dsName,
     pkgScope,
     pkgName,
-    genesisVersion,
-    authVersion,
-    deployPluginVersion,
-    kotlinVersion,
     groupId,
     applicationVersion,
     workspaceName,
