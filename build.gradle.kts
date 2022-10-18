@@ -12,9 +12,4 @@ tasks {
             }
         }
     }
-    wrapper {
-        description = "Regenerates the Gradle Wrapper files"
-        gradleVersion = "7.2"
-        distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
-    }
 }
