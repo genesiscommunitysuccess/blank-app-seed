@@ -1,6 +1,7 @@
 import { allComponents, provideFASTDesignSystem } from '@microsoft/fast-components';
 import { EntityManagement } from '@genesislcap/foundation-entity-management';
 import { FASTRouter } from '@microsoft/fast-router';
+import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
 import { logger } from '../utils';
 
 EntityManagement;
@@ -41,9 +42,9 @@ async function loadZeroDesignSystem() {
 export type LoadRemotesOptions = {};
 
 export async function loadRemotes() {
-  const { registerZeroDesignSystem } = await loadZeroDesignSystem();
+  const { provideDesignSystem, baseComponents } = await loadZeroDesignSystem();
   return {
-    ZeroDesignSystem: registerZeroDesignSystem(),
+    ZeroDesignSystem: provideDesignSystem().register(baseComponents, zeroGridComponents),
   };
 }
 
