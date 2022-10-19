@@ -1,1 +1,1 @@
-description = "genesis-generated-dao"
+description = "{{appName}}-generated-dao"

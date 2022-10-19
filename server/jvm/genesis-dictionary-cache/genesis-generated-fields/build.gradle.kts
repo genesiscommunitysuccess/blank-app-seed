@@ -1,1 +1,1 @@
-description = "genesis-generated-fields"
+description = "{{appName}}-generated-fields"

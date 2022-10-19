@@ -95,6 +95,7 @@ module.exports = async (data, utils) => {
 
   const serverJvmRoot = path.resolve(directory, "server", "jvm");
   const appNamePlaceholder = "genesis";
+  const dictionaryCacheRoot = path.resolve(directory, "server", "jvm", "genesis-dictionary-cache");
 
   utils.listAllFiles(serverJvmRoot, toFilter => {
     return !toFilter.path.endsWith(".jar")
@@ -116,6 +117,16 @@ module.exports = async (data, utils) => {
   utils.rename(path.resolve(scriptConfigFolder, "genesis-reqrep.kts"), path.resolve(scriptConfigFolder, `${data.appName}-reqrep.kts`));
 
   [
+    'genesis-generated-dao',
+    'genesis-generated-fields',
+    'genesis-generated-hft',
+    'genesis-generated-sysdef',
+    'genesis-generated-view',
+  ].forEach(projectName => {
+    utils.rename(path.resolve(dictionaryCacheRoot, projectName), path.resolve(dictionaryCacheRoot, projectName.replace(appNamePlaceholder, data.appName)));
+  });
+
+  [
     'genesis-dictionary-cache',
     'genesis-config',
     'genesis-deploy',
@@ -126,5 +137,5 @@ module.exports = async (data, utils) => {
     'genesis-site-specific'
   ].forEach(projectName => {
     utils.rename(path.resolve(serverJvmRoot, projectName), path.resolve(serverJvmRoot, projectName.replace(appNamePlaceholder, data.appName)));
-  })
+  });
 };
