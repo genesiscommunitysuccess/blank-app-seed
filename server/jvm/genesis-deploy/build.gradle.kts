@@ -1,5 +1,5 @@
 plugins {
-    id("global.genesis.deploy") version "6.2.2"
+    id("global.genesis.deploy") version "6.2.3"
 }
 
 description = "{{appName}}-deploy"
@@ -8,7 +8,7 @@ dependencies {
     implementation(
         group = "global.genesis",
         name = "genesis-distribution",
-        version = "6.2.2",
+        version = "6.2.3",
         classifier = "bin",
         ext = "zip"
     )
