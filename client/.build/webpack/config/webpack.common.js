@@ -26,6 +26,7 @@ module.exports = {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       FORCE_HTTP: JSON.stringify(process.env.FORCE_HTTP),
       HTTP_CONFIG: JSON.stringify(readFile(process.env.HTTP_CONFIG_PATH)),
+      SOCKET_EXT: JSON.stringify(process.env.SOCKET_EXT),
     }),
     new webpack.ProgressPlugin(),
     // new CleanWebpackPlugin(), // TODO: FUI-294 - Investigate working directory error
