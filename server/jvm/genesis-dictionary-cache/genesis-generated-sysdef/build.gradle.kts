@@ -1,1 +1,1 @@
-description = "genesis-generated-sysdef"
+description = "{{appName}}-generated-sysdef"
