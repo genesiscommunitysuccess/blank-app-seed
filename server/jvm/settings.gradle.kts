@@ -1,6 +1,14 @@
 rootProject.name = "genesisproduct-{{appName}}"
 
 pluginManagement {
+    pluginManagement {
+        val genesisVersion: String by settings
+        val deployPluginVersion: String by settings
+        plugins {
+            id("global.genesis.build") version genesisVersion
+            id("global.genesis.deploy") version deployPluginVersion
+        }
+    }
     repositories {
         mavenLocal {
             // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
@@ -28,10 +36,17 @@ include("{{appName}}-eventhandler")
 include("{{appName}}-script-config")
 include("{{appName}}-distribution")
 include("{{appName}}-dictionary-cache")
-include("{{appName}}-dictionary-cache:genesis-generated-sysdef")
-include("{{appName}}-dictionary-cache:genesis-generated-fields")
-include("{{appName}}-dictionary-cache:genesis-generated-dao")
-include("{{appName}}-dictionary-cache:genesis-generated-hft")
-include("{{appName}}-dictionary-cache:genesis-generated-view")
+include("{{appName}}-dictionary-cache:{{appName}}-generated-sysdef")
+include("{{appName}}-dictionary-cache:{{appName}}-generated-fields")
+include("{{appName}}-dictionary-cache:{{appName}}-generated-dao")
+include("{{appName}}-dictionary-cache:{{appName}}-generated-hft")
+include("{{appName}}-dictionary-cache:{{appName}}-generated-view")
 include("{{appName}}-deploy")
 include("{{appName}}-site-specific")
+
+includeBuild("../../client") {
+    dependencySubstitution {
+        substitute(module("client:web"))
+            .using(project(":web"))
+    }
+}

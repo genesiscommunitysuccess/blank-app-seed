@@ -2,6 +2,7 @@ package genesis.cfg
 
 systemDefinition {
     global {
+        item(name = "DEPLOYED_PRODUCT", value = "{{appName}}")
         item(name = "MqLayer", value = "ZeroMQ")
         item(name = "DbLayer", value = "FDB")
         item(name = "DictionarySource", value = "DB")
