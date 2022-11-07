@@ -1,1 +1,1 @@
-description = "genesis-generated-hft"
+description = "{{appName}}-generated-hft"

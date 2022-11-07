@@ -1,28 +1,30 @@
 plugins {
-    id("global.genesis.deploy") version "6.2.3"
+    id("global.genesis.deploy")
 }
 
 description = "{{appName}}-deploy"
 
 dependencies {
-    implementation(
+    genesisServer(
         group = "global.genesis",
         name = "genesis-distribution",
-        version = "6.2.3",
+        version = properties["genesisVersion"].toString(),
         classifier = "bin",
         ext = "zip"
     )
-    implementation(
+    genesisServer(
         group = "global.genesis",
         name = "auth-distribution",
-        version = "6.2.3",
+        version = properties["authVersion"].toString(),
         classifier = "bin",
         ext = "zip"
     )
 
-    api(project(":{{appName}}-distribution", "distribution"))
+    genesisServer(project(":{{appName}}-distribution", "distribution"))
+    genesisServer(project(":{{appName}}-site-specific", "distribution"))
+    genesisWeb("client:web")
+
     api(project(":{{appName}}-eventhandler"))
     api(project(":{{appName}}-messages"))
-    api(project(":{{appName}}-site-specific", "distribution"))
     // Add additional dependencies on other external distributions here
 }
