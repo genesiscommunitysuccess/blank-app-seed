@@ -1,4 +1,4 @@
-[Review Guidance](https://genesisglobal.atlassian.net/wiki/spaces/ON/pages/2682257431/Platform+Code+Review+Process)
+[Review Guidance](https://www.notion.so/genesisglobal/Platform-Code-Review-Process-ace93ba760cc4563b0dfb712e2a88d8a)
 
 📓 &nbsp; **Related JIRA**
 
