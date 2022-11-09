@@ -3,7 +3,7 @@ description = "{{appName}}-script-config"
 plugins {
     distribution
     `maven-publish`
-    id("com.jfrog.artifactory") version "4.21.0"
+    id("com.jfrog.artifactory") version "4.29.0"
 }
 
 group = "global.genesis"
