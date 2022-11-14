@@ -28,3 +28,8 @@ dependencies {
     api(project(":{{appName}}-messages"))
     // Add additional dependencies on other external distributions here
 }
+tasks {
+    copyDependencies {
+        from(configurations.getByName("genesisServer"))
+    }
+}
