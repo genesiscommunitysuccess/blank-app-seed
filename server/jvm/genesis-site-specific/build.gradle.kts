@@ -12,6 +12,9 @@ val distribution by configurations.creating {
     isCanBeConsumed = true
     isCanBeResolved = false
 }
+dependencies {
+    compileOnly("global.genesis:genesis-config")
+}
 distributions {
     main {
         contents {
