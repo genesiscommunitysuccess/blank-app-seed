@@ -42,7 +42,7 @@ RUN echo "GENESIS_HOME=/home/{{appName}}/run/" >> /home/{{appName}}/.bashrc &&\
     echo "source \$GENESIS_HOME/genesis/util/setup.sh" >> /home/{{appName}}/.bashrc
 
 FROM setup-genesis as configure-db
-COPY docker-scripts/configureDB.sh /scripts/configureDB.shi
+COPY docker-scripts/configureDB.sh /scripts/configureDB.sh
 RUN dos2unix /scripts/configureDB.sh
 RUN chmod +x /scripts/configureDB.sh &&\
     scripts/configureDB.sh
