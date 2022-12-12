@@ -11,6 +11,7 @@ RUN if [ $(uname -m) = "x86_64" ] ; then (echo 'y' | yum install https://downloa
     yum -y install epel-release ;  \
     yum -y install lmdb ;  \
     ln -s /usr/lib64/liblmdb.so.0.0.0 /usr/lib64/liblmdb.so ; fi
+RUN yum -y install dos2unix
 RUN yum -y install --nogpgcheck postgresql14-server
 RUN useradd {{appName}} &&\
     echo {{appName}}:{{appName}} | chpasswd &&\
@@ -42,20 +43,24 @@ RUN echo "GENESIS_HOME=/home/{{appName}}/run/" >> /home/{{appName}}/.bashrc &&\
 
 FROM setup-genesis as configure-db
 COPY docker-scripts/configureDB.sh /scripts/configureDB.sh
+RUN dos2unix /scripts/configureDB.sh
 RUN chmod +x /scripts/configureDB.sh &&\
     scripts/configureDB.sh
 
 FROM configure-db as genesis-install
 COPY docker-scripts/genesisInstall.sh /scripts/genesisInstall.sh
+RUN dos2unix /scripts/genesisInstall.sh 
 RUN chmod +x /scripts/genesisInstall.sh &&\
     /scripts/genesisInstall.sh
 
 FROM genesis-install as remap
 COPY docker-scripts/remap.sh /scripts/remap.sh
+RUN dos2unix /scripts/remap.sh
 RUN chmod +x /scripts/remap.sh &&\
    /scripts/remap.sh
 
 FROM remap as entryPoint
 COPY docker-scripts/docker-entrypoint.sh /scripts/docker-entrypoint.sh
+RUN dos2unix /scripts/docker-entrypoint.sh
 RUN chmod +x /scripts/docker-entrypoint.sh
 ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
