@@ -67,6 +67,7 @@
     "@genesislcap/foundation-utils": "^6.0.0",
     "@genesislcap/foundation-zero": "^6.0.0",
     "@genesislcap/foundation-zero-grid-pro": "^6.0.0",
+    "@genesislcap/g2plot-chart": "^6.0.0",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",
