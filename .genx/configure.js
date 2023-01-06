@@ -104,17 +104,17 @@ module.exports = async (data, utils) => {
   });
 
   const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
-  utils.fs.moveSync(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-tables-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-tables-dictionary.kts`));
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-view-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-view-dictionary.kts`));
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-system-definition.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-system-definition.kts`));
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-processes.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-processes.xml`));
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-service-definitions.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-service-definitions.xml`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-tables-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-tables-dictionary.kts`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-view-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-view-dictionary.kts`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-system-definition.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-system-definition.kts`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-processes.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-processes.xml`));
+  move(path.resolve(dictionaryConfigFolder, "genesis-service-definitions.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-service-definitions.xml`));
 
   const scriptConfigFolder = path.resolve(serverJvmRoot, "genesis-script-config", "src", "main", "resources", "scripts");
-  utils.rename(path.resolve(scriptConfigFolder, "genesis-dataserver.kts"), path.resolve(scriptConfigFolder, `${data.appName}-dataserver.kts`));
-  utils.rename(path.resolve(scriptConfigFolder, "genesis-eventhandler.kts"), path.resolve(scriptConfigFolder, `${data.appName}-eventhandler.kts`));
-  utils.rename(path.resolve(scriptConfigFolder, "genesis-reqrep.kts"), path.resolve(scriptConfigFolder, `${data.appName}-reqrep.kts`));
+  move(path.resolve(scriptConfigFolder, "genesis-dataserver.kts"), path.resolve(scriptConfigFolder, `${data.appName}-dataserver.kts`));
+  move(path.resolve(scriptConfigFolder, "genesis-eventhandler.kts"), path.resolve(scriptConfigFolder, `${data.appName}-eventhandler.kts`));
+  move(path.resolve(scriptConfigFolder, "genesis-reqrep.kts"), path.resolve(scriptConfigFolder, `${data.appName}-reqrep.kts`));
 
   [
     'genesis-generated-dao',
@@ -123,7 +123,7 @@ module.exports = async (data, utils) => {
     'genesis-generated-sysdef',
     'genesis-generated-view',
   ].forEach(projectName => {
-    utils.rename(path.resolve(dictionaryCacheRoot, projectName), path.resolve(dictionaryCacheRoot, projectName.replace(appNamePlaceholder, data.appName)));
+    move(path.resolve(dictionaryCacheRoot, projectName), path.resolve(dictionaryCacheRoot, projectName.replace(appNamePlaceholder, data.appName)));
   });
 
   [
@@ -136,7 +136,7 @@ module.exports = async (data, utils) => {
     'genesis-script-config',
     'genesis-site-specific'
   ].forEach(projectName => {
-    utils.rename(path.resolve(serverJvmRoot, projectName), path.resolve(serverJvmRoot, projectName.replace(appNamePlaceholder, data.appName)));
+    move(path.resolve(serverJvmRoot, projectName), path.resolve(serverJvmRoot, projectName.replace(appNamePlaceholder, data.appName)));
   });
 
   function move(oldPath, newPath) {
