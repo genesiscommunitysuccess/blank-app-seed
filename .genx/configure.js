@@ -104,7 +104,7 @@ module.exports = async (data, utils) => {
   });
 
   const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
-  utils.rename(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
+  utils.fs.moveSync(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
   utils.rename(path.resolve(dictionaryConfigFolder, "genesis-tables-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-tables-dictionary.kts`));
   utils.rename(path.resolve(dictionaryConfigFolder, "genesis-view-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-view-dictionary.kts`));
   utils.rename(path.resolve(dictionaryConfigFolder, "genesis-system-definition.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-system-definition.kts`));
@@ -138,4 +138,8 @@ module.exports = async (data, utils) => {
   ].forEach(projectName => {
     utils.rename(path.resolve(serverJvmRoot, projectName), path.resolve(serverJvmRoot, projectName.replace(appNamePlaceholder, data.appName)));
   });
+
+  function move(oldPath, newPath) {
+    utils.fs.moveSync(oldPath, newPath, {overwrite: data.forceOverwrite});
+  }
 };
