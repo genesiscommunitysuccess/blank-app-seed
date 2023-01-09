@@ -1,3 +1,5 @@
+import fs from 'fs-extra';
+
 const path = require('path');
 const answers = require('./answers');
 
@@ -140,6 +142,6 @@ module.exports = async (data, utils) => {
   });
 
   function move(oldPath, newPath) {
-    utils.fs.moveSync(oldPath, newPath, {overwrite: data.forceOverwrite});
+    fs.moveSync(oldPath, newPath, {overwrite: data.forceOverwrite});
   }
 };
