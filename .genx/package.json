@@ -6,6 +6,10 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@genesislcap/foundation-cli": "^1.0.0",
-    "yargs-parser": "^20.2.7"
+    "yargs-parser": "^20.2.7",
+    "@types/fs-extra": "^11.0.0"
+  },
+  "dependencies": {
+    "fs-extra": "^11.0.0"
   }
 }
