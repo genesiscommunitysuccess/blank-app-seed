@@ -1,7 +1,6 @@
-import fs from 'fs-extra';
-
 const path = require('path');
 const answers = require('./answers');
+const fs = require('fs-extra')
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
