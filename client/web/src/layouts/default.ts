@@ -32,7 +32,10 @@ export const loginLayout = new FASTElementLayout(
 export const defaultLayout = new FASTElementLayout(
   html`
     <div class="container">
-      <foundation-header templateOption extrasOption notificationOption>
+      <foundation-header 
+        show-luminance-toggle-button
+        show-misc-toggle-button
+        show-notification-button>
         ${repeat(
           (x) => x.config.allRoutes,
           html`
