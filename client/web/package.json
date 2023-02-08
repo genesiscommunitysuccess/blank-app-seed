@@ -19,6 +19,7 @@
     "dev": "npm run dev:webpack",
     "dev:docker": "npm run dev:webpack -- --host 0.0.0.0",
     "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD NODE_ENV=development webpack serve --open",
+    "dev:intellij": "cross-env NODE_ENV=development webpack serve --open",
     "serve": "serve dist -p $npm_package_config_PORT",
     "test": "echo \"Error: no test specified\""
   },
