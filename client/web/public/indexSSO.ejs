@@ -4,8 +4,7 @@
     <meta charset="utf-8"/>
     <title><%= htmlWebpackPlugin.options.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="initSSO.js"></script>
 </head>
-<body>
-  <blank-app></blank-app>
-</body>
+<body onload="appendApp()"></body>
 </html>

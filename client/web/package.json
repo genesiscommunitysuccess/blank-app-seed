@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "npm run build:webpack",
-    "build:webpack": "cross-env NODE_ENV=production webpack",
+    "build:webpack": "cross-env NODE_ENV=production webpack && copyfiles -u 1 ./public/initSSO.js ./dist",
     "clean": "npm run clean:dist",
     "clean:dist": "node ../.build/clean.js dist",
     "copy-files": "copyfiles -u 1 src/**/*.{css,scss,ttf} ./dist/esm",

@@ -25,7 +25,7 @@ const fs = require('fs-extra')
  * }
  */
 module.exports = async (data, utils) => {
-  const {directory, pkgScope, pkgName, apiHost} = data;
+  const {directory, pkgScope, pkgName, apiHost, initSSO} = data;
   const {editJSONFile, replaceObjectKeys, writeFileWithData} = utils;
   const prefixTarget = 'pkgScope/pkgName';
   const prefixReplacement = `${pkgScope}/${pkgName}-`;
@@ -77,6 +77,18 @@ module.exports = async (data, utils) => {
   const webPackageFile = editJSONFile(`${directory}/client/web/package.json`);
   webPackageFile.set('config.API_HOST', apiHost);
   webPackageFile.save();
+
+
+  /**
+   * Set initSSO in the web client
+   */
+  if (initSSO && fs.existsSync(`${directory}/client/web/public/indexSSO.ejs`)) {
+    fs.rename(`${directory}/client/web/public/index.ejs`, `${directory}/client/web/public/basicIndex.ejs`);
+    fs.rename(`${directory}/client/web/public/indexSSO.ejs`, `${directory}/client/web/public/index.ejs`);
+  } else if (!initSSO && fs.existsSync(`${directory}/client/web/public/basicIndex.ejs`)) {
+    fs.rename(`${directory}/client/web/public/index.ejs`, `${directory}/client/web/public/indexSSO.ejs`);
+    fs.rename(`${directory}/client/web/public/basicIndex.ejs`, `${directory}/client/web/public/index.ejs`);
+  }
 
   /**
    * TODO: Create handlebar templates for README.md files in ./plop/templates due to re-configure re-runs

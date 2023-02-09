@@ -1,5 +1,5 @@
 // Set the appHostURL from which the providers are to be fetched.
-const appHostURL = 'https://dev-position1/gwf/';
+const appHostURL = `https://${location.host}/gwf/`;
 
 const inIFrame = () => {
   try {
@@ -76,9 +76,8 @@ if (!sessionStorage.getItem('initSSO')) {
     // Set initSSO token in sessionStorage after the first fetch of providers
     sessionStorage.setItem('initSSO', 'true');
 
-    // Ultimately, it will be checked here whether there is 1 provider. 
-    // In dev-position1 we have 2 providers, so for testing purposes it is set to 2 here
-    if (idps.length == 2) {
+    // If your environment has more providers and you want to test it - set a number corresponding to the number of your providers
+    if (idps.length == 1) {
       const ssoLoginRoute = `/gwf/${idps[0].type}/login`;
       const ssoLoginUrl = `https://${new URL(appHostURL).host}${ssoLoginRoute}?idp=${idps[0].id}`;
 

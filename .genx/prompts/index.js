@@ -31,11 +31,12 @@ module.exports = async (inquirer, prevAns = {}) => {
   inputStepThanks();
   const {baseDsPackage, dsName} = await dsPrompts(inquirer, prevAns);
   almostThere();
-  const {apiHost} = await apiPrompts(inquirer, prevAns)
+  const {apiHost, initSSO} = await apiPrompts(inquirer, prevAns)
   const {groupId, applicationVersion} = await genesisServerPrompts(inquirer, prevAns);
 
   return {
     apiHost,
+    initSSO,
     baseDsPackage,
     dsName,
     pkgScope,
