@@ -3,8 +3,8 @@ import type { ViewTemplate } from '@microsoft/fast-element';
 import type { MainApplication } from './main';
 
 export const DynamicTemplate: ViewTemplate<MainApplication> = html`
-  <zero-design-system-provider ${ref('provider')}>
-    <div class="dynamic-template">${(x) => x.selectTemplate()}</div>
+  <zero-design-system-provider>
+    <div class="dynamic-template" ${ref('provider')}>${(x) => x.selectTemplate()}</div>
   </zero-design-system-provider>
 `;
 

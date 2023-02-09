@@ -9,7 +9,8 @@ import { MainStyles as styles } from './main.styles';
 import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
 import { logger } from '../utils';
-
+import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import generatedValues from '../styles/genratedValues.json'
 const name = 'blank-app';
 
 // eslint-disable-next-line
@@ -36,6 +37,7 @@ export class MainApplication extends FASTElement {
     super.connectedCallback();
 
     logger.debug(`${name} is now connected to the DOM`);
+    configureDesignSystem(this.provider, generatedValues);
 
     this.registerDIDependencies();
     await this.loadRemotes();

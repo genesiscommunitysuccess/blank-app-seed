@@ -5,7 +5,7 @@
   "private": true,
   "license": "Apache-2.0",
   "config": {
-    "API_HOST": "wss://dev-tutorial1/gwf/",
+    "API_HOST": "wss://dev-position2/gwf/",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
     "PORT": 6060
@@ -59,15 +59,15 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@genesislcap/foundation-comms": "^6.0.0",
-    "@genesislcap/foundation-entity-management": "^6.0.0",
-    "@genesislcap/foundation-header": "^6.0.0",
-    "@genesislcap/foundation-login": "^6.0.0",
-    "@genesislcap/foundation-ui": "^6.0.0",
-    "@genesislcap/foundation-utils": "^6.0.0",
-    "@genesislcap/foundation-zero": "^6.0.0",
-    "@genesislcap/foundation-zero-grid-pro": "^6.0.0",
-    "@genesislcap/g2plot-chart": "^6.0.0",
+    "@genesislcap/foundation-comms": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-entity-management": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-header": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-login": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-ui": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-utils": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-zero": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/foundation-zero-grid-pro": "7.6.1-alpha-45cfb78.0+45cfb78",
+    "@genesislcap/g2plot-chart": "7.6.1-alpha-45cfb78.0+45cfb78",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",
