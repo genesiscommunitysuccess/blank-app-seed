@@ -4,8 +4,11 @@
     <meta charset="utf-8"/>
     <title><%= htmlWebpackPlugin.options.title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{#if enableSSO}}
+    <script src="initSSO.js"></script>
+    {{/if}}
 </head>
-<body>
-  <blank-app></blank-app>
+<body {{#if enableSSO}}onload="appendApp()"{{/if}}>
+{{#unless enableSSO}}<blank-app></blank-app>{{/unless}}
 </body>
 </html>

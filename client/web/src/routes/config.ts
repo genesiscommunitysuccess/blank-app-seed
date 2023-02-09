@@ -17,6 +17,19 @@ import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
 
+// eslint-disable-next-line
+declare var ENABLE_SSO: string;
+
+const ssoSettings = ENABLE_SSO
+  ? {
+      autoAuth: true,
+      sso: {
+        toggled: true,
+        identityProvidersPath: 'sso/list',
+      },
+    }
+  : {};
+
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   constructor(
     @Auth private auth: Auth,
@@ -51,6 +64,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
           configure(this.container, {
             autoConnect: true,
             defaultRedirectUrl: 'home',
+            ...ssoSettings,
           });
           return define({
             name: `blank-app-login`,
