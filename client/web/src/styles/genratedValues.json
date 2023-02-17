@@ -1,9 +1,40 @@
 {
-  "accentPalette": "#DA1A5F",
-  "neutralPalette": "#808080",
-  "darkMode": true,
-  "density": 0,
-  "designUnit": 6,
-  "borderRadius": 8,
-  "strokeWidth": 1
+  "design_tokens": {
+    "color": {
+      "accent": {
+        "$value": "#DA1A5F",
+        "$type": "color"
+      },
+      "neutral": {
+        "$value": "#808080",
+        "$type": "color"
+      }
+    },
+    "mode": {
+      "darkMode": {
+        "$value": "0.23",
+        "$type": "number"
+      }
+    },
+    "style": {
+      "density": {
+        "$value": "0",
+      "$type": "number"
+      },
+      "borderRadius": {
+        "$value": "8",
+        "$type": "number"
+      },
+      "strokeWidth": {
+        "$value": "1",
+        "$type": "number"
+      }
+    },
+    "space": {
+      "designUnit": {
+        "$value": "6",
+        "$type": "number"
+      }
+    }
+  }
 }

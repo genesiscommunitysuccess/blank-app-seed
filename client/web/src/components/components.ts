@@ -4,6 +4,7 @@ import { FASTRouter } from '@microsoft/fast-router';
 import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import { logger } from '../utils';
+import { foundationGridComponents } from '@genesislcap/grid-pro';
 
 EntityManagement;
 
@@ -13,6 +14,13 @@ enum ResourceType {
   LOCAL = 'LOCAL',
   REMOTE = 'REMOTE',
 }
+
+import {
+  provideDesignSystem as provideAlphaDesignSystem,
+  baseComponents as alphaBaseComponents,
+} from '@genesislcap/alpha-design-system';
+
+provideAlphaDesignSystem().register(alphaBaseComponents, foundationGridComponents);
 
 /**
  * TODO: Think about sharing import functions across micro frontends.
