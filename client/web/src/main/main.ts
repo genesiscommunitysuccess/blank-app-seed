@@ -10,7 +10,7 @@ import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
 import { logger } from '../utils';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-import generatedValues from '../styles/genratedValues.json'
+import generatedValues from '../styles/generatedValues.json'
 const name = 'blank-app';
 
 // eslint-disable-next-line
