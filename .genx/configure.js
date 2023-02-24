@@ -16,7 +16,7 @@ const fs = require('fs-extra')
  *    editJSONFile(path: string, options: any);
  *    readFile(file: PathOrFileDescriptor): string;
  *    writeFile(file: PathOrFileDescriptor, data: string): void;
- *    writeFileWithData(file: PathOrFileDescriptor, answers: inquirer.Answers): void;
+ *    writeFile(file: PathOrFileDescriptor, answers: inquirer.Answers): void;
  *    copyFiles(source: string, destination: string, options: CopyOptionsSync): void;
  *    copyFilesAsync(source: string, destination: string, options: CopyOptionsSync): Promise<void>;
  *    replaceObjectKeys(input: object, searchValue: string | RegExp, replaceValue: string): object;
@@ -26,10 +26,22 @@ const fs = require('fs-extra')
  */
 module.exports = async (data, utils) => {
   const {directory, pkgScope, pkgName, apiHost} = data;
-  const {editJSONFile, replaceObjectKeys, writeFileWithData} = utils;
+  const {editJSONFile, writeFileWithData} = utils;
   const prefixTarget = 'pkgScope/pkgName';
   const prefixReplacement = `${pkgScope}/${pkgName}-`;
   data.localGenId = data.appName.toUpperCase().replace("-", "_");
+
+  const writeFile = (file, data, template) => {
+    try {
+      const filePath = path.resolve(directory, file);
+      const templatePath = template ? path.resolve(directory, template) : undefined;
+      return writeFileWithData(filePath, data, templatePath);
+    } catch (e) {
+      console.error(`Error writing file ${file} using template ${template}`, e);
+      console.error('Data', data);
+      process.exit(1);
+    }
+  };
 
   /**
    * Write answers data for future use by the CLI
@@ -51,13 +63,13 @@ module.exports = async (data, utils) => {
   /**
    * Update the client root .npmrc file
    */
-  writeFileWithData(path.resolve(directory, 'client/.npmrc'), data, path.resolve(directory, '.genx/plop/templates/.npmrc.hbs'));
+  writeFile(path.resolve(directory, 'client/.npmrc'), data, path.resolve(directory, '.genx/plop/templates/.npmrc.hbs'));
 
   /**
    * Update the README.md files
    * TODO: Create handlebar templates for the README.md files in ./plop/templates due to re-configure re-runs
    */
-  writeFileWithData(path.resolve(directory, 'README.md'), data);
+  writeFile(path.resolve(directory, 'README.md'), data);
 
   /**
    * Update the names and dependencies of the lerna managed packages
@@ -91,18 +103,32 @@ module.exports = async (data, utils) => {
   /**
    * Configuring server projects
    */
-   writeFileWithData(path.resolve(directory, "settings.gradle.kts"), data);
-   writeFileWithData(path.resolve(directory, "docker-compose.yml"), data);
+   writeFile(path.resolve(directory, "settings.gradle.kts"), data);
+   writeFile(path.resolve(directory, "docker-compose.yml"), data);
 
   const serverJvmRoot = path.resolve(directory, "server", "jvm");
   const appNamePlaceholder = "genesis";
   const dictionaryCacheRoot = path.resolve(directory, "server", "jvm", "genesis-dictionary-cache");
 
-  utils.listAllFiles(serverJvmRoot, toFilter => {
-    return !toFilter.path.endsWith(".jar")
-  }).forEach(filteredPath => {
-    writeFileWithData(filteredPath, data);
-  });
+  // listAllFiles doesnt get subdirectories, so we never wrote to the genesis-* dirs before
+  let files = [];
+  const getFilesRecursively = (directory) => {
+    const filesInDirectory = fs.readdirSync(directory);
+    for (const file of filesInDirectory) {
+      const absolute = path.join(directory, file);
+      if (fs.statSync(absolute).isDirectory()) {
+        getFilesRecursively(absolute);
+      } else {
+        files.push(absolute);
+      }
+    }
+  };
+
+  getFilesRecursively(serverJvmRoot)
+
+  files.forEach(file => {
+    file.endsWith(".kts") && writeFile(file, data);
+  })
 
   const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
   move(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
