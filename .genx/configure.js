@@ -1,6 +1,7 @@
 const path = require('path');
 const answers = require('./answers');
-const fs = require('fs-extra')
+const fs = require('fs-extra');
+const klawSync = require('klaw-sync');
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -110,25 +111,17 @@ module.exports = async (data, utils) => {
   const appNamePlaceholder = "genesis";
   const dictionaryCacheRoot = path.resolve(directory, "server", "jvm", "genesis-dictionary-cache");
 
-  // listAllFiles doesnt get subdirectories, so we never wrote to the genesis-* dirs before
-  let files = [];
-  const getFilesRecursively = (directory) => {
-    const filesInDirectory = fs.readdirSync(directory);
-    for (const file of filesInDirectory) {
-      const absolute = path.join(directory, file);
-      if (fs.statSync(absolute).isDirectory()) {
-        getFilesRecursively(absolute);
-      } else {
-        files.push(absolute);
-      }
-    }
+  const listAllFilesIncSubDirs = (rootFolder, fileFilter, incSubDirectories) => {
+    return klawSync(rootFolder, {
+        nodir: false,
+        filter: fileFilter,
+        traverseAll: incSubDirectories
+    }).map((i) => i.path);
   };
 
-  getFilesRecursively(serverJvmRoot)
-
-  files.forEach(file => {
-    file.endsWith(".kts") && writeFile(file, data);
-  })
+  const fileFilter = (item) => item.path.endsWith(".kts");
+  listAllFilesIncSubDirs(serverJvmRoot, fileFilter, true)
+      .forEach(filteredPath => { writeFile(filteredPath, data) });
 
   const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
   move(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
