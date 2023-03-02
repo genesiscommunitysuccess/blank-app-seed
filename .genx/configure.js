@@ -104,8 +104,8 @@ module.exports = async (data, utils) => {
   /**
    * Configuring server projects
    */
-   writeFile(path.resolve(directory, "settings.gradle.kts"), data);
-   writeFile(path.resolve(directory, "docker-compose.yml"), data);
+  writeFile(path.resolve(directory, "settings.gradle.kts"), data);
+  writeFile(path.resolve(directory, "docker-compose.yml"), data);
 
   const serverJvmRoot = path.resolve(directory, "server", "jvm");
   const appNamePlaceholder = "genesis";
@@ -113,15 +113,16 @@ module.exports = async (data, utils) => {
 
   const listAllFilesIncSubDirs = (rootFolder, fileFilter, incSubDirectories) => {
     return klawSync(rootFolder, {
-        nodir: false,
+        nodir: !incSubDirectories,
         filter: fileFilter,
-        traverseAll: incSubDirectories
-    }).map((i) => i.path);
+    });
   };
 
-  const fileFilter = (item) => item.path.endsWith(".kts");
-  listAllFilesIncSubDirs(serverJvmRoot, fileFilter, true)
-      .forEach(filteredPath => { writeFile(filteredPath, data) });
+  const ignore = ['.DS_Store', '.gradle', '.lock', '.jar'];
+  const fileFilter = (item) => ignore.every((el) => !item.path.endsWith(el));
+  listAllFilesIncSubDirs(serverJvmRoot, fileFilter, true).forEach(item => {
+      !item.stats.isDirectory() && writeFile(item.path, data)
+  });
 
   const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
   move(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
