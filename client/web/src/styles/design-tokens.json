@@ -6,13 +6,13 @@
             "$type": "color"
          },
          "neutral": {
-            "$value": "#446100",
+            "$value": "#001561",
             "$type": "color"
          }
       },
       "fontFamily": {
          "bodyFont": {
-            "$value": "Garamond",
+            "$value": "Verdana",
             "$type": "fontFamily"
          }
       },
@@ -28,11 +28,11 @@
             "$type": "number"
          },
          "borderRadius": {
-            "$value": 4,
+            "$value": 12,
             "$type": "number"
          },
          "strokeWidth": {
-            "$value": 1,
+            "$value": 4,
             "$type": "number"
          }
       },

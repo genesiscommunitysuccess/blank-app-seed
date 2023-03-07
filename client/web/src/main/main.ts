@@ -9,7 +9,7 @@ import { MainStyles as styles } from './main.styles';
 import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
 import { logger } from '../utils';
-import generatedValues from '../styles/generatedValues.json';
+import designTokens from '../styles/design-tokens.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
 
 const name = 'blank-app';
@@ -38,7 +38,7 @@ export class MainApplication extends FASTElement {
     super.connectedCallback();
 
     logger.debug(`${name} is now connected to the DOM`);
-    configureDesignSystem(this.provider, generatedValues);
+    configureDesignSystem(this.provider, designTokens);
 
     this.registerDIDependencies();
     await this.loadRemotes();
