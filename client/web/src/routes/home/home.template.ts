@@ -6,23 +6,23 @@ export const HomeTemplate = html<Home>`
       <div class="column">
         <div class="row">
           <div class="column">
-            <zero-breadcrumb role="navigation">
-              <zero-breadcrumb-item href="#">Item 1</zero-breadcrumb-item>
-              <zero-breadcrumb-item href="#">Item 2</zero-breadcrumb-item>
-              <zero-breadcrumb-item>Item 3</zero-breadcrumb-item>
-            </zero-breadcrumb>
+            <alpha-breadcrumb role="navigation">
+              <alpha-breadcrumb-item href="#">Item 1</alpha-breadcrumb-item>
+              <alpha-breadcrumb-item href="#">Item 2</alpha-breadcrumb-item>
+              <alpha-breadcrumb-item>Item 3</alpha-breadcrumb-item>
+            </alpha-breadcrumb>
           </div>
           <div class="column">
-            <zero-button href="#" appearance="accent">Button</zero-button>
-            <zero-button href="#" appearance="neutral">Button</zero-button>
-            <zero-button href="#" appearance="outline">Button</zero-button>
+            <alpha-button href="#" appearance="accent">Button</alpha-button>
+            <alpha-button href="#" appearance="neutral">Button</alpha-button>
+            <alpha-button href="#" appearance="outline">Button</alpha-button>
           </div>
         </div>
 
         <div class="row">
           <div class="column">
-            <zero-radio-group role="radiogroup" orientation="horizontal">
-              <zero-radio
+            <alpha-radio-group role="radiogroup" orientation="horizontal">
+              <alpha-radio
                 checked
                 role="radio"
                 aria-checked="true"
@@ -31,8 +31,8 @@ export const HomeTemplate = html<Home>`
                 tabindex="0"
               >
                 Radio 1
-              </zero-radio>
-              <zero-radio
+              </alpha-radio>
+              <alpha-radio
                 role="radio"
                 aria-checked="false"
                 aria-required="false"
@@ -40,11 +40,11 @@ export const HomeTemplate = html<Home>`
                 tabindex="-1"
               >
                 Radio 2
-              </zero-radio>
-            </zero-radio-group>
+              </alpha-radio>
+            </alpha-radio-group>
           </div>
           <div class="column">
-            <zero-checkbox
+            <alpha-checkbox
               role="checkbox"
               checked
               aria-checked="true"
@@ -53,8 +53,8 @@ export const HomeTemplate = html<Home>`
               tabindex="0"
             >
               Checkbox
-            </zero-checkbox>
-            <zero-checkbox
+            </alpha-checkbox>
+            <alpha-checkbox
               role="checkbox"
               aria-checked="false"
               aria-required="false"
@@ -62,46 +62,46 @@ export const HomeTemplate = html<Home>`
               tabindex="0"
             >
               Checkbox
-            </zero-checkbox>
+            </alpha-checkbox>
           </div>
         </div>
 
         <div class="row">
           <div class="column">
-            <zero-text-field
+            <alpha-text-field
               placeholder="Text field"
               aria-label="Example text field"
               type="text"
-            ></zero-text-field>
+            ></alpha-text-field>
           </div>
           <div class="column">
-            <zero-flipper
+            <alpha-flipper
               role="button"
               tabindex="-1"
               class="previous"
               aria-hidden="true"
               direction="previous"
-            ></zero-flipper>
-            <zero-flipper
+            ></alpha-flipper>
+            <alpha-flipper
               role="button"
               tabindex="-1"
               class="next"
               aria-hidden="true"
               direction="next"
-            ></zero-flipper>
-            <zero-switch
+            ></alpha-flipper>
+            <alpha-switch
               role="switch"
               checked
               aria-checked="true"
               aria-disabled="false"
               tabindex="0"
-            ></zero-switch>
+            ></alpha-switch>
           </div>
         </div>
 
         <div class="row">
           <div class="column">
-            <zero-slider
+            <alpha-slider
               role="slider"
               class="horizontal"
               tabindex="0"
@@ -114,39 +114,39 @@ export const HomeTemplate = html<Home>`
               step="1"
               orientation="horizontal"
               mode="single-value"
-            ></zero-slider>
+            ></alpha-slider>
           </div>
           <div class="column">
-            <zero-combobox autocomplete="both">
-              <zero-option>Christopher Eccleston</zero-option>
-              <zero-option>David Tenant</zero-option>
-              <zero-option>Matt Smith</zero-option>
-              <zero-option>Peter Capaldi</zero-option>
-              <zero-option>Jodie Whittaker</zero-option>
-            </zero-combobox>
+            <alpha-combobox autocomplete="both">
+              <alpha-option>Christopher Eccleston</alpha-option>
+              <alpha-option>David Tenant</alpha-option>
+              <alpha-option>Matt Smith</alpha-option>
+              <alpha-option>Peter Capaldi</alpha-option>
+              <alpha-option>Jodie Whittaker</alpha-option>
+            </alpha-combobox>
           </div>
         </div>
 
         <div class="row">
           <div class="column">
-            <zero-accordion expand-mode="single">
-              <zero-accordion-item slot="item" id="accordion-1" expanded="" class="expanded">
+            <alpha-accordion expand-mode="single">
+              <alpha-accordion-item slot="item" id="accordion-1" expanded="" class="expanded">
                 Accordion one content
                 <div slot="heading">Accordion one</div>
-              </zero-accordion-item>
-              <zero-accordion-item slot="item" id="accordion-2">
+              </alpha-accordion-item>
+              <alpha-accordion-item slot="item" id="accordion-2">
                 Accordion two content
                 <div slot="heading">Accordion two</div>
-              </zero-accordion-item>
-              <zero-accordion-item slot="item" id="accordion-3">
+              </alpha-accordion-item>
+              <alpha-accordion-item slot="item" id="accordion-3">
                 Accordion three content
                 <div slot="heading">Accordion three</div>
-              </zero-accordion-item>
-            </zero-accordion>
+              </alpha-accordion-item>
+            </alpha-accordion>
           </div>
           <div class="column">
-            <zero-tree-view role="tree">
-              <zero-tree-item
+            <alpha-tree-view role="tree">
+              <alpha-tree-item
                 role="treeitem"
                 tabindex="0"
                 aria-expanded="true"
@@ -155,23 +155,23 @@ export const HomeTemplate = html<Home>`
                 class="nested"
               >
                 Tree item 1
-                <zero-tree-item slot="item" role="treeitem">Tree item 1 - 1</zero-tree-item>
-              </zero-tree-item>
-              <zero-tree-item role="treeitem" tabindex="0" aria-expanded="false" class="nested">
+                <alpha-tree-item slot="item" role="treeitem">Tree item 1 - 1</alpha-tree-item>
+              </alpha-tree-item>
+              <alpha-tree-item role="treeitem" tabindex="0" aria-expanded="false" class="nested">
                 Tree item 2
-                <zero-tree-item slot="item" role="treeitem">Tree item 2 - 1</zero-tree-item>
-              </zero-tree-item>
-              <zero-tree-item role="treeitem" class="nested">Tree item 3</zero-tree-item>
-            </zero-tree-view>
+                <alpha-tree-item slot="item" role="treeitem">Tree item 2 - 1</alpha-tree-item>
+              </alpha-tree-item>
+              <alpha-tree-item role="treeitem" class="nested">Tree item 3</alpha-tree-item>
+            </alpha-tree-view>
           </div>
         </div>
 
         <div class="row">
           <div class="column">
-            <zero-progress role="progressbar"></zero-progress>
+            <alpha-progress role="progressbar"></alpha-progress>
           </div>
           <div class="column">
-            <zero-progress-ring role="progressbar"></zero-progress-ring>
+            <alpha-progress-ring role="progressbar"></alpha-progress-ring>
           </div>
         </div>
       </div>

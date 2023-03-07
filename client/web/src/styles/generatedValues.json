@@ -1,40 +1,46 @@
 {
-  "design_tokens": {
-    "color": {
-      "accent": {
-        "$value": "#DA1A5F",
-        "$type": "color"
+   "design_tokens": {
+      "color": {
+         "accent": {
+            "$value": "#6F5F11",
+            "$type": "color"
+         },
+         "neutral": {
+            "$value": "#446100",
+            "$type": "color"
+         }
       },
-      "neutral": {
-        "$value": "#808080",
-        "$type": "color"
-      }
-    },
-    "mode": {
-      "darkMode": {
-        "$value": "0.23",
-        "$type": "number"
-      }
-    },
-    "style": {
-      "density": {
-        "$value": "0",
-      "$type": "number"
+      "fontFamily": {
+         "bodyFont": {
+            "$value": "Garamond",
+            "$type": "fontFamily"
+         }
       },
-      "borderRadius": {
-        "$value": "8",
-        "$type": "number"
+      "mode": {
+         "luminance": {
+            "$value": 0.23,
+            "$type": "number"
+         }
       },
-      "strokeWidth": {
-        "$value": "1",
-        "$type": "number"
+      "style": {
+         "density": {
+            "$value": 0,
+            "$type": "number"
+         },
+         "borderRadius": {
+            "$value": 4,
+            "$type": "number"
+         },
+         "strokeWidth": {
+            "$value": 1,
+            "$type": "number"
+         }
+      },
+      "space": {
+         "designUnit": {
+            "$value": 7,
+            "$type": "number"
+         }
       }
-    },
-    "space": {
-      "designUnit": {
-        "$value": "6",
-        "$type": "number"
-      }
-    }
-  }
+   }
 }

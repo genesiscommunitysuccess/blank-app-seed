@@ -9,8 +9,9 @@ import { MainStyles as styles } from './main.styles';
 import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
 import { logger } from '../utils';
+import generatedValues from '../styles/generatedValues.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-import generatedValues from '../styles/generatedValues.json'
+
 const name = 'blank-app';
 
 // eslint-disable-next-line
