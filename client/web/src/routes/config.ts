@@ -5,9 +5,14 @@ import {
   FoundationAnalyticsEventType,
   Session,
 } from '@genesislcap/foundation-comms';
-import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
+import {
+  defaultLoginConfig,
+  Login,
+  LoginConfig,
+  Settings as LoginSettings,
+} from '@genesislcap/foundation-login';
 import { Constructable } from '@microsoft/fast-element';
-import { Container } from '@microsoft/fast-foundation';
+import { Container, optional } from '@microsoft/fast-foundation';
 import { Route, RouterConfiguration } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
@@ -18,7 +23,9 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
     @Auth private auth: Auth,
     @Container private container: Container,
     @FoundationAnalytics private analytics: FoundationAnalytics,
-    @Session private session: Session
+    @Session private session: Session,
+    @optional(LoginConfig)
+    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true }
   ) {
     super();
   }
@@ -29,8 +36,6 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
     this.title = 'Blank App Demo';
     this.defaultLayout = defaultLayout;
 
-    const commonSettings: LoginSettings = { allowAutoAuth: true };
-
     this.routes.map(
       { path: '', redirect: 'login' },
       {
@@ -38,10 +43,10 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
         element: Login,
         title: 'Login',
         name: 'login',
-        settings: { public: true, defaultRedirectUrl: 'home', autoConnect: true },
+        settings: { public: true },
         layout: loginLayout,
       },
-      { path: 'home', element: Home, title: 'Home', name: 'home', settings: commonSettings },
+      { path: 'home', element: Home, title: 'Home', name: 'home' },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' }
     );
 
@@ -84,7 +89,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
         /**
          * If allowAutoAuth and session is valid try to connect+auto-login
          */
-        if (settings && settings.allowAutoAuth && (await auth.reAuthFromSession())) {
+        if (this.loginConfig.autoAuth && (await auth.reAuthFromSession())) {
           return;
         }
 
