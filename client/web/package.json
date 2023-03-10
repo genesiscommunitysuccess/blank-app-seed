@@ -61,7 +61,9 @@
   "dependencies": {
     "@genesislcap/foundation-comms": "^10.5.0",
     "@genesislcap/foundation-entity-management": "^10.5.0",
+    "@genesislcap/foundation-forms": "^10.5.0",
     "@genesislcap/foundation-header": "^10.5.0",
+    "@genesislcap/foundation-layout": "^10.5.0",
     "@genesislcap/foundation-login": "^10.5.0",
     "@genesislcap/foundation-ui": "^10.5.0",
     "@genesislcap/foundation-utils": "^10.5.0",
