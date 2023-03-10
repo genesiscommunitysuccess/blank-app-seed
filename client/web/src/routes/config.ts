@@ -7,7 +7,6 @@ import {
 } from '@genesislcap/foundation-comms';
 import {
   defaultLoginConfig,
-  Login,
   LoginConfig,
   Settings as LoginSettings,
 } from '@genesislcap/foundation-login';
@@ -36,15 +35,33 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
     this.title = 'Blank App Demo';
     this.defaultLayout = defaultLayout;
 
+    const authPath = 'login';
+
     this.routes.map(
-      { path: '', redirect: 'login' },
+      { path: '', redirect: authPath },
       {
-        path: 'login',
-        element: Login,
-        title: 'Login',
+        path: authPath,
         name: 'login',
-        settings: { public: true },
+        title: 'Login',
+        element: async () => {
+          const { configure, define } = await import(
+            /* webpackChunkName: "foundation-login" */
+            '@genesislcap/foundation-login'
+          );
+          configure(this.container, {
+            autoConnect: true,
+            defaultRedirectUrl: 'home',
+          });
+          return define({
+            name: `blank-app-login`,
+            /**
+             * You can augment the template and styles here when needed.
+             */
+          });
+        },
         layout: loginLayout,
+        settings: { public: true },
+        childRouters: true,
       },
       { path: 'home', element: Home, title: 'Home', name: 'home' },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' }
@@ -56,7 +73,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
      * Example of a FallbackRouteDefinition
      */
     this.routes.fallback(() =>
-      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: 'login' }
+      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath }
     );
 
     /**
@@ -98,7 +115,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
          */
         phase.cancel(() => {
           this.session.captureReturnUrl();
-          Route.name.replace(phase.router, 'login');
+          Route.name.replace(phase.router, authPath);
         });
       },
     });
