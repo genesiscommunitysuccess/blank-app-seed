@@ -20,7 +20,8 @@
     "dev:docker": "npm run dev:webpack -- --host 0.0.0.0",
     "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD NODE_ENV=development webpack serve --open",
     "serve": "serve dist -p $npm_package_config_PORT",
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "start-ds": "webpack serve ../node_modules/@genesislcap/design-system-configurator/dist/esm.."
   },
   "devDependencies": {
     "@module-federation/dashboard-plugin": "2.3.0",
@@ -59,16 +60,17 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@genesislcap/alpha-design-system": "10.6.0",
+    "@genesislcap/alpha-design-system": "10.8.3",
+    "@genesislcap/design-system-configurator": "10.8.3",
     "@genesislcap/foundation-comms": "8.0.2-alpha-2368811.0+2368811",
-    "@genesislcap/foundation-entity-management": "10.6.0",
-    "@genesislcap/foundation-header": "10.6.0",
+    "@genesislcap/foundation-entity-management": "10.8.3",
+    "@genesislcap/foundation-header": "10.8.3",
     "@genesislcap/foundation-login": "8.0.2-alpha-2368811.0+2368811",
-    "@genesislcap/foundation-ui": "10.6.0",
-    "@genesislcap/foundation-utils": "10.6.0",
-    "@genesislcap/foundation-zero": "10.6.0",
-    "@genesislcap/foundation-zero-grid-pro": "10.6.0",
-    "@genesislcap/g2plot-chart": "10.6.0",
+    "@genesislcap/foundation-ui": "10.8.3",
+    "@genesislcap/foundation-utils": "10.8.3",
+    "@genesislcap/foundation-zero": "10.8.3",
+    "@genesislcap/foundation-zero-grid-pro": "10.8.3",
+    "@genesislcap/g2plot-chart": "10.8.3",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",

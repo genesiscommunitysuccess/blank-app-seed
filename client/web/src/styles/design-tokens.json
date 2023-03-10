@@ -1,46 +1,46 @@
 {
-   "design_tokens": {
-      "color": {
-         "accent": {
-            "$value": "#6F5F11",
-            "$type": "color"
-         },
-         "neutral": {
-            "$value": "#001561",
-            "$type": "color"
-         }
+  "design_tokens": {
+    "color": {
+      "accent": {
+        "$value": "#0EAFE2",
+        "$type": "color"
       },
-      "fontFamily": {
-         "bodyFont": {
-            "$value": "Verdana",
-            "$type": "fontFamily"
-         }
-      },
-      "mode": {
-         "luminance": {
-            "$value": 0.23,
-            "$type": "number"
-         }
-      },
-      "style": {
-         "density": {
-            "$value": 0,
-            "$type": "number"
-         },
-         "borderRadius": {
-            "$value": 12,
-            "$type": "number"
-         },
-         "strokeWidth": {
-            "$value": 4,
-            "$type": "number"
-         }
-      },
-      "space": {
-         "designUnit": {
-            "$value": 7,
-            "$type": "number"
-         }
+      "neutral": {
+        "$value": "#7C909B",
+        "$type": "color"
       }
-   }
+    },
+    "fontFamily": {
+      "bodyFont": {
+        "$value": "Roboto, 'Segoe UI', Arial, Helvetica, sans-serif",
+        "$type": "fontFamily"
+      }
+    },
+    "mode": {
+      "luminance": {
+        "$value": 0.23,
+        "$type": "number"
+      }
+    },
+    "style": {
+      "density": {
+        "$value": 0,
+        "$type": "number"
+      },
+      "borderRadius": {
+        "$value": 4,
+        "$type": "number"
+      },
+      "strokeWidth": {
+        "$value": 1,
+        "$type": "number"
+      }
+    },
+    "space": {
+      "designUnit": {
+        "$value": 4,
+        "$type": "number"
+      }
+    }
+  }
 }
