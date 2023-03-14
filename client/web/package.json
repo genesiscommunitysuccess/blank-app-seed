@@ -5,7 +5,7 @@
   "private": true,
   "license": "Apache-2.0",
   "config": {
-    "API_HOST": "wss://dev-position2/gwf/",
+    "API_HOST": "wss://dev-tutorial1/gwf/",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
     "PORT": 6060
