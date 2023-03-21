@@ -7,6 +7,11 @@ const devServers = {
     allowedHosts: 'all',
     host,
     port,
+    client: {
+      overlay: {
+        runtimeErrors: false,
+      },
+    },
     // disableHostCheck: true,
     // sockHost: 'localhost',
     // sockPort: '8080',
