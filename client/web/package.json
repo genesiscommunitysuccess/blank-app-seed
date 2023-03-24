@@ -21,7 +21,7 @@
     "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD NODE_ENV=development webpack serve --open",
     "serve": "serve dist -p $npm_package_config_PORT",
     "test": "echo \"Error: no test specified\"",
-    "dsconfig": "dsconfig"
+    "configure-design-system": "dsconfig"
   },
   "devDependencies": {
     "@module-federation/dashboard-plugin": "2.3.0",
