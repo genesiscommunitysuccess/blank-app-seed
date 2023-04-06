@@ -1,8 +1,8 @@
 const {npmPackageValidator, safeName} = require('./validators');
-const {scopedPackageInto} = require('./messages');
+const {scopedPackageIntro} = require('./messages');
 
 module.exports = async (inquirer, prevAns = {}) => {
-  scopedPackageInto('genesislcap', 'some-app');
+  scopedPackageIntro('genesislcap', 'some-app');
   const {
     pkgScope = prevAns.pkgScope,
     pkgName = prevAns.pkgName,
