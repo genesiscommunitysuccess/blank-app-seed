@@ -14,7 +14,7 @@ export const LoadingTemplate: ViewTemplate<MainApplication> = html`
 
 export const MainTemplate: ViewTemplate<MainApplication> = html`
   <fast-router
-    @dark-mode-toggle=${(x) => x.onDarkModeToggle()}
+    @luminance-icon-clicked=${(x) => x.onDarkModeToggle()}
     :config=${(x) => x.config}
     :navigation=${(x) => x.navigation}
   ></fast-router>

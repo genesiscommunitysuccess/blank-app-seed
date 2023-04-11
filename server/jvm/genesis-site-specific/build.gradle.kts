@@ -64,7 +64,7 @@ artifacts {
 }
 publishing {
     publications {
-        create<MavenPublication>("testSiteSpecificDistribution") {
+        create<MavenPublication>("{{appName}}SiteSpecificDistribution") {
             artifact(tasks.distZip.get())
         }
     }
@@ -74,7 +74,7 @@ artifactory {
     val targetRepoKey = "libs-${buildTagFor(project.version.toString())}-local"
     // Add all publication list to publicationNames
     // These are the necessary publications for everything genesis related.
-    val publicationNames = arrayOf("trinitySiteSpecificDistribution")
+    val publicationNames = arrayOf("{{appName}}SiteSpecificDistribution")
     publish(
         delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig> {
             repository(

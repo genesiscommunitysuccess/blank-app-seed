@@ -2,12 +2,7 @@
  * Common prompt feedback messages
  */
 
-/**
- * TODO: Revisit these exports in the cli
- */
-const {dsInto, scopedPackageInto} = require('@genesislcap/foundation-cli/dist/plop/messages');
-const {Code, Text} = require('@genesislcap/foundation-cli/dist/plop/messages/color');
-const {createLink} = require('@genesislcap/foundation-cli/dist/plop/messages/link');
+const {dsIntro, scopedPackageIntro, Code, Text, createLink} = require('@genesislcap/foundation-cli');
 const {summary} = require('../details');
 
 const seedSelection = () => console.log(`
@@ -31,9 +26,9 @@ module.exports = {
   Text,
   createLink,
   almostThere,
-  dsInto,
+  dsIntro,
   inputStepThanks,
   lastBits,
-  scopedPackageInto,
+  scopedPackageIntro,
   seedSelection,
 }

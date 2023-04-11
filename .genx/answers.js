@@ -1,4 +1,4 @@
-const {writeFile} = require('@genesislcap/foundation-cli/dist/utils');
+const {writeFile} = require('@genesislcap/foundation-cli');
 
 const read = () => {
   const publicAns = require('./answers.json');

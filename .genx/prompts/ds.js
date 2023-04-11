@@ -1,8 +1,8 @@
 const {baseDsPackageValidator, safeName} = require('./validators');
-const {dsInto} = require('./messages');
+const {dsIntro} = require('./messages');
 
 module.exports = async (inquirer, prevAns = {}) => {
-  dsInto();
+  dsIntro();
   const {
     dsName = prevAns.dsName,
     baseDsPackage = prevAns.baseDsPackage,
