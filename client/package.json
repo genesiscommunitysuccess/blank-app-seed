@@ -18,6 +18,7 @@
     "dev": "npx lerna run --parallel dev",
     "dev:docker": "npx lerna run --parallel dev:docker",
     "dev:webpack": "npx lerna run --parallel dev:webpack",
+    "dev:intellij": "npx lerna run --parallel dev:intellij",
     "diff": "npx lerna diff",
     "husky:install": "cd .. && npx husky install",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
