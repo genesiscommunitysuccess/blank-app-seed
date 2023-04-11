@@ -21,7 +21,7 @@ This project contains **client** and **server/jvm** sub-project which contain re
 
 ### Server
 
-The server code for this project can be found [here](./server/jvm/server/README.md).
+The server code for this project can be found [here](./server/jvm/README.md).
 It is built using a DSL-like definition based on the Kotlin language: GPAL.
 
 ## Clients
