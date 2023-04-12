@@ -26,7 +26,7 @@ const klawSync = require('klaw-sync');
  * }
  */
 module.exports = async (data, utils) => {
-  const {directory, pkgScope, pkgName, apiHost} = data;
+  const {directory, pkgScope, pkgName, apiHost, enableSSO} = data;
   const {editJSONFile, writeFileWithData} = utils;
   const prefixTarget = 'pkgScope/pkgName';
   const prefixReplacement = `${pkgScope}/${pkgName}-`;
@@ -89,6 +89,14 @@ module.exports = async (data, utils) => {
    */
   const webPackageFile = editJSONFile(`${directory}/client/web/package.json`);
   webPackageFile.set('config.API_HOST', apiHost);
+  webPackageFile.save();
+
+
+  /**
+   * Set SSO in the web client
+   */
+  writeFileWithData(path.resolve(directory, 'client/web/public/index.ejs'), data, path.resolve(directory, '.genx/plop/templates/index.ejs.hbs'));
+  webPackageFile.set('config.ENABLE_SSO', enableSSO);
   webPackageFile.save();
 
   /**
