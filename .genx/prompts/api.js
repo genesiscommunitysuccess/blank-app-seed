@@ -5,7 +5,7 @@ const apiHostIntro = () => console.log(`
 `);
 
 const ssoIntro = () => console.log(`
-  Optionally, you can enable the SSO function, which will load provider before starting the application (only if we have one provider).
+  Optionally, you can enable the SSO function, which will redirect to identity provider before starting the application (given we only have one identity provider).
 `);
 
 module.exports = async (inquirer, prevAns = {}) => {
