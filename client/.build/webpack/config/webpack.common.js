@@ -21,6 +21,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       API_HOST: JSON.stringify(process.env.API_HOST),
+      AUTO_CONNECT: JSON.stringify(process.env.AUTO_CONNECT),
+      DEFAULT_ORGANISATION: JSON.stringify(process.env.DEFAULT_ORGANISATION),
       DEFAULT_USER: JSON.stringify(process.env.DEFAULT_USER),
       DEFAULT_PASSWORD: JSON.stringify(process.env.DEFAULT_PASSWORD),
       ENABLE_SSO: JSON.stringify(process.env.ENABLE_SSO),
@@ -37,6 +39,8 @@ module.exports = {
     }),
   ],
   output: {
+    strictModuleErrorHandling: true,
+    strictModuleExceptionHandling: true,
     path: path.resolve(process.cwd(), './dist'),
     publicPath: 'auto',
   },

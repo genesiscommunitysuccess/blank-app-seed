@@ -49,9 +49,6 @@ const mergedConfig = merge(commonDev, {
   devServer,
   entry: path.resolve(__dirname, './src/index.federated.ts'),
   plugins: [
-    new webpack.DefinePlugin({
-      DEFAULT_ORGANISATION: JSON.stringify(process.env.DEFAULT_ORGANISATION),
-    }),
     new ModuleFederationPlugin(moduleFederationOptions),
     new DashboardPlugin({
       dashboardURL: 'http://localhost:3000/api/update',
