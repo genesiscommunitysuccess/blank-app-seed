@@ -1,9 +1,17 @@
+const crypto = require('crypto');
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { appStyleRules } = require('../rules/styleRules');
 const { appFileRules } = require('../rules/fileRules');
 const { appScriptRules } = require('../rules/scriptRules');
+
+// Avoid MD4 hash for OpenSSL 3 compatibility
+// https://github.com/cockpit-project/starter-kit/commit/3220617fec508aabbbc226a87a165c21fb72e913
+// Using Webpack v5.54.0+ and output.hashFunction = "xxhash64" should make this unnecessary, however
+// builds still fail with an OpenSSL error in practice
+const cryptoOrigCreateHash = crypto.createHash;
+crypto.createHash = (algorithm) => cryptoOrigCreateHash(algorithm == 'md4' ? 'sha256' : algorithm);
 
 const readFile = (filePath) => {
   if (!filePath) return '';

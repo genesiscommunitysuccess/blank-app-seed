@@ -16,6 +16,16 @@
         "$type": "fontFamily"
       }
     },
+    "typography": {
+      "baseFontSize": {
+        "$value": "14px",
+        "$type": "dimension"
+      },
+      "baseLineHeight": {
+        "$value": "20px",
+        "$type": "dimension"
+      }
+    },
     "mode": {
       "luminance": {
         "$value": 0.23,
