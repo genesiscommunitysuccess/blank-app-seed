@@ -11,6 +11,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       name: 'createDS',
       type: 'confirm',
       message: 'Create design system',
+      when: !prevAns.dsName && !prevAns.baseDsPackage,
       default: true,
     },
     {
