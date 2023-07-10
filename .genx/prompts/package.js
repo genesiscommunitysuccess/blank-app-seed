@@ -5,7 +5,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   scopedPackageIntro('genesislcap', 'some-app');
   const {
     pkgScope = prevAns.pkgScope,
-    pkgName = prevAns.pkgName,
+    pkgName = prevAns.pkgName || prevAns.appName,
   } = await inquirer.prompt([
     {
       name: 'pkgScope',
@@ -19,7 +19,8 @@ module.exports = async (inquirer, prevAns = {}) => {
       name: 'pkgName',
       type: 'input',
       message: 'Package name',
-      when: !prevAns.pkgName,
+      when: !prevAns.pkgName && !prevAns.appName,
+      default: prevAns.pkgName || prevAns.appName,
       validate: npmPackageValidator,
     },
   ]);
