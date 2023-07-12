@@ -38,7 +38,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       type: 'confirm',
       message: 'Init SSO connection before loading application',
       default: prevAns.enableSSO || false,
-      when: typeof prevAns.enableSSO === 'undefined',
+      when: prevAns.enableSSO === undefined,
     },
   ]);
   return {
