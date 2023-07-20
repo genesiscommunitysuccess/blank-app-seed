@@ -6,18 +6,6 @@ plugins {
     distribution
 }
 
-node {
-    // Version of node to use.
-    version.set("16.13.0")
-
-    // Version of npm to use.
-    npmVersion.set("8.1.0")
-
-    // If true, it will download node using above parameters.
-    // If false, it will try to use globally installed node.
-    download.set(false)
-}
-
 distributions {
     main {
         distributionBaseName.set("web-distribution")
