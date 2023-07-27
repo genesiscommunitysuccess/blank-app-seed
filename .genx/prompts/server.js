@@ -9,14 +9,14 @@ module.exports = async (inquirer, prevAns = {}) => {
         name: 'groupId',
         type: 'input',
         message: 'Group Id',
-        when: !prevAns.pkgScope,
+        when: !prevAns.groupId,
         default:'global.genesis'
       },
       {
         name: 'applicationVersion',
         type: 'input',
         message: 'Application Version',
-        when: !prevAns.groupId,
+        when: !prevAns.applicationVersion,
         default:'1.0.0-SNAPSHOT',
         validate: mavenArtifactVersionRegex
       },

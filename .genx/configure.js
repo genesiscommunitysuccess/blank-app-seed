@@ -1,160 +1,90 @@
-const path = require('path');
-const answers = require('./answers');
-const fs = require('fs-extra');
-const klawSync = require('klaw-sync');
+const { resolve } = require('node:path');
+const { renameSync, writeFileSync, readdirSync, statSync } = require('node:fs');
+
+const listAllFiles = (startPath, filter = (e) => true) => {
+  const filenames = new Set();
+  const walk = (dirPath) => {
+    const files = readdirSync(dirPath);
+    for (const file of files) {
+      const fullPath = resolve(dirPath, file);
+      const stats = statSync(fullPath);
+      const isDir = stats.isDirectory();
+      const entry = { path: fullPath, stats, isDir };
+      if (filter(entry)) {
+        if (isDir) {
+          walk(fullPath);
+        } else {
+          filenames.add(entry);
+        }
+      }
+    }
+  };
+  walk(startPath);
+  return [...filenames];
+};
+
+const rename = (from, to, dir) => renameSync(resolve(dir, from), resolve(dir, to));
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
- *
- * See here for up-to-date interface:
- * https://github.com/genesislcap/foundation-ui/tree/master/packages/tooling/foundation-cli/src/utils
- *
- * Example:
- *
- * interface SeedConfigurationUtils {
- *    plop: NodePlopAPI;
- *    progressSpinner: Ora;
- *    editJSONFile(path: string, options: any);
- *    readFile(file: PathOrFileDescriptor): string;
- *    writeFile(file: PathOrFileDescriptor, data: string): void;
- *    writeFile(file: PathOrFileDescriptor, answers: inquirer.Answers): void;
- *    copyFiles(source: string, destination: string, options: CopyOptionsSync): void;
- *    copyFilesAsync(source: string, destination: string, options: CopyOptionsSync): Promise<void>;
- *    replaceObjectKeys(input: object, searchValue: string | RegExp, replaceValue: string): object;
- *    directoryExists(directory: PathLike): boolean;
- *    makeDirectory(directory: PathLike): void;
- * }
  */
 module.exports = async (data, utils) => {
-  const {directory, pkgScope, pkgName, apiHost, enableSSO} = data;
-  const {editJSONFile, writeFileWithData} = utils;
-  const prefixTarget = 'pkgScope/pkgName';
-  const prefixReplacement = `${pkgScope}/${pkgName}-`;
+  const { writeFileWithData } = utils;
+  const { directory, appName } = data;
+
+  // 
   data.localGenId = data.appName.toUpperCase().replace("-", "_");
 
-  const writeFile = (file, data, template) => {
-    try {
-      const filePath = path.resolve(directory, file);
-      const templatePath = template ? path.resolve(directory, template) : undefined;
-      return writeFileWithData(filePath, data, templatePath);
-    } catch (e) {
-      console.error(`Error writing file ${file} using template ${template}`, e);
-      console.error('Data', data);
-      process.exit(1);
-    }
-  };
+  // pesist answers
+  writeFileSync(`${__dirname}/answers.json`, JSON.stringify(data, null, 2));
 
-  /**
-   * Write answers data for future use by the CLI
-   */
-  answers.write(data);
+  writeFileWithData(`${directory}/README.md`, data);
+  writeFileWithData(`${directory}/client/package.json`, data);
+  writeFileWithData(`${directory}/client/index.html`, data);
+  writeFileWithData(`${directory}/settings.gradle.kts`, data);
+  writeFileWithData(`${directory}/docker-compose.yml`, data);
 
-  /**
-   * Update the client root package.json file
-   */
-  const rootPackageFile = editJSONFile(`${directory}/client/package.json`);
-  rootPackageFile.set('name', `@${prefixReplacement}root`);
-  const scripts = rootPackageFile.get('scripts');
-  scripts[`client:web`] = `npm run baseline && npx lerna run --scope @${prefixReplacement}web-client --parallel dev`;
-  scripts[`copy-files:web`] = `npx lerna run --scope @${prefixReplacement}web-client copy-files`;
-  scripts[`serve:web`] = `npx lerna run --scope @${prefixReplacement}web-client serve`;
-  rootPackageFile.set('scripts', scripts);
-  rootPackageFile.save();
-
-  /**
-   * Update the client root .npmrc file
-   */
-  writeFile(path.resolve(directory, 'client/.npmrc'), data, path.resolve(directory, '.genx/plop/templates/.npmrc.hbs'));
-
-  /**
-   * Update the README.md files
-   * TODO: Create handlebar templates for the README.md files in ./plop/templates due to re-configure re-runs
-   */
-  writeFile(path.resolve(directory, 'README.md'), data);
-
-  /**
-   * Update the names and dependencies of the lerna managed packages
-   */
-  const updateLernaPackage = (file) => {
-    const packageFile = editJSONFile(file);
-    const packageName = packageFile.get('name');
-    packageFile.set('name', packageName.replace(`${prefixTarget}-`, prefixReplacement));
-    // packageFile.set('dependencies', replaceObjectKeys(packageFile.get('dependencies'), `${prefixTarget}-`, prefixReplacement));
-    packageFile.save();
-  };
-  updateLernaPackage(`${directory}/client/web/package.json`);
-
-  /**
-   * Set apiHost in the web client
-   */
-  const webPackageFile = editJSONFile(`${directory}/client/web/package.json`);
-  webPackageFile.set('config.API_HOST', apiHost);
-  webPackageFile.save();
-
-
-  /**
-   * Set SSO in the web client
-   */
-  writeFileWithData(path.resolve(directory, 'client/web/public/index.ejs'), data, path.resolve(directory, '.genx/plop/templates/index.ejs.hbs'));
-  webPackageFile.set('config.ENABLE_SSO', enableSSO);
-  webPackageFile.save();
-
-  /**
-   * TODO: Create handlebar templates for README.md files in ./plop/templates due to re-configure re-runs
-   * We should inspect the seed type in data / answers and use the correct README, for example a local seed won't need
-   * the upstream instructions.
-   */
-
-  /**
-   * TODO: Perhaps delete unrequested parts of this project, server variants, clients etc. Lift directories up.
-   */
-
-  /**
-   * Configuring server projects
-   */
-  writeFile(path.resolve(directory, "settings.gradle.kts"), data);
-  writeFile(path.resolve(directory, "docker-compose.yml"), data);
-
-  const serverJvmRoot = path.resolve(directory, "server", "jvm");
-  const appNamePlaceholder = "genesis";
-  const dictionaryCacheRoot = path.resolve(directory, "server", "jvm", "genesis-dictionary-cache");
-
-  const listAllFilesIncSubDirs = (rootFolder, fileFilter, incSubDirectories) => {
-    return klawSync(rootFolder, {
-        nodir: !incSubDirectories,
-        filter: fileFilter,
-    });
-  };
-
+  const serverJvmRoot = resolve(directory, "server", "jvm");
   const ignore = ['.DS_Store', '.gradle', '.lock', '.jar'];
   const fileFilter = (item) => ignore.every((el) => !item.path.endsWith(el));
-  listAllFilesIncSubDirs(serverJvmRoot, fileFilter, true).forEach(item => {
-      !item.stats.isDirectory() && writeFile(item.path, data)
+  listAllFiles(serverJvmRoot, fileFilter).forEach(item => {
+      if (!item.isDir) {
+        writeFileWithData(item.path, data);
+      }
   });
 
-  const dictionaryConfigFolder = path.resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
-  move(path.resolve(dictionaryConfigFolder, "genesis-fields-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-fields-dictionary.kts`));
-  move(path.resolve(dictionaryConfigFolder, "genesis-tables-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-tables-dictionary.kts`));
-  move(path.resolve(dictionaryConfigFolder, "genesis-view-dictionary.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-view-dictionary.kts`));
-  move(path.resolve(dictionaryConfigFolder, "genesis-system-definition.kts"), path.resolve(dictionaryConfigFolder, `${data.appName}-system-definition.kts`));
-  move(path.resolve(dictionaryConfigFolder, "genesis-processes.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-processes.xml`));
-  move(path.resolve(dictionaryConfigFolder, "genesis-service-definitions.xml"), path.resolve(dictionaryConfigFolder, `${data.appName}-service-definitions.xml`));
+  const placeholder = "genesis";
+  
+  // server/jvm/genesis-config/src/main/resources/cfg/genesis-fields-dictionary.kts -> server/jvm/genesis-config/src/main/resources/cfg/${appName}-fields-dictionary.kts
+  const dictionaryConfigFolder = resolve(serverJvmRoot, "genesis-config", "src", "main", "resources", "cfg");
+  [
+    "genesis-fields-dictionary.kts",
+    "genesis-tables-dictionary.kts",
+    "genesis-view-dictionary.kts",
+    "genesis-system-definition.kts",
+    "genesis-processes.xml",
+    "genesis-service-definitions.xml"
+  ].forEach(file => rename(file, file.replace(placeholder, appName), dictionaryConfigFolder));
 
-  const scriptConfigFolder = path.resolve(serverJvmRoot, "genesis-script-config", "src", "main", "resources", "scripts");
-  move(path.resolve(scriptConfigFolder, "genesis-dataserver.kts"), path.resolve(scriptConfigFolder, `${data.appName}-dataserver.kts`));
-  move(path.resolve(scriptConfigFolder, "genesis-eventhandler.kts"), path.resolve(scriptConfigFolder, `${data.appName}-eventhandler.kts`));
-  move(path.resolve(scriptConfigFolder, "genesis-reqrep.kts"), path.resolve(scriptConfigFolder, `${data.appName}-reqrep.kts`));
+  // server/jvm/genesis-script-config/src/main/resources/scripts/genesis-dataserver.kts -> server/jvm/genesis-script-config/src/main/resources/scripts/${appName}-dataserver.kts
+  const scriptConfigFolder = resolve(serverJvmRoot, "genesis-script-config", "src", "main", "resources", "scripts");
+  [
+    "genesis-dataserver.kts",
+    "genesis-eventhandler.kts",
+    "genesis-reqrep.kts"
+  ].forEach(file => rename(file, file.replace(placeholder, appName), scriptConfigFolder));
 
+  // server/jvm/genesis-dictionary-cache/genesis-generated-dao -> server/jvm/genesis-dictionary-cache/${appName}-generated-dao
+  const dictionaryCacheRoot = resolve(directory, "server", "jvm", "genesis-dictionary-cache");
   [
     'genesis-generated-dao',
     'genesis-generated-fields',
     'genesis-generated-hft',
     'genesis-generated-sysdef',
     'genesis-generated-view',
-  ].forEach(projectName => {
-    move(path.resolve(dictionaryCacheRoot, projectName), path.resolve(dictionaryCacheRoot, projectName.replace(appNamePlaceholder, data.appName)));
-  });
+  ].forEach(folder => rename(folder, folder.replace(placeholder, appName), dictionaryCacheRoot));
 
+  // server/jvm/genesis-dictionary-cache -> server/jvm/${appName}-dictionary-cache
   [
     'genesis-dictionary-cache',
     'genesis-config',
@@ -164,11 +94,5 @@ module.exports = async (data, utils) => {
     'genesis-messages',
     'genesis-script-config',
     'genesis-site-specific'
-  ].forEach(projectName => {
-    move(path.resolve(serverJvmRoot, projectName), path.resolve(serverJvmRoot, projectName.replace(appNamePlaceholder, data.appName)));
-  });
-
-  function move(oldPath, newPath) {
-    fs.moveSync(oldPath, newPath, {overwrite: data.forceOverwrite});
-  }
+  ].forEach(folder => rename(folder, folder.replace(placeholder, appName), serverJvmRoot));
 };

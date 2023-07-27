@@ -66,18 +66,6 @@ export class MainApplication extends FASTElement {
     this.ready = true;
   }
 
-  /**
-   * You can use various directives in templates like when(), which enables conditional rendering,
-   * and you can also split your templates up and return them based on some state.
-   */
-  public selectTemplate() {
-    return this.ready ? MainTemplate : LoadingTemplate;
-  }
-
-  public handleDoingSomething(detail: any) {
-    logger.debug(`handleDoingSomething in main ${detail}`);
-  }
-
   private registerDIDependencies() {
     this.container.register(
       Registration.transient(DefaultRouteRecognizer, DefaultRouteRecognizer),

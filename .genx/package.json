@@ -1,15 +1,6 @@
 {
-  "name": "genx-config",
-  "description": "Used by @genesislcap/foundation-cli.",
+  "name": "@genesiscommunitysuccess/blank-app-seed",
+  "description": "Genesis Blank App Seed",
   "version": "0.0.1",
-  "private": true,
-  "license": "UNLICENSED",
-  "devDependencies": {
-    "@genesislcap/foundation-cli": "^13.2.0",
-    "yargs-parser": "^20.2.7",
-    "@types/fs-extra": "^11.0.0"
-  },
-  "dependencies": {
-    "fs-extra": "^11.0.0"
-  }
+  "license": "Apache-2.0"
 }

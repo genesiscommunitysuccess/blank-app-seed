@@ -44,9 +44,4 @@ include("{{appName}}-dictionary-cache:{{appName}}-generated-view")
 include("{{appName}}-deploy")
 include("{{appName}}-site-specific")
 
-includeBuild("../../client") {
-    dependencySubstitution {
-        substitute(module("client:web"))
-            .using(project(":web"))
-    }
-}
+includeBuild("../../client")

@@ -32,9 +32,6 @@ coverage.lcov
 # lerna backups
 package.json.lerna_backup
 
-# npm package-locks (See step 1 here https://github.com/microsoft/fast/issues/850)
-package-lock.json
-
 # custom elements metadata
 custom-elements.json
 

@@ -20,7 +20,7 @@ import { NotFound } from './not-found/not-found';
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
 
-const ssoSettings = ENABLE_SSO
+const ssoSettings = typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO
   ? {
       autoAuth: true,
       sso: {
