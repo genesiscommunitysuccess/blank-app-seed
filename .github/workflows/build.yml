@@ -28,9 +28,8 @@ jobs:
         working-directory: /tmp
         run: |
           SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
-          echo "$SEED_PATH"
           npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
-          cd testapp/client
-          npm run bootstrap
-          which gradle
+          cd testapp
+          ./gradlew :client:assemble
+
 
