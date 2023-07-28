@@ -39,7 +39,6 @@ tasks {
         for(subproject in subprojects){
             dependsOn(subproject.tasks.named("assemble"))
         }
-        finalizedBy("copyUserNpmrc")
     }
     build {
         for(subproject in subprojects){
@@ -49,12 +48,6 @@ tasks {
     clean {
         for(subproject in subprojects){
             dependsOn(subproject.tasks.named("clean"))
-        }
-    }
-    task("copyUserNpmrc") {
-        copy {
-            file(project.gradle.gradleUserHomeDir.parent).listFiles()
-                ?.let { from(it.filter { it.name.equals(".npmrc") }).into("$projectDir/../../client") }
         }
     }
 }
