@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Generate sample app
+        working-directory: /tmp
+        run: |
+          npx -y @genesislcap/genx@latest init testapp -s /opt/actions-runner/_work/blank-app-seed -x
+          cd client
+          npm run bootstrap

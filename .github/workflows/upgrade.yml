@@ -1,0 +1,22 @@
+name: Upgrade
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1' # Monday 9AM UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Generate sample app
+        run: |
+          echo "Latest Foundation UI version:"
+          npm info @genesislcap/foundation-ui version
