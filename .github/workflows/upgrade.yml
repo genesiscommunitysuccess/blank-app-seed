@@ -6,7 +6,7 @@ on:
     - cron: '0 9 * * 1' # Monday 9AM UTC
 
 jobs:
-  build:
+  upgrade:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 18
 
-      - name: Generate sample app
+      - name: Print latest versions
         run: |
           echo "Latest Foundation UI version:"
           npm info @genesislcap/foundation-ui version
