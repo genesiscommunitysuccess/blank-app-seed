@@ -11,7 +11,7 @@ import * as Components from '../components';
 import { logger } from '../utils';
 import designTokens from '../styles/design-tokens.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-const name = 'blank-app';
+const name = '{{rootElement}}';
 
 // eslint-disable-next-line
 declare var API_HOST: string;
@@ -66,16 +66,8 @@ export class MainApplication extends FASTElement {
     this.ready = true;
   }
 
-  /**
-   * You can use various directives in templates like when(), which enables conditional rendering,
-   * and you can also split your templates up and return them based on some state.
-   */
   public selectTemplate() {
     return this.ready ? MainTemplate : LoadingTemplate;
-  }
-
-  public handleDoingSomething(detail: any) {
-    logger.debug(`handleDoingSomething in main ${detail}`);
   }
 
   private registerDIDependencies() {
