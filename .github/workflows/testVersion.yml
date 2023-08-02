@@ -27,4 +27,4 @@ jobs:
       - name: Print latest version of the server framework
         uses: jfrog/setup-jfrog-cli@v3
         with:
-          arguments: jf rt s "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client" --sort-by=created --sort-order=desc --limit=1
+          arguments: jf rt s  "my-local-repo/all-my-frogs/" --sort-by=created --sort-order=desc --limit=1
