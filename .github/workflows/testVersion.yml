@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      genesisArtifactoryUser: ${{ secrets.JFROG_RO_USER }}
-      genesisArtifactoryPassword: ${{ secrets.JFROG_RO_PASSWORD }}
+      genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
+      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
 
@@ -25,4 +25,6 @@ jobs:
           distribution: 'adopt'
 
       - name: Print latest version of the server framework
-        run: jf rt s  "my-local-repo/all-my-frogs/" --sort-by=created --sort-order=desc --limit=1
+        uses: jfrog/setup-jfrog-cli@v3
+        with:
+          arguments: jf rt s "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client" --sort-by=created --sort-order=desc --limit=1
