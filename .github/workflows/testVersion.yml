@@ -25,4 +25,6 @@ jobs:
           distribution: 'adopt'
 
       - name: Print latest version of the server framework
-        run: jf rt s  "my-local-repo/all-my-frogs/" --sort-by=created --sort-order=desc --limit=1
+      - uses: jfrog/setup-jfrog-cli@v3
+      - run: |
+          jf rt s  "my-local-repo/all-my-frogs/" --sort-by=created --sort-order=desc --limit=1
