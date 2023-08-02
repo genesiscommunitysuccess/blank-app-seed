@@ -1,0 +1,28 @@
+name: Test Server version
+
+on:
+  push:
+    branches: [shruti/PSD-1]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      genesisArtifactoryUser: ${{ secrets.JFROG_RO_USER }}
+      genesisArtifactoryPassword: ${{ secrets.JFROG_RO_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Print latest version of the server framework
+        run: jf rt s  "my-local-repo/all-my-frogs/" --sort-by=created --sort-order=desc --limit=1

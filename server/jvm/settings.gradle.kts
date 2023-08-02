@@ -19,7 +19,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url = uri("https://genesisglobal.jfrog.io/genesisglobal/dev-repo")
+            url = uri("https://genesisglobal.jfrog.io/genesisglobal/libs-release-client")
             credentials {
                 username = extra.properties["genesisArtifactoryUser"].toString()
                 password = extra.properties["genesisArtifactoryPassword"].toString()
