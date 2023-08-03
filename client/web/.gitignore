@@ -41,5 +41,3 @@ custom-elements.json
 
 # User files that may contain sensitive tokens etc.
 .npmrc
-
-bootstrapDone

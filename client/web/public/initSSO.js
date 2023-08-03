@@ -1,5 +1,5 @@
 // Set the appHostURL from which the providers are to be fetched.
-const appHostURL = `https://${location.host}/gwf/`;
+const appHostURL = `${location.protocol}//${location.host}/gwf/`;
 
 const fetchIDPs = async () => {
   const ipdsEndpoint = `${appHostURL}sso/list`;
@@ -32,7 +32,7 @@ if (!sessionStorage.getItem('initSSO')) {
     // If your environment has more providers and you want to test it - set a number corresponding to the number of your providers
     if (idps.length == 1) {
       const ssoLoginRoute = `/gwf/${idps[0].type}/login`;
-      const ssoLoginUrl = `https://${new URL(appHostURL).host}${ssoLoginRoute}?idp=${idps[0].id}`;
+      const ssoLoginUrl = `${location.protocol}//${new URL(appHostURL).host}${ssoLoginRoute}?idp=${idps[0].id}`;
 
       window.open(ssoLoginUrl, '_self');
     }
@@ -42,7 +42,7 @@ if (!sessionStorage.getItem('initSSO')) {
 // If we have initSSO in our sessionStorage, then we load the entire application
 function appendApp() {
   if (sessionStorage.getItem('initSSO')) {
-    const node = document.createElement('blank-app');
+    const node = document.createElement('{{rootElement}}');
     document.body.appendChild(node);
   }
 }

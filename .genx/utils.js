@@ -1,17 +1,40 @@
-const path = require('path');
-const yargsParser = require('yargs-parser');
+const { resolve } = require('node:path');
+const { renameSync, readdirSync, statSync, writeFileSync } = require('node:fs');
 
-const rootPath = target => path.resolve(__dirname, '../', target);
+const listAllFiles = (startPath, filter = (e) => true) => {
+  const filenames = new Set();
+  const walk = (dirPath) => {
+    const files = readdirSync(dirPath);
+    for (const file of files) {
+      const fullPath = resolve(dirPath, file);
+      const stats = statSync(fullPath);
+      const isDir = stats.isDirectory();
+      const entry = { path: fullPath, stats, isDir };
+      if (filter(entry)) {
+        if (isDir) {
+          walk(fullPath);
+        } else {
+          filenames.add(entry);
+        }
+      }
+    }
+  };
+  walk(startPath);
+  return [...filenames];
+};
 
-/**
- * Remove these once the CLI PR merges and use these utils from that directly, remove the yargs-parser dep at that point
- */
-const ignoreArgvCount = 2;
-const argv = yargsParser(process.argv.slice(ignoreArgvCount));
-const env = process.env;
+const rename = (from, to, dir) => renameSync(resolve(dir, from), resolve(dir, to));
+
+const writeJSON = (path, data) => {
+  try {
+    writeFileSync(path, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.log(`Error writing to ${path}`);
+  }
+}
 
 module.exports = {
-  argv,
-  env,
-  rootPath,
-}
+  listAllFiles,
+  rename,
+  writeJSON,
+};

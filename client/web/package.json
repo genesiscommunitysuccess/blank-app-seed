@@ -1,79 +1,90 @@
 {
-  "name": "@pkgScope/pkgName-web-client",
-  "description": "Blank App Web Client",
-  "version": "0.0.1",
+  "name": "{{pkgName}}",
+  "description": "",
+  "version": "{{applicationVersionWeb}}",
   "private": true,
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "config": {
-    "API_HOST": "wss://dev-tutorial1/gwf/",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
-    "PORT": 6060
+    "API_HOST": "{{apiHost}}",
+    "PORT": 6060,
+    "ENABLE_SSO": {{enableSSO}}
+  },
+  "genx": {
+    "app": {
+      "rootElement": "{{rootElement}}"
+    },
+    "federation": {
+      "remotes": [
+        "@genesislcap/foundation-zero"
+      ]
+    }
   },
   "scripts": {
-    "build": "npm run build:webpack",
-    "build:webpack": "cross-env NODE_ENV=production ENABLE_SSO=$npm_package_config_ENABLE_SSO webpack && copyfiles -u 1 ./public/initSSO.js ./dist",
-    "clean": "npm run clean:dist",
-    "clean:dist": "node ../.build/clean.js dist",
-    "copy-files": "copyfiles -u 1 src/**/*.{css,scss,ttf} ./dist/esm",
-    "dev": "npm run dev:webpack",
-    "dev:docker": "npm run dev:webpack -- --host 0.0.0.0",
-    "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD ENABLE_SSO=$npm_package_config_ENABLE_SSO NODE_ENV=development webpack serve --open",
-    "dev:intellij": "cross-env NODE_ENV=development webpack serve --open",
-    "serve": "serve dist -p $npm_package_config_PORT",
-    "test": "echo \"Error: no test specified\"",
-    "configure-design-system": "dsconfig  --path src/styles/design-tokens.json"
+    "baseline": "npm run clean && npm run bootstrap",
+    "bootstrap": "npm install --no-fund --no-audit",
+    "bootstrap:ci": "npm ci --no-fund --no-audit",
+    "build": "genx build -e ENABLE_SSO",
+    "build:stats": "genx analyze",
+    "clean": "genx clean dist node_modules",
+    "dev": "genx dev -e API_HOST,ENABLE_SSO",
+    "dev:docker": "npm run dev -- --host 0.0.0.0",
+    "dev:intellij": "genx dev -e ENABLE_SSO",
+    "dev:no-open": "npm run dev -- --no-open",
+    "dev:https": "npm run dev -- --https",
+    "dev:webpack": "npm run dev -- -b webpack",
+    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
+    "git:setup": "cd ../.. && npx --yes husky install",
+    "lint": "genx lint --profile",
+    "lint:fix": "genx lint --fix",
+    "lint:eslint": "genx lint -l eslint --profile",
+    "lint:stylelint": "genx lint -l stylelint",
+    "serve": "genx serve",
+    "test": "genx test",
+    "test:coverage": "genx test --coverage",
+    "test:unit:watch": "genx test --watch"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint"
+    ],
+    "*.styles.ts": [
+      "stylelint"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "@genesislcap/eslint-config"
+  },
+  "stylelint": {
+    "extends": "@genesislcap/stylelint-config"
+  },
+  "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
-    "@module-federation/dashboard-plugin": "2.3.0",
-    "@pixability-ui/federated-types": "^0.2.0",
-    "@playwright/test": "^1.18.1",
-    "c8": "^7.11.0",
-    "camel-case": "^4.1.2",
-    "clean-webpack-plugin": "^4.0.0",
-    "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
-    "csp-html-webpack-plugin": "^5.1.0",
-    "css-loader": "^6.6.0",
-    "cssnano": "^5.0.17",
+    "@genesislcap/design-system-configurator": "14.66.0",
+    "@genesislcap/foundation-testing": "14.66.0",
+    "@genesislcap/genx": "14.66.0",
     "esm": "^3.2.25",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.3.1",
-    "jsdom": "^19.0.0",
-    "mini-css-extract-plugin": "^2.5.3",
-    "playwright-test": "^7.2.1",
-    "postcss": "^8.4.6",
-    "postcss-import": "^14.0.0",
-    "postcss-loader": "^6.2.1",
-    "postcss-preset-env": "^7.0.1",
-    "serve": "^13.0.2",
-    "terser-webpack-plugin": "^5.3.1",
-    "to-string-loader": "^1.2.0",
-    "ts-loader": "^9.2.6",
-    "tsconfig-paths-webpack-plugin": "^3.5.1",
-    "tsm": "^2.2.1",
-    "typescript": "^4.5.5",
-    "uvu": "0.5.4",
-    "watchlist": "^0.3.1",
-    "webpack": "^5.45.1",
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^4.13.1",
-    "webpack-merge": "^5.7.3"
+    "husky": "^7.0.4",
+    "lint-prepush": "^2.2.1",
+    "lint-staged": "^12.4.1"
   },
   "dependencies": {
-    "@genesislcap/alpha-design-system": "14.12.6",
-    "@genesislcap/design-system-configurator": "14.12.6",
-    "@genesislcap/foundation-comms": "14.12.6",
-    "@genesislcap/foundation-entity-management": "14.12.6",
-    "@genesislcap/foundation-forms": "14.12.6",
-    "@genesislcap/foundation-header": "14.12.6",
-    "@genesislcap/foundation-layout": "14.12.6",
-    "@genesislcap/foundation-login": "14.12.6",
-    "@genesislcap/foundation-ui": "14.12.6",
-    "@genesislcap/foundation-utils": "14.12.6",
-    "@genesislcap/foundation-zero": "14.12.6",
-    "@genesislcap/foundation-zero-grid-pro": "14.12.6",
-    "@genesislcap/g2plot-chart": "14.12.6",
+    "@genesislcap/foundation-comms": "14.66.0",
+    "@genesislcap/foundation-entity-management": "14.66.0",
+    "@genesislcap/foundation-forms": "14.66.0",
+    "@genesislcap/foundation-header": "14.66.0",
+    "@genesislcap/foundation-inbox": "14.66.0",
+    "@genesislcap/foundation-layout": "14.66.0",
+    "@genesislcap/foundation-login": "14.66.0",
+    "@genesislcap/foundation-ui": "14.66.0",
+    "@genesislcap/foundation-utils": "14.66.0",
+    "@genesislcap/foundation-zero": "14.66.0",
+    "@genesislcap/foundation-zero-grid-pro": "14.66.0",
+    "@genesislcap/g2plot-chart": "14.66.0",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",

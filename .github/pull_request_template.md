@@ -28,7 +28,9 @@ Add file / directory pointers.
 
 
 
-Add testing suggestions, which apps to run, or storybook etc.
+```
+npx -y @genesislcap/genx@latest init prtest -x --ref YOUR-BRANCH-NAME
+```
 
 
 
