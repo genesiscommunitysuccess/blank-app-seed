@@ -50,3 +50,6 @@ server/jvm/server/position-deploy/gradle.properties
 
 # Dependency directories
 node_modules
+
+# Intellij plugin folder
+.genesis-home
