@@ -12,7 +12,7 @@
     },
     "fontFamily": {
       "bodyFont": {
-        "$value": "Roboto, 'Segoe UI', Arial, Helvetica, sans-serif",
+        "$value": "Roboto, \"Segoe UI\", Arial, Helvetica, sans-serif",
         "$type": "fontFamily"
       }
     },
