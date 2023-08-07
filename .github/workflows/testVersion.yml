@@ -12,9 +12,9 @@ jobs:
       with:
         version: latest
       env :
-        JF_URL : https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+        JF_URL : https://genesisglobal.jfrog.io/artifactory
         JF_USER : ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
         JF_PASSWORD : ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
     - run : |
         jf rt ping
-        jf rt s "global/genesis/genesis-distribution/" --sort-by=created --sort-order=desc --limit=1
+        jf rt s "libs-release-client/global/genesis/genesis-distribution/" --sort-by=created --sort-order=desc --limit=1
