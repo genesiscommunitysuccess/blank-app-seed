@@ -7,24 +7,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
-      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-
-      - name: Print latest version of the server framework
-        uses: jfrog/setup-jfrog-cli@v3
-        with:
-          arguments: jf rt s "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client" --sort-by=created --sort-order=desc --limit=1
+    - uses : jfrog/setup-jfrog-cli@v3
+      env :
+        JF_URL : https://genesisglobal.jfrog.io/genesisglobal
+        JF_USER : ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
+        JF_PASSWORD : ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
+    - run : |
+        jf rt ping
+        jf rt s "libs-release-client/global/genesis/genesis-distribution/" --sort-by=created --sort-order=desc --limit=1
