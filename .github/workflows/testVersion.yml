@@ -9,18 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Print latest GSF version
-    - uses: jfrog/setup-jfrog-cli@v3
+      uses: jfrog/setup-jfrog-cli@v3
       with:
         version: latest
-    - run : |
+      run : |
         jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
         jf rt s "libs-release-client/global/genesis/genesis-distribution/" --sort-by=created --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*" | grep path | tr -s ' ' | cut -d '/' -f 5
       shell: bash
     - name: Print latest AUTH version
-    - uses: jfrog/setup-jfrog-cli@v3
+      uses: jfrog/setup-jfrog-cli@v3
       with:
         version: latest
-    - run : |
+      run : |
         jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
         jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=created --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*" | grep path | tr -s ' ' | cut -d '/' -f 5
       shell: bash
