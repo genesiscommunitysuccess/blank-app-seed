@@ -41,8 +41,5 @@ jobs:
         run: |
           SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
           npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
-      - name: Build application
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
-          build-root-directory: ./testapp
+          cd testapp
+          ./gradlew build
