@@ -2,10 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main, master, develop]
-  pull_request:
-    branches: [main, master, develop]
-  workflow_dispatch:
+    branches: [tshruti/PSD-7]
 
 jobs:
   build:
