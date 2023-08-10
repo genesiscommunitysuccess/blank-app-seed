@@ -19,3 +19,4 @@ echo genesisArtifactoryPassword="$genesisArtifactoryPassword" >> $HOME/.gradle/g
 
 echo systemProp.org.gradle.internal.http.connectionTimeout=180000 >> $HOME/.gradle/gradle.properties
 echo systemProp.org.gradle.internal.http.socketTimeout=180000 >> $HOME/.gradle/gradle.properties
+
