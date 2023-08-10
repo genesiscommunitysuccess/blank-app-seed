@@ -25,7 +25,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Configure Gradle
-        run: ./.genx/scripts/init-gradle.sh
+        run: ./.genx/scripts/init_gradle.sh
 
       - name: Generate sample app
         working-directory: /tmp
