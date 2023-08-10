@@ -33,5 +33,5 @@ jobs:
           SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
           npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
           cd testapp
-          ./gradlew build
+          ./gradlew build -PclientSpecific=true
 
