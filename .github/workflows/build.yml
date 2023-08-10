@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
+      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
 
