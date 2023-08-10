@@ -16,16 +16,14 @@ import { Route, RouterConfiguration } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
+import { isSSOEnabled, getIPDSEndpoint } from '../utils';
 
-// eslint-disable-next-line
-declare var ENABLE_SSO: string;
-
-const ssoSettings = typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO
+const ssoSettings = isSSOEnabled()
   ? {
       autoAuth: true,
       sso: {
         toggled: true,
-        identityProvidersPath: 'sso/list',
+        identityProvidersPath: getIPDSEndpoint(),
       },
     }
   : {};

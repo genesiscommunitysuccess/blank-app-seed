@@ -23,7 +23,6 @@ module.exports = async (data, utils) => {
     `${directory}/client/web/src/main/main.ts`,
     `${directory}/client/web/src/routes/config.ts`,
     `${directory}/client/web/src/utils/logger.ts`,
-    `${directory}/client/web/public/initSSO.js`,
     `${directory}/settings.gradle.kts`,
     `${directory}/docker-compose.yml`
   ];

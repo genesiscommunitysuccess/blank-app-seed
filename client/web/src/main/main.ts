@@ -8,16 +8,10 @@ import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './ma
 import { MainStyles as styles } from './main.styles';
 import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
-import { logger } from '../utils';
+import { logger, initSSO } from '../utils';
 import designTokens from '../styles/design-tokens.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
 const name = '{{rootElement}}';
-
-// eslint-disable-next-line
-declare var API_HOST: string;
-
-const hostEnv = location.host;
-const hostUrl = API_HOST || `wss://${hostEnv}/gwf/`;
 
 @customElement({
   name,
@@ -59,10 +53,7 @@ export class MainApplication extends FASTElement {
 
   async loadRemotes() {
     await Components.loadRemotes();
-    /**
-     * Simulate loading delay
-     * await new Promise(resolve => setTimeout(resolve, 3000));
-     */
+    await initSSO();
     this.ready = true;
   }
 
