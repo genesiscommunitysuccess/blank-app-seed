@@ -29,7 +29,7 @@ npx -y @genesislcap/genx@latest init myapp
 Enable SSO (use any API host which has SSO providers configured):
 
 ```
-npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enable-SSO --apiHost wss://prim-uat-internal.genesis.global/gwf/
+npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --apiHost wss://prim-uat-internal.genesis.global/gwf/
 ```
 }}
 

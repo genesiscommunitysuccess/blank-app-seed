@@ -11,6 +11,7 @@ import * as Components from '../components';
 import { logger, initSSO } from '../utils';
 import designTokens from '../styles/design-tokens.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
+
 const name = '{{rootElement}}';
 
 @customElement({

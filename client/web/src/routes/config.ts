@@ -16,14 +16,14 @@ import { Route, RouterConfiguration } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
-import { isSSOEnabled, getIPDSEndpoint } from '../utils';
+import { isSSOEnabled } from '../utils';
 
 const ssoSettings = isSSOEnabled()
   ? {
       autoAuth: true,
       sso: {
         toggled: true,
-        identityProvidersPath: getIPDSEndpoint(),
+        identityProvidersPath: 'sso/list',
       },
     }
   : {};
