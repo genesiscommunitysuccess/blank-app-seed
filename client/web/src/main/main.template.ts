@@ -9,7 +9,7 @@ export const DynamicTemplate: ViewTemplate<MainApplication> = html`
 `;
 
 export const LoadingTemplate: ViewTemplate<MainApplication> = html`
-  <fast-progress-ring></fast-progress-ring>
+  <zero-progress-ring></zero-progress-ring>
 `;
 
 export const MainTemplate: ViewTemplate<MainApplication> = html`
