@@ -82,7 +82,12 @@ allprojects {
         }
         mavenCentral()
         maven {
-            url = uri("https://genesisglobal.jfrog.io/genesisglobal/dev-repo")
+            val repoUrl = if(properties["clientSpecific"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            }
+            url = uri(repoUrl)
             credentials {
                 username = properties["genesisArtifactoryUser"].toString()
                 password = properties["genesisArtifactoryPassword"].toString()
