@@ -32,6 +32,6 @@ jobs:
         run: |
           SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
           npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
-          cd testapp
-          ./gradlew build
+          cd testapp/server/jvm/testapp-script-config
+          ./gradlew build --debug
 
