@@ -34,7 +34,7 @@ services:
       context: client/
       dockerfile: Dockerfile
     volumes:
-      - ./client/web:/app/web
+      - ./client:/app/
     ports:
       - '6060:6060'
     entrypoint: [ "/bin/bash" , "-c", "npm run dev:docker && tail -f /dev/null" ]

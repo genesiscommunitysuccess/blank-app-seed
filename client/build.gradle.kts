@@ -3,6 +3,25 @@ import com.github.gradle.node.npm.task.NpmTask
 plugins {
     base
     id("com.github.node-gradle.node") version "3.1.1"
+    distribution
+}
+
+distributions {
+    main {
+        distributionBaseName.set("web-distribution")
+        contents {
+            into ("/") {
+                from("dist")
+            }
+        }
+    }
+}
+
+artifacts {
+    val distzip = tasks.distZip.get()
+    add("default", distzip.archiveFile) {
+        builtBy(distzip)
+    }
 }
 
 allprojects {
@@ -25,7 +44,7 @@ allprojects {
         // Setup custom clean task to be run when "clean" task runs.
         val npmClean = register("npmClean", NpmTask::class) {
             args.set(listOf("run", "clean"))
-            delete("bootstrapDone")
+            delete(".bootstrapDone")
         }
 
         clean {
@@ -40,18 +59,21 @@ tasks {
     val npmBootstrap = register("npmBootstrap", NpmTask::class) {
         val workingDir = layout.projectDirectory.asFile
         args.set(listOf("run", "bootstrap"))
-        outputs.upToDateWhen { File(workingDir, "bootstrapDone").exists() }
-        doLast { File(workingDir, "bootstrapDone").createNewFile() }
+        outputs.upToDateWhen { File(workingDir, ".bootstrapDone").exists() }
+        doLast { File(workingDir, ".bootstrapDone").createNewFile() }
     }
 
-    assemble {
+    val npmBuild = register("npmBuild", NpmTask::class) {
+        args.set(listOf("run", "build"))
+        inputs.dir("src")
+        outputs.dir("dist")
         dependsOn(npmBootstrap)
     }
 
     val test = register("test", NpmTask::class) {
         dependsOn(build)
         args.set(listOf("run", "test"))
-        inputs.files(fileTree("web"))
+        inputs.files(fileTree("src"))
         inputs.file("package.json")
 
         val testsExecutedMarkerName: String = "${projectDir}/.tests.executed"
@@ -62,5 +84,13 @@ tasks {
             File(testsExecutedMarkerName).appendText("delete this file to force re-execution JavaScript tests")
         }
         outputs.file(testsExecutedMarkerName)
+    }
+
+    distZip {
+        dependsOn(npmBuild)
+    }
+
+    assemble {
+        dependsOn(npmBuild)
     }
 }

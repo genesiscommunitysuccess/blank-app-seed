@@ -18,12 +18,11 @@ module.exports = async (data, utils) => {
   const filesClient = [
     `${directory}/README.md`,
     `${directory}/client/package.json`,
-    `${directory}/client/web/package.json`,
-    `${directory}/client/web/index.html`,
-    `${directory}/client/web/src/main/main.ts`,
-    `${directory}/client/web/src/routes/config.ts`,
-    `${directory}/client/web/src/utils/logger.ts`,
-    `${directory}/client/web/public/initSSO.js`,
+    `${directory}/client/index.html`,
+    `${directory}/client/src/main/main.ts`,
+    `${directory}/client/src/routes/config.ts`,
+    `${directory}/client/src/utils/logger.ts`,
+    `${directory}/client/public/initSSO.js`,
     `${directory}/settings.gradle.kts`,
     `${directory}/docker-compose.yml`
   ];
