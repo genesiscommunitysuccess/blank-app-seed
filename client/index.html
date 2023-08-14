@@ -12,7 +12,7 @@ https://handlebarsjs.com/
     <title>\{{htmlWebpackPlugin.options.title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{#if enableSSO}}
-    <script src="initSSO.js"></script>
+    <script src="/initSSO.js"></script>
     {{/if}}
 </head>
 <body {{#if enableSSO}}onload="appendApp()"{{/if}}>
