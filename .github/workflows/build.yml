@@ -12,6 +12,7 @@ jobs:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
       genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
+      USE_DOCKER: 1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,15 +35,15 @@ jobs:
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
 
-      - name: Install FDB
-        uses: foundationdb-rs/foundationdb-actions-install@v2.0.0
-        with:
-          version: 6.2.22
+      # - name: Install FDB
+      #   uses: foundationdb-rs/foundationdb-actions-install@v2.0.0
+      #   with:
+      #     version: 6.2.22
 
-      - name: Configure FDB
-        run: |
-          fdbcli --exec "configure single ssd"
-          fdbcli --exec "status"
+      # - name: Configure FDB
+      #   run: |
+      #     fdbcli --exec "configure single ssd"
+      #     fdbcli --exec "status"
 
       - name: Generate sample app
         working-directory: /tmp
