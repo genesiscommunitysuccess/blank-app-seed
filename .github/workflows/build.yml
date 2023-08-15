@@ -35,16 +35,6 @@ jobs:
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
 
-      # - name: Install FDB
-      #   uses: foundationdb-rs/foundationdb-actions-install@v2.0.0
-      #   with:
-      #     version: 6.2.22
-
-      # - name: Configure FDB
-      #   run: |
-      #     fdbcli --exec "configure single ssd"
-      #     fdbcli --exec "status"
-
       - name: Generate sample app
         working-directory: /tmp
         run: |
@@ -54,26 +44,18 @@ jobs:
       - name: Build sample app
         working-directory: /tmp/testapp
         run: ./gradlew assemble -PclientSpecific=true
-        # run: ./gradlew build -PclientSpecific=true
 
-      - name: Disable priviliged port
+      - name: Skip binding to privileged port on CI
         working-directory: /tmp/testapp
         run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
 
       - name: Start the app
         working-directory: /tmp/testapp
-        run: docker-compose build
-        # run: docker-compose up -d
+        run: docker-compose up -d
 
-      # - name: Run healthcheck
-      #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
+      - name: Run healthcheck
+        run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
 
-      # - name: Run tests
-      #   working-directory: /tmp/testapp/.genx/tests
-      #   run: |
-      #     npm run bootstrap
-      #     npm run test
-
-      # - name: Stop the app
-      #   working-directory: /tmp/testapp
-      #   run: docker-compose down
+      - name: Stop the app
+        working-directory: /tmp/testapp
+        run: docker-compose down
