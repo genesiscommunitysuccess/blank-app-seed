@@ -22,7 +22,7 @@ dependencies {
 
     genesisServer(project(":{{appName}}-distribution", "distribution"))
     genesisServer(project(":{{appName}}-site-specific", "distribution"))
-    genesisWeb("client:web")
+    genesisWeb(":client")
 
     api(project(":{{appName}}-eventhandler"))
     api(project(":{{appName}}-messages"))
