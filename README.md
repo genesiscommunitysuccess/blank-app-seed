@@ -17,7 +17,7 @@ npx -y @genesislcap/genx@latest init myapp -x
 Test local version (assuming `blank-app-seed` exists in current folder): 
 
 ```
-npx -y @genesislcap/genx@latest init myapp -x -s blank-app-seed
+npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed
 ```
 
 Customise prompt answers: 
@@ -26,7 +26,11 @@ Customise prompt answers:
 npx -y @genesislcap/genx@latest init myapp
 ```
 
+Enable SSO (use any API host which has SSO providers configured):
 
+```
+npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --apiHost wss://prim-uat-internal.genesis.global/gwf/
+```
 }}
 
 # Introduction
