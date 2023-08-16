@@ -47,6 +47,8 @@ jobs:
 
       - name: Raise PR
         if: steps.versions.outputs.CHANGED
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         uses: TheRealWaldo/pull-request@v0.2.0
         with:
           title: 'chore: automated dependency version update [skip-ci] PSD-9'
