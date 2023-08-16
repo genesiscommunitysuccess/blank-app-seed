@@ -42,10 +42,6 @@ jobs:
         if: steps.versions.outputs.CHANGED
         run: echo 'Versions have indeed changed'
 
-      - name: Test
-        if: !steps.versions.outputs.CHANGED
-        run: echo 'Versions have not changed'
-
       # - name: Commit changes
       #   if: steps.versions.outputs.CHANGED
       #   run: |
