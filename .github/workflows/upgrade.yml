@@ -61,8 +61,8 @@ jobs:
           const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }),
             owner = process.env.OWNER,
             repo = process.env.REPO,
-            title = 'Automated PR Test',
-            body  = 'Test PR',
+            title = 'chore: automated dependency version update [skip-ci] PSD-9',
+            body  = 'Automated PR',
             head  = 'chore-dep-update',
             base  = 'main';
           
