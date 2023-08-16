@@ -8,10 +8,11 @@ on:
 jobs:
   upgrade:
     runs-on: ubuntu-latest
-    # TODO: uncomment once environment is ready
-    # environment: deploy
+    environment: deploy
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{secrets.GH_USER_TOKEN}}
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -46,7 +47,7 @@ jobs:
       - name: Raise PR
         if: steps.versions.outputs.CHANGED
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_USER_TOKEN: ${{secrets.GH_USER_TOKEN}}
           OWNER: ${{github.repository_owner}}
           REPO: ${{github.event.repository.name}}
         run: |
@@ -58,7 +59,7 @@ jobs:
           cat <<EOT >> /tmp/create-pr/index.js
           const { Octokit } = require('@octokit/core');
 
-          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }),
+          const octokit = new Octokit({ auth: process.env.GH_USER_TOKEN }),
             owner = process.env.OWNER,
             repo = process.env.REPO,
             title = 'chore: automated dependency version update [skip-ci] PSD-9',
