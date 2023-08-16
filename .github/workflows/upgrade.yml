@@ -45,11 +45,15 @@ jobs:
       #     git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
       #     git push
 
+      - name: pwd
+        run: pwd
+
       - name: Update dependency versions
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
-            node .genx/scripts/update-versions
+            pwd
+            node ./.genx/scripts/update-versions
           COMMIT_MESSAGE: 'chore: automated dependency version update [skip-ci] PSD-9'
           COMMIT_NAME: 'GitHub Actions'
           COMMIT_EMAIL: 'ci@genesis.global'
