@@ -19,8 +19,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Configure Git
-        run: git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
+      # - name: Configure Git
+      #   run: git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
 
       - name: Set up Jfrog CLI
         uses: jfrog/setup-jfrog-cli@v3
@@ -31,27 +31,39 @@ jobs:
         run: |
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
 
-      - name: Update to latest versions if available
-        run: node .genx/scripts/update-versions
+      # - name: Update to latest versions if available
+      #   run: node .genx/scripts/update-versions
 
-      - name: Check for changes
-        id: versions
-        run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
+      # - name: Check for changes
+      #   id: versions
+      #   run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
   
-      - name: Commit changes
-        if: steps.versions.outputs.CHANGED
-        run: |
-          git add --all
-          git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
-          git push
+      # - name: Commit changes
+      #   if: steps.versions.outputs.CHANGED
+      #   run: |
+      #     git add --all
+      #     git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
+      #     git push
 
-      - name: Raise PR
-        if: steps.versions.outputs.CHANGED
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        uses: TheRealWaldo/pull-request@v0.2.0
+      - name: Update dependency versions
+        uses: technote-space/create-pr-action@v2
         with:
-          title: 'chore: automated dependency version update [skip-ci] PSD-9'
-          body: 'Automated PR'
-          head: ${{github.ref_name}}
-          base: main
+          EXECUTE_COMMANDS: |
+            node .genx/scripts/update-versions
+          COMMIT_MESSAGE: 'chore: automated dependency version update [skip-ci] PSD-9'
+          COMMIT_NAME: 'GitHub Actions'
+          COMMIT_EMAIL: 'ci@genesis.global'
+          PR_BRANCH_NAME: 'chore-version-update-${PR_ID}'
+          PR_TITLE: 'chore: automated dependency version update [skip-ci] PSD-9'
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # - name: Raise PR
+      #   if: steps.versions.outputs.CHANGED
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   uses: TheRealWaldo/pull-request@v0.2.0
+      #   with:
+      #     title: 'chore: automated dependency version update [skip-ci] PSD-9'
+      #     body: 'Automated PR'
+      #     head: ${{github.ref_name}}
+      #     base: main
