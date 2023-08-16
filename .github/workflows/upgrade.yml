@@ -1,28 +1,63 @@
 name: Upgrade
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual
   schedule:
-    - cron: '0 9 * * 1' # Monday 9AM UTC
+    - cron: '0 9 * * 1' # Mondays 9AM UTC
 
 jobs:
   upgrade:
     runs-on: ubuntu-latest
+    # environment: deploy
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{secrets.GH_USER_TOKEN}}
 
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - name: Configure Git
+        run: git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
+
       - name: Set up Jfrog CLI
         uses: jfrog/setup-jfrog-cli@v3
         with:
           version: latest
+
       - name: Authenticate on Artifactory
         run: |
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
-      - name: Print latest versions
-        run: node .genx/scripts/bump-versions
-      - name: Display version file
-        run: cat ./.genx/versions.json
+
+      - name: Update to latest versions if available
+        run: node .genx/scripts/update-versions
+
+      - name: Check for changes
+        id: versions
+        run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
+  
+      - name: Test
+        if: steps.versions.outputs.CHANGED
+        run: echo 'Versions have indeed changed'
+
+      - name: Test
+        if: !steps.versions.outputs.CHANGED
+        run: echo 'Versions have not changed'
+
+      # - name: Commit changes
+      #   if: steps.versions.outputs.CHANGED
+      #   run: |
+      #     git add --all
+      #     git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
+      #     git push
+
+      # - name: Raise PR
+      #   if: steps.versions.outputs.CHANGED
+      #   uses: TheRealWaldo/pull-request@v0.2.0
+      #   with:
+      #     title: 'chore: automated dependency version update [skip-ci] PSD-9'
+      #     body: 'Updating Foundation UI/GSF/Auth versions to the latest'
+      #     head: '{{github.ref_name}}'
+      #     base: 'main'
