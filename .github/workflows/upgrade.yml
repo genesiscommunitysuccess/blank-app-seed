@@ -41,7 +41,7 @@ jobs:
           git checkout -b chore-dep-update
           git add --all
           git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
-          git push --set-upstream origin chore-dep-update -f
+          git push -f --set-upstream origin chore-dep-update
 
       - name: Raise PR
         if: steps.versions.outputs.CHANGED
