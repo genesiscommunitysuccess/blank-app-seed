@@ -31,36 +31,65 @@ jobs:
         run: |
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
 
-      # - name: Update to latest versions if available
-      #   run: node .genx/scripts/update-versions
+      - name: Update to latest versions if available
+        run: node .genx/scripts/update-versions
 
-      # - name: Check for changes
-      #   id: versions
-      #   run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
+      - name: Check for changes
+        id: versions
+        run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
   
-      # - name: Commit changes
-      #   if: steps.versions.outputs.CHANGED
-      #   run: |
-      #     git add --all
-      #     git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
-      #     git push
+      - name: Commit changes
+        if: steps.versions.outputs.CHANGED
+        run: |
+          git add --all
+          git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
+          git push
 
-      - name: pwd
-        id: pwd
-        run: echo "PATH=$(pwd)" >> "$GITHUB_OUTPUT"
-
-      - name: Update dependency versions
-        uses: technote-space/create-pr-action@v2
-        with:
-          EXECUTE_COMMANDS: |
-            pwd
-            node ${{steps.pwd.outputs.PATH}}/.genx/scripts/update-versions
-          COMMIT_MESSAGE: 'chore: automated dependency version update [skip-ci] PSD-9'
-          COMMIT_NAME: 'GitHub Actions'
-          COMMIT_EMAIL: 'ci@genesis.global'
-          PR_BRANCH_NAME: 'chore-version-update-${PR_ID}'
-          PR_TITLE: 'chore: automated dependency version update [skip-ci] PSD-9'
+      - name: Raise PR (API)
+        env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          OWNER: ${{github.repository_owner}}
+          REPO: ${{github.event.repository.name}}
+          BRANCH_HEAD: ${{github.ref_name}}
+          BRANCH_BASE: main
+        run: |
+          mkdir /tmp/create-pr
+          cd /tmp/create-pr
+          npm init -y
+          npm i @octokit/core -S
+          
+          cat <<EOT >> /tmp/create-pr/index.js
+          const { Octokit } = require('@octokit/core');
+
+          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }),
+            owner = process.env.OWNER,
+            repo = process.env.REPO,
+            title = 'Automated PR Test',
+            body  = 'Test PR',
+            head  = process.env.BRANCH_HEAD,
+            base  = process.env.BRANCH_BASE;
+          
+          (async () => {
+            const response = await octokit.request(
+              'POST /repos/' + owner + '/' + repo + '/pulls', { owner, repo, title, body, head, base }
+            );
+          })();
+          EOT
+
+          node /tmp/create-pr/index
+
+      # - name: Update dependency versions
+      #   uses: technote-space/create-pr-action@v2
+      #   with:
+      #     EXECUTE_COMMANDS: |
+      #       pwd
+      #       node ${{steps.pwd.outputs.PATH}}/.genx/scripts/update-versions
+      #     COMMIT_MESSAGE: 'chore: automated dependency version update [skip-ci] PSD-9'
+      #     COMMIT_NAME: 'GitHub Actions'
+      #     COMMIT_EMAIL: 'ci@genesis.global'
+      #     PR_BRANCH_NAME: 'chore-version-update-${PR_ID}'
+      #     PR_TITLE: 'chore: automated dependency version update [skip-ci] PSD-9'
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       # - name: Raise PR
       #   if: steps.versions.outputs.CHANGED
