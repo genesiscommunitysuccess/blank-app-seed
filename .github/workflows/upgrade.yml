@@ -41,7 +41,7 @@ jobs:
       - name: Commit changes
         if: steps.versions.outputs.CHANGED
         run: |
-          git config --global user.name "GitHub Actions" --global user.email "ci@genesis.global"
+          git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
           git add --all
           git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
           git push
