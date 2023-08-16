@@ -1,5 +1,5 @@
 const { execSync } = require('node:child_process');
-const { writeFileSync } = require('node:fs');
+const { writeFileSync, readFileSync } = require('node:fs');
 const { resolve, dirname }  = require('node:path');
 
 const current = require('../versions.json');
@@ -17,4 +17,10 @@ const GSF = run(`jf rt s "libs-release-client/global/genesis/genesis-distributio
 const Auth = run(`jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=created --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*" | grep path | tr -s ' ' | cut -d '/' -f 5`);
 console.log('Latest:', { UI, GSF, Auth });
 
-console.log('Diff', { UI: current.UI === UI, GSF: current.GSF === GSF, Auth: current.Auth === Auth });
+if (current.UI !== UI || current.GSF !== GSF || current.Auth !== Auth) {
+  console.log('Newer versions available');
+  const r = readFileSync(resolve(__dirname, '../versions.json'), 'utf8');
+  console.log(r);
+} else {
+  console.log('No newer versions available');
+}
