@@ -24,3 +24,5 @@ jobs:
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
       - name: Print latest versions
         run: node .genx/scripts/bump-versions
+      - name: Display version file
+        run: cat ./.genx/versions.json
