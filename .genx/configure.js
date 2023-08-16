@@ -1,5 +1,6 @@
 const { resolve } = require('node:path');
 const { listAllFiles, rename, writeJSON } = require('./utils');
+const versions = require('./versions.json');
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -13,6 +14,7 @@ module.exports = async (data, utils) => {
   data.rootElement = `${data.pkgName}-root`;
   data.localGenId = appName.toUpperCase().replace("-", "_");
   data.applicationVersionWeb = applicationVersion.split('-').shift();
+  data.versions = versions;
 
   // render files
   const filesClient = [
