@@ -45,11 +45,11 @@ jobs:
           git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
           git push
 
-      # - name: Raise PR
-      #   if: steps.versions.outputs.CHANGED
-      #   uses: TheRealWaldo/pull-request@v0.2.0
-      #   with:
-      #     title: 'chore: automated dependency version update [skip-ci] PSD-9'
-      #     body: 'Updating Foundation UI/GSF/Auth versions to the latest'
-      #     head: '{{github.ref_name}}'
-      #     base: 'main'
+      - name: Raise PR
+        if: steps.versions.outputs.CHANGED
+        uses: TheRealWaldo/pull-request@v0.2.0
+        with:
+          title: 'chore: automated dependency version update [skip-ci] PSD-9'
+          body: 'Updating Foundation UI/GSF/Auth versions to the latest'
+          head: '{{github.ref_name}}'
+          base: 'main'
