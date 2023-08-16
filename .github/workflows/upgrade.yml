@@ -46,14 +46,15 @@ jobs:
       #     git push
 
       - name: pwd
-        run: pwd
+        id: pwd
+        run: echo "PATH=$(pwd)" >> "$GITHUB_OUTPUT"
 
       - name: Update dependency versions
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
             pwd
-            node ./.genx/scripts/update-versions
+            node ${{steps.pwd.outputs.PATH}}/.genx/scripts/update-versions
           COMMIT_MESSAGE: 'chore: automated dependency version update [skip-ci] PSD-9'
           COMMIT_NAME: 'GitHub Actions'
           COMMIT_EMAIL: 'ci@genesis.global'

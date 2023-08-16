@@ -3,6 +3,8 @@ const { writeFileSync } = require('node:fs');
 const { resolve }  = require('node:path');
 const current = require('../versions.json');
 
+console.log('-- cwd', process.cwd());
+
 const run = (command) => execSync(command, {
     stdio: ['pipe', 'pipe', 'ignore'],
   })
