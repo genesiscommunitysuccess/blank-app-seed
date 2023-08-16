@@ -52,6 +52,6 @@ jobs:
         uses: TheRealWaldo/pull-request@v0.2.0
         with:
           title: 'chore: automated dependency version update [skip-ci] PSD-9'
-          body: ''
+          body: 'Automated PR'
           head: ${{github.ref_name}}
           base: main
