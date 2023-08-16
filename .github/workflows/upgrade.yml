@@ -38,16 +38,12 @@ jobs:
         id: versions
         run: echo "CHANGED=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
   
-      - name: Test
+      - name: Commit changes
         if: steps.versions.outputs.CHANGED
-        run: echo 'Versions have indeed changed'
-
-      # - name: Commit changes
-      #   if: steps.versions.outputs.CHANGED
-      #   run: |
-      #     git add --all
-      #     git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
-      #     git push
+        run: |
+          git add --all
+          git commit -m "chore: automated dependency version update [skip-ci] PSD-9"
+          git push
 
       # - name: Raise PR
       #   if: steps.versions.outputs.CHANGED
