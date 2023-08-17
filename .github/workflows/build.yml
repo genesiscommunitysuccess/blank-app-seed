@@ -35,6 +35,11 @@ jobs:
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
 
+      - name: pwd
+        run: |
+          pwd
+          ls -la
+
       - name: Generate sample app
         working-directory: /tmp
         run: |
@@ -50,7 +55,7 @@ jobs:
         working-directory: /tmp/testapp
         run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
 
-      - name: Start the app
+      - name: Build Docker images
         working-directory: /tmp/testapp
         run: docker-compose build
 
