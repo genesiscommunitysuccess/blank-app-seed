@@ -35,11 +35,6 @@ jobs:
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
 
-      - name: pwd
-        run: |
-          pwd
-          ls -la
-
       - name: Generate sample app
         working-directory: /tmp
         run: |
