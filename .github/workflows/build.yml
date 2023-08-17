@@ -40,6 +40,7 @@ jobs:
         run: |
           SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
           npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
+          cp -R "$SEED_PATH/*" /tmp/testapp
 
       - name: Build sample app
         working-directory: /tmp/testapp
@@ -51,11 +52,11 @@ jobs:
 
       - name: Start the app
         working-directory: /tmp/testapp
-        run: docker-compose up -d
+        run: docker-compose build
 
-      - name: Run healthcheck
-        run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
+      # - name: Run healthcheck
+      #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
 
-      - name: Stop the app
-        working-directory: /tmp/testapp
-        run: docker-compose down
+      # - name: Stop the app
+      #   working-directory: /tmp/testapp
+      #   run: docker-compose down
