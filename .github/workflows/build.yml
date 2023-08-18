@@ -14,7 +14,6 @@ jobs:
       genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
       USE_DOCKER: 1
     runs-on: ubuntu-latest
-    environment: deploy
     steps:
       - uses: actions/checkout@v3
         with:
@@ -66,10 +65,3 @@ jobs:
       #   working-directory: /tmp/testapp
       #   run: docker-compose down
 
-      - name: Release
-        working-directory: .genx
-        env:
-          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
-        run: |
-          npm install
-          npm run release
