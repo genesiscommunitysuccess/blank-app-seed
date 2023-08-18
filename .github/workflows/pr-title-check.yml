@@ -1,0 +1,25 @@
+# This is a Github Action that ensures that your PR title matches the Conventional Commits spec.
+#
+# This is helpful when you're using semantic-release with the Conventional Commits preset.
+# When using the Squash and merge strategy, Github will suggest to use the PR title as the commit message.
+# With this action you can validate that the PR title will lead to a correct commit message.
+#
+# https://github.com/marketplace/actions/conventional-pr-title
+
+name: Check PR title
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+
+jobs:
+  lint:
+    runs-on: appdev-selfhosted-al2023
+    steps:
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [main, master, develop, alpha]
   pull_request:
-    branches: [main, master, develop]
+    branches: [main, master, develop, alpha]
   workflow_dispatch:
 
 jobs:
@@ -62,3 +62,11 @@ jobs:
       # - name: Stop the app
       #   working-directory: /tmp/testapp
       #   run: docker-compose down
+
+      - name: Release
+        working-directory: .genx
+        env:
+          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
+        run: 
+          npm install --only=dev
+          npm run release
