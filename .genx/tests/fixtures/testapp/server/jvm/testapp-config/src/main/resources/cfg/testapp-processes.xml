@@ -1,0 +1,36 @@
+<!--
+!
+!   System              : Genesis Business Library
+!   Sub-System          : multi-pro-code-test Configuration
+!   Version             : 1.0
+!   Copyright           : (c) Genesis
+!   Date                : 2022-03-18
+!   Function : Provide Process Definitions Config for multi-pro-code-test.
+!
+!   Modification History
+!
+-->
+<processes>
+    <process name="TESTAPP_DATASERVER">
+        <groupId>TESTAPP</groupId>
+        <start>true</start>
+        <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-dataserver</module>
+        <package>global.genesis.dataserver.pal</package>
+        <script>testapp-dataserver.kts</script>
+        <description>Displays real-time details</description>
+        <language>pal</language>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+    </process>
+    <process name="TESTAPP_EVENT_HANDLER">
+        <groupId>TESTAPP</groupId>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-eventhandler</module>
+        <package>global.genesis.eventhandler.pal</package>
+        <script>testapp-eventhandler.kts</script>
+        <description>Handles events</description>
+        <classpath>testapp-messages*,testapp-eventhandler*</classpath>
+        <language>pal</language>
+    </process>
+</processes>

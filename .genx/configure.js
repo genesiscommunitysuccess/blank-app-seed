@@ -15,6 +15,8 @@ module.exports = async (data, utils) => {
   data.localGenId = appName.toUpperCase().replace("-", "_");
   data.applicationVersionWeb = applicationVersion.split('-').shift();
   data.versions = versions;
+  // to be exposed via user prompt in the future
+  data.useDocker = !!process.env.USE_DOCKER;
 
   // render files
   const filesClient = [
