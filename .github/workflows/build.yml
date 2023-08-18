@@ -62,4 +62,3 @@ jobs:
       # - name: Stop the app
       #   working-directory: /tmp/testapp
       #   run: docker-compose down
-
