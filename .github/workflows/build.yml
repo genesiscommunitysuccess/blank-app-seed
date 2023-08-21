@@ -30,7 +30,7 @@ jobs:
 
       - uses: KengoTODA/actions-setup-docker-compose@main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
@@ -62,11 +62,3 @@ jobs:
       # - name: Stop the app
       #   working-directory: /tmp/testapp
       #   run: docker-compose down
-
-      - name: Release
-        working-directory: .genx
-        env:
-          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
-        run: 
-          npm install --only=dev
-          npm run release

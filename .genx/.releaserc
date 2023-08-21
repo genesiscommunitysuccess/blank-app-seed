@@ -1,5 +1,5 @@
 {
-  "branches": ["main", {"name": "alpha", "prerelease": true}],
+  "branches": ["main"],
   "repositoryUrl": "https://github.com/genesiscommunitysuccess/blank-app-seed",
   "plugins": [
     [
