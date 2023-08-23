@@ -67,7 +67,6 @@
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
-    "esm": "^3.2.25",
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
     "lint-staged": "^12.4.1"
