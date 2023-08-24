@@ -19,28 +19,6 @@ services:
       - '1337:22'
       - '5432:5432'
       - '4569:4569'
-  nginx-proxy:
-    ports:
-      - '80:80'
-      - '443:443'
-    container_name: nginx
-    build:
-      context: server/nginx/
-      dockerfile: Dockerfile
-    networks:
-      - qs_network
-  frontend:
-    container_name: frontend
-    build:
-      context: client/
-      dockerfile: Dockerfile
-    volumes:
-      - ./client:/app/
-    ports:
-      - '6060:6060'
-    entrypoint: [ "/bin/bash" , "-c", "npm run dev:docker && tail -f /dev/null" ]
-    networks:
-      - qs_network
 networks:
   qs_network:
     driver: bridge
