@@ -34,7 +34,7 @@ RUN chown {{appName}}:{{appName}} /home/{{appName}}/run
 
 FROM unzipped-distributions as setup-genesis
 COPY docker-scripts/.bashrc /home/{{appName}}
-COPY docker-scripts/*.sh /scripts
+COPY docker-scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh &&\
     dos2unix /scripts/docker-entrypoint.sh
 
