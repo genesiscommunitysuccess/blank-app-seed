@@ -54,7 +54,9 @@ jobs:
 
       - name: Build Docker images
         working-directory: /tmp/testapp
-        run: docker-compose build
+        run: |
+          docker-compose build
+          docker image ls
 
       # - name: Run healthcheck
       #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status

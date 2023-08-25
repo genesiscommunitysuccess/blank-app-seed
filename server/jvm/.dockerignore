@@ -1,44 +1,6 @@
-# Logs
-logs
-*.log
+# Ignore everything
+*
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# dotenv environment variables file
-.env
-.env.*
-
-# Editor directories and files
-.idea
-*.iml
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.DS_Store
-
-# Development
-target/
-.settings/
-.project
-.classpath
-*.ignore
-*~
-.gradle
-
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Cache of project
-.gradletasknamecache
-gradle
-gradle*
-
-bin
-src
+# Allow files and directories
+!docker-scripts
+!build/dependencies/*.zip

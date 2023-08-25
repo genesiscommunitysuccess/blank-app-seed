@@ -19,6 +19,18 @@ services:
       - '1337:22'
       - '5432:5432'
       - '4569:4569'
+  nginx:
+    ports:
+      - '80:80'
+      - '443:443'
+    container_name: nginx
+    build:
+      context: server/nginx/
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/dist:/usr/share/nginx/html/
+    networks:
+      - qs_network
 networks:
   qs_network:
     driver: bridge
