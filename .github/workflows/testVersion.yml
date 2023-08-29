@@ -1,4 +1,4 @@
-name: Test Server version
+name: Test Server version latest
 
 on:
   push:
