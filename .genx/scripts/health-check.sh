@@ -6,6 +6,8 @@ counter=15
 
 until [[ $http_response == "200" || counter -lt 0 ]]; do
   echo 'not all services running; waiting 10 seconds and trying again'
+  # TODO: remove
+  curl $url
   sleep 10
   http_response=$(curl -s -o /dev/null -w "%{http_code}" $url)
   ((counter--))
@@ -19,6 +21,5 @@ then
   echo 'all services started correctly'
 else
   echo 'not all services started correctly'
-  curl $url
   exit 1
 fi
