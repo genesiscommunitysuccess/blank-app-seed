@@ -28,9 +28,9 @@ jobs:
           echo "Latest GSF version:"
           jf rt s "libs-release-client/global/genesis/genesis-distribution/" --sort-by=created --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*" | grep path | tr -s ' ' | cut -d '/' -f 5
           echo "Latest AUTH version"
-          jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=name --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*;maven-*" | grep path | tr -s ' ' | cut -d '/' -f 5
+          jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=name --sort-order=desc --limit=1 --exclusions="*maven-*;*-RC*;*-SNAPSHOT*" | grep path | tr -s ' ' | cut -d '/' -f 5
           echo "Latest AUTH version"
-          jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=name --path=libs-release-client/global/genesis/auth-distribution/* --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*;maven-*" | grep path | tr -s ' ' | cut -d '/' -f 5
+          jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by=name --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*;*maven-*" | grep path | tr -s ' ' | cut -d '/' -f 5
 
 
       - name: Set up JDK
