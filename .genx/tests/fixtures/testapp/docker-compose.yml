@@ -2,7 +2,7 @@ version: '3.3'
 services:
   gsf:
     tty: true
-    container_name: gsf
+    container_name: 'testapp-gsf'
     build:
       context: server/jvm/
       dockerfile: Dockerfile
@@ -17,7 +17,6 @@ services:
     ports:
       - '9064:9064'
       - '1337:22'
-      - '5432:5432'
       - '4569:4569'
 networks:
   qs_network:

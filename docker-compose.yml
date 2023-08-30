@@ -2,7 +2,7 @@ version: '3.3'
 services:
   gsf:
     tty: true
-    container_name: gsf
+    container_name: '{{appName}}-server'
     build:
       context: server/jvm/
       dockerfile: Dockerfile
@@ -23,14 +23,14 @@ services:
     ports:
       - '80:80'
       - '443:443'
-    container_name: nginx
+    container_name: '{{appName}}-nginx'
     build:
       context: server/nginx/
       dockerfile: Dockerfile
     networks:
       - qs_network
   frontend:
-    container_name: frontend
+    container_name: '{{appName}}-frontend'
     build:
       context: client/
       dockerfile: Dockerfile
