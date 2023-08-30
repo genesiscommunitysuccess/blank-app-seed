@@ -19,5 +19,6 @@ then
   echo 'all services started correctly'
 else
   echo 'not all services started correctly'
+  curl $url
   exit 1
 fi
