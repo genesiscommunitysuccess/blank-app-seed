@@ -52,9 +52,6 @@ jobs:
         working-directory: /tmp/testapp
         run: docker-compose build
 
-      - name: Start Postgres
-        run: docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=100'
-
       - name: Start Docker container
         working-directory: /tmp/testapp
         run: docker-compose up -d
