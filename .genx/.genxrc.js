@@ -1,11 +1,11 @@
 // GenX CLI Configuration
 module.exports = {
   // Script used to configure the seed
-  configure: load('configure'),
-  // Additional seed details beyond what was captured during seed registration.
-  details: load('details'),
-  // Prompts used to capture seed configuration values.
-  prompts: load('prompts'),
+  configure: () => require('./configure'),
+  // Additional seed details beyond what was captured during seed registration
+  details: () => require('./package.json'),
+  // Prompts used to capture seed configuration values
+  prompts: () => require('./prompts'),
   options: {
     persistAnswers: true,
     processFiles: {
