@@ -1,5 +1,14 @@
 rootProject.name = "genesisproduct-{{appName}}"
 
+val isCiServer = System.getenv().containsKey("CI")
+buildCache {
+    local {
+        directory = if (!isCiServer) File(rootDir.parentFile.parent, "build-cache") else null
+        removeUnusedEntriesAfterDays = 30
+        isEnabled = true
+    }
+}
+
 pluginManagement {
     pluginManagement {
         val genesisVersion: String by settings

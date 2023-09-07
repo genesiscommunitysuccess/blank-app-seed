@@ -8,6 +8,15 @@ includeBuild("server/jvm") {
 // clients
 includeBuild("client")
 
+val isCiServer = System.getenv().containsKey("CI")
+buildCache {
+    local {
+        directory = if (!isCiServer) File(rootDir, "build-cache") else null
+        removeUnusedEntriesAfterDays = 30
+        isEnabled = true
+    }
+}
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
