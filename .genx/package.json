@@ -25,7 +25,7 @@
       "rename": true,
       "interpolateVariables": {
         "enabled": true,
-        "include": ["Dockerfile", ".yml", ".sh", ".json", ".js", ".kts", ".ts", ".md", ".properties", ".html"]
+        "include": ["Dockerfile", "product-info", ".yml", ".sh", ".json", ".js", ".kts", ".ts", ".md", ".properties", ".html"]
       }
     }
   }
