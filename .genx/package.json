@@ -18,6 +18,15 @@
       ".genx/tests",
       ".genx/scripts",
       ".genx/.releaserc"
-    ]
+    ],
+    "persistAnswers": true,
+    "processFiles": {
+      "exclude": [".git", ".genx", "node_modules", ".gradle", "gradle"],
+      "rename": true,
+      "interpolateVariables": {
+        "enabled": true,
+        "include": ["Dockerfile", "product-info", ".yml", ".sh", ".json", ".js", ".kts", ".ts", ".md", ".properties", ".html"]
+      }
+    }
   }
 }
