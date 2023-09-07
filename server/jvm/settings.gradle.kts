@@ -1,9 +1,8 @@
 rootProject.name = "genesisproduct-{{appName}}"
 
-val isCiServer = System.getenv().containsKey("CI")
 buildCache {
     local {
-        directory = if (!isCiServer) File(rootDir.parentFile.parent, "build-cache") else null
+        directory = File(rootDir.parentFile.parent, "build-cache")
         removeUnusedEntriesAfterDays = 30
         isEnabled = true
     }

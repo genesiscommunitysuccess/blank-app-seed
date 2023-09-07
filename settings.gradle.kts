@@ -8,10 +8,9 @@ includeBuild("server/jvm") {
 // clients
 includeBuild("client")
 
-val isCiServer = System.getenv().containsKey("CI")
 buildCache {
     local {
-        directory = if (!isCiServer) File(rootDir, "build-cache") else null
+        directory = File(rootDir, "build-cache")
         removeUnusedEntriesAfterDays = 30
         isEnabled = true
     }
