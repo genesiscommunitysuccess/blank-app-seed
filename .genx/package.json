@@ -25,7 +25,7 @@
       "rename": true,
       "interpolateVariables": {
         "enabled": true,
-        "excludeExts": ["", ".ico", ".png", ".jpg", ".gif", ".lock", ".jar", ".crt", ".key"]
+        "include": ["Dockerfile", ".yml", ".sh", ".json", ".js", ".kts", ".ts", ".md", ".properties", ".html"]
       }
     }
   }
