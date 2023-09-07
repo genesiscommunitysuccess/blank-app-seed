@@ -1,7 +1,7 @@
 {
   "name": "@genesiscommunitysuccess/blank-app-seed",
   "description": "Genesis Blank App Seed",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "Apache-2.0",
   "scripts": {
     "release": "semantic-release"
@@ -21,11 +21,29 @@
     ],
     "persistAnswers": true,
     "processFiles": {
-      "exclude": [".git", ".genx", "node_modules", ".gradle", "gradle"],
+      "exclude": [
+        ".git",
+        ".genx",
+        "node_modules",
+        ".gradle",
+        "gradle"
+      ],
       "rename": true,
       "interpolateVariables": {
         "enabled": true,
-        "include": ["Dockerfile", "product-info", ".yml", ".sh", ".json", ".js", ".kts", ".ts", ".md", ".properties", ".html"]
+        "include": [
+          "Dockerfile",
+          "product-info",
+          ".yml",
+          ".sh",
+          ".json",
+          ".js",
+          ".kts",
+          ".ts",
+          ".md",
+          ".properties",
+          ".html"
+        ]
       }
     }
   }
