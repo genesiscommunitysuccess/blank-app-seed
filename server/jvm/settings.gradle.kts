@@ -1,5 +1,13 @@
 rootProject.name = "genesisproduct-{{appName}}"
 
+buildCache {
+    local {
+        directory = File(rootDir.parentFile.parent, "build-cache")
+        removeUnusedEntriesAfterDays = 30
+        isEnabled = true
+    }
+}
+
 pluginManagement {
     pluginManagement {
         val genesisVersion: String by settings

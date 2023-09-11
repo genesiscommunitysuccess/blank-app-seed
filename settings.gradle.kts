@@ -8,6 +8,14 @@ includeBuild("server/jvm") {
 // clients
 includeBuild("client")
 
+buildCache {
+    local {
+        directory = File(rootDir, "build-cache")
+        removeUnusedEntriesAfterDays = 30
+        isEnabled = true
+    }
+}
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
