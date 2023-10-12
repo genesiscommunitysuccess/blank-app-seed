@@ -1,0 +1,16 @@
+<!--
+!
+!   System              : Genesis Business Library
+!   Sub-System          : multi-pro-code-test Configuration
+!   Version             : 1.0
+!   Copyright           : (c) Genesis
+!   Date                : 2022-03-18
+!   Function : Provide Service Definitions Config for multi-pro-code-test.
+!
+!   Modification History
+!
+-->
+<configuration>
+    <service host="localhost" name="TESTAPP_DATASERVER" port="11000"/>
+    <service host="localhost" name="TESTAPP_EVENT_HANDLER" port="11001"/>
+</configuration>

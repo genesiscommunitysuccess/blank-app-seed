@@ -1,7 +1,7 @@
 const {websocketValidator} = require('./validators');
 
 const apiHostIntro = () => console.log(`
-  In order to connect to a Genesis server, you will need to provide an API_HOST for the WebSocket.
+  You can override the default Genesis server URL used during local developent.
 `);
 
 const ssoIntro = () => console.log(`
@@ -23,7 +23,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'apiHost',
       type: 'input',
-      message: 'API Host (with websocket prefix and suffix if any)',
+      message: 'API Host (with WebSocket prefix and suffix if any)',
       when: ({setApiHost}) => setApiHost,
       default: prevAns.apiHost || 'ws://localhost/gwf/',
       validate: websocketValidator,

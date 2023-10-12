@@ -1,15 +1,50 @@
 {
-  "name": "genx-config",
-  "description": "Used by @genesislcap/foundation-cli.",
-  "version": "0.0.1",
-  "private": true,
-  "license": "UNLICENSED",
-  "devDependencies": {
-    "@genesislcap/foundation-cli": "^13.2.0",
-    "yargs-parser": "^20.2.7",
-    "@types/fs-extra": "^11.0.0"
+  "name": "@genesiscommunitysuccess/blank-app-seed",
+  "description": "Genesis Blank App Seed",
+  "version": "1.3.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "release": "semantic-release"
   },
-  "dependencies": {
-    "fs-extra": "^11.0.0"
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "conventional-changelog-conventionalcommits": "^6.1.0",
+    "semantic-release": "^21.0.7"
+  },
+  "genxSeedConfig": {
+    "exclude": [
+      ".github",
+      ".genx/tests",
+      ".genx/scripts",
+      ".genx/.releaserc"
+    ],
+    "persistAnswers": true,
+    "processFiles": {
+      "exclude": [
+        ".git",
+        ".genx",
+        "node_modules",
+        ".gradle",
+        "gradle"
+      ],
+      "rename": true,
+      "interpolateVariables": {
+        "enabled": true,
+        "include": [
+          "Dockerfile",
+          "product-info",
+          ".yml",
+          ".sh",
+          ".json",
+          ".js",
+          ".kts",
+          ".ts",
+          ".md",
+          ".properties",
+          ".html"
+        ]
+      }
+    }
   }
 }

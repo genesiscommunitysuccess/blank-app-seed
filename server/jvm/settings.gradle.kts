@@ -1,5 +1,13 @@
 rootProject.name = "genesisproduct-{{appName}}"
 
+buildCache {
+    local {
+        directory = File(rootDir.parentFile.parent, "build-cache")
+        removeUnusedEntriesAfterDays = 30
+        isEnabled = true
+    }
+}
+
 pluginManagement {
     pluginManagement {
         val genesisVersion: String by settings
@@ -19,7 +27,12 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url = uri("https://genesisglobal.jfrog.io/genesisglobal/dev-repo")
+            val repoUrl = if(extra.properties["clientSpecific"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            }
+            url = uri(repoUrl)
             credentials {
                 username = extra.properties["genesisArtifactoryUser"].toString()
                 password = extra.properties["genesisArtifactoryPassword"].toString()
@@ -44,9 +57,4 @@ include("{{appName}}-dictionary-cache:{{appName}}-generated-view")
 include("{{appName}}-deploy")
 include("{{appName}}-site-specific")
 
-includeBuild("../../client") {
-    dependencySubstitution {
-        substitute(module("client:web"))
-            .using(project(":web"))
-    }
-}
+includeBuild("../../client")

@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  gsf:
+    tty: true
+    container_name: gsf
+    build:
+      context: server/jvm/
+      dockerfile: Dockerfile
+    networks:
+      qs_network:
+        aliases:
+          - localnode
+    volumes:
+      - ./server/jvm/testapp-site-specific/src/main/resources/cfg/:/home/testapp/run/site-specific/cfg
+      - ./server/jvm/testapp-script-config/src/main/resources/scripts:/home/testapp/run/testapp/scripts
+      - ./server/jvm/testapp-config/src/main/resources/cfg:/home/testapp/run/testapp/cfg
+    ports:
+      - '9064:9064'
+      - '1337:22'
+      - '5432:5432'
+      - '4569:4569'
+networks:
+  qs_network:
+    driver: bridge

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+{{!
+
+Standard Handlebars variables are evaluated once during app generation
+Escaped Handlebars variables (prefixed with \) are evaluated during each run of app build/dev cycle
+
+https://handlebarsjs.com/
+}}
+<head>
+    <meta charset="utf-8"/>
+    <title>\{{htmlWebpackPlugin.options.title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{#if enableSSO}}
+    <script src="/initSSO.js"></script>
+    {{/if}}
+</head>
+<body {{#if enableSSO}}onload="appendApp()"{{/if}}>
+{{#unless enableSSO}}<{{rootElement}}></{{rootElement}}>{{/unless}}
+\{{#if insertEntryPoint}}
+<script type="module" src="/src/index.ts"></script>
+\{{/if}}
+</body>
+</html>
