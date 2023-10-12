@@ -8,8 +8,9 @@ const summary = `
 `;
 
 const nextStepsMessage = `
+ > Go into the (web) client directory with \`cd client\`\n
  > Install dependencies with \`npm run bootstrap\`\n
- > Start development server with \`npm run dev\`
+ > Start the development server with \`npm run dev\`
 `;
 
 module.exports = {
