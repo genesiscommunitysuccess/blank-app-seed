@@ -3,6 +3,25 @@ import com.github.gradle.node.npm.task.NpmTask
 plugins {
     base
     id("com.github.node-gradle.node") version "3.1.1"
+    distribution
+}
+
+distributions {
+    main {
+        distributionBaseName.set("web-distribution")
+        contents {
+            into ("/") {
+                from("dist")
+            }
+        }
+    }
+}
+
+artifacts {
+    val distzip = tasks.distZip.get()
+    add("default", distzip.archiveFile) {
+        builtBy(distzip)
+    }
 }
 
 allprojects {
@@ -10,11 +29,11 @@ allprojects {
     apply(plugin = "base")
 
     node {
-        // Version of node to use.
-        version.set("16.13.0")
+        // Version of Node to use.
+        version.set("18.15.0")
 
-        // Version of npm to use.
-        npmVersion.set("8.1.0")
+        // Version of NPM to use.
+        npmVersion.set("9.5.0")
 
         // If true, it will download node using above parameters.
         // If false, it will try to use globally installed node.
@@ -25,55 +44,53 @@ allprojects {
         // Setup custom clean task to be run when "clean" task runs.
         val npmClean = register("npmClean", NpmTask::class) {
             args.set(listOf("run", "clean"))
-            delete("bootstrapDone")
-        }
-
-        // Setup custom clean task to be run when "clean" task runs.
-        val npmCleanDist = register("npmCleanDist", NpmTask::class) {
-            args.set(listOf("run", "clean:dist"))
+            delete(".bootstrapDone")
         }
 
         clean {
-            // Depend on the custom npmClean task, the default gradle one deletes the "build" folder by default...
+            // Depend on the custom npmClean task, the default gradle one deletes the "build" folder by default
             // and the project build won't work without it.
-            dependsOn(npmCleanDist)
             dependsOn(npmClean)
         }
     }
 }
 
 tasks {
-    val testsExecutedMarkerName: String = "${projectDir}/.tests.executed"
-
     val npmBootstrap = register("npmBootstrap", NpmTask::class) {
         val workingDir = layout.projectDirectory.asFile
         args.set(listOf("run", "bootstrap"))
-        outputs.upToDateWhen { File(workingDir, "bootstrapDone").exists() }
-        doLast { File(workingDir, "bootstrapDone").createNewFile() }
+        outputs.upToDateWhen { File(workingDir, ".bootstrapDone").exists() }
+        doLast { File(workingDir, ".bootstrapDone").createNewFile() }
     }
 
-    assemble {
+    val npmBuild = register("npmBuild", NpmTask::class) {
+        args.set(listOf("run", "build"))
+        inputs.dir("src")
+        outputs.dir("dist")
         dependsOn(npmBootstrap)
     }
 
     val test = register("test", NpmTask::class) {
-        // Disable tests for now, if there are no tests (like in this example) the build returns 1 and fails.
-        enabled = false
         dependsOn(build)
         args.set(listOf("run", "test"))
-        inputs.files(fileTree("packages"))
-        inputs.files(fileTree("www"))
+        inputs.files(fileTree("src"))
         inputs.file("package.json")
 
+        val testsExecutedMarkerName: String = "${projectDir}/.tests.executed"
         // Below some potentially useful config snippets if we want to be efficient with test executions.
-        //
-        // force Jest test runner to execute tests once and finish the process instead of starting watch mode
-        // setEnvironment(mapOf("CI" to "true"))
-
+        
         // allows easy triggering re-tests
-        // doLast {
-        //     File(testsExecutedMarkerName).appendText("delete this file to force re-execution JavaScript tests")
-        // }
-        // outputs.file(testsExecutedMarkerName)
+        doLast {
+            File(testsExecutedMarkerName).appendText("delete this file to force re-execution JavaScript tests")
+        }
+        outputs.file(testsExecutedMarkerName)
+    }
+
+    distZip {
+        dependsOn(npmBuild)
+    }
+
+    assemble {
+        dependsOn(npmBuild)
     }
 }
