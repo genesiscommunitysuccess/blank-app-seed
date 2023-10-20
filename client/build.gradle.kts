@@ -30,10 +30,10 @@ allprojects {
 
     node {
         // Version of Node to use.
-        version.set("18.15.0")
+        version.set("20.8.1")
 
         // Version of NPM to use.
-        npmVersion.set("9.5.0")
+        npmVersion.set("10.1.0")
 
         // If true, it will download node using above parameters.
         // If false, it will try to use globally installed node.
