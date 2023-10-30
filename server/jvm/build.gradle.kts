@@ -1,7 +1,7 @@
 ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.10"
     `maven-publish`
     id("global.genesis.build")
 }
@@ -14,10 +14,10 @@ subprojects  {
     dependencies {
         implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
         implementation("org.agrona:agrona:1.10.0!!")
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.10")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
-            testImplementation("junit:junit:4.13.2")
+            testImplementation("junit:junit:5.10.0")
         }
     }
     tasks {
@@ -26,7 +26,7 @@ subprojects  {
                 freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
             }
         }
-        val java = "11"
+        val java = "17"
 
         compileKotlin {
             kotlinOptions { jvmTarget = java }
