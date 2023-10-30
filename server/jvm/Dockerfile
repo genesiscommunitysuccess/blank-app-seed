@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY* &&\
     yum -y install unzip \
-    java-11-openjdk-devel \
+    java-17-openjdk-devel \
     openssh-server
 RUN if [ $(uname -m) = "x86_64" ] ; then (echo 'y' | yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm) \
     ; else echo 'y' | yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-aarch64/pgdg-redhat-repo-latest.noarch.rpm ;  \
