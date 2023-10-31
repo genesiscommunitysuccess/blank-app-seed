@@ -30,6 +30,6 @@ dependencies {
 }
 tasks {
     copyDependencies {
-        from(configurations.getByName("genesisServer"))
+        enabled = false
     }
 }
