@@ -54,7 +54,7 @@ jobs:
 
       - name: Build Docker images
         working-directory: /tmp/testapp
-        run: ./gradlew :testapp-deploy:buildImage
+        run: ./gradlew :genesisproduct-testapp:testapp-deploy:buildImage
 
       # - name: Run healthcheck
       #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
