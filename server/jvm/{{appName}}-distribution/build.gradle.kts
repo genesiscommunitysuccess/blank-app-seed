@@ -69,6 +69,10 @@ tasks {
         archiveBaseName.set("genesisproduct-{{appName}}")
         archiveClassifier.set("bin")
         archiveExtension.set("zip")
+        inputs.files(rootProject.getTasksByName("copyDependencies", true))
+    }
+    distTar {
+        inputs.files(rootProject.getTasksByName("copyDependencies", true))
     }
     copyDependencies {
         enabled = false

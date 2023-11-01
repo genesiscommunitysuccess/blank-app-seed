@@ -55,9 +55,6 @@ tasks {
         archiveClassifier.set("bin")
         archiveExtension.set("zip")
     }
-    copyDependencies {
-        enabled = false
-    }
 }
 artifacts {
     val distzip = tasks.distZip.get()
