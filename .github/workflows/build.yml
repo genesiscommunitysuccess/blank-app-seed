@@ -52,9 +52,13 @@ jobs:
         working-directory: /tmp/testapp
         run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
 
-      - name: Build Docker images
+      - name: Build Server Docker image
         working-directory: /tmp/testapp
         run: ./gradlew :genesisproduct-testapp:testapp-deploy:buildImage
+
+      - name: Build Docker images
+        working-directory: /tmp/testapp
+        run: docker-compose build
 
       # - name: Run healthcheck
       #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
