@@ -60,6 +60,14 @@ jobs:
         working-directory: /tmp/testapp
         run: ls server/jvm/testapp-deploy/build/docker/
 
+      - name: ls root
+        working-directory: /tmp/testapp
+        run: ls
+
+      - name: cat docker compose
+        working-directory: /tmp/testapp
+        run: cat docker-compose.yml
+
 #      - name: Build Docker images
 #        working-directory: /tmp/testapp
 #        run: docker-compose build
