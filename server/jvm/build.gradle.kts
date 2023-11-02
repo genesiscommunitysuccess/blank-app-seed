@@ -13,7 +13,6 @@ subprojects  {
 
     dependencies {
         implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
-        implementation("org.agrona:agrona:1.10.0!!")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
