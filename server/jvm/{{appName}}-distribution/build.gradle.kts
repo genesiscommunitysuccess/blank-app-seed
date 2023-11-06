@@ -71,9 +71,6 @@ tasks {
         archiveExtension.set("zip")
         inputs.files(rootProject.getTasksByName("copyDependencies", true))
     }
-    distTar {
-        inputs.files(rootProject.getTasksByName("copyDependencies", true))
-    }
     copyDependencies {
         enabled = false
     }

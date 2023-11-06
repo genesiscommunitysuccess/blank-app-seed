@@ -10,13 +10,14 @@ subprojects  {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.gradle.maven-publish")
 
-
+    val junitVersion = "5.10.0"
     dependencies {
         implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
+        testImplementation(kotlin("test"))
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
-            testImplementation("junit:junit:5.10.0")
+            testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+            testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
         }
     }
     tasks {

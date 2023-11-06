@@ -46,7 +46,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew assemble -PclientSpecific=true
+        run: ./gradlew build -PclientSpecific=true
 
       - name: Skip binding to privileged port on CI
         working-directory: /tmp/testapp
