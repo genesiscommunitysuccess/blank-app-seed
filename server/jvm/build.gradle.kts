@@ -1,7 +1,7 @@
 ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.10"
     `maven-publish`
     id("global.genesis.build")
 }
@@ -10,26 +10,22 @@ subprojects  {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.gradle.maven-publish")
 
-
+    val junitVersion = "5.10.0"
     dependencies {
         implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
-        implementation("org.agrona:agrona:1.10.0!!")
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.10")
+        testImplementation(kotlin("test"))
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
-            testImplementation("junit:junit:4.13.2")
+            testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+            testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
         }
     }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
-                freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=enable")
+                freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
+                jvmTarget = "17"
             }
-        }
-        val java = "11"
-
-        compileKotlin {
-            kotlinOptions { jvmTarget = java }
         }
     }
 }
@@ -60,7 +56,7 @@ allprojects {
 
     kotlin {
         jvmToolchain {
-            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
     tasks.withType<Jar> {
@@ -69,7 +65,7 @@ allprojects {
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(11))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 

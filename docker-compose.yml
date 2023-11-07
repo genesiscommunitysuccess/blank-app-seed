@@ -4,16 +4,12 @@ services:
     tty: true
     container_name: gsf
     build:
-      context: server/jvm/
+      context: server/jvm/{{appName}}-deploy/build/docker/
       dockerfile: Dockerfile
     networks:
       qs_network:
         aliases:
           - localnode
-    volumes:
-      - ./server/jvm/{{appName}}-site-specific/src/main/resources/cfg/:/home/{{appName}}/run/site-specific/cfg
-      - ./server/jvm/{{appName}}-script-config/src/main/resources/scripts:/home/{{appName}}/run/{{appName}}/scripts
-      - ./server/jvm/{{appName}}-config/src/main/resources/cfg:/home/{{appName}}/run/{{appName}}/cfg
     ports:
       - '9064:9064'
       - '1337:22'

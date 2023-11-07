@@ -46,11 +46,15 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew assemble -PclientSpecific=true
+        run: ./gradlew build -PclientSpecific=true
 
       - name: Skip binding to privileged port on CI
         working-directory: /tmp/testapp
         run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
+
+      - name: Create Server Dockerfile
+        working-directory: /tmp/testapp
+        run: ./gradlew :genesisproduct-testapp:testapp-deploy:createDockerfile
 
       - name: Build Docker images
         working-directory: /tmp/testapp

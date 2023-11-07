@@ -4,7 +4,7 @@ import global.genesis.commons.model.GenesisSet
 import global.genesis.dictionary.GenesisDictionary
 import global.genesis.testsupport.AbstractGenesisTestSupport
 import global.genesis.testsupport.GenesisTestConfig
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class GenesisTestSupportTest : AbstractGenesisTestSupport<GenesisSet>(
     GenesisTestConfig {
