@@ -78,7 +78,7 @@ tasks {
 
         val testsExecutedMarkerName: String = "${projectDir}/.tests.executed"
         // Below some potentially useful config snippets if we want to be efficient with test executions.
-
+        
         // allows easy triggering re-tests
         doLast {
             File(testsExecutedMarkerName).appendText("delete this file to force re-execution JavaScript tests")
@@ -87,10 +87,6 @@ tasks {
     }
 
     distZip {
-        dependsOn(npmBuild)
-    }
-
-    distTar {
         dependsOn(npmBuild)
     }
 

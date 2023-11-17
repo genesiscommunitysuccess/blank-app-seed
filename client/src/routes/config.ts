@@ -45,7 +45,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   public allRoutes = [{ index: 1, path: 'home', title: 'Home', icon: 'home', variant: 'solid' }];
 
   public configure() {
-    this.title = 'Blank App Demo';
+    this.title = 'Simple App Demo';
     this.defaultLayout = defaultLayout;
 
     const authPath = 'login';

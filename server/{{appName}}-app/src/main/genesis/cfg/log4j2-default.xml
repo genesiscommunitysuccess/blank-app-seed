@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+!
+!   System              : DTA Core Library
+!   Sub-System          : DTA Configuration
+!   Version             : 1.0
+!   Copyright           : (c) DTA
+!   Date                : 8th January 2015
+!
+!   Function : Provide Logging log4j2 Config details for DTA.
+!
+!   Modification History
+!
+-->
+<Configuration>
+
+</Configuration>

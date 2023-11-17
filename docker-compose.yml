@@ -4,7 +4,7 @@ services:
     tty: true
     container_name: gsf
     build:
-      context: server/jvm/{{appName}}-deploy/build/docker/
+      context: server/{{appName}}-app/build/docker/
       dockerfile: Dockerfile
     networks:
       qs_network:
@@ -15,16 +15,6 @@ services:
       - '1337:22'
       - '5432:5432'
       - '4569:4569'
-  nginx-proxy:
-    ports:
-      - '80:80'
-      - '443:443'
-    container_name: nginx
-    build:
-      context: server/nginx/
-      dockerfile: Dockerfile
-    networks:
-      - qs_network
   frontend:
     container_name: frontend
     build:

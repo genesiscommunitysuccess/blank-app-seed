@@ -37,6 +37,8 @@ target/
 .gradle
 **/build/
 !src/**/build/
+client/bootstrapDone
+.husky/.gitignore
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -46,12 +48,9 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
-server/jvm/server/position-deploy/gradle.properties
 
 # Dependency directories
 node_modules
 
 # Intellij plugin folder
 .genesis-home
-
-build-cache
