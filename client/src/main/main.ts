@@ -36,12 +36,11 @@ export class MainApplication extends FASTElement {
   async connectedCallback() {
     super.connectedCallback();
     logger.debug(`${name} is now connected to the DOM`);
+    this.registerDIDependencies();
+    await this.loadRemotes();
     DOM.queueUpdate(() => {
       configureDesignSystem(this.provider, designTokens);
     });
-
-    this.registerDIDependencies();
-    await this.loadRemotes();
   }
 
   disconnectedCallback() {
