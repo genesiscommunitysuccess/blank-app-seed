@@ -64,6 +64,8 @@
   },
   "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
+    "@genesiscommunitysuccess/cep-fast-plugin": "4.1.1",
+    "@genesiscommunitysuccess/custom-elements-lsp": "4.1.1",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
@@ -72,8 +74,6 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
-    "@genesiscommunitysuccess/cep-fast-plugin": "4.1.1",
-    "@genesiscommunitysuccess/custom-elements-lsp": "4.1.1",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-forms": "{{versions.UI}}",
