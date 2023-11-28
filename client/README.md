@@ -63,6 +63,7 @@ VSCode has full support for the plugin, and is the recommended IDE to use if you
 3. Ensuring you have a typescript file open, open the command palette (Ctrl/Cmd + Shift + P) and search for `TypeScript: Select Typescript Version...`
 ![](docs/images/lsp_vscode_one.png)
 > If you don't see this option then ensure you have a `.ts` file open.
+> If you don't see this option, it may be because you need to set VSCode to trust the workspace (so it picks up the config from step 1) when asked.
 
 4. Select the workspace version, which should have the path matching the path set in the value of step 1.
 ![](docs/images/lsp_vscode_two.png)
