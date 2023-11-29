@@ -1,0 +1,17 @@
+name: Slack PR notification
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification
+        uses: bryannice/gitactions-slack-notification@2.0.0
+        env:
+          SLACK_CHANNEL: 'platform-seeds'
+          SLACK_INCOMING_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
+          SLACK_TITLE: 'New blank-app-seed PR'
+          SLACK_MESSAGE: 'https://github.com/genesiscommunitysuccess/blank-app-seed/pull/${{github.event.number}}'
