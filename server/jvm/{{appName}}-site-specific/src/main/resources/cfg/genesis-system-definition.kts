@@ -13,6 +13,7 @@ systemDefinition {
         {{/if}}
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
+        item(name = "HookStateStore", value = "DB")
         item(name = "MetricsEnabled", value = "false")
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
