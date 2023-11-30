@@ -64,6 +64,8 @@
   },
   "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
+    "@genesiscommunitysuccess/cep-fast-plugin": "4.1.1",
+    "@genesiscommunitysuccess/custom-elements-lsp": "4.1.1",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",

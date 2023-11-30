@@ -3,10 +3,8 @@ import { NotFoundTemplate as template } from './not-found.template';
 import { NotFoundStyles as styles } from './not-found.styles';
 import { logger } from '../../utils';
 
-const name = 'not-found-route';
-
 @customElement({
-  name,
+  name: 'not-found-route',
   template,
   styles,
 })

@@ -11,7 +11,6 @@ import * as Components from '../components';
 import { logger } from '../utils';
 import designTokens from '../styles/design-tokens.json';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-const name = '{{rootElement}}';
 
 // eslint-disable-next-line
 declare var API_HOST: string;
@@ -20,7 +19,7 @@ const hostEnv = location.host;
 const hostUrl = API_HOST || `wss://${hostEnv}/gwf/`;
 
 @customElement({
-  name,
+  name: '{{rootElement}}',
   template,
   styles,
 })
@@ -35,7 +34,7 @@ export class MainApplication extends FASTElement {
 
   async connectedCallback() {
     super.connectedCallback();
-    logger.debug(`${name} is now connected to the DOM`);
+    logger.debug("{{rootElement}} is now connected to the DOM");
     this.registerDIDependencies();
     await this.loadRemotes();
     DOM.queueUpdate(() => {
