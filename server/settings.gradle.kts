@@ -52,7 +52,12 @@ plugins {
 }
 
 genesis {
+    projectType = ProjectType.APPLICATION
+    artifactoryEnabled = true
 
+    dependencies {
+
+    }
 }
 
 
