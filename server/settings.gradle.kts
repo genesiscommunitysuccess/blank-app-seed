@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import global.genesis.gradle.plugin.simple.ProjectType
 
 rootProject.name = "genesisproduct-{{appName}}"
 
