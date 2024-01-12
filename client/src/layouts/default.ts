@@ -26,16 +26,17 @@ export const loginLayout = new FASTElementLayout(
       </div>
     </div>
   `,
-  baseLayoutCss
+  baseLayoutCss,
 );
 
 export const defaultLayout = new FASTElementLayout(
   html`
     <div class="container">
-      <foundation-header 
+      <foundation-header
         show-luminance-toggle-button
         show-misc-toggle-button
-        show-notification-button>
+        show-notification-button
+      >
         ${repeat(
           (x) => x.config.allRoutes,
           html`
@@ -48,7 +49,7 @@ export const defaultLayout = new FASTElementLayout(
               <zero-icon variant="${(x) => x.variant}" name="${(x) => x.icon}"></zero-icon>
               ${(x) => x.title}
             </zero-button>
-          `
+          `,
         )}
         <span slot="group-title-1">GROUP SLOT</span>
         <zero-tree-view slot="nav-items-1">
@@ -130,5 +131,5 @@ export const defaultLayout = new FASTElementLayout(
       color: #879ba6;
       padding-right: 10px;
     }
-  `
+  `,
 );

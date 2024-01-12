@@ -1,10 +1,10 @@
 import { EntityManagement } from '@genesislcap/foundation-entity-management';
-import { FASTRouter } from '@microsoft/fast-router';
-import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
-import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
-import { logger } from '../utils';
 import { Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
+import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
+import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
+import { FASTRouter } from '@microsoft/fast-router';
+import { logger } from '../utils';
 
 EntityManagement;
 Form;
@@ -49,7 +49,7 @@ export async function loadRemotes() {
       baseComponents,
       zeroGridComponents,
       g2plotChartsComponents,
-      foundationLayoutComponents
+      foundationLayoutComponents,
     ),
   };
 }

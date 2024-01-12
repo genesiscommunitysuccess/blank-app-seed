@@ -1,16 +1,16 @@
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { Navigation } from '@genesislcap/foundation-header';
+import { configureDesignSystem } from '@genesislcap/foundation-ui';
 import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
 import { FASTElement, customElement, observable, DOM } from '@microsoft/fast-element';
 import { Container, inject, Registration } from '@microsoft/fast-foundation';
 import { DefaultRouteRecognizer } from '@microsoft/fast-router';
-import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
-import { MainStyles as styles } from './main.styles';
-import { MainRouterConfig } from '../routes';
 import * as Components from '../components';
-import { logger } from '../utils';
+import { MainRouterConfig } from '../routes';
 import designTokens from '../styles/design-tokens.json';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import { logger } from '../utils';
+import { MainStyles as styles } from './main.styles';
+import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 
 // eslint-disable-next-line
 declare var API_HOST: string;
@@ -34,7 +34,7 @@ export class MainApplication extends FASTElement {
 
   async connectedCallback() {
     super.connectedCallback();
-    logger.debug("{{rootElement}} is now connected to the DOM");
+    logger.debug('{{rootElement}} is now connected to the DOM');
     this.registerDIDependencies();
     await this.loadRemotes();
     DOM.queueUpdate(() => {
@@ -51,7 +51,7 @@ export class MainApplication extends FASTElement {
       this.provider,
       baseLayerLuminance.getValueFor(this.provider) === StandardLuminance.DarkMode
         ? StandardLuminance.LightMode
-        : StandardLuminance.DarkMode
+        : StandardLuminance.DarkMode,
     );
   }
 
@@ -89,7 +89,7 @@ export class MainApplication extends FASTElement {
           ...defaultConnectConfig.connect,
           heartbeatInterval: 15_000,
         },
-      })
+      }),
     );
   }
 }
