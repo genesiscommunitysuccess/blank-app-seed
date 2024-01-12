@@ -57,7 +57,8 @@
     ]
   },
   "eslintConfig": {
-    "extends": "@genesislcap/eslint-config"
+    "extends": "@genesislcap/eslint-config",
+    "ignorePatterns": ["**/dist/**", "**/public/**"]
   },
   "stylelint": {
     "extends": "@genesislcap/stylelint-config"
