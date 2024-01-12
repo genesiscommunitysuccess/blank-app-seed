@@ -67,8 +67,11 @@
     "@genesiscommunitysuccess/cep-fast-plugin": "4.1.1",
     "@genesiscommunitysuccess/custom-elements-lsp": "4.1.1",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
+    "@genesislcap/eslint-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/prettier-config": "{{versions.UI}}",
+    "@genesislcap/stylelint-config": "{{versions.UI}}",
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
     "lint-staged": "^12.4.1"
