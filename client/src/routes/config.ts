@@ -20,15 +20,16 @@ import { NotFound } from './not-found/not-found';
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
 
-const ssoSettings = typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === 'true'
-  ? {
-      autoAuth: true,
-      sso: {
-        toggled: true,
-        identityProvidersPath: 'sso/list',
-      },
-    }
-  : {};
+const ssoSettings =
+  typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === 'true'
+    ? {
+        autoAuth: true,
+        sso: {
+          toggled: true,
+          identityProvidersPath: 'sso/list',
+        },
+      }
+    : {};
 
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   constructor(
@@ -37,7 +38,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
     @FoundationAnalytics private analytics: FoundationAnalytics,
     @Session private session: Session,
     @optional(LoginConfig)
-    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true }
+    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true },
   ) {
     super();
   }
@@ -78,7 +79,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
         childRouters: true,
       },
       { path: 'home', element: Home, title: 'Home', name: 'home' },
-      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' }
+      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
     );
 
     const auth = this.auth;
@@ -87,7 +88,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
      * Example of a FallbackRouteDefinition
      */
     this.routes.fallback(() =>
-      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath }
+      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath },
     );
 
     /**
