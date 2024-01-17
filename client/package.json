@@ -40,6 +40,9 @@
     "lint:stylelint": "genx lint -l stylelint",
     "serve": "genx serve",
     "test": "genx test",
+    "test:e2e": "genx test --e2e",
+    "test:e2e:debug": "genx test --e2e --debug",
+    "test:e2e:ui": "genx test --e2e --interactive",
     "test:coverage": "genx test --coverage",
     "test:unit:watch": "genx test --watch"
   },
