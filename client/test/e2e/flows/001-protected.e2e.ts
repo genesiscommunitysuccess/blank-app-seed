@@ -8,5 +8,5 @@ import { test } from '../fixture';
  * TODO: This would need to follow the login e2e tests, ie. be logged in to get to protected
  */
 test('expected page title', async ({ protectedPage, page }) => {
-  await expect(page).toHaveTitle(/Client App - Auth - Login/);
+  await expect(page).toHaveTitle(/Blank App Demo - Login - Login/);
 });
