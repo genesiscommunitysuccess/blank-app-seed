@@ -1,13 +1,12 @@
 dependencies {
-    implementation("global.genesis:genesis-pal-execution")
-    implementation("global.genesis:genesis-eventhandler")
-    implementation(project(":{{appName}}-messages"))
+    implementation(genesis("genesis-pal-execution"))
+    implementation(genesis("genesis-eventhandler"))
+    implementation(project(":position-app-legacy-messages"))
     api("global.genesis:genesis-db")
-    compileOnly(project(":{{appName}}-config"))
-    compileOnly(project(path = ":{{appName}}-dictionary-cache", configuration = "codeGen"))
+    compileOnly(project(":position-app-legacy-config"))
     testImplementation("global.genesis:genesis-dbtest")
     testImplementation("global.genesis:genesis-testsupport")
-    testImplementation(project(path = ":{{appName}}-dictionary-cache", configuration = "codeGen"))
+    genesisGeneratedCode()
 }
 
 description = "{{appName}}-eventhandler"

@@ -1,8 +1,8 @@
 dependencies {
-    compileOnly("global.genesis:genesis-dictionary")
-    compileOnly("global.genesis:genesis-process")
-    compileOnly("global.genesis:genesis-pal-execution")
-    compileOnly(project(path = ":{{appName}}-dictionary-cache", configuration = "codeGen"))
+    compileOnly(genesis("genesis-dictionary"))
+    compileOnly(genesis("genesis-process"))
+    compileOnly(genesis("genesis-pal-execution"))
+    genesisGeneratedCode()
 }
 
 description = "{{appName}}-config"

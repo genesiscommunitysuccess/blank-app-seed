@@ -11,10 +11,8 @@ buildCache {
 pluginManagement {
     pluginManagement {
         val genesisVersion: String by settings
-        val deployPluginVersion: String by settings
         plugins {
-            id("global.genesis.build") version genesisVersion
-            id("global.genesis.deploy") version deployPluginVersion
+            id("global.genesis.settings.legacy") version genesisVersion
         }
     }
     repositories {
@@ -40,6 +38,24 @@ pluginManagement {
         }
     }
 }
+
+plugins {
+    id("global.genesis.settings.legacy")
+}
+
+
+// Add genesis settings here
+genesis {
+
+
+    dependencies {
+        // Add genesis dependencies here
+    }
+}
+
+
+
+
 
 
 

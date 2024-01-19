@@ -1,25 +1,12 @@
 ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
-    kotlin("jvm") version "1.9.10"
     `maven-publish`
-    id("global.genesis.build")
 }
 
 subprojects  {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.gradle.maven-publish")
 
-    val junitVersion = "5.10.0"
-    dependencies {
-        implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
-        testImplementation(kotlin("test"))
-        constraints {
-            // define versions of your dependencies here so that submodules do not have to define versions
-            testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-            testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-        }
-    }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
