@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Page } from '@genesislcap/foundation-testing/e2e';
 import type { FixtureConfig } from '../fixture';
 
 export class ProtectedPage {

@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { base } from '@genesislcap/foundation-testing/e2e';
 import { ProtectedPage } from './pages';
 
 const { config: pkgConfig } = require('../../package.json');

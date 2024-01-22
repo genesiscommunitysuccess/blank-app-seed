@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect } from '@genesislcap/foundation-testing/e2e';
 import { test } from '../fixture';
 
 
