@@ -61,7 +61,7 @@
   },
   "eslintConfig": {
     "extends": "@genesislcap/eslint-config",
-    "ignorePatterns": ["**/dist/**", "**/public/**", "**/coverage/**", "**/test/**"]
+    "ignorePatterns": ["**/dist/**", "**/public/**", "**/coverage/**", "**/test/**", "playwright.config.ts"]
   },
   "stylelint": {
     "extends": "@genesislcap/stylelint-config"
