@@ -6,7 +6,7 @@ dependencies {
     compileOnly(project(":{{appName}}-config"))
     testImplementation(genesis("genesis-dbtest"))
     testImplementation(genesis("genesis-testsupport"))
-    genesisGeneratedCode()
+    genesisGeneratedCode(true)
 }
 
 description = "{{appName}}-eventhandler"

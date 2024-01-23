@@ -3,6 +3,7 @@ description = "{{appName}}-script-config"
 plugins {
     distribution
     `maven-publish`
+    id("com.jfrog.artifactory") version "5.1.14"
 }
 
 group = "global.genesis"
@@ -67,6 +68,43 @@ publishing {
             artifact(tasks.distZip.get())
         }
     }
+}
+reposi
+artifactory {
+    setContextUrl("https://genesisglobal.jfrog.io/genesisglobal")
+    val targetRepoKey = "libs-${buildTagFor(project.version.toString())}-local"
+    // Add all publication list to publicationNames
+    // These are the necessary publications for everything genesis related.
+    val publicationNames = arrayOf("{{appName}}SiteSpecificDistribution")
+    publish(
+        delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig> {
+            repository(
+                delegateClosureOf<groovy.lang.GroovyObject> {
+                    setProperty("repoKey", targetRepoKey)
+                    setProperty("username", property("genesisArtifactoryUser").toString())
+                    setProperty("password", property("genesisArtifactoryPassword").toString())
+                    setProperty("maven", true)
+                }
+            )
+            defaults(
+                delegateClosureOf<groovy.lang.GroovyObject> {
+                    invokeMethod("publications", publicationNames)
+                }
+            )
+        }
+    )
+    resolve(
+        delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.ResolverConfig> {
+            repository(
+                delegateClosureOf<groovy.lang.GroovyObject> {
+                    setProperty("repoKey", targetRepoKey)
+                    setProperty("username", property("genesisArtifactoryUser").toString())
+                    setProperty("password", property("genesisArtifactoryPassword").toString())
+                    setProperty("maven", true)
+                }
+            )
+        }
+    )
 }
 fun buildTagFor(version: String): String =
     when (version.substringAfterLast('-')) {

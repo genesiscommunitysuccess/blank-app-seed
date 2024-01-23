@@ -50,6 +50,7 @@ genesis {
 
     dependencies {
         // Add genesis dependencies here
+        dependencies("global.genesis:auth:")
     }
 }
 

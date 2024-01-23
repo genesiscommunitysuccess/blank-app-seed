@@ -7,6 +7,14 @@ plugins {
 subprojects  {
     apply(plugin = "org.gradle.maven-publish")
 
+    val junitVersion = "5.10.0"
+    dependencies {
+        constraints {
+            // define versions of your dependencies here so that submodules do not have to define versions
+            testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+            testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+        }
+    }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
