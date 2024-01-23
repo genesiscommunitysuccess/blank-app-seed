@@ -39,6 +39,7 @@ target/
 !src/**/build/
 client/bootstrapDone
 .husky/.gitignore
+build-cache/
 
 # Ignore Gradle GUI config
 gradle-app.setting
