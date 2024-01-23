@@ -1,7 +1,7 @@
 dependencies {
-    compileOnly(genesis("genesis-dictionary"))
-    compileOnly(genesis("genesis-process"))
-    compileOnly(genesis("genesis-pal-execution"))
+    compileOnly(genesis("dictionary"))
+    compileOnly(genesis("process"))
+    compileOnly(genesis("pal-execution"))
     genesisGeneratedCode()
 }
 

@@ -2,11 +2,12 @@ ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
     `maven-publish`
+    id("com.jfrog.artifactory")
 }
 
 subprojects  {
     apply(plugin = "org.gradle.maven-publish")
-
+    apply(plugin = "com.jfrog.artifactory")
     val junitVersion = "5.10.0"
     dependencies {
         constraints {

@@ -13,6 +13,7 @@ pluginManagement {
         val genesisVersion: String by settings
         plugins {
             id("global.genesis.settings.legacy") version genesisVersion
+            id("com.jfrog.artifactory") version "5.1.14"
         }
     }
     repositories {
@@ -46,19 +47,11 @@ plugins {
 
 // Add genesis settings here
 genesis {
-
-
     dependencies {
         // Add genesis dependencies here
-        dependencies("global.genesis:auth:")
+        dependency("global.genesis:auth:${extra.properties["authVersion"]}")
     }
 }
-
-
-
-
-
-
 
 include("{{appName}}-config")
 include("{{appName}}-messages")
