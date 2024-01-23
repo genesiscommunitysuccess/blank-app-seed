@@ -8,9 +8,6 @@ export class ProtectedPage {
   constructor(config: FixtureConfig, page: Page) {
     this.config = config;
     this.page = page;
-    /**
-     * Locate fields not guarded by conditionals upfront, and the remaining on-demand
-     */
   }
 
   async goto() {
