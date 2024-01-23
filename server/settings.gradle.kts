@@ -53,7 +53,6 @@ plugins {
 
 genesis {
     projectType = ProjectType.APPLICATION
-    artifactoryEnabled = true
 
     dependencies {
 
@@ -62,4 +61,3 @@ genesis {
 
 
 include("{{appName}}-app")
-includeBuild("../client")

@@ -1,6 +1,6 @@
 dependencies {
-    implementation(genesis("genesis-script-dependencies"))
-    genesisGeneratedCode()
+    compileOnly(genesis("genesis-script-dependencies"))
+    genesisGeneratedCode(withTestDependency = true)
 }
 
 description = "{{appName}}-app"
