@@ -1,5 +1,5 @@
 dependencies {
-    compileOnly(genesis("genesis-script-dependencies"))
+    compileOnly(genesis("script-dependencies"))
     genesisGeneratedCode(withTestDependency = true)
 }
 
