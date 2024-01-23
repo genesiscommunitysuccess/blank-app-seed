@@ -3,7 +3,6 @@ import { ProtectedPage } from './pages';
 
 const { config: pkgConfig } = require('../../package.json');
 
-// move to testing...
 export type FixtureConfig = {
   API_HOST: string;
   DEFAULT_USER: string;
@@ -12,7 +11,7 @@ export type FixtureConfig = {
 };
 
 export type Fixture = {
-  config: FixtureConfig; // < worker level?
+  config: FixtureConfig;
   protectedPage: ProtectedPage;
 };
 
@@ -22,9 +21,5 @@ export const test = base.extend<Fixture>({
     const protectedPage = new ProtectedPage(config, page);
     await protectedPage.goto();
     await use(protectedPage);
-    // we can clean up fixtures after use when needed
   },
-  /**
-   * TODO Add remaining pages
-   */
 });
