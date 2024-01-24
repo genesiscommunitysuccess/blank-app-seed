@@ -56,3 +56,6 @@ lerna.json
 
 tsconfig.json
 webpack.config.js
+
+.releaserc
+.github

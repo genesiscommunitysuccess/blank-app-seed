@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, ac/PSD-45]
 
 jobs:
   release:
@@ -26,6 +26,7 @@ jobs:
           npm run release
 
       - name: Publish
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{secrets.NPM_TOKEN}}
+          tag: test

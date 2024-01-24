@@ -12,5 +12,12 @@
     "conventional-changelog-conventionalcommits": "^6.1.0",
     "semantic-release": "^21.0.7",
     "semantic-release-replace-plugin": "^1.2.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genesiscommunitysuccess/blank-app-seed"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
