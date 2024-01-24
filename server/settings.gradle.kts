@@ -55,6 +55,7 @@ genesis {
     projectType = ProjectType.APPLICATION
 
     dependencies {
+        dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
     }
 }
