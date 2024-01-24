@@ -45,3 +45,24 @@ Baseline task combines `clean` and `bootstrap` tasks into a single command:
 ```shell
 npm run baseline
 ```
+
+## Review Notes
+
+An `overrides` object has been added to package.json to support pre-releases of foundation and PBC packages. 
+
+For example if the PBC source repos have peerDependencies defined like these:
+
+```json
+"peerDependencies": {
+  "@genesislcap/foundation-entity-management": "~14",
+  "@genesislcap/foundation-layout": "~14",
+  "@genesislcap/foundation-logger": "~14",
+  "@genesislcap/foundation-ui": "~14",
+  "@genesislcap/foundation-zero": "~14"
+}
+```
+
+Yet the PBC metadata repo and `blank-app-seed` are being run against a pre-release version of foundation,
+like `14.127.6-pbc-demo.4`, then the npm install will fail with an `unable to resolve dependency tree` error.
+
+Defining `overrides` here in the `blank-app-seed` addresses the problem for now, but in principle it should work without.
