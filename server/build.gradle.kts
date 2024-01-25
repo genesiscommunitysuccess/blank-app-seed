@@ -72,6 +72,12 @@ allprojects {
     }
 
     repositories {
+        mavenLocal {
+            // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
+            content {
+                excludeGroup("org.agrona")
+            }
+        }
         mavenCentral()
         maven {
             val repoUrl = if(properties["clientSpecific"] == "true") {
@@ -83,12 +89,6 @@ allprojects {
             credentials {
                 username = properties["genesisArtifactoryUser"].toString()
                 password = properties["genesisArtifactoryPassword"].toString()
-            }
-        }
-        mavenLocal {
-            // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
-            content {
-                excludeGroup("org.agrona")
             }
         }
     }
