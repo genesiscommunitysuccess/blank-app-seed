@@ -10,6 +10,7 @@ subprojects  {
     apply(plugin = "com.jfrog.artifactory")
     val junitVersion = "5.10.0"
     dependencies {
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.0")
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
             testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
