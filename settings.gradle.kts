@@ -1,3 +1,4 @@
+rootProject.name = "{{appName}}"
 // servers
 includeBuild("server")
 
