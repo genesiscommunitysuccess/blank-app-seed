@@ -42,7 +42,8 @@
           ".ts",
           ".md",
           ".properties",
-          ".html"
+          ".html",
+          ".xml"
         ]
       }
     }
