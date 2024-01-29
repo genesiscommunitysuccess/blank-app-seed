@@ -8,12 +8,12 @@ package scripts
  *   Copyright           : (c) GENESIS
  *   Date                : 2021-09-07
  *
- *   Function : Provide Request Server configuration for {{appName}}.
+ *   Function : Provide Streamer Client Configuration for {{appName}}.
  *
  *   Modification History
  *
  */
 
-requestReplies {
+streamerClients {
 
 }

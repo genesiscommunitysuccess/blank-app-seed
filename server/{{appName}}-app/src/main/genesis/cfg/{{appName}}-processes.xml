@@ -11,5 +11,65 @@
 !
 -->
 <processes>
-    
+<!--    <process name="{{upperCase appName}}_DATASERVER">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx1024m -DXSD_VALIDATE=false</options>-->
+<!--        <module>genesis-pal-dataserver</module>-->
+<!--        <package>global.genesis.dataserver.pal</package>-->
+<!--        <script>{{appName}}-dataserver.kts</script>-->
+<!--        <description>Displays real-time details</description>-->
+<!--        <language>pal</language>-->
+<!--    </process>-->
+<!--    <process name="{{upperCase appName}}_REQUEST_SERVER">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx256m -DXSD_VALIDATE=false</options>-->
+<!--        <module>genesis-pal-requestserver</module>-->
+<!--        <package>global.genesis.requestreply.pal</package>-->
+<!--        <script>{{appName}}-reqrep.kts</script>-->
+<!--        <description>Server one-shot requests for details</description>-->
+<!--        <language>pal</language>-->
+<!--    </process>-->
+<!--    <process name="{{upperCase appName}}_EVENT_HANDLER">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx512m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
+<!--        <module>genesis-pal-eventhandler</module>-->
+<!--        <package>global.genesis.eventhandler.pal</package>-->
+<!--        <script>{{appName}}-eventhandler.kts</script>-->
+<!--        <description>Handles events</description>-->
+<!--        <classpath>{{appName}}-app*</classpath>-->
+<!--        <language>pal</language>-->
+<!--    </process>-->
+<!--    <process name="{{upperCase appName}}_CONSOLIDATOR">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
+<!--        <module>consolidator2</module>-->
+<!--        <package>global.genesis.consolidator2</package>-->
+<!--        <config>{{appName}}-consolidator2.xml</config>-->
+<!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
+<!--    </process>-->
+<!--    <process name="{{upperCase appName}}_FGW_STREAMER">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx128m -DXSD_VALIDATE=false</options>-->
+<!--        <module>genesis-pal-streamer</module>-->
+<!--        <package>global.genesis.streamer.pal</package>-->
+<!--        <script>{{appName}}-streamer.kts</script>-->
+<!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
+<!--        <language>pal</language>-->
+<!--    </process>-->
+<!--    <process name="{{upperCase appName}}_FGW_STREAMER_CLIENT">-->
+<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--        <start>true</start>-->
+<!--        <options>-Xmx128m -DXSD_VALIDATE=false</options>-->
+<!--        <module>genesis-pal-streamerclient</module>-->
+<!--        <package>global.genesis.streamerclient.pal</package>-->
+<!--        <script>{{appName}}-streamer-client.kts</script>-->
+<!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
+<!--        <classpath>fix-xlator*,FIX44_ref*</classpath>-->
+<!--        <language>pal</language>-->
+<!--    </process>-->
 </processes>
