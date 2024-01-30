@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.2...v1.5.3) (2024-01-30)
+
+
+### Bug Fixes
+
+* updated .npmignore DVOP-591 (#120) 6c3f939
+
 ## 1.0.0 (2023-08-21)
 
 
