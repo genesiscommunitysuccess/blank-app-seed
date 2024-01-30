@@ -18,4 +18,6 @@
 <!--    <service host="localhost" name="{{upperCase appName}}_FGW" port ="11004"/>-->
 <!--    <service host="localhost" name="{{upperCase appName}}_FGW_STREAMER" port ="11005"/>-->
 <!--    <service host="localhost" name="{{upperCase appName}}_FGW_STREAMER_CLIENT" port ="11006"/>-->
+<!--    <service host="localhost" name="GENESIS_EVALUATOR" port="11007"/>-->
+<!--    <service host="localhost" name="{{upperCase appName}}_DATAPIPELINE" port="11008"/>-->
 </configuration>
