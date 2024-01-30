@@ -54,8 +54,12 @@ api-extractor.json
 federation.config.json
 lerna.json
 
-tsconfig.json
 webpack.config.js
 
 .releaserc
 .github
+
+.genx/tests
+.genx/scripts
+
+!./.gitignore
