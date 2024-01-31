@@ -37,9 +37,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: |
-          SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
-          npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
