@@ -37,9 +37,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: |
-          echo "${{github.workspace}}"
-          npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
