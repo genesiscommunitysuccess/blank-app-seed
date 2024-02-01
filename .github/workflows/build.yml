@@ -22,65 +22,49 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate .npmignore
-        run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore
-
-      - name: Release
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+      - uses: KengoTODA/actions-setup-docker-compose@main
         env:
-          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
-        run: |
-          npm install
-          npm run release
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Echo .npmignore
-        run: cat .npmignore
+      - name: Configure Gradle
+        run: ./.genx/scripts/init-gradle.sh
 
-      - name: Publish
-        run: npm pack -dry
+      - name: Generate sample app
+        working-directory: /tmp
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
 
-      # - name: Set up JDK
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     java-version: '17'
-      #     distribution: 'temurin'
-      #     cache: 'gradle'
-      # - uses: KengoTODA/actions-setup-docker-compose@main
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Copy fixtures
+        run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
 
-      # - name: Configure Gradle
-      #   run: ./.genx/scripts/init-gradle.sh
+      - name: Build sample app
+        working-directory: /tmp/testapp
+        run: ./gradlew build -PclientSpecific=true
 
-      # - name: Generate sample app
-      #   working-directory: /tmp
-      #   run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
+      - name: Lint UI
+        working-directory: /tmp/testapp/client
+        run: npm run lint
 
-      # - name: Copy fixtures
-      #   run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
+      - name: Test (unit & integration UI)
+        working-directory: /tmp/testapp/client
+        run: npm run test && npm run test:e2e
 
-      # - name: Build sample app
-      #   working-directory: /tmp/testapp
-      #   run: ./gradlew build -PclientSpecific=true
+      - name: Skip binding to privileged port on CI
+        working-directory: /tmp/testapp
+        run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
 
-      # - name: Lint UI
-      #   working-directory: /tmp/testapp/client
-      #   run: npm run lint
+      - name: Create Server Dockerfile
+        working-directory: /tmp/testapp
+        run: ./gradlew :genesisproduct-testapp:testapp-deploy:createDockerfile
 
-      # - name: Test (unit & integration UI)
-      #   working-directory: /tmp/testapp/client
-      #   run: npm run test && npm run test:e2e
-
-      # - name: Skip binding to privileged port on CI
-      #   working-directory: /tmp/testapp
-      #   run: sed -i "s/- '443:443'/# - '443:443'/g" docker-compose.yml
-
-      # - name: Create Server Dockerfile
-      #   working-directory: /tmp/testapp
-      #   run: ./gradlew :genesisproduct-testapp:testapp-deploy:createDockerfile
-
-      # - name: Build Docker images
-      #   working-directory: /tmp/testapp
-      #   run: docker-compose build
+      - name: Build Docker images
+        working-directory: /tmp/testapp
+        run: docker-compose build
 
       # - name: Run healthcheck
       #   run: ./.genx/scripts/health-check.sh http://localhost:4569/health/status
