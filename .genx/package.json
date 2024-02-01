@@ -40,7 +40,8 @@
           ".ts",
           ".md",
           ".properties",
-          ".html"
+          ".html",
+          ".gitignore"
         ]
       }
     }
