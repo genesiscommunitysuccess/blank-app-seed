@@ -23,7 +23,7 @@ jobs:
           node-version: 20
 
       - name: Generate .npmignore
-        run: cp .gitignore .npmignore && echo '\n!.gitignore' >> .npmignore
+        run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore
 
       - name: Release
         env:
