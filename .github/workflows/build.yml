@@ -22,6 +22,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Generate .npmignore
+        run: cp .gitignore .npmignore && echo '\n!.gitignore' >> .npmignore
+
       - name: Release
         env:
           GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
@@ -29,17 +32,14 @@ jobs:
           npm install
           npm run release
 
-      - name: Generate .npmignore
-        run: cp .gitignore .npmignore && echo '\n!.gitignore' >> .npmignore
-
       - name: Echo .npmignore
-        run: echo .npmignore
+        run: cat .npmignore
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{secrets.NPM_TOKEN}}
-          dry: true
+          dry-run: true
 
       # - name: Set up JDK
       #   uses: actions/setup-java@v3
