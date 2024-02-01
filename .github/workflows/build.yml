@@ -36,10 +36,7 @@ jobs:
         run: cat .npmignore
 
       - name: Publish
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{secrets.NPM_TOKEN}}
-          dry-run: true
+        run: npm pack -dry
 
       # - name: Set up JDK
       #   uses: actions/setup-java@v3
