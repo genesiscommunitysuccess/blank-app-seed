@@ -1,7 +1,7 @@
 systemDefinition {
     global {
         item(name = "DbLayer", value = "SQL")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
         item(name = "DEPLOYED_PRODUCT", value = "{{appName}}")
         item(name = "MqLayer", value = env["MQ_LAYER", "ZeroMQ"])
 
