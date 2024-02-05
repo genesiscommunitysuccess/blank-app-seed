@@ -3,7 +3,8 @@ const {mavenArtifactVersionRegex} = require('./validators');
 module.exports = async (inquirer, prevAns = {}) => {
     const {
       groupId = prevAns.groupId,
-      applicationVersion = prevAns.applicationVersion
+      applicationVersion = prevAns.applicationVersion,
+      enableDeployPlugin = prevAns.enableDeployPlugin
     } = await inquirer.prompt([
       {
         name: 'groupId',
@@ -32,5 +33,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     return {
       groupId,
       applicationVersion,
+      enableDeployPlugin,
     };
   };
