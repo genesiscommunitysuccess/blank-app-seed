@@ -22,7 +22,8 @@ module.exports = async (inquirer, prevAns = {}) => {
       },
       {
         name: 'enableDeployPlugin',
-        type: 'confirm',
+        type: 'input',
+        choices: [true, false],
         message: 'Enable deploy plugin?',
         when: !prevAns.enableDeployPlugin,
         default: false,
