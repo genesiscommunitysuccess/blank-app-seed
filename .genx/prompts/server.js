@@ -25,9 +25,8 @@ module.exports = async (inquirer, prevAns = {}) => {
         name: 'enableDeployPlugin',
         type: 'confirm',
         message: 'Enable deploy plugin?',
-        when: !prevAns.enableDeployPlugin,
-        default: false,
-        validate: mavenArtifactVersionRegex
+        when: prevAns.enableDeployPlugin === undefined,
+        default: prevAns.enableDeployPlugin || false
       },
     ]);
     return {
