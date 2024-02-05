@@ -20,6 +20,14 @@ module.exports = async (inquirer, prevAns = {}) => {
         default:'1.0.0-SNAPSHOT',
         validate: mavenArtifactVersionRegex
       },
+      {
+        name: 'enableDeployPlugin',
+        type: 'confirm',
+        message: 'Enable deploy plugin?',
+        when: !prevAns.enableDeployPlugin,
+        default: false,
+        validate: mavenArtifactVersionRegex
+      },
     ]);
     return {
       groupId,

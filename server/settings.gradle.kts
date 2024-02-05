@@ -58,6 +58,11 @@ genesis {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
     }
+
+    plugins {
+        genesisDeploy.enabled = {{ enableDeployPlugin }}
+    }
+
 }
 
 
