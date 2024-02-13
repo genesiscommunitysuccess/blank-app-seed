@@ -2,7 +2,7 @@ version: '3.3'
 services:
   gsf:
     tty: true
-    container_name: gsf
+    container_name: {{camelCase appName}}gsf
     build:
       context: server/jvm/{{appName}}-deploy/build/docker/
       dockerfile: Dockerfile
