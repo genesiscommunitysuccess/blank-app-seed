@@ -1,5 +1,5 @@
 dependencies {
-    implementation(genesis("genesis-messages"))
+    implementation(genesis("messages"))
     genesisGeneratedCode()
 }
 

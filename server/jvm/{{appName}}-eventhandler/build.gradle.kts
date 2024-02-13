@@ -1,11 +1,11 @@
 dependencies {
-    implementation(genesis("genesis-pal-execution"))
-    implementation(genesis("genesis-eventhandler"))
+    implementation(genesis("pal-execution"))
+    implementation(genesis("eventhandler"))
     implementation(project(":{{appName}}-messages"))
-    api(genesis("genesis-db"))
+    api(genesis("db"))
     compileOnly(project(":{{appName}}-config"))
-    testImplementation(genesis("genesis-dbtest"))
-    testImplementation(genesis("genesis-testsupport"))
+    testImplementation(genesis("dbtest"))
+    testImplementation(genesis("testsupport"))
     genesisGeneratedCode(true)
 }
 

@@ -3,7 +3,7 @@ description = "{{appName}}-script-config"
 plugins {
     distribution
     `maven-publish`
-    id("com.jfrog.artifactory") version "5.1.14"
+    id("com.jfrog.artifactory")
 }
 
 group = "global.genesis"
@@ -13,7 +13,7 @@ val distribution by configurations.creating {
     isCanBeResolved = false
 }
 dependencies {
-    compileOnly(genesis("genesis-config"))
+    compileOnly(genesis("config"))
 }
 distributions {
     main {
@@ -69,42 +69,23 @@ publishing {
         }
     }
 }
-reposi
+
 artifactory {
     setContextUrl("https://genesisglobal.jfrog.io/genesisglobal")
     val targetRepoKey = "libs-${buildTagFor(project.version.toString())}-local"
     // Add all publication list to publicationNames
     // These are the necessary publications for everything genesis related.
     val publicationNames = arrayOf("{{appName}}SiteSpecificDistribution")
-    publish(
-        delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig> {
-            repository(
-                delegateClosureOf<groovy.lang.GroovyObject> {
-                    setProperty("repoKey", targetRepoKey)
-                    setProperty("username", property("genesisArtifactoryUser").toString())
-                    setProperty("password", property("genesisArtifactoryPassword").toString())
-                    setProperty("maven", true)
-                }
-            )
-            defaults(
-                delegateClosureOf<groovy.lang.GroovyObject> {
-                    invokeMethod("publications", publicationNames)
-                }
-            )
+    publish {
+        repository  {
+            setRepoKey(targetRepoKey)
+            setUsername(property("genesisArtifactoryUser").toString())
+            setPassword(property("genesisArtifactoryPassword").toString())
         }
-    )
-    resolve(
-        delegateClosureOf<org.jfrog.gradle.plugin.artifactory.dsl.ResolverConfig> {
-            repository(
-                delegateClosureOf<groovy.lang.GroovyObject> {
-                    setProperty("repoKey", targetRepoKey)
-                    setProperty("username", property("genesisArtifactoryUser").toString())
-                    setProperty("password", property("genesisArtifactoryPassword").toString())
-                    setProperty("maven", true)
-                }
-            )
+        defaults {
+            publications(publicationNames)
         }
-    )
+    }
 }
 fun buildTagFor(version: String): String =
     when (version.substringAfterLast('-')) {
