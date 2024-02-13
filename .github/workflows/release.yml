@@ -19,9 +19,20 @@ jobs:
           node-version: 20
 
       - name: Release
-        working-directory: .genx
         env:
           GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
         run: |
           npm install
           npm run release
+
+      - name: Generate .npmignore
+        run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore && cat .npmignore
+
+      - name: NPM pack dry-run
+        run: npm pack -dry
+
+      - name: Publish
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{secrets.NPM_TOKEN}}
+

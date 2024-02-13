@@ -14,5 +14,5 @@ jobs:
         env:
           SLACK_CHANNEL: 'platform-seeds'
           SLACK_INCOMING_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
-          SLACK_TITLE: 'New blank-app-seed PR: ${{github.event.title}}'
+          SLACK_TITLE: 'New blank-app-seed PR: ${{github.event.pull_request.title}}'
           SLACK_MESSAGE: 'https://github.com/genesiscommunitysuccess/blank-app-seed/pull/${{github.event.number}}'

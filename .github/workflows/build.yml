@@ -37,9 +37,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: |
-          SEED_PATH=$(node -p "p=require('node:path');p.relative(process.cwd(),'${{github.workspace}}')")
-          npx -y @genesislcap/genx@latest init testapp -s "$SEED_PATH" -x
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
@@ -48,9 +46,13 @@ jobs:
         working-directory: /tmp/testapp
         run: ./gradlew build -PclientSpecific=true
 
-      - name: Lint UI code
+      - name: Lint UI
         working-directory: /tmp/testapp/client
         run: npm run lint
+
+      - name: Test (unit & integration UI)
+        working-directory: /tmp/testapp/client
+        run: npm run test && npm run test:e2e
 
       - name: Skip binding to privileged port on CI
         working-directory: /tmp/testapp

@@ -1,19 +1,16 @@
 {
-  "name": "@genesiscommunitysuccess/blank-app-seed",
-  "description": "Genesis Blank App Seed",
-  "version": "1.5.1",
+  "name": "@genesislcap/blank-app-seed-config",
+  "description": "Genesis Blank App Seed Configuration",
+  "version": "1.5.5",
   "license": "Apache-2.0",
-  "scripts": {
-    "release": "semantic-release"
-  },
-  "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "conventional-changelog-conventionalcommits": "^6.1.0",
-    "semantic-release": "^21.0.7"
-  },
   "genxSeedConfig": {
     "exclude": [
+      ".git",
+      "package.json",
+      "package-lock.json",
+      ".releaserc",
+      "LICENSE",
+      "CHANGELOG.md",
       ".github",
       ".genx/tests",
       ".genx/scripts",
@@ -42,7 +39,8 @@
           ".ts",
           ".md",
           ".properties",
-          ".html"
+          ".html",
+          ".gitignore"
         ]
       }
     }

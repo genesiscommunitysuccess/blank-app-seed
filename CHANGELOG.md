@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.4...v1.5.5) (2024-02-01)
+
+
+### Bug Fixes
+
+* ensure .gitignore is included in NPM artifact [PSD-47](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/47) (#124) c9e2d78
+
+## [1.5.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.3...v1.5.4) (2024-02-01)
+
+
+### Bug Fixes
+
+* make .gitignore and .npmignore consistent [PSD-46](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/46) (#123) 2eb8617
+
+## [1.5.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.2...v1.5.3) (2024-01-30)
+
+
+### Bug Fixes
+
+* updated .npmignore DVOP-591 (#120) 6c3f939
+
 ## 1.0.0 (2023-08-21)
 
 
