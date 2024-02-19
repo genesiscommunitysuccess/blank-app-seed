@@ -15,8 +15,6 @@ description = "{{appName}}-distribution"
 //     implementation(project(":{{appName}}-script-config"))
 // }
 
-// description = "{{appName}}-distribution"
-
 // distributions {
 //     main {
 //         contents {
