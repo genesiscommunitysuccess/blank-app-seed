@@ -13,7 +13,6 @@ subprojects  {
     val junitVersion = "5.10.0"
     dependencies {
         implementation(platform("global.genesis:genesis-bom:${properties["genesisVersion"]}"))
-        testImplementation(kotlin("test"))
         constraints {
             // define versions of your dependencies here so that submodules do not have to define versions
             testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
