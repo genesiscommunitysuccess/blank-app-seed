@@ -1,5 +1,21 @@
 {
   "compilerOptions": {
+     "plugins": [
+      {
+        "name": "@genesiscommunitysuccess/custom-elements-lsp",
+        "srcRouteFromTSServer": "../../..",
+        "designSystemPrefix": "zero",
+        "parser": {
+          "fastEnable": true,
+          "timeout": 2000,
+          "dependencies": [
+            "node_modules/**/custom-elements.json",
+            "!**/@custom-elements-manifest/**/*"
+          ]
+        },
+        "plugins": ["@genesiscommunitysuccess/cep-fast-plugin"]
+      }
+    ],
     "declarationDir": "./dist/dts",
     "outDir": "./dist/esm",
     "rootDir": "./src",

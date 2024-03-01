@@ -1,11 +1,9 @@
 import { customElement, FASTElement } from '@microsoft/fast-element';
-import { HomeTemplate as template } from './home.template';
 import { HomeStyles as styles } from './home.styles';
-
-const name = 'home-route';
+import { HomeTemplate as template } from './home.template';
 
 @customElement({
-  name,
+  name: 'home-route',
   template,
   styles,
 })

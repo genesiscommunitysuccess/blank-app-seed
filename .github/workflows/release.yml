@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: deploy
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{secrets.GH_USER_TOKEN}}
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
+        run: |
+          npm install
+          npm run release
+
+      - name: Generate .npmignore
+        run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore && cat .npmignore
+
+      - name: NPM pack dry-run
+        run: npm pack -dry
+
+      - name: Publish
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{secrets.NPM_TOKEN}}
+

@@ -8,22 +8,10 @@ subprojects {
     apply(plugin = "org.gradle.maven-publish")
 
     tasks {
-        withType<Copy> {
-            duplicatesStrategy = DuplicatesStrategy.WARN
-        }
-        withType<Jar> {
-            duplicatesStrategy = DuplicatesStrategy.WARN
-        }
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
                 jvmTarget = "17"
-            }
-        }
-        test {
-            onlyIf {
-                // server tests require a DB so don't run by default
-                project.hasProperty("integrationTests")
             }
         }
     }
@@ -31,31 +19,18 @@ subprojects {
 
 tasks {
     assemble {
-        for (subproject in subprojects) {
+        for(subproject in subprojects){
             dependsOn(subproject.tasks.named("assemble"))
         }
     }
     build {
-        for (subproject in subprojects) {
+        for(subproject in subprojects){
             dependsOn(subproject.tasks.named("build"))
         }
     }
     clean {
-        for (subproject in subprojects) {
+        for(subproject in subprojects){
             dependsOn(subproject.tasks.named("clean"))
-        }
-    }
-    withType<Copy> {
-        duplicatesStrategy = DuplicatesStrategy.WARN
-    }
-
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.WARN
-    }
-
-    this.dependencies {
-        for (subproject in subprojects) {
-            dependsOn(subproject.tasks.named("dependencies"))
         }
     }
 }
@@ -64,6 +39,16 @@ allprojects {
 
     group = "{{groupId}}"
     version = "{{applicationVersion}}"
+
+
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    tasks.withType<Jar> {
+        duplicatesStrategy = DuplicatesStrategy.WARN
+    }
 
     java {
         toolchain {

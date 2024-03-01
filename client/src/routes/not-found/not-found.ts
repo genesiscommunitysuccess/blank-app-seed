@@ -1,12 +1,10 @@
 import { customElement, FASTElement } from '@microsoft/fast-element';
-import { NotFoundTemplate as template } from './not-found.template';
-import { NotFoundStyles as styles } from './not-found.styles';
 import { logger } from '../../utils';
-
-const name = 'not-found-route';
+import { NotFoundStyles as styles } from './not-found.styles';
+import { NotFoundTemplate as template } from './not-found.template';
 
 @customElement({
-  name,
+  name: 'not-found-route',
   template,
   styles,
 })
