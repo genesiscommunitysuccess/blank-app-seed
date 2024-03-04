@@ -1,5 +1,3 @@
-import global.genesis.gradle.plugin.simple.ProjectType
-
 rootProject.name = "genesisproduct-{{appName}}"
 
 pluginManagement {
@@ -15,10 +13,15 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url = uri("https://genesisglobal.jfrog.io/genesisglobal/dev-repo")
+            val repoUrl = if(properties["clientSpecific"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            }
+            url = uri(repoUrl)
             credentials {
-                username = extra.properties["genesisArtifactoryUser"].toString()
-                password = extra.properties["genesisArtifactoryPassword"].toString()
+                username = properties["genesisArtifactoryUser"].toString()
+                password = properties["genesisArtifactoryPassword"].toString()
             }
             content {
                 fun disableIfTrue(
@@ -52,7 +55,7 @@ plugins {
 }
 
 genesis {
-    projectType = ProjectType.APPLICATION
+    projectType = APPLICATION
 
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
