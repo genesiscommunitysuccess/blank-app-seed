@@ -58,7 +58,7 @@ jobs:
 
       - name: Create Server Dockerfile
         working-directory: /tmp/testapp
-        run: ./gradlew :genesisproduct-testapp:testapp-app:createDockerfile
+        run: ./gradlew :genesisproduct-testapp:testapp-app:createDockerfile -PclientSpecific=true
 
       - name: Build Docker images
         working-directory: /tmp/testapp
