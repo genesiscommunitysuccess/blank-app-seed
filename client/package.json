@@ -40,6 +40,9 @@
     "lint:stylelint": "genx lint -l stylelint",
     "serve": "genx serve",
     "test": "genx test",
+    "test:e2e": "genx test --e2e",
+    "test:e2e:debug": "genx test --e2e --debug",
+    "test:e2e:ui": "genx test --e2e --interactive",
     "test:coverage": "genx test --coverage",
     "test:unit:watch": "genx test --watch"
   },
@@ -57,16 +60,27 @@
     ]
   },
   "eslintConfig": {
-    "extends": "@genesislcap/eslint-config"
+    "extends": "@genesislcap/eslint-config",
+    "ignorePatterns": ["**/dist/**", "**/public/**", "**/coverage/**", "**/test/**", "playwright.config.ts"]
   },
   "stylelint": {
     "extends": "@genesislcap/stylelint-config"
   },
   "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
+    "@genesiscommunitysuccess/cep-fast-plugin": "5.0.3",
+    "@genesiscommunitysuccess/custom-elements-lsp": "5.0.3",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
+    "@genesislcap/eslint-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/eslint-stylelint-builder": "{{versions.UI}}",
+    "@genesislcap/uvu-playwright-builder": "{{versions.UI}}",
+    "@genesislcap/vite-builder": "{{versions.UI}}",
+    "@genesislcap/webpack-builder": "{{versions.UI}}",
+    "@genesislcap/prettier-config": "{{versions.UI}}",
+    "@genesislcap/stylelint-config": "{{versions.UI}}",
+    "@types/node": "20.11.5",
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
     "lint-staged": "^12.4.1"

@@ -1,5 +1,3 @@
-import global.genesis.gradle.plugin.simple.ProjectType
-
 rootProject.name = "genesisproduct-{{appName}}"
 
 pluginManagement {
@@ -15,27 +13,15 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url = uri("https://genesisglobal.jfrog.io/genesisglobal/dev-repo")
+            val repoUrl = if(extra.properties["clientSpecific"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            }
+            url = uri(repoUrl)
             credentials {
                 username = extra.properties["genesisArtifactoryUser"].toString()
                 password = extra.properties["genesisArtifactoryPassword"].toString()
-            }
-            content {
-                fun disableIfTrue(
-                    property: String,
-                    moduleRegex: String,
-                ) {
-                    if (extra.properties[property] == "true") excludeModuleByRegex("global.genesis", moduleRegex)
-                }
-
-                disableIfTrue("localGenesis", "genesis-(?!crowley)[\\w-]+")
-                disableIfTrue("localAuth", "auth-[\\w-]+")
-                disableIfTrue("localFix", "fix-[\\w-]+")
-                disableIfTrue("localMarketData", "market-data-[\\w-]+")
-                disableIfTrue("localElektron", "elektron-[\\w-]+")
-                disableIfTrue("localRefData", "ref_data_app-[\\w-]+")
-                disableIfTrue("localDeployPlugin", "deploy-gradle-plugin")
-                disableIfTrue("localCrowley", "genesis-crowley-[\\w-]+")
             }
         }
         mavenLocal {
@@ -52,8 +38,6 @@ plugins {
 }
 
 genesis {
-    projectType = ProjectType.APPLICATION
-
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 

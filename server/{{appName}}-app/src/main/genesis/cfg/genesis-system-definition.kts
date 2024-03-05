@@ -5,9 +5,9 @@ systemDefinition {
         item(name = "DEPLOYED_PRODUCT", value = "{{appName}}")
         item(name = "MqLayer", value = env["MQ_LAYER", "ZeroMQ"])
 
-        item(name = "HookStateStore", value = env["HOOK_STATE_STORE", "FILE"])
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
+        item(name = "HookStateStore", value = "DB")
         item(name = "MetricsEnabled", value = "false")
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
