@@ -38,8 +38,6 @@ plugins {
 }
 
 genesis {
-    projectType = APPLICATION
-
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
