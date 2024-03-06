@@ -51,6 +51,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+build-cache
 
 # Dependency directories
 node_modules
