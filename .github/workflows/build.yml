@@ -3,6 +3,7 @@ name: Build
 on:
   push:
   pull_request:
+    branches: [main, master, develop, alpha]
   workflow_dispatch:
 
 jobs:
