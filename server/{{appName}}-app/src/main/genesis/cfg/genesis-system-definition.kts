@@ -27,23 +27,6 @@ systemDefinition {
             name = "JVM_OPTIONS",
             value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
         )
-
-        item(name = "SYSTEM_DEFAULT_USER_NAME", value = "GenesisGlobal")
-        item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@genesis.global")
-        item(name = "EMAIL_SMTP_HOST", value = "smtp.office365.com")
-        item(name = "EMAIL_SMTP_PORT", value = "587")
-        item(name = "EMAIL_SMTP_USER", value = "notifications@genesis.global")
-        item(name = "EMAIL_SMTP_PW", env["SMTPPASSWORD"])
-        item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS")
-
-        // item(name = "ClusterMode", value = "CONSUL")
-        item(name = "ConsulNodeName", value = env["CONSUL_NODE_NAME"])
-        item(name = "MqttBrokerUrl", value = env["MQTT_BROKER_URL"])
-        item(name = "MqttQos", value = env["MQTT_QOS"])
-        item(name = "DefaultKeystoreLocation", value = "/keystore.jks")
-        item(name = "DefaultKeystorePassword", value = env["KEY_STORE_PASSWORD"])
-        item(name = "DefaultCertificate", value = "/certificate.crt")
-        item(name = "ConsulServiceNamePattern", value = "PETER_{{PROCESS_NAME}}")
     }
 
     systems {
