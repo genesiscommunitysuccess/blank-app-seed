@@ -1,8 +1,18 @@
-import { Auth, Session } from '@genesislcap/foundation-comms';
-import { defaultLoginConfig, LoginConfig, Settings as LoginSettings } from '@genesislcap/foundation-login';
-import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
-import { optional } from '@microsoft/fast-foundation';
-import { Route } from '@microsoft/fast-router';
+import {
+  Auth,
+  FoundationAnalytics,
+  FoundationAnalyticsEvent,
+  FoundationAnalyticsEventType,
+  Session,
+} from '@genesislcap/foundation-comms';
+import {
+  defaultLoginConfig,
+  LoginConfig,
+  Settings as LoginSettings,
+} from '@genesislcap/foundation-login';
+import { Constructable } from '@microsoft/fast-element';
+import { Container, optional } from '@microsoft/fast-foundation';
+import { Route, RouterConfiguration } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
@@ -10,29 +20,33 @@ import { NotFound } from './not-found/not-found';
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
 
-const ssoSettings = typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === 'true'
-  ? {
-      autoAuth: true,
-      sso: {
-        toggled: true,
-        identityProvidersPath: 'sso/list',
-      },
-    }
-  : {};
+const ssoSettings =
+  typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === 'true'
+    ? {
+        autoAuth: true,
+        sso: {
+          toggled: true,
+          identityProvidersPath: 'sso/list',
+        },
+      }
+    : {};
 
-export class MainRouterConfig extends FoundationRouterConfiguration<LoginSettings> {
+export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   constructor(
     @Auth private auth: Auth,
+    @Container private container: Container,
+    @FoundationAnalytics private analytics: FoundationAnalytics,
     @Session private session: Session,
     @optional(LoginConfig)
-    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true }
+    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true },
   ) {
     super();
   }
 
-  async configure() {
-    this.configureAnalytics();
-    this.title = 'Simple App Demo';
+  public allRoutes = [{ index: 1, path: 'home', title: 'Home', icon: 'home', variant: 'solid' }];
+
+  public configure() {
+    this.title = 'Blank App Demo';
     this.defaultLayout = defaultLayout;
 
     const authPath = 'login';
@@ -64,29 +78,17 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         settings: { public: true },
         childRouters: true,
       },
-      {
-        path: 'home',
-        name: 'home',
-        title: 'Home',
-        element: Home,
-        navItems: [
-          {
-            title: 'Home',
-            icon: {
-              name: 'home',
-              variant: 'solid',
-            },
-          },
-        ],
-      },
-      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' }
+      { path: 'home', element: Home, title: 'Home', name: 'home' },
+      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
     );
+
+    const auth = this.auth;
 
     /**
      * Example of a FallbackRouteDefinition
      */
     this.routes.fallback(() =>
-      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath }
+      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath },
     );
 
     /**
@@ -95,6 +97,12 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
     this.contributors.push({
       navigate: async (phase) => {
         const settings = phase.route.settings;
+
+        this.analytics.trackEvent(FoundationAnalyticsEventType.routeChanged, <
+          FoundationAnalyticsEvent.RouteChanged
+        >{
+          path: phase.route.endpoint.path,
+        });
 
         /**
          * If public route don't block
@@ -113,7 +121,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         /**
          * If allowAutoAuth and session is valid try to connect+auto-login
          */
-        if (this.loginConfig.autoAuth && (await this.auth.reAuthFromSession())) {
+        if (this.loginConfig.autoAuth && (await auth.reAuthFromSession())) {
           return;
         }
 
@@ -126,5 +134,9 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         });
       },
     });
+  }
+
+  public construct<T>(Type: Constructable<T>): T {
+    return this.container.get(Type) as T;
   }
 }
