@@ -33,7 +33,7 @@ systemDefinition {
         item(name = "EMAIL_SMTP_HOST", value = "smtp.office365.com")
         item(name = "EMAIL_SMTP_PORT", value = "587")
         item(name = "EMAIL_SMTP_USER", value = "notifications@genesis.global")
-        item(name = "EMAIL_SMTP_PW", env["SMTPPASSWORD", "foo"])
+        item(name = "EMAIL_SMTP_PW", env["SMTPPASSWORD"])
         item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS")
 
         // item(name = "ClusterMode", value = "CONSUL")
