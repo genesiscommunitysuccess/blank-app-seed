@@ -2,7 +2,6 @@ name: Build
 
 on:
   push:
-    branches: [main, master, develop, alpha]
   pull_request:
     branches: [main, master, develop, alpha]
   workflow_dispatch:
@@ -37,7 +36,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x --enableDeployPlugin
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
@@ -60,7 +59,7 @@ jobs:
 
       - name: Create Server Dockerfile
         working-directory: /tmp/testapp
-        run: ./gradlew :genesisproduct-testapp:testapp-deploy:createDockerfile
+        run: ./gradlew :server:testapp-app:createDockerfile -PclientSpecific=true
 
       - name: Build Docker images
         working-directory: /tmp/testapp

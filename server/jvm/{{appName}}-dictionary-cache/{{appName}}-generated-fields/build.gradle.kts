@@ -1,1 +1,0 @@
-description = "{{appName}}-generated-fields"
