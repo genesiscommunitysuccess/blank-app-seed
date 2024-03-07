@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.5...v2.0.0) (2024-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* simplified server folder structure
+
+### Features
+
+* simplified server folder structure (DVOP-620) (#133) 17a58c4
+
 ## [1.5.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.4...v1.5.5) (2024-02-01)
 
 
