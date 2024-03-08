@@ -4,7 +4,7 @@ services:
     tty: true
     container_name: gsf
     build:
-      context: server/jvm/testapp-deploy/build/docker/
+      context: server/testapp-app/build/docker/
       dockerfile: Dockerfile
     networks:
       qs_network:
