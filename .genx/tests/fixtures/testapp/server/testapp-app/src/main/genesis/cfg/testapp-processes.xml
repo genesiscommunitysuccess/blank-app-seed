@@ -30,7 +30,7 @@
         <package>global.genesis.eventhandler.pal</package>
         <script>testapp-eventhandler.kts</script>
         <description>Handles events</description>
-        <classpath>testapp-messages*,testapp-eventhandler*</classpath>
+        <classpath>testapp-app*</classpath>
         <language>pal</language>
     </process>
 </processes>
