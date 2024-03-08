@@ -44,11 +44,11 @@ If you need an introduction to the Genesis platform and its modules it's worth h
 
 ## Project Structure
 
-This project contains **server/jvm** and **client** directories which contain the server and client code respectively.
+This project contains **server** and **client** directories which contain the server and client code respectively.
 
 ### Server
 
-The server code for this project can be found [here](./server/jvm/README.md).
+The server code for this project can be found [here](./server/README.md).
 It is built using a DSL-like definition based on the Kotlin language: GPAL.
 
 ### Web Client
