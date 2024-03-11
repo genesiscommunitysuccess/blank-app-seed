@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.1...v2.0.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* consolidator as gpal and interpolate variables in xml files DVOP-620 (#143) 5a33dff
+
 ## [2.0.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.0...v2.0.1) (2024-03-11)
 
 
