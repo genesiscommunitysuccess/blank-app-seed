@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.2...v2.1.0) (2024-03-11)
+
+
+### Features
+
+* Make H2 the default DB in blank app seed([PSD-50](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/50)) (#142) 8bd473b
+
 ## [2.0.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.1...v2.0.2) (2024-03-11)
 
 
