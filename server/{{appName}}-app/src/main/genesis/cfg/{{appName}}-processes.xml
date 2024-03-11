@@ -46,10 +46,11 @@
 <!--        <groupId>{{upperCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
-<!--        <module>consolidator2</module>-->
-<!--        <package>global.genesis.consolidator2</package>-->
-<!--        <config>{{appName}}-consolidator2.xml</config>-->
+<!--        <module>genesis-pal-consolidator</module>-->
+<!--        <package>global.genesis.pal.consolidator</package>-->
+<!--        <script>{{appName}}-consolidator.kts</script>-->
 <!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
+<!--        <language>pal</language>-->
 <!--    </process>-->
 <!--    <process name="{{upperCase appName}}_STREAMER">-->
 <!--        <groupId>{{upperCase appName}}</groupId>-->

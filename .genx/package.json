@@ -40,7 +40,8 @@
           ".md",
           ".properties",
           ".html",
-          ".gitignore"
+          ".gitignore",
+          ".xml"
         ]
       }
     }
