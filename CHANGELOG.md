@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.0...v2.0.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* add kotlin folder for kotlin scripts are recognised correctly by intellij [PLAT-1165](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1165) (#141) 5d9cc3e
+
 ## [2.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v1.5.5...v2.0.0) (2024-03-07)
 
 
