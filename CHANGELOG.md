@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.1.0...v2.2.0) (2024-03-11)
+
+
+### Features
+
+* add ui pbc compatibility [PLAT-1028](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1028) (#139) 2a1f927
+
 ## [2.1.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.0.2...v2.1.0) (2024-03-11)
 
 
