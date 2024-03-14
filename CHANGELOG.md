@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.3.1...v2.3.2) (2024-03-14)
+
+
+### Bug Fixes
+
+* handling uppercase characters in app name PA-1156 (#146) 0ce062e
+
 ## [2.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.3.0...v2.3.1) (2024-03-14)
 
 
