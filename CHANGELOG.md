@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.3.0...v2.3.1) (2024-03-14)
+
+
+### Bug Fixes
+
+* add version to gradle.properties. (PBC-101) (#147) bb04aab
+
 ## [2.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.2.0...v2.3.0) (2024-03-14)
 
 
