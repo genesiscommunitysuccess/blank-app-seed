@@ -9,8 +9,9 @@ import { optional } from '@microsoft/fast-foundation';
 import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
-import { Home } from './home/home';
-import { Dashboard } from './dashboard/dashboard';
+{{#each routes}}
+import { {{pascalCase this}} } from './{{this}}/{{this}}';
+{{/each}}
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -56,11 +57,11 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           );
           configure(this.container, {
             autoConnect: true,
-            defaultRedirectUrl: 'home',
+            defaultRedirectUrl: '{{routes.[0]}}',
             ...ssoSettings,
           });
           return define({
-            name: `genesiscreate-root-login`,
+            name: `{{rootElement}}-login`,
             /**
              * You can augment the template and styles here when needed.
              */
@@ -71,14 +72,15 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         childRouters: true,
       },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+      {{#each routes}}
       {
-        path: 'home',
-        element: Home,
-        title: 'Home',
-        name: 'home',
+        path: '{{this}}',
+        element: {{pascalCase this}},
+        title: '{{sentenceCase this}}',
+        name: '{{this}}',
         navItems: [
           {
-            title: 'Home',
+            title: '{{sentenceCase this}}',
             icon: {
               name: 'cog',
               variant: 'solid',
@@ -86,21 +88,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           },
         ],
       },
-      {
-        path: 'dashboard',
-        element: Dashboard,
-        title: 'Dashboard',
-        name: 'dashboard',
-        navItems: [
-          {
-            title: 'Dashboard',
-            icon: {
-              name: 'cog',
-              variant: 'solid',
-            },
-          },
-        ],
-      },
+      {{/each}}
     );
 
     /**
