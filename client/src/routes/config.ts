@@ -9,9 +9,8 @@ import { optional } from '@microsoft/fast-foundation';
 import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
-{{#each routes}}
-import { {{pascalCase this}} } from './{{this}}/{{this}}';
-{{/each}}
+import { Home } from './home/home';
+import { Dashboard } from './dashboard/dashboard';
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -57,11 +56,11 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           );
           configure(this.container, {
             autoConnect: true,
-            defaultRedirectUrl: '{{routes.[0]}}',
+            defaultRedirectUrl: 'home',
             ...ssoSettings,
           });
           return define({
-            name: `{{rootElement}}-login`,
+            name: `genesiscreate-root-login`,
             /**
              * You can augment the template and styles here when needed.
              */
@@ -72,15 +71,14 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         childRouters: true,
       },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
-      {{#each routes}}
       {
-        path: '{{this}}',
-        element: {{pascalCase this}},
-        title: '{{sentenceCase this}}',
-        name: '{{this}}',
+        path: 'home',
+        element: Home,
+        title: 'Home',
+        name: 'home',
         navItems: [
           {
-            title: '{{sentenceCase this}}',
+            title: 'Home',
             icon: {
               name: 'cog',
               variant: 'solid',
@@ -88,7 +86,21 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           },
         ],
       },
-      {{/each}}
+      {
+        path: 'dashboard',
+        element: Dashboard,
+        title: 'Dashboard',
+        name: 'dashboard',
+        navItems: [
+          {
+            title: 'Dashboard',
+            icon: {
+              name: 'cog',
+              variant: 'solid',
+            },
+          },
+        ],
+      },
     );
 
     /**
