@@ -8,9 +8,14 @@ const summary = `
 `;
 
 const nextStepsMessage = `
- > Go into the (web) client directory with \`cd client\`\n
- > Install dependencies with \`npm run bootstrap\`\n
- > Start the development server with \`npm run dev\`
+ > Initialise a new repository e.g.:
+ \`git init\`
+ \`git add --all\`
+ \`git commit -m 'Initial commit'\`\n
+ > Start Web client:
+ \`cd client\`
+ \`npm run bootstrap\`
+ \`npm run dev\`
 `;
 
 module.exports = {
