@@ -8,8 +8,10 @@ import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
 import { optional } from '@microsoft/fast-foundation';
 import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
-import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
+{{#each routes}}
+import { {{pascalCase this}} } from './{{this}}/{{this}}';
+{{/each}}
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -55,7 +57,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           );
           configure(this.container, {
             autoConnect: true,
-            defaultRedirectUrl: 'home',
+            defaultRedirectUrl: '{{routes.[0]}}',
             ...ssoSettings,
           });
           return define({
@@ -69,22 +71,24 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         settings: { public: true },
         childRouters: true,
       },
+      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+      {{#each routes}}
       {
-        path: 'home',
-        name: 'home',
-        title: 'Home',
-        element: Home,
+        path: '{{this}}',
+        element: {{pascalCase this}},
+        title: '{{sentenceCase this}}',
+        name: '{{this}}',
         navItems: [
           {
-            title: 'Home',
+            title: '{{sentenceCase this}}',
             icon: {
-              name: 'home',
+              name: 'cog',
               variant: 'solid',
             },
           },
         ],
       },
-      { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+      {{/each}}
     );
 
     /**
