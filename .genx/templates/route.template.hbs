@@ -1,7 +1,15 @@
 import { html } from '@microsoft/fast-element';
-import type { {{pascalCase route}} } from './{{route}}';
+import type { {{pascalCase route.name}} } from './{{route.name}}';
 
-export const {{pascalCase route}}Template = html<{{pascalCase route}}>`
+export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
   <!-- insert template code here -->
-  Welcome to {{route}}
+  Welcome to {{route.name}}
+  <zero-layout>
+      <zero-layout-region>
+          {{#each route.tiles}}
+          <zero-layout-item title="{{this.title}}">
+              {{> (lookup . 'type') }}
+          </zero-layout-item>
+          {{/each}}
+  </zero-layout>
 `;

@@ -10,7 +10,7 @@ import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
 {{#each routes}}
-import { {{pascalCase this}} } from './{{this}}/{{this}}';
+import { {{pascalCase this.name}} } from './{{this.name}}/{{this.name}}';
 {{/each}}
 
 // eslint-disable-next-line
@@ -74,13 +74,13 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
       {{#each routes}}
       {
-        path: '{{this}}',
-        element: {{pascalCase this}},
-        title: '{{sentenceCase this}}',
-        name: '{{this}}',
+        path: '{{this.name}}',
+        element: {{pascalCase this.name}},
+        title: '{{sentenceCase this.name}}',
+        name: '{{this.name}}',
         navItems: [
           {
-            title: '{{sentenceCase this}}',
+            title: '{{sentenceCase this.name}}',
             icon: {
               name: 'cog',
               variant: 'solid',
