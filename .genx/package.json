@@ -41,7 +41,8 @@
           ".properties",
           ".html",
           ".gitignore",
-          ".xml"
+          ".xml",
+          ".iml"
         ]
       }
     }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="KotlinScriptingSettings" supportWarning="false">
+    <scriptDefinition className="global.genesis.dictionary.pal.script.FieldsScript" definitionName="Genesis Fields Dictionary">
+      <order>15</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.dictionary.pal.script.TablesScript" definitionName="Genesis Tables Dictionary">
+      <order>16</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.auth.permissions.pal.AuthPermissionsScript" definitionName="Genesis Auth Permissions Config">
+      <order>0</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.streamerclient.pal.script.StreamerClientScript" definitionName="Genesis Streamer Client">
+      <order>1</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.pal.view.ViewScript" definitionName="Genesis View Definition File">
+      <order>2</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.pal.process.ProcessConfigScript" definitionName="Genesis Process Config">
+      <order>3</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.auth.manager.preferences.AuthPreferencesScript" definitionName="Genesis AUTH Preferences definition">
+      <order>4</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.pal.consolidator.script.ConsolidatorScript" definitionName="Genesis Consolidator Config">
+      <order>5</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.environment.scripts.pal.GenesisPALScript" definitionName="Genesis PAL Script">
+      <order>6</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.environment.scripts.palpurger.PurgerScript" definitionName="Genesis Purger Script">
+      <order>7</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.camel.pal.config.CamelDefinitionScript" definitionName="Genesis Camel Definition">
+      <order>8</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.eventhandler.pal.script.EventHandlerScript" definitionName="Genesis EventHandler Script">
+      <order>9</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.cluster.modules.approval.pal.definition.PendingApprovalScript" definitionName="Genesis Pending Approval definition">
+      <order>10</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.streamer.pal.config.StreamerScript" definitionName="Genesis Streamer Definition">
+      <order>11</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.config.dsl.script.SysDefScript" definitionName="Genesis System Definition">
+      <order>12</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.router.extension.WebHandlerScript" definitionName="Genesis Web Handler">
+      <order>13</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.router.definition.RouterDefinitionScript" definitionName="Genesis Router definition">
+      <order>14</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.auth.oidc.script.OIDCScript" definitionName="Genesis OIDC Config Script">
+      <order>17</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.dataserver.pal.script.DataServerScript" definitionName="Genesis Dataserver Config">
+      <order>18</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.auth.saml.script.SamlScript" definitionName="Genesis SAML Config Script">
+      <order>19</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.requestreply.pal.script.ReqRepScript" definitionName="Genesis ReqRep Meta Data">
+      <order>20</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="global.genesis.datapipeline.pal.DataPipelineDefinitionScript" definitionName="Genesis Data Pipeline Definition">
+      <order>21</order>
+      <autoReloadConfigurations>true</autoReloadConfigurations>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.scripting.resolve.KotlinScriptDefinitionFromAnnotatedTemplate" definitionName="KotlinInitScript">
+      <order>22</order>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.scripting.resolve.KotlinScriptDefinitionFromAnnotatedTemplate" definitionName="KotlinSettingsScript">
+      <order>23</order>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.scripting.resolve.KotlinScriptDefinitionFromAnnotatedTemplate" definitionName="KotlinBuildScript">
+      <order>24</order>
+    </scriptDefinition>
+    <scriptDefinition className="circlet.pipelines.config.dsl.scriptdefinition.ProjectScriptDefinition" definitionName="ProjectScriptDefinition">
+      <order>25</order>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.mainKts.MainKtsScript" definitionName="MainKtsScript">
+      <order>26</order>
+    </scriptDefinition>
+    <scriptDefinition className="kotlin.script.templates.standard.ScriptTemplateWithBindings" definitionName="Script definition for extension scripts and IDE console">
+      <order>27</order>
+    </scriptDefinition>
+    <scriptDefinition className="org.jetbrains.kotlin.idea.core.script.BundledIdeScriptDefinition" definitionName="Kotlin Script">
+      <order>28</order>
+    </scriptDefinition>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="false" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+</project>
