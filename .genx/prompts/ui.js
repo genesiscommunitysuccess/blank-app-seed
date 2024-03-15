@@ -20,7 +20,6 @@ module.exports = async (inquirer, prevAns = {}) => {
   if (routes) {
     try {
       routesParsed = JSON.parse(routes);
-      console.log(routesParsed)
     } catch (error) {
       console.error("Error parsing JSON, will use default routes config:", error);
     }
