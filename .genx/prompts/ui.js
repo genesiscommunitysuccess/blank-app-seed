@@ -12,11 +12,11 @@ module.exports = async (inquirer, prevAns = {}) => {
       type: 'input',
       message: 'Pages config in json format',
       when: !prevAns.routes,
-      default: `[{name: 'home'}]`,
+      default: '[{"name":"home"}]',
     },
   ])
 
-  let routesParsed = [{name: 'home'}];
+  let routesParsed;
   if (routes) {
     try {
       routesParsed = JSON.parse(routes);
