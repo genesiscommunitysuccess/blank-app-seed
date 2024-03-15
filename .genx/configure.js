@@ -23,12 +23,10 @@ module.exports = async (data, utils) => {
   utils.registerPartial('chart', path.resolve(data.directory, '.genx/templates/chart.hbs'))
   utils.registerPartial('entity-manager', path.resolve(data.directory, '.genx/templates/entityManager.hbs'))
   utils.registerPartial('grid-pro', path.resolve(data.directory, '.genx/templates/grid.hbs'))
-  // utils.registerPartial('form', ``)
   // to be exposed via user prompt in the future
   data.useDocker = !!process.env.USE_DOCKER;
   data.routes.forEach(route => {
     const routeName = route.name;
-    // utils.makeDirectory(path.resolve(data.directory,`client/src/routes/${route}`))
     makeDirectory(path.resolve(data.directory,`client/src/routes/${routeName}`));
     utils.writeFileWithData(path.resolve(data.directory, `client/src/routes/${routeName}/${routeName}.ts`), {route}, path.resolve(data.directory, '.genx/templates/route.hbs'));
     utils.writeFileWithData(path.resolve(data.directory, `client/src/routes/${routeName}/${routeName}.template.ts`), {route}, path.resolve(data.directory, '.genx/templates/route.template.hbs'));
