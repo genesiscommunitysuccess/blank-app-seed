@@ -1,3 +1,9 @@
 <zero-grid-pro>
-    <grid-pro-genesis-datasource resource-name="{{config.resourceName}}"></grid-pro-genesis-datasource>
+  <grid-pro-genesis-datasource
+    resource-name="{{config.resourceName}}"
+    {{#if config.snapshot}}
+    isSnapshot="{{config.resourceName}}"
+    {{/if}}
+  >
+  </grid-pro-genesis-datasource>
 </zero-grid-pro>

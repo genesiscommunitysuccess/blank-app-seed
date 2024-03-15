@@ -12,4 +12,7 @@
     {{#if config.createEvent}}
     createEvent="{{ config.createEvent }}"
     {{/if}}
+    {{#if config.snapshot}}
+    :datasourceConfig="${() => ({isSnapshot: {{ config.snapshot }} })}"
+    {{/if}}
 ></entity-management>
