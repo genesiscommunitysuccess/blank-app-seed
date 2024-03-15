@@ -10,7 +10,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'routes',
       type: 'input',
-      message: 'Pages in comma separated format e.g. home,dashboard,admin',
+      message: 'Pages config in json format',
       when: !prevAns.routes,
       default: `[{name: 'home'}]`,
     },
