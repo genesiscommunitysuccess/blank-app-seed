@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.4.0...v2.5.0) (2024-03-15)
+
+
+### Features
+
+* routes and components generation GENC-68  (#149) d85c86d
+
 ## [2.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.3.2...v2.4.0) (2024-03-15)
 
 
