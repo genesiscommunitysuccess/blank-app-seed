@@ -22,7 +22,7 @@ module.exports = async (data, utils) => {
   utils.registerPartial('form', path.resolve(data.directory, '.genx/templates/form.hbs'))
   utils.registerPartial('chart', path.resolve(data.directory, '.genx/templates/chart.hbs'))
   utils.registerPartial('entityManager', path.resolve(data.directory, '.genx/templates/entityManager.hbs'))
-  utils.registerPartial('grid', path.resolve(data.directory, '.genx/templates/grid.hbs'))
+  utils.registerPartial('grid-pro', path.resolve(data.directory, '.genx/templates/grid.hbs'))
   // utils.registerPartial('form', ``)
   // to be exposed via user prompt in the future
   data.useDocker = !!process.env.USE_DOCKER;
