@@ -2,6 +2,7 @@ import { html } from '@microsoft/fast-element';
 import type { {{pascalCase route.name}} } from './{{route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
+  {{#if route.tiles}}
   <zero-layout auto-save-key="{{route.name}}">
       <zero-layout-region>
           {{#each route.tiles}}
@@ -11,4 +12,8 @@ export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>
           {{/each}}
       </zero-layout-region>
   </zero-layout>
+  {{else}}
+  <!-- insert template code here -->
+  Welcome to {{sentenceCase route.name}}
+  {{/if}}
 `;
