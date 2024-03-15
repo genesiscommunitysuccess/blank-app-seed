@@ -57,7 +57,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           );
           configure(this.container, {
             autoConnect: true,
-            defaultRedirectUrl: '{{routes.[0]}}',
+            defaultRedirectUrl: '{{routes.[0].name}}',
             ...ssoSettings,
           });
           return define({

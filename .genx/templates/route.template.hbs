@@ -2,8 +2,6 @@ import { html } from '@microsoft/fast-element';
 import type { {{pascalCase route.name}} } from './{{route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
-  <!-- insert template code here -->
-  Welcome to {{route.name}}
   <zero-layout>
       <zero-layout-region>
           {{#each route.tiles}}
