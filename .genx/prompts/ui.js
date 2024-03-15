@@ -37,13 +37,33 @@ const routes2 = [
         }
       },
       {
-        title: "Charts Tile",
+        title: "Charts Tile 1",
+        type: "chart",
+        config: {
+          type: "line",
+          resourceName: "ALL_POSITIONS",
+          xField: 'INSTRUMENT_NAME',
+          yField: 'VALUE'
+        }
+      },
+      {
+        title: "Charts Tile 2",
+        type: "chart",
+        config: {
+          type: "pie",
+          resourceName: "ALL_POSITIONS",
+          xField: 'INSTRUMENT_NAME',
+          yField: 'VALUE'
+        },
+      },
+      {
+        title: "Charts Tile 3",
         type: "chart",
         config: {
           type: "column",
-          resourceName: "ALL_STOCKS",
-          xField: 'SYMBOL',
-          yField: 'TRADING_VOLUME'
+          resourceName: "ALL_POSITIONS",
+          xField: 'INSTRUMENT_ID',
+          yField: 'VALUE'
         }
       }
     ]
