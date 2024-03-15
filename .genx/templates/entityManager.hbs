@@ -1,7 +1,15 @@
 <entity-management
+    {{#if config.updateEvent}}
     title="{{ config.title }}"
+    {{/if}}
     resourceName="{{ config.resourceName }}"
+    {{#if config.updateEvent}}
     updateEvent="{{ config.updateEvent }}"
+    {{/if}}
+    {{#if config.deleteEvent}}
     deleteEvent="{{ config.deleteEvent }}"
+    {{/if}}
+    {{#if config.createEvent}}
     createEvent="{{ config.createEvent }}"
+    {{/if}}
 ></entity-management>

@@ -19,9 +19,9 @@ module.exports = async (data, utils) => {
   data.applicationVersionWeb = data.applicationVersion.split('-').shift();
   data.versions = versions;
 
-  utils.registerPartial('form', path.resolve(data.directory, '.genx/templates/form.hbs'))
+  utils.registerPartial('smart-form', path.resolve(data.directory, '.genx/templates/form.hbs'))
   utils.registerPartial('chart', path.resolve(data.directory, '.genx/templates/chart.hbs'))
-  utils.registerPartial('entityManager', path.resolve(data.directory, '.genx/templates/entityManager.hbs'))
+  utils.registerPartial('entity-manager', path.resolve(data.directory, '.genx/templates/entityManager.hbs'))
   utils.registerPartial('grid-pro', path.resolve(data.directory, '.genx/templates/grid.hbs'))
   // utils.registerPartial('form', ``)
   // to be exposed via user prompt in the future
