@@ -2,6 +2,8 @@ const routesInto = () => console.log(`
   Pages to be added to the navigation header
 `);
 
+const defaultRoutes = '[{"name":"home"}]';
+
 module.exports = async (inquirer, prevAns = {}) => {
   routesInto();
   const {
@@ -10,13 +12,22 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'routes',
       type: 'input',
-      message: 'Pages in comma separated format e.g. home,dashboard,admin',
+      message: 'Pages config in json format',
       when: !prevAns.routes,
-      default: prevAns.routes || 'home',
+      default: defaultRoutes,
     },
   ])
 
+  let routesParsed;
+  try {
+    routesParsed = JSON.parse(routes);
+  } catch (error) {
+    console.error("Error parsing `routes` parameter as JSON:", error.message);
+    console.log("Falling back to the default routes value");
+    routesParsed = JSON.parse(defaultRoutes);
+  }
+
   return {
-    routes: routes?.split(','),
+    routes: routesParsed,
   };
 };

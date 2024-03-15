@@ -1,0 +1,18 @@
+<entity-management
+    {{#if config.title}}
+    title="{{ config.title }}"
+    {{/if}}
+    resourceName="{{ config.resourceName }}"
+    {{#if config.updateEvent}}
+    updateEvent="{{ config.updateEvent }}"
+    {{/if}}
+    {{#if config.deleteEvent}}
+    deleteEvent="{{ config.deleteEvent }}"
+    {{/if}}
+    {{#if config.createEvent}}
+    createEvent="{{ config.createEvent }}"
+    {{/if}}
+    {{#if config.snapshot}}
+    :datasourceConfig="${() => ({isSnapshot: {{ config.snapshot }} })}"
+    {{/if}}
+></entity-management>
