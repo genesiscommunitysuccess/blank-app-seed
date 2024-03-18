@@ -26,7 +26,7 @@ module.exports = async (data, utils) => {
   // to be exposed via user prompt in the future
   data.useDocker = !!process.env.USE_DOCKER;
   data.routes.forEach(route => {
-    const routeName = route.name;
+    const routeName = utils.changeCase.paramCase(route.name);
     makeDirectory(path.resolve(data.directory,`client/src/routes/${routeName}`));
     utils.writeFileWithData(path.resolve(data.directory, `client/src/routes/${routeName}/${routeName}.ts`), {route}, path.resolve(data.directory, '.genx/templates/route.hbs'));
     utils.writeFileWithData(path.resolve(data.directory, `client/src/routes/${routeName}/${routeName}.template.ts`), {route}, path.resolve(data.directory, '.genx/templates/route.template.hbs'));

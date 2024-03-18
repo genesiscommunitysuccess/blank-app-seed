@@ -10,7 +10,7 @@ import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
 {{#each routes}}
-import { {{pascalCase this.name}} } from './{{this.name}}/{{this.name}}';
+import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
 
 // eslint-disable-next-line
@@ -57,7 +57,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           );
           configure(this.container, {
             autoConnect: true,
-            defaultRedirectUrl: '{{routes.[0].name}}',
+            defaultRedirectUrl: '{{kebabCase routes.[0].name}}',
             ...ssoSettings,
           });
           return define({
@@ -74,10 +74,10 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
       {{#each routes}}
       {
-        path: '{{this.name}}',
+        path: '{{kebabCase this.name}}',
         element: {{pascalCase this.name}},
         title: '{{sentenceCase this.name}}',
-        name: '{{this.name}}',
+        name: '{{kebabCase this.name}}',
         navItems: [
           {
             title: '{{sentenceCase this.name}}',
