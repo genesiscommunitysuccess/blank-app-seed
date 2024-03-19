@@ -1,9 +1,9 @@
 import { customElement, FASTElement } from '@microsoft/fast-element';
-import { {{pascalCase route.name}}Styles as styles } from './{{route.name}}.styles';
-import { {{pascalCase route.name}}Template as template } from './{{route.name}}.template';
+import { {{pascalCase route.name}}Styles as styles } from './{{kebabCase route.name}}.styles';
+import { {{pascalCase route.name}}Template as template } from './{{kebabCase route.name}}.template';
 
 @customElement({
-  name: '{{route.name}}-route',
+  name: '{{kebabCase route.name}}-route',
   template,
   styles,
 })

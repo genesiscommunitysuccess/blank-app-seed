@@ -19,11 +19,15 @@ module.exports = async (inquirer, prevAns = {}) => {
   ])
 
   let routesParsed;
-  try {
-    routesParsed = JSON.parse(routes);
-  } catch (error) {
-    console.error("Error parsing `routes` parameter as JSON:", error.message);
-    console.log("Falling back to the default routes value");
+  if (routes) {
+    try {
+      routesParsed = JSON.parse(routes);
+    } catch (error) {
+      console.error("Error parsing `routes` parameter as JSON:", error.message);
+      console.log("Falling back to the default routes value");
+      routesParsed = JSON.parse(defaultRoutes);
+    }
+  } else {
     routesParsed = JSON.parse(defaultRoutes);
   }
 
