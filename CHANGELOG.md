@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.0...v2.5.1) (2024-03-19)
+
+
+### Bug Fixes
+
+* consistent route file and web component naming GENC-176 (#151) 14a3b2a
+
 ## [2.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.4.0...v2.5.0) (2024-03-15)
 
 
