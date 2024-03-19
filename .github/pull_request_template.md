@@ -29,7 +29,7 @@ Add file / directory pointers.
 
 
 ```
-npx -y @genesislcap/genx@latest init prtest -x --ref YOUR-BRANCH-NAME
+npx -y @genesislcap/genx@latest init prtest -x --ref YOUR-BRANCH-NAME --no-npm
 ```
 
 
