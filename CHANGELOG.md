@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.2...v2.5.3) (2024-03-19)
+
+
+### Bug Fixes
+
+* add SqlEnableSequenceGeneration as true GENC-197 (#155) aeabbf2
+
 ## [2.5.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.1...v2.5.2) (2024-03-19)
 
 
