@@ -54,7 +54,7 @@ jobs:
           mkdir /tmp/create-pr
           cd /tmp/create-pr
           npm init -y
-          npm i @octokit/core -S
+          npm i @octokit/core@5 -S
           
           cat <<EOT >> /tmp/create-pr/index.js
           const { Octokit } = require('@octokit/core');
