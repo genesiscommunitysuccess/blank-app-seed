@@ -51,6 +51,8 @@ This project contains **server** and **client** directories which contain the se
 The server code for this project can be found [here](./server/README.md).
 It is built using a DSL-like definition based on the Kotlin language: GPAL.
 
+When first opening the project, if you receive a notification from IntelliJ IDE detecting Gradle project select the option to 'Load as gradle project'.
+
 ### Web Client
 
 The Web client for this project can be found [here](./client/README.md). It is built using Genesis's next
