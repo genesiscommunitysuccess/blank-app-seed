@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.3...v2.5.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* note about loading as Gradle project GENC-122 (#158) 14593b7
+
 ## [2.5.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.2...v2.5.3) (2024-03-19)
 
 
