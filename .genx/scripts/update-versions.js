@@ -20,8 +20,8 @@ const writeJSON = (json, path) => {
 };
 
 const UI = run('npm info @genesislcap/foundation-ui@latest version');
-const GSF = run(`jf rt s "libs-release-client/global/genesis/genesis-distribution/" --sort-by="name;created" --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | cut -d '/' -f 5`);
-const Auth = run(`jf rt s "libs-release-client/global/genesis/auth-distribution/" --sort-by="name;created" --sort-order=desc --limit=1 --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | cut -d '/' -f 5`);
+const GSF = run(`jf rt s "libs-release-client/global/genesis/genesis-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`);
+const Auth = run(`jf rt s "libs-release-client/global/genesis/auth-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`);
 const latest = { UI, GSF, Auth };
 
 console.log('Current:', current);
