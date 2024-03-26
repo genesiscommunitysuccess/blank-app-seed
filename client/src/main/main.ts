@@ -47,6 +47,10 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
     DOM.queueUpdate(() => {
       configureDesignSystem(this.provider, designTokens);
     });
+
+    {{#if fdc3}}
+    console.log('FDC3 listening logic here');
+    {{/if}}
   }
 
   disconnectedCallback() {

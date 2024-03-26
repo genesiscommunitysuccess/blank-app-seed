@@ -86,6 +86,10 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
+    {{#if fdc3}}
+    {{! Any FDC3 NPM dependencies here }}
+
+    {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",

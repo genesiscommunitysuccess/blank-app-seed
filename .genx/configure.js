@@ -15,6 +15,8 @@ module.exports = async (data, utils) => {
   registerPartials(utils);
 
   data.routes.forEach(route => {
+    // hack
+    route.fdc3 = data.fdc3;
     generateRoute(route, utils);
   });
 

@@ -8,6 +8,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   routesInto();
   const {
     routes = prevAns.routes,
+    fdc3 = prevAns.fdc3,
   } = await inquirer.prompt([
     {
       name: 'routes',
@@ -15,6 +16,13 @@ module.exports = async (inquirer, prevAns = {}) => {
       message: 'Pages config in json format',
       when: !prevAns.routes,
       default: defaultRoutes,
+    },
+    {
+      name: 'fdc3',
+      type: 'confirm',
+      message: 'Enable FDC3',
+      when: !prevAns.fdc3,
+      default: prevAns.fdc3 || false,
     },
   ])
 
@@ -33,5 +41,6 @@ module.exports = async (inquirer, prevAns = {}) => {
 
   return {
     routes: routesParsed,
+    fdc3,
   };
 };
