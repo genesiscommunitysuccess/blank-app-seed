@@ -12,9 +12,3 @@ sourceSets {
         }
     }
 }
-
-tasks {
-    copyDependencies {
-        enabled = false
-    }
-}
