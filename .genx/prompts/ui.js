@@ -9,6 +9,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   const {
     routes = prevAns.routes,
     fdc3 = prevAns.fdc3,
+    fdc3ListenChannel = prevAns.fdc3ListenChannel
   } = await inquirer.prompt([
     {
       name: 'routes',
@@ -23,6 +24,13 @@ module.exports = async (inquirer, prevAns = {}) => {
       message: 'Enable FDC3',
       when: !prevAns.fdc3,
       default: prevAns.fdc3 || false,
+    },
+    {
+      name: 'fdc3ListenChannel',
+      type: 'confirm',
+      message: 'Listen to an fdc channel in json format',
+      when: !prevAns.fdc3ListenChannel,
+      default: prevAns.fdc3ListenChannel || false,
     },
   ])
 
@@ -42,5 +50,6 @@ module.exports = async (inquirer, prevAns = {}) => {
   return {
     routes: routesParsed,
     fdc3,
+    fdc3ListenChannel
   };
 };
