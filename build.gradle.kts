@@ -1,6 +1,14 @@
 // Use base plugin to access base tasks (clean, assemble, check, and build).
 plugins {
     base
+    java
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
 }
 
 tasks {
