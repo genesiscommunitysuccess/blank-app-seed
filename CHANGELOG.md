@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.5...v2.5.6) (2024-03-27)
+
+
+### Bug Fixes
+
+* switching to Webpack dev build for PBC compatibility NOTIFY-119 (#165) 72c7f98
+
 ## [2.5.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.4...v2.5.5) (2024-03-25)
 
 
