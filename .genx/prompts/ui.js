@@ -28,11 +28,22 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'fdc3ListenChannel',
       type: 'confirm',
-      message: 'Listen to an fdc channel in json format',
+      message: 'Listen to an fdc channel config in json format',
       when: !prevAns.fdc3ListenChannel,
       default: prevAns.fdc3ListenChannel || false,
     },
   ])
+
+  let fdc3ListenChannelParsed;
+  if (fdc3ListenChannel) {
+    try {
+      fdc3ListenChannelParsed = JSON.parse(fdc3ListenChannel);
+    } catch (error) {
+      console.error("Error parsing `fdc3ListenChannel` parameter as JSON:", error.message);
+      console.log("Falling back to null for fdc3ListenChannel value");
+      fdc3ListenChannelParsed = null;
+    }
+  }
 
   let routesParsed;
   if (routes) {
@@ -50,6 +61,6 @@ module.exports = async (inquirer, prevAns = {}) => {
   return {
     routes: routesParsed,
     fdc3,
-    fdc3ListenChannel
+    fdc3ListenChannel: fdc3ListenChannelParsed
   };
 };

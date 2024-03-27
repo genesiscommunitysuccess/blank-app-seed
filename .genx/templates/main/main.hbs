@@ -151,13 +151,12 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
   }
 
   {{#if data.fdc3ListenChannel}}
-      async fdcReadyHandler() {
+  async fdcReadyHandler() {
+      const channel = await getOrCreateChannel('{{ data.fdc3ListenChannel.name }}')
 
-      const channel = await getOrCreateChannel('{{ data.fdc3ChannelName }}')
-
-      channel.addContextListener('{{ data.fdc3ChannelType }}', result => {
-        console.log('Received fdc3 channel message on: {{data.fdc3ChannelName}} channel, type: {{data.fdc3ChannelType}}', result)
+      channel.addContextListener('{{ data.fdc3ListenChannel.type }}', result => {
+        console.log('Received fdc3 channel message on: {{ data.fdc3ListenChannel.name }} channel, type: {{ data.fdc3ListenChannel.type }}', result)
       });
-      }
+  }
   {{/if}}
 }

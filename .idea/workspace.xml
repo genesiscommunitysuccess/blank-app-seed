@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90bbfb68-43ea-43fd-917d-65c06d2705b5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.genx/templates/main/main.hbs" afterDir="false" />
+    <list default="true" id="90bbfb68-43ea-43fd-917d-65c06d2705b5" name="Changes" comment="Adding fdc3 listen to channel config">
       <change beforePath="$PROJECT_DIR$/.genx/configure.js" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/configure.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.genx/prompts/ui.js" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/prompts/ui.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.genx/templates/main/main.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/templates/main/main.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/main.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,10 +185,24 @@
   "keyToString": {
     "git-widget-placeholder": "ac/GENC-224--fdc3-listen",
     "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.sourceCode.HTML",
     "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external"
   }
 }]]></component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Adding fdc3 listen to channel config">
+      <option name="closed" value="true" />
+      <created>1711545152084</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1711545152084</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Adding fdc3 listen to channel config" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding fdc3 listen to channel config" />
   </component>
 </project>
