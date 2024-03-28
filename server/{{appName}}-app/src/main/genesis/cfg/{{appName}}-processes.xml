@@ -11,8 +11,8 @@
 !
 -->
 <processes>
-<!--    <process name="{{upperCase appName}}_DATASERVER">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_DATASERVER">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx1024m -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-dataserver</module>-->
@@ -21,8 +21,8 @@
 <!--        <description>Displays real-time details</description>-->
 <!--        <language>pal</language>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_REQUEST_SERVER">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_REQUEST_SERVER">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx256m -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-requestserver</module>-->
@@ -31,8 +31,8 @@
 <!--        <description>Server one-shot requests for details</description>-->
 <!--        <language>pal</language>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_EVENT_HANDLER">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_EVENT_HANDLER">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx512m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-eventhandler</module>-->
@@ -42,8 +42,8 @@
 <!--        <classpath>{{appName}}-app*</classpath>-->
 <!--        <language>pal</language>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_CONSOLIDATOR">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_CONSOLIDATOR">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-consolidator</module>-->
@@ -52,8 +52,8 @@
 <!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
 <!--        <language>pal</language>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_STREAMER">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_STREAMER">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx128m -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-streamer</module>-->
@@ -62,8 +62,8 @@
 <!--        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>-->
 <!--        <language>pal</language>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_STREAMER_CLIENT">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_STREAMER_CLIENT">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx128m -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-streamerclient</module>-->
@@ -80,8 +80,8 @@
 <!--        <primaryOnly>true</primaryOnly>-->
 <!--        <package>global.genesis.eventhandler,global.genesis.evaluator</package>-->
 <!--    </process>-->
-<!--    <process name="{{upperCase appName}}_DATAPIPELINE">-->
-<!--        <groupId>{{upperCase appName}}</groupId>-->
+<!--    <process name="{{constantCase appName}}_DATAPIPELINE">-->
+<!--        <groupId>{{constantCase appName}}</groupId>-->
 <!--        <start>true</start>-->
 <!--        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-datapipeline</module>-->
