@@ -1,5 +1,5 @@
 {{#if data.fdc3ListenChannel}}
-import { getOrCreateChannel } from '@finos/fdc3'
+import { listenToChannel } from '../utils';
 {{/if}}
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
@@ -152,11 +152,13 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
 
   {{#if data.fdc3ListenChannel}}
   async fdcReadyHandler() {
-      const channel = await getOrCreateChannel('{{ data.fdc3ListenChannel.name }}')
-
-      channel.addContextListener('{{ data.fdc3ListenChannel.type }}', result => {
-        console.log('Received fdc3 channel message on: {{ data.fdc3ListenChannel.name }} channel, type: {{ data.fdc3ListenChannel.type }}', result)
-      });
+      listenToChannel('{{data.fdc3ListenChannel.name}}', '{{data.fdc3ListenChannel.type}}', result => {
+        console.log('Received fdc3 channel message on: {{data.fdc3ListenChannel.name}} channel, type: {{data.fdc3ListenChannel.type}}', result)
+        // ToDo Add your listening actions here
+        // Route to specific page
+        // Route.path.push(`[Route name]`);
+        // Or open a modal
+      })
   }
   {{/if}}
 }

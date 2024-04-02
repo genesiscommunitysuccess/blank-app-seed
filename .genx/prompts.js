@@ -13,11 +13,12 @@ module.exports = async (inquirer, prevAns = {}) => {
 
   const {apiHost, enableSSO} = await apiPrompts(inquirer, prevAns)
   const {groupId, applicationVersion, enableDeployPlugin} = await genesisServerPrompts(inquirer, prevAns);
-  const {routes} = await uiPrompts(inquirer, prevAns);
+  const {routes, fdc3ListenChannel } = await uiPrompts(inquirer, prevAns);
 
   return {
     apiHost,
     routes,
+    fdc3ListenChannel,
     enableSSO,
     groupId,
     applicationVersion,

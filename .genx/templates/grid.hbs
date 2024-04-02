@@ -1,4 +1,13 @@
-<zero-grid-pro ${ref('tile1grid1')}>
+<zero-grid-pro ${ref('tile1grid1')}
+    {{#if config.fdc3RowClick}}
+        :deferredGridOptions="${() => ({
+            onRowClicked: async (e: RowSelectedEvent) => {
+                const payload = e.node.isSelected() ? e.data : undefined;
+                sendMessageOnChannel('{{config.fdc3RowClick.channel}}', '{{config.fdc3RowClick.type}}', payload)
+            }
+        })}"
+    {{/if}}
+>
   <grid-pro-genesis-datasource
     resource-name="{{config.resourceName}}"
     {{#if config.snapshot}}

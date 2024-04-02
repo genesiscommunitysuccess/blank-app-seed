@@ -38,6 +38,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   if (fdc3ListenChannel) {
     try {
       fdc3ListenChannelParsed = JSON.parse(fdc3ListenChannel);
+      console.log(fdc3ListenChannelParsed, 'parsed');
     } catch (error) {
       console.error("Error parsing `fdc3ListenChannel` parameter as JSON:", error.message);
       console.log("Falling back to null for fdc3ListenChannel value");
