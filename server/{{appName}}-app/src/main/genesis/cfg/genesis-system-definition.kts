@@ -6,15 +6,15 @@ systemDefinition {
         item(name = "DbHost", value = "jdbc:h2:file:~/{{appName}}/server/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE")
         item(name = "DbQuotedIdentifiers", value = true)
         item(name = "DEPLOYED_PRODUCT", value = "{{appName}}")
-        item(name = "MqLayer", value = env["MQ_LAYER", "ZeroMQ"])
+        item(name = "MqLayer", value = "ZeroMQ")
         item(name = "AliasSource", value = "DB")
         item(name = "HookStateStore", value = "DB")
         item(name = "MetricsEnabled", value = "false")
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        env["DB_USERNAME"].takeIf { it.isNotBlank() }?.let { item(name = "DbUsername", value = it) }
-        env["DB_PASSWORD"].takeIf { it.isNotBlank() }?.let { item(name = "DbPassword", value = it) }
-        env["DB_SQL_CONNECTION_POOL_SIZE"].takeIf { it.isNotBlank() }?.let { item(name = "DbSqlConnectionPoolSize", value = it) }
+        item(name = "DbUsername", value = "Enter DB Username")
+        item(name = "DbPassword", value = "Enter DB Password")
+        item(name = "DbSqlConnectionPoolSize", value = "3")
         item(name = "DbMode", value = "VANILLA")
         item(name = "GenesisNetProtocol", value = "V2")
         item(name = "ResourcePollerTimeout", value = "5")
