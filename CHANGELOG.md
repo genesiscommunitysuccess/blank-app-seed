@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.6...v2.5.7) (2024-04-03)
+
+
+### Bug Fixes
+
+* support lowercase characters and spaces in route generation GENC-259 (#170) fd34c05
+
 ## [2.5.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.5...v2.5.6) (2024-03-27)
 
 
