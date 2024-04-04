@@ -14,8 +14,10 @@ module.exports = async (data, utils) => {
 
   registerPartials(utils);
 
-  data.routes.forEach(route => {
-    generateRoute(route, utils);
-  });
+	data.routes
+		.map((route) => ({ ...route, layoutKey: `${route.name}_${Date.now()}` }))
+		.forEach((route) => {
+			generateRoute(route, utils);
+		});
 
 };

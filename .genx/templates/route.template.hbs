@@ -3,7 +3,7 @@ import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
   {{#if route.tiles}}
-  <zero-layout auto-save-key="{{route.name}}">
+  <zero-layout auto-save-key="{{route.layoutKey}}">
       <zero-layout-region>
           {{#each route.tiles}}
           <zero-layout-item title="{{this.title}}">
