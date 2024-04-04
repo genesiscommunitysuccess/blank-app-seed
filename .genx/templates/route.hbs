@@ -2,11 +2,6 @@ import { customElement, FASTElement } from '@microsoft/fast-element';
 import { {{pascalCase route.name}}Styles as styles } from './{{kebabCase route.name}}.styles';
 import { {{pascalCase route.name}}Template as template } from './{{kebabCase route.name}}.template';
 
-{{#if route.fdc3}}
-import { Events } from '@ag-grid-community/core';
-import { GRID_READY_EVENT, ZeroGridPro } from '@genesislcap/foundation-zero-grid-pro';
-{{/if}}
-
 @customElement({
   name: '{{kebabCase route.name}}-route',
   template,
@@ -17,23 +12,4 @@ export class {{pascalCase route.name}} extends FASTElement {
   constructor() {
     super();
   }
-
-  {{#if route.fdc3}}
-  public tile1grid1!: ZeroGridPro;
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    this.tile1grid1.addEventListener(GRID_READY_EVENT, () => {
-      this.tile1grid1.gridApi.addEventListener(Events.EVENT_ROW_CLICKED, (e) =>
-        this.fireFDC3GridEvent(e),
-      );
-    });
-  }
-
-  fireFDC3GridEvent(payload) {
-    console.log('fdc3 logic goes here', payload);
-  }
-
-  {{/if}}
 }

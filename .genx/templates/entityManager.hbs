@@ -15,4 +15,15 @@
     {{#if config.snapshot}}
     :datasourceConfig="${() => ({isSnapshot: {{ config.snapshot }} })}"
     {{/if}}
+    {{#if config.fdc3RowClick}}
+    :gridOptions="${() => {
+          return {
+            onRowClicked: async (e: RowSelectedEvent) => {
+              const payload = e.data;
+              sendMessageOnChannel('{{config.fdc3RowClick.channel}}', '{{config.fdc3RowClick.type}}', payload)
+            }
+          }
+        }
+    }"
+    {{/if}}
 ></entity-management>

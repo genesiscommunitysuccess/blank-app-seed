@@ -1,3 +1,6 @@
+{{#if data.fdc3ListenChannel}}
+import { listenToChannel, onFdc3Ready } from '../utils';
+{{/if}}
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
@@ -14,7 +17,8 @@ import designTokens from '../styles/design-tokens.json';
 import { MainStyles as styles } from './main.styles';
 import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 
-const name = '{{rootElement}}';
+
+const name = '{{ data.rootElement }}';
 
 /**
  * @fires store-connected - Fired when the store is connected.
@@ -48,8 +52,8 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
       configureDesignSystem(this.provider, designTokens);
     });
 
-    {{#if fdc3}}
-    console.log('FDC3 listening logic here');
+    {{#if data.fdc3ListenChannel}}
+        onFdc3Ready(() => this.fdcReadyHandler())
     {{/if}}
   }
 
@@ -141,4 +145,16 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
   protected disconnectStore() {
     this.$emit('store-disconnected');
   }
+
+  {{#if data.fdc3ListenChannel}}
+  async fdcReadyHandler() {
+      listenToChannel('{{data.fdc3ListenChannel.name}}', '{{data.fdc3ListenChannel.type}}', result => {
+        console.log('Received fdc3 channel message on: {{data.fdc3ListenChannel.name}} channel, type: {{data.fdc3ListenChannel.type}}', result)
+        // ToDo Add your listening actions here
+        // Route to specific page
+        // Route.path.push(`[Route name]`);
+        // Or open a modal
+      })
+  }
+  {{/if}}
 }
