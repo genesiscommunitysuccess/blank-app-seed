@@ -19,6 +19,7 @@ module.exports = async (data, utils) => {
   data.routes.forEach(route => {
     // hack
     route.fdc3 = data.fdc3;
+    route.fdc3RowClick = !!route.tiles.some(t => !!t.config.fdc3RowClick);
     generateRoute(route, utils);
   });
 

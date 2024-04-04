@@ -5,7 +5,6 @@ import { {{pascalCase route.name}}Template as template } from './{{kebabCase rou
 {{#if route.fdc3}}
 import { Events } from '@ag-grid-community/core';
 import { GRID_READY_EVENT, ZeroGridPro } from '@genesislcap/foundation-zero-grid-pro';
-import { sendMessageOnChannel } from '../../../utils';
 {{/if}}
 
 @customElement({
@@ -36,14 +35,6 @@ export class {{pascalCase route.name}} extends FASTElement {
     console.log('fdc3 logic goes here', payload);
   }
 
-  {{#if route.config.fdc3RowClick}}
-      @observable gridOptions = {
-          onRowClicked: async (e: RowSelectedEvent) => {
-              const payload = e.node.isSelected() ? e.data : undefined;
-              sendMessageOnChannel('{{route.config.fdc3RowClick.channel}}', '{{route.config.fdc3RowClick.type}}', payload)
-          }
-      };
-  {{/if}}
 
   {{/if}}
 }
