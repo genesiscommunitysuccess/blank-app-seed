@@ -4,64 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90bbfb68-43ea-43fd-917d-65c06d2705b5" name="Changes" comment="Adding fdc3 listen to channel config">
-      <change beforePath="$PROJECT_DIR$/.genx/configure.js" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/configure.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.genx/prompts/ui.js" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/prompts/ui.js" afterDir="false" />
+    <list default="true" id="a58874ce-5b26-46a3-b08a-358a5687e510" name="Changes" comment="Bumping version of foundation-ui">
       <change beforePath="$PROJECT_DIR$/.genx/templates/main/main.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/templates/main/main.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/fdc3.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/fdc3.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <projects_view>
-          <tree_state>
-            <expand />
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="ac/GENC-224" />
-      </map>
-    </option>
-  </component>
-  <component name="GitToolBoxStore">
-    <option name="recentBranches">
-      <RecentBranches>
-        <option name="branchesForRepo">
-          <list>
-            <RecentBranchesForRepo>
-              <option name="branches">
-                <list>
-                  <RecentBranch>
-                    <option name="branchName" value="ac/GENC-224--fdc3-listen" />
-                    <option name="lastUsedInstant" value="1711470969" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="ac/GENC-224" />
-                    <option name="lastUsedInstant" value="1711470950" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1711470949" />
-                  </RecentBranch>
-                </list>
-              </option>
-              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
-            </RecentBranchesForRepo>
-          </list>
-        </option>
-      </RecentBranches>
-    </option>
   </component>
   <component name="KotlinScriptingSettings" supportWarning="false">
     <scriptDefinition className="global.genesis.dictionary.pal.script.FieldsScript" definitionName="Genesis Fields Dictionary">
@@ -185,24 +136,14 @@
   "keyToString": {
     "git-widget-placeholder": "ac/GENC-224--fdc3-listen",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.sourceCode.HTML",
     "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external"
   }
 }]]></component>
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="Adding fdc3 listen to channel config">
-      <option name="closed" value="true" />
-      <created>1711545152084</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1711545152084</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding fdc3 listen to channel config" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding fdc3 listen to channel config" />
+    <MESSAGE value="Bumping version of foundation-ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bumping version of foundation-ui" />
   </component>
 </project>

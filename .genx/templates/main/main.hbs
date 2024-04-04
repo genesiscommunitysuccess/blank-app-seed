@@ -1,5 +1,5 @@
 {{#if data.fdc3ListenChannel}}
-import { listenToChannel } from '../utils';
+import { listenToChannel, onFdc3Ready } from '../utils';
 {{/if}}
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
@@ -53,11 +53,7 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
     });
 
     {{#if data.fdc3ListenChannel}}
-        if (window.fdc3) {
-            await this.fdcReadyHandler();
-        } else {
-            window.addEventListener('fdc3Ready', async () => this.fdcReadyHandler());
-        }
+        onFdc3Ready(() => this.fdcReadyHandler())
     {{/if}}
   }
 
