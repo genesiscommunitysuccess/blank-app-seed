@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module version="4">
-  <component name="AdditionalModuleElements">
-    <content url="file://$MODULE_DIR$/../../../../../../../server/build/internal-modules/{{appName}}-dictionary-cache/{{appName}}-generated-view" dumb="true">
-      <excludeFolder url="file://$MODULE_DIR$/../../../../../../../server/build/internal-modules/{{appName}}-dictionary-cache/{{appName}}-generated-view" />
-    </content>
-  </component>
-</module>
