@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.8...v2.5.9) (2024-04-05)
+
+
+### Bug Fixes
+
+* update .idea module files for exclusions GENC-205 (#172) e6fb5ec
+
 ## [2.5.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.7...v2.5.8) (2024-04-04)
 
 
