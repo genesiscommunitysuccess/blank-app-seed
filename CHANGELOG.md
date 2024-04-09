@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.9...v2.5.10) (2024-04-09)
+
+
+### Bug Fixes
+
+* update genesis dependency to fix multiple files shown in intellij search GENC-205 (#174) 857b90e, closes PSD-9
+
 ## [2.5.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.8...v2.5.9) (2024-04-05)
 
 
