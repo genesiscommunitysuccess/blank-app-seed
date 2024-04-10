@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.6.0...v2.7.0) (2024-04-10)
+
+
+### Features
+
+* support for overriding default column definitions and form schemas GENC-242 (#176) 297c408
+
 ## [2.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.10...v2.6.0) (2024-04-10)
 
 
