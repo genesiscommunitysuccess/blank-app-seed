@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.10...v2.6.0) (2024-04-10)
+
+
+### Features
+
+* support to generate empty data csvs (GENC-280) (#175) a992a91
+
 ## [2.5.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.5.9...v2.5.10) (2024-04-09)
 
 
