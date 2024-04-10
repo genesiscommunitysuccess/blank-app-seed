@@ -1,1 +1,9 @@
-<foundation-form resourceName="{{config.resourceName}}"></foundation-form>
+<foundation-form
+  resourceName="{{config.resourceName}}"
+  {{#if config.uischema}}
+  :uischema=${() => (
+    {{{config.uischema}}}
+  )}
+  {{/if}}
+>
+</foundation-form>
