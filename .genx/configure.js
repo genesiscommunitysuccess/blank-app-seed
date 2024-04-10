@@ -20,7 +20,7 @@ module.exports = async (data, utils) => {
 			generateRoute(route, utils);
 		});
 
-  data.emptyCsvs
+  data.csv
     .map(entity => ({
       name: entity.name.toUpperCase(),
       fields: entity.fields.map( (field, index) => ({name: field.toUpperCase(), isLast: index === (entity.fields.length -1) }))
