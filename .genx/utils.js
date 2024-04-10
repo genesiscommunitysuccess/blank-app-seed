@@ -22,8 +22,13 @@ const generateRoute = (route, { writeFileWithData, changeCase }) => {
   writeFileWithData(resolve(__dirname, `../client/src/routes/${routeName}/${routeName}.styles.ts`), {route}, resolve(__dirname, 'templates/route.styles.hbs'));
 };
 
+const generateEmptyCsv = (entity, appName, { writeFileWithData }) => {
+  writeFileWithData(resolve(__dirname, `../server/{{appName}}-app/src/main/genesis/data/${entity.name}.csv`), {entity}, resolve(__dirname, 'templates/csv.hbs'));
+};
+
 module.exports = {
   makeDirectory,
   registerPartials,
-  generateRoute
+  generateRoute,
+  generateEmptyCsv,
 };
