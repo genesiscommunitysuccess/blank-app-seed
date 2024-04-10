@@ -1,10 +1,23 @@
 const {mavenArtifactVersionRegex} = require('./validators');
 
+const parseemptyCsvs = (inputEntities) => {
+  if (!inputEntities){
+    return [];
+  }
+  try {
+    return JSON.parse(inputEntities);
+  } catch (error) {
+    console.error("Error parsing `emptyCsvs` parameter as JSON:", error.message);
+    return [];
+  }
+}
+
 module.exports = async (inquirer, prevAns = {}) => {
     const {
       groupId = prevAns.groupId,
       applicationVersion = prevAns.applicationVersion,
-      enableDeployPlugin = prevAns.enableDeployPlugin
+      enableDeployPlugin = prevAns.enableDeployPlugin,
+      emptyCsvs = prevAns.emptyCsvs,
     } = await inquirer.prompt([
       {
         name: 'groupId',
@@ -28,10 +41,19 @@ module.exports = async (inquirer, prevAns = {}) => {
         when: prevAns.enableDeployPlugin === undefined,
         default: prevAns.enableDeployPlugin || false
       },
+      {
+        name: 'emptyCsvs',
+        type: 'input',
+        message: 'Generate empty CSV for entities? (config in json format)',
+        when: !prevAns.emptyCsvs,
+        default: '[]'
+      },
     ]);
+
     return {
       groupId,
       applicationVersion,
       enableDeployPlugin,
+      emptyCsvs: parseemptyCsvs(emptyCsvs)
     };
   };
