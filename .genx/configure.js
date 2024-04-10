@@ -1,5 +1,5 @@
 const versions = require('./versions.json');
-const { registerPartials, generateRoute, generateEmptyCsv } = require('./utils');
+const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData } = require('./utils');
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -14,11 +14,15 @@ module.exports = async (data, utils) => {
 
   registerPartials(utils);
 
-	data.routes
-		.map((route) => ({ ...route, layoutKey: `${route.name}_${Date.now()}` }))
-		.forEach((route) => {
-			generateRoute(route, utils);
-		});
+  data.routes
+    .forEach((route) => {
+      if (!route.name) {
+        console.warn('Invalid route - missing name', route);
+        return;
+      }
+      const routeData = formatRouteData(route);
+      generateRoute(routeData, utils);
+    });
 
   data.csv
     .map(entity => ({
@@ -28,5 +32,4 @@ module.exports = async (data, utils) => {
     .forEach(entity => {
       generateEmptyCsv(entity, data.appName, utils);
     });
-
 };

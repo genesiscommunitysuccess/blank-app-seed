@@ -26,9 +26,39 @@ const generateEmptyCsv = (entity, appName, { writeFileWithData }) => {
   writeFileWithData(resolve(__dirname, `../server/{{appName}}-app/src/main/genesis/data/${entity.name}.csv`), {entity}, resolve(__dirname, 'templates/csv.hbs'));
 };
 
+const formatJSONValue = (value) => {
+  try {
+    return value ? JSON.stringify(value, null, 2) : undefined;
+  } catch (e) {
+    console.warn('Could not serialise value to JSON', value, e);
+  }
+}
+
+const formatRouteData = (route) => {
+  const layoutKey = route?.layoutKey || `${route.name}_${Date.now()}`;
+  const tiles = route.tiles?.map(tile => ({
+    ...tile,
+    config: {
+      ...(tile.config || {}),
+      createFormUiSchema: formatJSONValue(tile.config?.createFormUiSchema),
+      updateFormUiSchema: formatJSONValue(tile.config?.updateFormUiSchema),
+      deferredGridOptions: formatJSONValue(tile.config?.deferredGridOptions),
+      uischema: formatJSONValue(tile.config?.uischema),
+      columns: formatJSONValue(tile.config?.columns)
+    }
+  }));
+
+  return {
+    ...route,
+    layoutKey,
+    tiles
+  }
+}
+
 module.exports = {
   makeDirectory,
   registerPartials,
   generateRoute,
   generateEmptyCsv,
+  formatRouteData,
 };

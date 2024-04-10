@@ -4,6 +4,11 @@
     {{#if config.snapshot}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
+    {{#if config.deferredGridOptions}}
+    :deferredGridOptions=${() => (
+      {{{config.deferredGridOptions}}}
+    )}
+    {{/if}}
   >
   </grid-pro-genesis-datasource>
 </zero-grid-pro>
