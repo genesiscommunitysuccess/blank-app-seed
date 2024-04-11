@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.7.0...v2.8.0) (2024-04-11)
+
+
+### Features
+
+* global foundation-ui error handling - overlays [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#179) 4eff966
+
 ## [2.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.6.0...v2.7.0) (2024-04-10)
 
 
