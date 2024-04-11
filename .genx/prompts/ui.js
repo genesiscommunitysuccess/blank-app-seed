@@ -1,37 +1,38 @@
-const routesInto = () => console.log(`
+const {parseJSONArgument} = require('../utils');
+
+const defaultRoutes = [{ name: 'home' }];
+const parseRoutes = parseJSONArgument('routes', defaultRoutes);
+const routesIntro = () => console.log(`
   Pages to be added to the navigation header
 `);
 
-const defaultRoutes = '[{"name":"home"}]';
+const defaultUI = {};
+const parseUI = parseJSONArgument('ui', defaultUI);
 
 module.exports = async (inquirer, prevAns = {}) => {
-  routesInto();
+  routesIntro();
   const {
     routes = prevAns.routes,
+    ui = prevAns.ui,
   } = await inquirer.prompt([
     {
       name: 'routes',
       type: 'input',
-      message: 'Pages config in json format',
+      message: 'Pages config in JSON format',
       when: !prevAns.routes,
-      default: defaultRoutes,
+      default: JSON.stringify(defaultRoutes),
+    },
+    {
+      name: 'ui',
+      type: 'input',
+      message: 'UI configuration in JSON format',
+      when: !prevAns.ui,
+      default: JSON.stringify(defaultUI),
     },
   ])
 
-  let routesParsed;
-  if (routes) {
-    try {
-      routesParsed = JSON.parse(routes);
-    } catch (error) {
-      console.error("Error parsing `routes` parameter as JSON:", error.message);
-      console.log("Falling back to the default routes value");
-      routesParsed = JSON.parse(defaultRoutes);
-    }
-  } else {
-    routesParsed = JSON.parse(defaultRoutes);
-  }
-
   return {
-    routes: routesParsed,
+    routes: parseRoutes(routes),
+    ui: parseUI(ui),
   };
 };
