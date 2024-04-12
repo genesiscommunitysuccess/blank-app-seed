@@ -1,10 +1,9 @@
 {{#if FDC3.includeDependencies}}
 import { getOrCreateChannel, raiseIntent, addIntentListener } from '@finos/fdc3';
 {{/if}}
-
 export const isFDC3 = (): boolean => !!(window as any).fdc3;
-
 {{#if FDC3.includeDependencies}}
+
 export const onFDC3Ready = async (FDC3ReadyCb: () => any): Promise<void> => {
   isFDC3()
     ? await FDC3ReadyCb()

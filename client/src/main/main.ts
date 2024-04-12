@@ -105,8 +105,8 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
     });
     {{/each}}
   };
-  {{/if}}
 
+  {{/if}}
   private registerDIDependencies() {
     this.container.register(
       Registration.transient(DefaultRouteRecognizer, DefaultRouteRecognizer),
