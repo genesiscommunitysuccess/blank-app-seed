@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.9.0...v2.10.0) (2024-04-12)
+
+
+### Features
+
+* new layout types GENC-286 (#182) 06a6641
+
 ## [2.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.8.0...v2.9.0) (2024-04-12)
 
 
