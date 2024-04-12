@@ -1,0 +1,7 @@
+<zero-layout-region>
+    {{#each route.tiles}}
+    <zero-layout-item title="{{this.title}}">
+        {{> (lookup . 'type') }}
+    </zero-layout-item>
+    {{/each}}
+</zero-layout-region>
