@@ -3,7 +3,7 @@ systemDefinition {
         item(name = "DbLayer", value = "SQL")
         item(name = "SqlEnableSequenceGeneration", value = true)
         item(name = "DictionarySource", value = "DB")
-        item(name = "DbHost", value = "jdbc:h2:file:~/{{appName}}/server/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE")
+        item(name = "DbHost", value = "jdbc:h2:file:~/genesis-local-db/{{appName}}/server/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE")
         item(name = "DbQuotedIdentifiers", value = true)
         item(name = "DEPLOYED_PRODUCT", value = "{{appName}}")
         item(name = "MqLayer", value = "ZeroMQ")
