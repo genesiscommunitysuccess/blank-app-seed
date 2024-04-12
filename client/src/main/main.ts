@@ -11,11 +11,11 @@ import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
 import { Store, StoreEventDetailMap } from '../store';
 import designTokens from '../styles/design-tokens.json';
-import { MainStyles as styles } from './main.styles';
-import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from '../utils';
 {{/if}}
+import { MainStyles as styles } from './main.styles';
+import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 
 const name = '{{rootElement}}';
 
@@ -98,8 +98,8 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
   {{#if FDC3.channels.length}}
   FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
-    listenToChannel('{{this.name}}', '{{this.type}}', result => {
-      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result)
+    listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
+      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
       // TODO: Add your listener logic here
       // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
     });
