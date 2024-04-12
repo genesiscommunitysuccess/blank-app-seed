@@ -4,9 +4,9 @@
     {{#if config.snapshot}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
-    {{#if config.deferredGridOptions}}
+    {{#if config.gridOptions}}
     :deferredGridOptions=${() => (
-      {{{config.deferredGridOptions}}}
+      {{{config.gridOptions}}}
     )}
     {{/if}}
   >

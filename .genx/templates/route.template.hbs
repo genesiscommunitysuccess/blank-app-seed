@@ -1,4 +1,7 @@
 import { html } from '@microsoft/fast-element';
+{{#if route.FDC3EventHandlersEnabled}}
+import { sendEventOnChannel } from '../../utils';
+{{/if}}
 import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`

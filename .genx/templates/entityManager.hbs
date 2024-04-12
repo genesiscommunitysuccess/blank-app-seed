@@ -22,6 +22,11 @@
     {{#if config.deleteEvent}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}
+    {{#if config.gridOptions}}
+    :gridOptions=${() => (
+      {{{config.gridOptions}}}
+    )}
+    {{/if}}
     {{#if config.snapshot}}
     :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
     {{/if}}
