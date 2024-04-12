@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.8.0...v2.9.0) (2024-04-12)
+
+
+### Features
+
+* FDC3 support GENC-224 (#180) ac35e42
+
 ## [2.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.7.0...v2.8.0) (2024-04-11)
 
 
