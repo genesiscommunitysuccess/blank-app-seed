@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.10.0...v2.11.0) (2024-04-15)
+
+
+### Features
+
+* Add parent folder for h2 database GENC-289 (#181) ee8b51c
+
 ## [2.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.9.0...v2.10.0) (2024-04-12)
 
 
