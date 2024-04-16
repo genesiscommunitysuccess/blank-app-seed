@@ -9,17 +9,15 @@
 name: Check PR title
 
 on:
-  pull_request_target:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  workflow_call:
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
+  check-pr-title:
+    runs-on: appdev-selfhosted-al2023
     steps:
-      - uses: aslafy-z/conventional-pr-title-action@v3
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: deepakputhraya/action-pr-title@master
+        with:
+          regex: '^build\(deps\).*$|.*\([A-Z]+-\d+\)'
+          allowed_prefixes: 'feat,fix,chore,refactor,build,chore,ci,docs,style,refactor,perf,test,BREAKING CHANGE'
