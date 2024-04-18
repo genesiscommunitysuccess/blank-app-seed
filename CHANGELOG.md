@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.0...v2.11.1) (2024-04-18)
+
+
+### Bug Fixes
+
+* copying auth data folder to genesis-home and license report plugin version (GSF-6771) (#186) d1369cc, closes PSD-9
+
 ## [2.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.10.0...v2.11.0) (2024-04-15)
 
 
