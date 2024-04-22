@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.0.0...v3.1.0) (2024-04-22)
+
+
+### Features
+
+* enable cell/row flashing in grids GENC-311 (#188) 9cce9df
+
 ## [3.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.1...v3.0.0) (2024-04-22)
 
 
