@@ -111,6 +111,7 @@
     "@microsoft/fast-foundation": "^2.33.4",
     "@microsoft/fast-router": "^0.4.2",
     "@microsoft/fast-web-utilities": "^5.1.0",
+    "numeral": "2.0.6",
     "rxjs": "^7.5.4",
     "tslib": "^2.3.1"
   },
