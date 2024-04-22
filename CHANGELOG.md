@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.1...v3.0.0) (2024-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* reversing logic to check for artifacts in the release repo by default (DVOP-630) (#187)
+
+### Bug Fixes
+
+* reversing logic to check for artifacts in the release repo by default (DVOP-630) (#187) 6212261
+
 ## [2.11.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.0...v2.11.1) (2024-04-18)
 
 
