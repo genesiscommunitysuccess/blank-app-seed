@@ -68,10 +68,10 @@ allprojects {
         }
         mavenCentral()
         maven {
-            val repoUrl = if(properties["clientSpecific"] == "true") {
-                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
-            } else {
+            val repoUrl = if(properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
             }
             url = uri(repoUrl)
             credentials {

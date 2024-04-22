@@ -13,10 +13,10 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            val repoUrl = if(extra.properties["clientSpecific"] == "true") {
-                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
-            } else {
+            val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
             }
             url = uri(repoUrl)
             credentials {
