@@ -42,7 +42,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew build --debug
+        run: ./gradlew build
 
       - name: Lint UI
         working-directory: /tmp/testapp/client
