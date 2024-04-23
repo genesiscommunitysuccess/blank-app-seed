@@ -47,9 +47,11 @@ const gridOptionsSerializer = (options, pad = '      ') => {
       const value = options[key];
       if (key === 'columns') {
         output += `${pad}${'columnDefs'}: ${gridColumnsSerializer(value)},\n`; 
-      } else if (value?.type === 'function') {
+      } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
         const args =  value.arguments?.map(JSON.stringify).join(', ');
         output += `${pad}${key}: ${value.name}(${args}),\n`;
+      } else if (key === 'hide') {
+        output += `${pad}${key}: ${value},\n`;
       } else {
         output += `${pad}${key}: ${formatJSONValue(value)},\n`;
       }
@@ -66,22 +68,8 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     return undefined;
   }
   try {
-    const columnsSerialized = columns.map((column) => {
-      let output = `${pad}{\n`;
-      Object.keys(column).forEach((key) => {
-        const value = column[key];
-        if (key === 'valueFormatter') {
-          const args =  value.arguments?.map(JSON.stringify).join(', ');
-          output += `${pad}${key}: ${value.name}(${args}),\n`;
-        } else if (key === 'hide') {
-          output += `${pad}${key}: ${value},\n`;
-        } else {
-          output += `${pad}${key}: ${formatJSONValue(value)},\n`;
-        }
-      });
-      return output += `${pad}}\n`;
-  });
-    return `[\n${columnsSerialized}]`;
+    const columnsSerialized = columns.map((column) => gridOptionsSerializer(column));
+    return `[\n${pad}${columnsSerialized}]`;
   } catch (e) {
     return undefined;
   }
