@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.1.0...v3.2.0) (2024-04-23)
+
+
+### Features
+
+* add support for number formatting GENC-265 (#189) cf6aeae
+
 ## [3.1.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.0.0...v3.1.0) (2024-04-22)
 
 
