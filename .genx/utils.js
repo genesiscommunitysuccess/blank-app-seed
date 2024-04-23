@@ -45,9 +45,13 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     let output = `{\n`;
     Object.keys(options).forEach((key) => {
       const value = options[key];
-      if (value?.type === 'function') {
+      if (key === 'columns') {
+        output += `${pad}${'columnDefs'}: ${gridColumnsSerializer(value)},\n`; 
+      } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
         const args =  value.arguments?.map(JSON.stringify).join(', ');
         output += `${pad}${key}: ${value.name}(${args}),\n`;
+      } else if (key === 'hide') {
+        output += `${pad}${key}: ${value},\n`;
       } else {
         output += `${pad}${key}: ${formatJSONValue(value)},\n`;
       }
@@ -58,6 +62,18 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     return undefined;
   }
 };
+
+ const gridColumnsSerializer = (columns, pad = '      ') => {
+  if (!columns) {
+    return undefined;
+  }
+  try {
+    const columnsSerialized = columns.map((column) => gridOptionsSerializer(column));
+    return `[\n${pad}${columnsSerialized}]`;
+  } catch (e) {
+    return undefined;
+  }
+}
 
 const validateRoute = (route) => {
   if (!route.name) {
@@ -90,7 +106,7 @@ const formatRouteData = (route) => {
       createFormUiSchema: formatJSONValue(tile.config?.createFormUiSchema),
       updateFormUiSchema: formatJSONValue(tile.config?.updateFormUiSchema),
       uischema: formatJSONValue(tile.config?.uischema),
-      columns: formatJSONValue(tile.config?.columns)
+      columns: gridColumnsSerializer(tile.config?.columns)
     }
   }));
 

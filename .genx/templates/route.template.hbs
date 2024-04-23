@@ -1,7 +1,5 @@
 import { html } from '@microsoft/fast-element';
-{{#if route.FDC3EventHandlersEnabled}}
-import { sendEventOnChannel } from '../../utils';
-{{/if}}
+import { getNumberFormatter{{#if route.FDC3EventHandlersEnabled}}, sendEventOnChannel{{/if}} } from '../../utils';
 import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
