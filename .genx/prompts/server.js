@@ -5,18 +5,18 @@ const parsecsv = parseJSONArgument('csv', []);
 
 module.exports = async (inquirer, prevAns = {}) => {
     const {
-      projectDescription = prevAns.projectDescription,
+      description = prevAns.description,
       groupId = prevAns.groupId,
       applicationVersion = prevAns.applicationVersion,
       enableDeployPlugin = prevAns.enableDeployPlugin,
       csv = prevAns.csv,
     } = await inquirer.prompt([
       {
-        name: 'projectDescription',
+        name: 'description',
         type: 'input',
         message: 'Project Description',
-        when: !prevAns.projectDescription,
-        default:' '
+        when: !prevAns.description,
+        default:''
       },
       {
         name: 'groupId',
@@ -50,7 +50,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     ]);
 
     return {
-      projectDescription,
+      description,
       groupId,
       applicationVersion,
       enableDeployPlugin,
