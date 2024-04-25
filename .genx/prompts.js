@@ -12,13 +12,14 @@ module.exports = async (inquirer, prevAns = {}) => {
   License: ${license}`);
 
   const {apiHost, enableSSO} = await apiPrompts(inquirer, prevAns)
-  const {groupId, applicationVersion, enableDeployPlugin, csv} = await genesisServerPrompts(inquirer, prevAns);
+  const {projectDescription, groupId, applicationVersion, enableDeployPlugin, csv} = await genesisServerPrompts(inquirer, prevAns);
   const {routes, ui} = await uiPrompts(inquirer, prevAns);
 
   return {
     apiHost,
     routes,
     enableSSO,
+    projectDescription,
     groupId,
     applicationVersion,
     enableDeployPlugin,
