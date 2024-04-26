@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.0...v3.3.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* add webpack to plugin ui command. (GENC-372) (#195) 930bab3
+
 ## [3.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.2.0...v3.3.0) (2024-04-23)
 
 
