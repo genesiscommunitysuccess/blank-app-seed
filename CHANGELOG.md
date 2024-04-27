@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.1...v3.4.0) (2024-04-27)
+
+
+### Features
+
+* Add PrimaryIfSingleNode system definition setting to automatically set a cluster node as primary if no other hosts are defined (GSF-6789) (#196) 667bf30
+
 ## [3.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.0...v3.3.1) (2024-04-26)
 
 
