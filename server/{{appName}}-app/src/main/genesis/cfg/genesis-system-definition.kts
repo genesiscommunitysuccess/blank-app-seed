@@ -39,6 +39,7 @@ systemDefinition {
             }
 
             item(name = "DbNamespace", value = "{{appName}}")
+            item(name = "PrimaryIfSingleNode", value = "true")
             item(name = "ClusterPort", value = "6000")
             item(name = "location", value = "LO")
             item(name = "LogFramework", value = "LOG4J2")
