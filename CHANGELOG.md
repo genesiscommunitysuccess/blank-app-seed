@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.0...v3.5.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* add hostPath to login configuration (AUTH-422) (#199) d51825e
+
 ## [3.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.2...v3.5.0) (2024-04-29)
 
 
