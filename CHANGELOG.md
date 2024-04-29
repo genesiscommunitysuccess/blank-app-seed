@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.4.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.1...v3.4.2) (2024-04-29)
+
+
+### Bug Fixes
+
+* default HTML page title to app name GENC-375 (#197) 5134fd4
+
+## [3.4.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.0...v3.4.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* remove side-bar menu contents GENC-371 (#194) b28e908
+
+## [3.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.1...v3.4.0) (2024-04-27)
+
+
+### Features
+
+* Add PrimaryIfSingleNode system definition setting to automatically set a cluster node as primary if no other hosts are defined (GSF-6789) (#196) 667bf30
+
+## [3.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.0...v3.3.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* add webpack to plugin ui command. (GENC-372) (#195) 930bab3
+
 ## [3.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.2.0...v3.3.0) (2024-04-23)
 
 
