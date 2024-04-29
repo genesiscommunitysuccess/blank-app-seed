@@ -56,6 +56,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
             '@genesislcap/foundation-login'
           );
           configure(this.container, {
+            hostPath: 'login',
             autoConnect: true,
             defaultRedirectUrl: '{{kebabCase routes.[0].name}}',
             ...ssoSettings,
