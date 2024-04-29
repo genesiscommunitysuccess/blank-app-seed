@@ -16,7 +16,7 @@ module.exports = async (inquirer, prevAns = {}) => {
         type: 'input',
         message: 'Project Description',
         when: !prevAns.description,
-        default:''
+        default:'\n'
       },
       {
         name: 'groupId',

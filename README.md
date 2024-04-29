@@ -5,7 +5,6 @@ their projects. Each seed adheres to strict Genesis best practices, and has pass
 accessibility checks. 
 
 {{description}}
-
 {{!
 
 # Testing
