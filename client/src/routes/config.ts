@@ -39,7 +39,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
 
   async configure() {
     this.configureAnalytics();
-    this.title = 'Blank App Demo';
+    this.title = '{{capitalCase appName}}';
     this.defaultLayout = defaultLayout;
 
     const authPath = 'login';
