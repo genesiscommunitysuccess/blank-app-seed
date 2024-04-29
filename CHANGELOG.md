@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.1...v3.4.2) (2024-04-29)
+
+
+### Bug Fixes
+
+* default HTML page title to app name GENC-375 (#197) 5134fd4
+
 ## [3.4.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.0...v3.4.1) (2024-04-29)
 
 
