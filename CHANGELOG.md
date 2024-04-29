@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.2...v3.5.0) (2024-04-29)
+
+
+### Features
+
+* added project description to README. (GENC-356) (#191) b5fd5df
+
 ## [3.4.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.1...v3.4.2) (2024-04-29)
 
 
