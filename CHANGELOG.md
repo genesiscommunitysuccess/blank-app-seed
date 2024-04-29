@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.0...v3.4.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* remove side-bar menu contents GENC-371 (#194) b28e908
+
 ## [3.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.1...v3.4.0) (2024-04-27)
 
 
