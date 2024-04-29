@@ -4,6 +4,7 @@ This project has been created from the Genesis Blank Application Seed. Our seeds
 their projects. Each seed adheres to strict Genesis best practices, and has passed numerous performance, compliance and
 accessibility checks. 
 
+{{description}}
 {{!
 
 # Testing
