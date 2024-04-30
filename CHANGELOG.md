@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.2...v3.6.0) (2024-04-30)
+
+
+### Features
+
+* upgrading to GSF 7.2 (#200) b2db27c
+
 ## [3.5.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.1...v3.5.2) (2024-04-30)
 
 
