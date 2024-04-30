@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.1...v3.5.2) (2024-04-30)
+
+
+### Bug Fixes
+
+* updated default user details + added profiles. (GENC-357) (#193) 044f0f4
+
 ## [3.5.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.0...v3.5.1) (2024-04-29)
 
 
