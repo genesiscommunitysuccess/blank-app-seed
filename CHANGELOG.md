@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.6.0...v3.7.0) (2024-05-02)
+
+
+### Features
+
+* upgrading to GSF 7.2.1 - always start evaluator. (GENC-415) (#201) 3fb4277
+
 ## [3.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.2...v3.6.0) (2024-04-30)
 
 
