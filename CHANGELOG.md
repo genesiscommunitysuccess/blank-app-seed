@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.0...v3.7.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* handle json forms default values [skip-ci] PA-1207 (#203) 60903c0
+
 ## [3.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.6.0...v3.7.0) (2024-05-02)
 
 
