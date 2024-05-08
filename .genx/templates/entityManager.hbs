@@ -32,6 +32,9 @@
     {{#if config.snapshot}}
     :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
     {{/if}}
+    {{#if config.reqrep}}
+    :datasourceConfig=${() => ({pollingInterval: 5000 })}
+    {{/if}}
     {{#if config.columns}}
     :columns=${() => {{{ config.columns }}} }
     {{/if}}
