@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.1...v3.8.0) (2024-05-08)
+
+
+### Features
+
+* Delete fields dictionary file (GENC-411) (#204) 8b3f5a8
+
 ## [3.7.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.0...v3.7.1) (2024-05-07)
 
 
