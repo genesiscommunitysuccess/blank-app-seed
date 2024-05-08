@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.8.0...v3.9.0) (2024-05-08)
+
+
+### Features
+
+* handle reqrep datasource types for grid and em GENC-436 (#205) 7b0ae77
+
 ## [3.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.1...v3.8.0) (2024-05-08)
 
 
