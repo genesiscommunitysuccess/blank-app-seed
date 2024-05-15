@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.1...v3.9.2) (2024-05-15)
+
+
+### Bug Fixes
+
+* upgrade grid-tabulator to v6 [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#208) 0ec9fb5
+
 ## [3.9.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.0...v3.9.1) (2024-05-13)
 
 
