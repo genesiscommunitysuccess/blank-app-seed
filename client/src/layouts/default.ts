@@ -1,7 +1,6 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
 import type { FoundationRouter } from '@genesislcap/foundation-ui';
-import { css, html } from '@microsoft/fast-element';
-import { FASTElementLayout } from '@microsoft/fast-router';
+import { css, GenesisElementLayout, html } from '@genesislcap/web-core';
 import type { Store } from '../store';
 
 type ClientAppRouter = FoundationRouter & { store: Store };
@@ -25,7 +24,7 @@ const baseLayoutCss = css`
   }
 `;
 
-export const loginLayout = new FASTElementLayout(
+export const loginLayout = new GenesisElementLayout(
   html<ClientAppRouter>`
     <div class="container">
       <div class="content">
@@ -36,7 +35,7 @@ export const loginLayout = new FASTElementLayout(
   baseLayoutCss,
 );
 
-export const defaultLayout = new FASTElementLayout(
+export const defaultLayout = new GenesisElementLayout(
   html<ClientAppRouter>`
     <div class="container">
       ${app.registerElementsTarget('layout-start')}
@@ -57,7 +56,7 @@ export const defaultLayout = new FASTElementLayout(
     ${baseLayoutCss}
 
     .content {
-      padding-top: 60px;
+      padding-top: var(--nav-height);
     }
 
     foundation-header {
@@ -66,11 +65,12 @@ export const defaultLayout = new FASTElementLayout(
       top: 0;
       left: 0;
       width: 100%;
+      height: var(--nav-height);
       align-items: center;
       border: none;
     }
 
-    zero-tree-item zero-icon {
+    rapid-tree-item rapid-icon {
       color: #879ba6;
       padding-right: 10px;
     }
@@ -83,13 +83,13 @@ export const defaultLayout = new FASTElementLayout(
       position: relative;
     }
 
-    zero-flyout::part(flyout) {
+    rapid-flyout::part(flyout) {
       width: 40%;
       min-width: 320px;
       padding: 0;
     }
 
-    zero-flyout::part(content) {
+    rapid-flyout::part(content) {
       height: 100%;
     }
   `.withBehaviors(app.registerStylesTarget('layout')),

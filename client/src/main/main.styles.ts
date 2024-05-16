@@ -1,5 +1,5 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
-import { css } from '@microsoft/fast-element';
+import { css } from '@genesislcap/web-core';
 import { stylesFontFaces } from '../styles';
 import './main.css';
 
@@ -8,11 +8,11 @@ export const MainStyles = css`
   :host {
     contain: content;
 
-    --nav-height: 60px;
+    --nav-height: 39px;
   }
 
   :host,
-  zero-design-system-provider,
+  rapid-design-system-provider,
   .dynamic-template,
   foundation-router {
     display: flex;

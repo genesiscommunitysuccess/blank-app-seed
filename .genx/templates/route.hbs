@@ -1,4 +1,4 @@
-import { customElement, FASTElement } from '@microsoft/fast-element';
+import { customElement, GenesisElement } from '@genesislcap/web-core';
 import { {{pascalCase route.name}}Styles as styles } from './{{kebabCase route.name}}.styles';
 import { {{pascalCase route.name}}Template as template } from './{{kebabCase route.name}}.template';
 
@@ -7,7 +7,7 @@ import { {{pascalCase route.name}}Template as template } from './{{kebabCase rou
   template,
   styles,
 })
-export class {{pascalCase route.name}} extends FASTElement {
+export class {{pascalCase route.name}} extends GenesisElement {
   constructor() {
     super();
   }
