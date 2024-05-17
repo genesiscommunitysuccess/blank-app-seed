@@ -1,4 +1,5 @@
 const {parseJSONArgument} = require('../utils');
+const {FRAMEWORKS, WEB_COMPONENTS} = require('../static');
 
 const defaultRoutes = [{ name: 'home' }];
 const parseRoutes = parseJSONArgument('routes', defaultRoutes);
@@ -14,6 +15,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   const {
     routes = prevAns.routes,
     ui = prevAns.ui,
+    framework = prevAns.framework,
   } = await inquirer.prompt([
     {
       name: 'routes',
@@ -29,10 +31,19 @@ module.exports = async (inquirer, prevAns = {}) => {
       when: !prevAns.ui,
       default: JSON.stringify(defaultUI),
     },
+    {
+      name: 'framework',
+      type: 'list',
+      choices: FRAMEWORKS,
+      default: prevAns.framework || WEB_COMPONENTS,
+      message: 'Framework',
+      when: prevAns.framework === undefined,
+    },
   ])
 
   return {
     routes: parseRoutes(routes),
     ui: parseUI(ui),
+    framework,
   };
 };

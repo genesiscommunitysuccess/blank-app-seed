@@ -1,5 +1,6 @@
 const versions = require('./versions.json');
-const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData, validateRoute } = require('./utils');
+const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData, validateRoute, excludeFrameworks } = require('./utils');
+const {WEB_COMPONENTS} = require("./static");
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -24,17 +25,20 @@ module.exports = async (data, utils) => {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || []
   };
+  excludeFrameworks(data.framework);
 
-  data.routes.forEach(route => {
-    generateRoute(route, utils);
-  });
-
-  data.csv
-    .map(entity => ({
-      name: entity.name.toUpperCase(),
-      fields: entity.fields.map( (field, index) => ({name: field.toUpperCase(), isLast: index === (entity.fields.length -1) }))
-    }))
-    .forEach(entity => {
-      generateEmptyCsv(entity, data.appName, utils);
+  if (data.framework === WEB_COMPONENTS) {
+    data.routes.forEach(route => {
+      generateRoute(route, utils);
     });
+
+    data.csv
+        .map(entity => ({
+          name: entity.name.toUpperCase(),
+          fields: entity.fields.map( (field, index) => ({name: field.toUpperCase(), isLast: index === (entity.fields.length -1) }))
+        }))
+        .forEach(entity => {
+          generateEmptyCsv(entity, data.appName, utils);
+        });
+  }
 };
