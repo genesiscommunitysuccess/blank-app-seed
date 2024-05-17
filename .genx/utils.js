@@ -1,5 +1,7 @@
-const {existsSync, mkdirSync} = require('node:fs');
+const {existsSync, mkdirSync, rmSync, renameSync} = require('node:fs');
 const { resolve } = require('node:path');
+const path = require('path');
+const {FRAMEWORKS, ANGULAR, REACT, WEB_COMPONENTS} = require("./static");
 
 const makeDirectory = (directory) => {
   if (!existsSync(directory)) {
@@ -46,7 +48,7 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     Object.keys(options).forEach((key) => {
       const value = options[key];
       if (key === 'columns') {
-        output += `${pad}${'columnDefs'}: ${gridColumnsSerializer(value)},\n`; 
+        output += `${pad}${'columnDefs'}: ${gridColumnsSerializer(value)},\n`;
       } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
         const args =  value.arguments?.map(JSON.stringify).join(', ');
         output += `${pad}${key}: ${value.name}(${args}),\n`;
@@ -87,7 +89,7 @@ const getLayoutType = (route) => {
     return 'horizontal-layout'
   } else if (route?.tiles?.length === 4) {
     return 'grid-layout'
-  } 
+  }
   return 'tabs-layout'
 }
 
@@ -132,6 +134,27 @@ const parseJSONArgument = (name, defaultValue) =>
     }
   }
 
+const frameworkFolderMap = {
+  [ANGULAR]: 'angular',
+  [REACT]: 'react'
+}
+
+const excludeFrameworks = (selectedFramework) => {
+  const dir = path.join(__dirname, '..');
+  const ignoredFrameworks = FRAMEWORKS
+      .filter((framework) => framework !== selectedFramework)
+      .map((framework) => `client-${frameworkFolderMap[framework]}`);
+  ignoredFrameworks.forEach((framework) => {
+    const frameworkDirectory = `${dir}/${framework}`;
+    rmSync(frameworkDirectory, {recursive: true, force: true});
+  });
+  if (selectedFramework !== WEB_COMPONENTS) {
+    rmSync(`${dir}/client`, {recursive: true, force: true});
+    const frameworkDirectory = `${dir}/client-${frameworkFolderMap[selectedFramework]}`;
+    renameSync(frameworkDirectory, `${dir}/client`);
+  }
+}
+
 module.exports = {
   makeDirectory,
   registerPartials,
@@ -140,4 +163,5 @@ module.exports = {
   generateEmptyCsv,
   formatRouteData,
   parseJSONArgument,
+  excludeFrameworks,
 };

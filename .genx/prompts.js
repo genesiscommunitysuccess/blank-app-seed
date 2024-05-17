@@ -13,7 +13,7 @@ module.exports = async (inquirer, prevAns = {}) => {
 
   const {apiHost, enableSSO} = await apiPrompts(inquirer, prevAns)
   const {description, groupId, applicationVersion, enableDeployPlugin, csv} = await genesisServerPrompts(inquirer, prevAns);
-  const {routes, ui} = await uiPrompts(inquirer, prevAns);
+  const {routes, ui, framework} = await uiPrompts(inquirer, prevAns);
 
   return {
     apiHost,
@@ -25,5 +25,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     enableDeployPlugin,
     csv,
     ui,
+    framework,
   };
 };
