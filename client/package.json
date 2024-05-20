@@ -87,12 +87,12 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
-    {{#if FDC3.includeDependencies}}
-    "@finos/fdc3": "^1.2.0",
-    {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
+    {{#if FDC3.includeDependencies}}
+    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-inbox": "{{versions.UI}}",
