@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.1...v3.10.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* bigdecimal number formatting GENC-496 (#215) df6c8ba
+
 ## [3.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.0...v3.10.1) (2024-05-20)
 
 
