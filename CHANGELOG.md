@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.2...v3.10.3) (2024-05-21)
+
+
+### Bug Fixes
+
+* snackbar auto-close/stacking/height tweaks [FUI-2010](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2010) (#217) b4d0c55
+
 ## [3.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.1...v3.10.2) (2024-05-21)
 
 
