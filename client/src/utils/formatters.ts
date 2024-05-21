@@ -11,7 +11,9 @@ const defaultDateOptions: Intl.DateTimeFormatOptions = {
 export function getNumberFormatter(format: string, locale?: string) {
   return (params) => {
     // bigdecimals are sent as strings
-    if (!(params && typeof params.value === 'number' || typeof params.value === 'string')) return '';
+    if (!(params && (typeof params.value === 'number' || typeof params.value === 'string'))) {
+      return '';
+    }
 
     if (locale) {
       Numeral.locale(locale);
