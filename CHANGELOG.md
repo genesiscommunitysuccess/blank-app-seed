@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.4...v3.10.5) (2024-05-22)
+
+
+### Bug Fixes
+
+* Using stripping out bigints - GENC-500 (#220) a1e7d84
+
 ## [3.10.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.3...v3.10.4) (2024-05-22)
 
 
