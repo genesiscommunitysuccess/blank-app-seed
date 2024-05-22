@@ -52,11 +52,27 @@ export const listenForIntent = async (
   addIntentListener(intent, (result) => callback(result));
 };
 
+export const stripOutBigInt = (object: any): any => {
+
+  object = { ...object };
+
+  Object.keys(object).forEach(key => {
+    if (typeof object[key] === 'bigint') {
+      delete object[key]
+    } else if (typeof object[key] === 'object') {
+      object[key] = stripOutBigInt(object[key]);
+    }
+  })
+
+  return object;
+}
+
 export const sendEventOnChannel = (channelName: string, type: string) => {
   return async (e: any) => {
     // check for ag-grid-specific events, fall back to standard events
-    const payload = e.data?.payload || e.detail;
-    sendMessageOnChannel(channelName, type, payload);
+    const payload = e.data || e.detail;
+    const sanitised = stripOutBigInt(payload);
+    sendMessageOnChannel(channelName, type, sanitised);
   };
 };
 {{/if}}
