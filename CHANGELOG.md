@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.3...v3.10.4) (2024-05-22)
+
+
+### Bug Fixes
+
+* overflow-wrap for long string in snackbar GENC-494 (#219) d5f4f58
+
 ## [3.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.2...v3.10.3) (2024-05-21)
 
 
