@@ -70,7 +70,7 @@ export const stripOutBigInt = (object: any): any => {
 export const sendEventOnChannel = (channelName: string, type: string) => {
   return async (e: any) => {
     // check for ag-grid-specific events, fall back to standard events
-    const payload = e.data?.payload || e.detail;
+    const payload = e.data || e.detail;
     const sanitised = stripOutBigInt(payload);
     sendMessageOnChannel(channelName, type, sanitised);
   };
