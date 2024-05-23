@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.10.6-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.5...v3.10.6-prerelease.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* build config update GENC-511 (#223) 3b55d54
+* remove reference to FAST GENC-511 (#222) f5adba4
+
 ## [3.10.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.4...v3.10.5) (2024-05-22)
 
 
