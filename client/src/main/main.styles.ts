@@ -18,5 +18,6 @@ export const MainStyles = css`
     display: flex;
     width: 100%;
     height: 100%;
+    background-color: var(--neutral-layer-4);
   }
 `.withBehaviors(getApp().registerStylesTarget('main'));
