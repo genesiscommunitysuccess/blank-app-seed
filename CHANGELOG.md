@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6-prerelease.2...v3.11.0-prerelease.1) (2024-05-23)
+
+
+### Features
+
+* rapid design system and web-core prelim [FUI-1948](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1948) (#210) 75f4d78
+
 ## [3.10.6-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6-prerelease.1...v3.10.6-prerelease.2) (2024-05-23)
 
 
