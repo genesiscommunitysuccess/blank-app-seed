@@ -3,8 +3,6 @@
 ## Frontend stack
 
 Genesis components are standards-based Web Components, making them compatible with almost any modern web framework.
-Our state-of-the-art design system and component set is built on top of
-[Microsoft FAST](https://www.fast.design/docs/introduction/).
 
 # Development
 
