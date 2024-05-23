@@ -1,6 +1,6 @@
 const { rmSync, renameSync } = require('node:fs');
 const path = require('path');
-const { FRAMEWORKS, ANGULAR, REACT, WEB_COMPONENTS } = require('./static');
+const { FRAMEWORKS, ANGULAR, REACT, WEB_COMPONENTS } = require('../static');
 
 const frameworkFolderMap = {
   [ANGULAR]: 'angular',
