@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.6-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6-prerelease.1...v3.10.6-prerelease.2) (2024-05-23)
+
+
+### Bug Fixes
+
+* populate dist tag correctly GENC-511 (#224) a34021b
+
 ## [3.10.6-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.5...v3.10.6-prerelease.1) (2024-05-23)
 
 
