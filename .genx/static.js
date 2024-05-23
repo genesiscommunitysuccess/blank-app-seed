@@ -5,8 +5,8 @@ const REACT = 'React';
 const FRAMEWORKS = [WEB_COMPONENTS, ANGULAR, REACT];
 
 module.exports = {
-    WEB_COMPONENTS,
-    ANGULAR,
-    REACT,
-    FRAMEWORKS,
-}
+  WEB_COMPONENTS,
+  ANGULAR,
+  REACT,
+  FRAMEWORKS,
+};

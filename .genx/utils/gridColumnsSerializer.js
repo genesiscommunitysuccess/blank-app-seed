@@ -5,9 +5,11 @@ const gridColumnsSerializer = (columns, pad = '      ') => {
     return undefined;
   }
   try {
-    const columnsSerialized = columns.map((column) => gridOptionsSerializer(column));
+    const columnsSerialized = columns.map((column) =>
+      gridOptionsSerializer(column),
+    );
     return `[\n${pad}${columnsSerialized}]`;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 };

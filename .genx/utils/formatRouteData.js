@@ -8,9 +8,11 @@ const formatRouteData = (route) => {
   const layoutType = route?.layoutType || getLayoutType(route);
 
   const FDC3ClickCategory = 'fdc3';
-  const FDC3EventHandlersEnabled = !!route.tiles?.find(t => t.config?.gridOptions?.onRowClicked?.category === FDC3ClickCategory);
+  const FDC3EventHandlersEnabled = !!route.tiles?.find(
+    (t) => t.config?.gridOptions?.onRowClicked?.category === FDC3ClickCategory,
+  );
 
-  const tiles = route.tiles?.map(tile => ({
+  const tiles = route.tiles?.map((tile) => ({
     ...tile,
     config: {
       ...(tile.config || {}),

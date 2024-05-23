@@ -9,7 +9,9 @@ const frameworkFolderMap = {
 
 const excludeFrameworks = (selectedFramework) => {
   const dir = path.join(__dirname, '..');
-  const ignoredFrameworks = FRAMEWORKS.filter((framework) => framework !== selectedFramework).map((framework) => `client-${frameworkFolderMap[framework]}`);
+  const ignoredFrameworks = FRAMEWORKS.filter(
+    (framework) => framework !== selectedFramework,
+  ).map((framework) => `client-${frameworkFolderMap[framework]}`);
   ignoredFrameworks.forEach((framework) => {
     const frameworkDirectory = `${dir}/${framework}`;
     rmSync(frameworkDirectory, { recursive: true, force: true });

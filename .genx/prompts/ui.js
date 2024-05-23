@@ -1,9 +1,10 @@
-const {parseJSONArgument} = require('../utils');
-const {FRAMEWORKS, WEB_COMPONENTS} = require('../static');
+const { parseJSONArgument } = require('../utils');
+const { FRAMEWORKS, WEB_COMPONENTS } = require('../static');
 
 const defaultRoutes = [{ name: 'home' }];
 const parseRoutes = parseJSONArgument('routes', defaultRoutes);
-const routesIntro = () => console.log(`
+const routesIntro = () =>
+  console.log(`
   Pages to be added to the navigation header
 `);
 
@@ -39,7 +40,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       message: 'Framework',
       when: prevAns.framework === undefined,
     },
-  ])
+  ]);
 
   return {
     routes: parseRoutes(routes),

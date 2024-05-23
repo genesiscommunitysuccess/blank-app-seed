@@ -11,7 +11,10 @@ const gridOptionsSerializer = (options, pad = '      ') => {
       const value = options[key];
       if (key === 'columns') {
         output += `${pad}${'columnDefs'}: ${gridColumnsSerializer(value)},\n`;
-      } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
+      } else if (
+        value?.type === 'function' ||
+        value?.type === 'valueFormatter'
+      ) {
         const args = value.arguments?.map(JSON.stringify).join(', ');
         output += `${pad}${key}: ${value.name}(${args}),\n`;
       } else if (key === 'hide') {
@@ -22,7 +25,7 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     });
     output += `${pad}}\n`;
     return output;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 };
