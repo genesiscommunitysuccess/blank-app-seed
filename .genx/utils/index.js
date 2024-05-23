@@ -1,19 +1,23 @@
-const makeDirectory = require('./makeDirectory');
-const registerPartials = require('./registerPartials');
-const generateRoute = require('./generateRoute');
-const validateRoute = require('./validateRoute');
-const generateEmptyCsv = require('./generateEmptyCsv');
-const formatRouteData = require('./formatRouteData');
-const parseJSONArgument = require('./parseJSONArgument');
 const excludeFrameworks = require('./excludeFrameworks');
+const formatRouteData = require('./formatRouteData');
+const generateRoute = require('./generateRoute');
+const generateEmptyCsv = require('./generateEmptyCsv');
+const makeDirectory = require('./makeDirectory');
+const normalizeFrameworkAlias = require('./normalizeFrameworkAlias');
+const parseJSONArgument = require('./parseJSONArgument');
+const registerPartials = require('./registerPartials');
+const validateRoute = require('./validateRoute');
+const validateFrameworkAlias = require('./validateFrameworkAlias');
 
 module.exports = {
-  makeDirectory,
-  registerPartials,
-  generateRoute,
-  validateRoute,
-  generateEmptyCsv,
-  formatRouteData,
-  parseJSONArgument,
   excludeFrameworks,
+  formatRouteData,
+  generateEmptyCsv,
+  generateRoute,
+  makeDirectory,
+  normalizeFrameworkAlias,
+  parseJSONArgument,
+  registerPartials,
+  validateFrameworkAlias,
+  validateRoute,
 };

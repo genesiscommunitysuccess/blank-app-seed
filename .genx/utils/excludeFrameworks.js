@@ -1,26 +1,35 @@
 const { rmSync, renameSync } = require('node:fs');
 const path = require('path');
-const { FRAMEWORKS, ANGULAR, REACT, WEB_COMPONENTS } = require('../static');
+const {
+  FRAMEWORKS_DIR_MAP,
+  FRAMEWORKS_ALIAS,
+  DIR_CLIENT_MAIN_ALIAS,
+  DIR_CLIENT_TEMP_ALIAS,
+  DIRS_MAP,
+} = require('../static');
 
-const frameworkFolderMap = {
-  [ANGULAR]: 'angular',
-  [REACT]: 'react',
+const getDirClientTemp = (frameworkName) => {
+  const dirClientTemp = path.join(
+    __dirname,
+    `../${DIRS_MAP.get(DIR_CLIENT_TEMP_ALIAS)}`,
+  );
+  return `${dirClientTemp}/${FRAMEWORKS_DIR_MAP.get(frameworkName)}`;
 };
 
 const excludeFrameworks = (selectedFramework) => {
-  const dir = path.join(__dirname, '../..');
-  const ignoredFrameworks = FRAMEWORKS.filter(
+  const ignoredFrameworks = FRAMEWORKS_ALIAS.filter(
     (framework) => framework !== selectedFramework,
-  ).map((framework) => `client-${frameworkFolderMap[framework]}`);
+  );
+
   ignoredFrameworks.forEach((framework) => {
-    const frameworkDirectory = `${dir}/${framework}`;
-    rmSync(frameworkDirectory, { recursive: true, force: true });
+    rmSync(getDirClientTemp(framework), { recursive: true, force: true });
   });
-  if (selectedFramework !== WEB_COMPONENTS) {
-    rmSync(`${dir}/client`, { recursive: true, force: true });
-    const frameworkDirectory = `${dir}/client-${frameworkFolderMap[selectedFramework]}`;
-    renameSync(frameworkDirectory, `${dir}/client`);
-  }
+
+  const mainClientDirPath = path.join(
+    __dirname,
+    `../../${DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS)}`,
+  );
+  renameSync(getDirClientTemp(selectedFramework), mainClientDirPath);
 };
 
 module.exports = excludeFrameworks;

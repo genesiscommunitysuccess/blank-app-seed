@@ -36,8 +36,9 @@
               "consola",
               "lodash.debounce",
               "d3-regression",
-              "size-senso",
+              "size-sensor",
               "pdfast",
+              "fmin",
               "@json-schema-tools/dereferencer"
             ]
           },

@@ -1,5 +1,8 @@
 const { parseJSONArgument } = require('../utils');
-const { FRAMEWORKS, WEB_COMPONENTS } = require('../static');
+const {
+  FRAMEWORKS_ALIAS,
+  FRAMEWORK_WEB_COMPONENTS_ALIAS,
+} = require('../static');
 
 const defaultRoutes = [{ name: 'home' }];
 const parseRoutes = parseJSONArgument('routes', defaultRoutes);
@@ -35,8 +38,8 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'framework',
       type: 'list',
-      choices: FRAMEWORKS,
-      default: prevAns.framework || WEB_COMPONENTS,
+      choices: FRAMEWORKS_ALIAS,
+      default: prevAns.framework || FRAMEWORK_WEB_COMPONENTS_ALIAS,
       message: 'Framework',
       when: prevAns.framework === undefined,
     },

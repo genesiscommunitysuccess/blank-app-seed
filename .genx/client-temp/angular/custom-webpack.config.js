@@ -4,13 +4,23 @@ const { config } = require('dotenv');
 const { DefinePlugin } = require('webpack');
 const pkg = require('./package.json');
 const pkgConfig = Object.fromEntries(
-    Object.entries(pkg.config).map(([key, value]) => [key, JSON.stringify(value)])
+  Object.entries(pkg.config).map(([key, value]) => [
+    key,
+    JSON.stringify(value),
+  ]),
 );
 config();
 
 module.exports = {
   plugins: [
-    new DefinePlugin(resolveDefineConfig(['API_HOST', 'GENX_*', 'DEFAULT_USER', 'DEFAULT_PASSWORD'])),
+    new DefinePlugin(
+      resolveDefineConfig([
+        'API_HOST',
+        'GENX_*',
+        'DEFAULT_USER',
+        'DEFAULT_PASSWORD',
+      ]),
+    ),
     new DefinePlugin(pkgConfig),
   ],
   module: {
