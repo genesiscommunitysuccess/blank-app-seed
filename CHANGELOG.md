@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.5...v3.10.6) (2024-05-23)
+
+
+### Bug Fixes
+
+* ability to set position in search-bar GENC-498 (#227) 279093b, closes PSD-9
+
 ## [3.10.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.4...v3.10.5) (2024-05-22)
 
 
