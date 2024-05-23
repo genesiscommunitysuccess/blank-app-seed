@@ -4,6 +4,8 @@ import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
+import * as zeroDesignSystem from '@genesislcap/foundation-zero'
+import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
 
@@ -46,4 +48,16 @@ export async function registerComponents() {
       flyout: 'rapid-flyout',
     },
   });
+  
+  /**
+   * Still required while we transition all PBCs to rapid. Remove when complete.
+   */
+  zeroDesignSystem
+    .provideDesignSystem()
+    .register(
+      zeroDesignSystem.baseComponents,
+      zeroGridComponents,
+      g2plotChartsComponents,
+      foundationLayoutComponents,
+    );
 }
