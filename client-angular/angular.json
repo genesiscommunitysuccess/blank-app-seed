@@ -34,7 +34,11 @@
               "fast-safe-stringify",
               "dlv",
               "consola",
-              "lodash.debounce"
+              "lodash.debounce",
+              "d3-regression",
+              "size-senso",
+              "pdfast",
+              "@json-schema-tools/dereferencer"
             ]
           },
           "configurations": {
