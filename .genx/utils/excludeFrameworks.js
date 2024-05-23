@@ -8,7 +8,7 @@ const frameworkFolderMap = {
 };
 
 const excludeFrameworks = (selectedFramework) => {
-  const dir = path.join(__dirname, '..');
+  const dir = path.join(__dirname, '../..');
   const ignoredFrameworks = FRAMEWORKS.filter(
     (framework) => framework !== selectedFramework,
   ).map((framework) => `client-${frameworkFolderMap[framework]}`);
