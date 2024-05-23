@@ -1,4 +1,4 @@
-import { html } from '@microsoft/fast-element';
+import { html } from '@genesislcap/web-core';
 import type { NotFound } from './not-found';
 
 export const NotFoundTemplate = html<NotFound>`

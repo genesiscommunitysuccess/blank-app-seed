@@ -57,8 +57,7 @@ When first opening the project, if you receive a notification from IntelliJ IDE 
 ### Web Client
 
 The Web client for this project can be found [here](./client/README.md). It is built using Genesis's next
-generation web development framework, which is based on Web Components. Our state-of-the-art design system and component
-set is built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/).
+generation web development framework, which is based on Web Components.
 
 # License
 

@@ -4,7 +4,7 @@
       {
         "name": "@genesiscommunitysuccess/custom-elements-lsp",
         "srcRouteFromTSServer": "../../..",
-        "designSystemPrefix": "zero",
+        "designSystemPrefix": "rapid",
         "parser": {
           "fastEnable": true,
           "timeout": 2000,
