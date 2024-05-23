@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0-prerelease.1...v3.11.0-prerelease.2) (2024-05-23)
+
+
+### Bug Fixes
+
+* ability to set position in search-bar - prerelease GENC-498 (#228) 1f3ba84
+
 ## [3.11.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6-prerelease.2...v3.11.0-prerelease.1) (2024-05-23)
 
 
