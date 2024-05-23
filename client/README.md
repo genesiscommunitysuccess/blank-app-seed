@@ -44,6 +44,19 @@ Baseline task combines `clean` and `bootstrap` tasks into a single command:
 npm run baseline
 ```
 
+## Styling
+
+Genesis components are registered with a [Design System](https://learn.genesis.global/docs/web/design-systems/introduction/),
+and the default system is named `rapid`. Design systems are highly configurable. You can configure them by importing and
+modifying the tokens directly, or by using our [Design System Configuration](https://learn.genesis.global/docs/web/design-systems/preview/)
+tool in the context of your application.
+
+Simply run the application, configure the design system, select Save Changes, and hit Save on popup, then restart your application.
+
+```shell
+npm run dsconfig
+```
+
 ## Custom Elements IntelliSense
 
 Using any modern editor, you'll receive IntelliSense help while writing TypeScript code while working in the repo. However, you'll also likely be writing a lot of html markup inside of "html\`\`" blocks.
