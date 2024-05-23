@@ -57,6 +57,12 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "echo \"${nextRelease.channel}\" > /tmp/dist-tag"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": ["CHANGELOG.md", "package.json", "package-lock.json", ".genx/package.json"],
