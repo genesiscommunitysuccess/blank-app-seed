@@ -15,6 +15,6 @@ export default [
     },
   },
   {
-    ignores: ['client-temp/'], // Use "ignores" to specify files or directories to ignore
+    ignores: ['client-tmp/'], // Use "ignores" to specify files or directories to ignore
   },
 ];

@@ -1,5 +1,6 @@
 const { mavenArtifactVersionRegex } = require('./validators');
 const { parseJSONArgument } = require('../utils');
+const { TEXTS } = require('../static');
 
 const parsecsv = parseJSONArgument('csv', []);
 
@@ -14,21 +15,21 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'description',
       type: 'input',
-      message: 'Project Description',
+      message: TEXTS.MESSAGE_SERVER_DESCRIPTION,
       when: !prevAns.description,
       default: '\n',
     },
     {
       name: 'groupId',
       type: 'input',
-      message: 'Group Id',
+      message: TEXTS.MESSAGE_SERVER_GROUP_ID,
       when: !prevAns.groupId,
       default: 'global.genesis',
     },
     {
       name: 'applicationVersion',
       type: 'input',
-      message: 'Application Version',
+      message: TEXTS.MESSAGE_SERVER_APPLICATION_VERSION,
       when: !prevAns.applicationVersion,
       default: '1.0.0-SNAPSHOT',
       validate: mavenArtifactVersionRegex,
@@ -36,14 +37,14 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'enableDeployPlugin',
       type: 'confirm',
-      message: 'Enable deploy plugin?',
+      message: TEXTS.MESSAGE_SERVER_DEPLOY_PLUGIN,
       when: prevAns.enableDeployPlugin === undefined,
       default: prevAns.enableDeployPlugin || false,
     },
     {
       name: 'csv',
       type: 'input',
-      message: 'Generate empty CSV for entities? (config in JSON format)',
+      message:  TEXTS.MESSAGE_SERVER_CSV,
       when: !prevAns.csv,
       default: '[]',
     },

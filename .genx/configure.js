@@ -4,10 +4,8 @@ const {
   formatRouteData,
   generateRoute,
   generateEmptyCsv,
-  normalizeFrameworkAlias,
   registerPartials,
   validateRoute,
-  validateFrameworkAlias,
 } = require('./utils');
 const { FRAMEWORK_WEB_COMPONENTS_ALIAS } = require('./static');
 
@@ -21,12 +19,11 @@ module.exports = async (data, utils) => {
   data.localGenId = data.appName.toUpperCase().replace('-', '_');
   data.applicationVersionWeb = data.applicationVersion.split('-').shift();
   data.versions = versions;
-  data.framework = normalizeFrameworkAlias(data.framework);
 
   registerPartials(utils);
 
   data.routes = data.routes.filter(validateRoute).map(formatRouteData);
-  validateFrameworkAlias(data.framework);
+
   const FDC3EventHandlersEnabled = data.routes.find(
     (route) => route.FDC3EventHandlersEnabled,
   );

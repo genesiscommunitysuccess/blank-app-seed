@@ -1,14 +1,8 @@
 const { websocketValidator } = require('./validators');
+const { TEXTS } = require('../static');
 
-const apiHostIntro = () =>
-  console.log(`
-  You can override the default Genesis server URL used during local developent.
-`);
-
-const ssoIntro = () =>
-  console.log(`
-  Optionally, you can enable the SSO function, which will redirect to identity provider before starting the application (given we only have one identity provider).
-`);
+const apiHostIntro = () => console.log(TEXTS.INTRO_API_HOST);
+const ssoIntro = () => console.log(TEXTS.INTRO_API_SSO);
 
 module.exports = async (inquirer, prevAns = {}) => {
   apiHostIntro();
@@ -16,14 +10,14 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'setApiHost',
       type: 'confirm',
-      message: 'Set API Host',
+      message: TEXTS.MESSAGE_API_SET_HOST,
       when: !prevAns.apiHost,
       default: true,
     },
     {
       name: 'apiHost',
       type: 'input',
-      message: 'API Host (with WebSocket prefix and suffix if any)',
+      message:  TEXTS.MESSAGE_API_HOST,
       when: ({ setApiHost }) => setApiHost,
       default: prevAns.apiHost || 'ws://localhost/gwf/',
       validate: websocketValidator,
@@ -34,7 +28,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'enableSSO',
       type: 'confirm',
-      message: 'Init SSO connection before loading application',
+      message: TEXTS.MESSAGE_API_SSO,
       default: prevAns.enableSSO || false,
       when: prevAns.enableSSO === undefined,
     },
