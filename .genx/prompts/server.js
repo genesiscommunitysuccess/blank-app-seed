@@ -44,7 +44,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'csv',
       type: 'input',
-      message:  TEXTS.MESSAGE_SERVER_CSV,
+      message: TEXTS.MESSAGE_SERVER_CSV,
       when: !prevAns.csv,
       default: '[]',
     },

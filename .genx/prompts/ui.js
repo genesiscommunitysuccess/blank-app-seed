@@ -3,8 +3,7 @@ const { parseJSONArgument, normalizeFrameworkAlias } = require('../utils');
 const {
   FRAMEWORKS_ALIAS,
   FRAMEWORKS_LABEL_MAP,
-  DEFAULT_FRAMEWORK_ALIAS,
-  TEXTS
+  TEXTS,
 } = require('../static');
 
 const defaultRoutes = [{ name: 'home' }];
@@ -15,9 +14,11 @@ const parseUI = parseJSONArgument('ui', defaultUI);
 
 const selectedFrameworkInfo = (framework) => {
   if (framework && frameworkValidator(framework) === true) {
-    console.log(`${TEXTS.MESSAGE_UI_FRAMEWORK}: ${FRAMEWORKS_LABEL_MAP.get(normalizeFrameworkAlias(framework))}`)
+    console.log(
+      `${TEXTS.MESSAGE_UI_FRAMEWORK}: ${FRAMEWORKS_LABEL_MAP.get(normalizeFrameworkAlias(framework))}`,
+    );
   }
-}
+};
 
 module.exports = async (inquirer, prevAns = {}) => {
   selectedFrameworkInfo(prevAns.framework);
@@ -30,7 +31,10 @@ module.exports = async (inquirer, prevAns = {}) => {
     {
       name: 'framework',
       type: 'list',
-      choices: FRAMEWORKS_ALIAS.map(value => ({ name: FRAMEWORKS_LABEL_MAP.get(value), value})),
+      choices: FRAMEWORKS_ALIAS.map((value) => ({
+        name: FRAMEWORKS_LABEL_MAP.get(value),
+        value,
+      })),
       message: TEXTS.MESSAGE_UI_FRAMEWORK,
       when: prevAns.framework === undefined,
       validate: frameworkValidator,
