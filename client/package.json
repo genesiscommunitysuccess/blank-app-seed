@@ -99,6 +99,7 @@
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
@@ -106,6 +107,7 @@
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "@genesislcap/web-core": "{{versions.UI}}",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",
@@ -125,12 +127,14 @@
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
-    "@genesislcap/g2plot-chart": "{{versions.UI}}"
-}
+    "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "@genesislcap/web-core": "{{versions.UI}}"
+  }
 }
