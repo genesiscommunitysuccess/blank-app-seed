@@ -1,8 +1,20 @@
-import {configure, defaultLoginConfig, define} from '@genesislcap/foundation-login';
+import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
 import { INTERNAL_URLS } from '../app.routes';
-import {DI} from "@microsoft/fast-foundation";
+import { DI } from '@microsoft/fast-foundation';
 
+const ssoSettings =
+  typeof GENX_ENABLE_SSO !== 'undefined' && GENX_ENABLE_SSO === true
+    ? {
+        autoAuth: true,
+        sso: {
+          toggled: true,
+          identityProvidersPath: 'sso/list',
+        },
+      }
+    : {};
+
+console.log({ ssoSettings });
 /**
  * Configure the micro frontend
  */
@@ -14,9 +26,11 @@ export const configureFoundationLogin = ({
   configure(DI.getOrCreateDOMContainer(), {
     showConnectionIndicator: true,
     hostPath: INTERNAL_URLS.auth,
-    redirectHandler: url => {
+    redirectHandler: () => {
       router.navigate([INTERNAL_URLS.homepage])
-    }
+    },
+    ...ssoSettings,
+
   });
 
   return define({

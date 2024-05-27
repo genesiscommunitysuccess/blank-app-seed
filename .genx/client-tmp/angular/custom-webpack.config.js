@@ -15,10 +15,7 @@ module.exports = {
   plugins: [
     new DefinePlugin(
       resolveDefineConfig([
-        'API_HOST',
         'GENX_*',
-        'DEFAULT_USER',
-        'DEFAULT_PASSWORD',
       ]),
     ),
     new DefinePlugin(pkgConfig),

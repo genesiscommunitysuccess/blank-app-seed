@@ -1,5 +1,6 @@
 declare global {
-  const GENX_FOUNDATION_AUTH: string;
+  const GENX_API_HOST: string;
+  const GENX_ENABLE_SSO: boolean;
 }
 
 export {};
