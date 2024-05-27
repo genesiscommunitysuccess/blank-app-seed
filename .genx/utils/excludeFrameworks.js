@@ -7,7 +7,7 @@ const {
   DIRS_MAP,
 } = require('../static');
 
-const dirClientTemp = path.join(__dirname, `../${DIRS_MAP.get(DIR_CLIENT_TEMP_ALIAS)}`);
+const dirClientTemp = path.join(__dirname, `../../${DIRS_MAP.get(DIR_CLIENT_TEMP_ALIAS)}`);
 
 const getDirClientTemp = (frameworkName) => {
   return `${dirClientTemp}/${FRAMEWORKS_DIR_MAP.get(frameworkName)}`;
