@@ -1,6 +1,7 @@
 const { frameworkValidator } = require('./validators');
 const { parseJSONArgument, normalizeFrameworkAlias } = require('../utils');
 const {
+  FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORKS_ALIAS,
   FRAMEWORKS_LABEL_MAP,
   TEXTS,
@@ -38,6 +39,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       message: TEXTS.MESSAGE_UI_FRAMEWORK,
       when: prevAns.framework === undefined,
       validate: frameworkValidator,
+      default: FRAMEWORK_WEB_COMPONENTS_ALIAS,
     },
     {
       name: 'ui',
