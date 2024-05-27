@@ -1,4 +1,4 @@
-const { description, license, name, version } = require("./package.json");
+const { description, license, name, version } = require('./package.json');
 
 const summary = `
   Name: ${name}

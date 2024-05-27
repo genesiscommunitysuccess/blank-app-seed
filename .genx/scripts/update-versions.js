@@ -1,9 +1,10 @@
 const { execSync } = require('node:child_process');
 const { writeFileSync } = require('node:fs');
-const { resolve }  = require('node:path');
+const { resolve } = require('node:path');
 const current = require('../versions.json');
 
-const run = (command) => execSync(command, {
+const run = (command) =>
+  execSync(command, {
     stdio: ['pipe', 'pipe', 'ignore'],
   })
     .toString('utf8')
@@ -20,8 +21,12 @@ const writeJSON = (json, path) => {
 };
 
 const UI = run('npm info @genesislcap/foundation-ui@latest version');
-const GSF = run(`jf rt s "libs-release-client/global/genesis/genesis-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`);
-const Auth = run(`jf rt s "libs-release-client/global/genesis/auth-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`);
+const GSF = run(
+  `jf rt s "libs-release-client/global/genesis/genesis-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`,
+);
+const Auth = run(
+  `jf rt s "libs-release-client/global/genesis/auth-distribution/" --exclusions="*-RC*;*-SNAPSHOT*;*maven-metadata*;*test*;*TEST*" | grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`,
+);
 const latest = { UI, GSF, Auth };
 
 console.log('Current:', current);

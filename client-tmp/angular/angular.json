@@ -27,7 +27,20 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
             "scripts": [],
-            "allowedCommonJsDependencies": ["consola", "lodash.debounce", "dayjs", "dlv"]
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "dayjs",
+              "bowser",
+              "fast-safe-stringify",
+              "dlv",
+              "consola",
+              "lodash.debounce",
+              "d3-regression",
+              "size-sensor",
+              "pdfast",
+              "fmin",
+              "@json-schema-tools/dereferencer"
+            ]
           },
           "configurations": {
             "production": {

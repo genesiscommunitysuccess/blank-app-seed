@@ -8,7 +8,7 @@ import './share/genesis-components';
 
 
 @Component({
-  selector: 'app-root',
+  selector: '{{rootElement}}',
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',

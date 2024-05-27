@@ -10,8 +10,9 @@
     "test": "ng test"
   },
   "config": {
-    "API_HOST": "{{apiHost}}",
-    "PORT": 6060
+    "PORT": 6060,
+    "GENX_API_HOST": "{{apiHost}}",
+    "GENX_ENABLE_SSO": {{enableSSO}}
   },
   "private": true,
   "dependencies": {
