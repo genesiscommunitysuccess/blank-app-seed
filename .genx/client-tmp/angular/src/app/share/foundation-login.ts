@@ -14,7 +14,6 @@ const ssoSettings =
       }
     : {};
 
-console.log({ ssoSettings });
 /**
  * Configure the micro frontend
  */
