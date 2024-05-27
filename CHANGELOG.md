@@ -1,5 +1,54 @@
 # Changelog
 
+## [3.10.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.5...v3.10.6) (2024-05-23)
+
+
+### Bug Fixes
+
+* ability to set position in search-bar GENC-498 (#227) 279093b, closes PSD-9
+
+## [3.10.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.4...v3.10.5) (2024-05-22)
+
+
+### Bug Fixes
+
+* Using stripping out bigints - GENC-500 (#220) a1e7d84
+
+## [3.10.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.3...v3.10.4) (2024-05-22)
+
+
+### Bug Fixes
+
+* overflow-wrap for long string in snackbar GENC-494 (#219) d5f4f58
+
+## [3.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.2...v3.10.3) (2024-05-21)
+
+
+### Bug Fixes
+
+* snackbar auto-close/stacking/height tweaks [FUI-2010](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2010) (#217) b4d0c55
+
+## [3.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.1...v3.10.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* bigdecimal number formatting GENC-496 (#215) df6c8ba
+
+## [3.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.0...v3.10.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#214) e54dfdd
+
+## [3.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.3...v3.10.0) (2024-05-17)
+
+
+### Features
+
+* automated dependency version update [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#213) c16ed52
+
 ## [3.9.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.2...v3.9.3) (2024-05-17)
 
 
