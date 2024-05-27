@@ -9,23 +9,10 @@ import { optional } from '@microsoft/fast-foundation';
 import { Route } from '@microsoft/fast-router';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
+import { loginElement } from './login/login';
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
-
-// eslint-disable-next-line
-declare var ENABLE_SSO: string;
-
-const ssoSettings =
-  typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === 'true'
-    ? {
-        autoAuth: true,
-        sso: {
-          toggled: true,
-          identityProvidersPath: 'sso/list',
-        },
-      }
-    : {};
 
 export class MainRouterConfig extends FoundationRouterConfiguration<LoginSettings> {
   constructor(
@@ -50,24 +37,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         path: authPath,
         name: 'login',
         title: 'Login',
-        element: async () => {
-          const { configure, define } = await import(
-            /* webpackChunkName: "foundation-login" */
-            '@genesislcap/foundation-login'
-          );
-          configure(this.container, {
-            hostPath: 'login',
-            autoConnect: true,
-            defaultRedirectUrl: '{{kebabCase routes.[0].name}}',
-            ...ssoSettings,
-          });
-          return define({
-            name: `{{rootElement}}-login`,
-            /**
-             * You can augment the template and styles here when needed.
-             */
-          });
-        },
+        element: loginElement(this.container),
         layout: loginLayout,
         settings: { public: true },
         childRouters: true,
