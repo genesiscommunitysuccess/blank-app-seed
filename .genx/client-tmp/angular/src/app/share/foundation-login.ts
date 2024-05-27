@@ -29,7 +29,6 @@ export const configureFoundationLogin = ({
       router.navigate([INTERNAL_URLS.homepage])
     },
     ...ssoSettings,
-
   });
 
   return define({
