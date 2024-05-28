@@ -112,11 +112,6 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
       // TODO: Add your listener logic here
       // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
     });
-    listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
-      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
-      // TODO: Add your listener logic here
-      // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
-    });
     {{/each}}
   };
 
