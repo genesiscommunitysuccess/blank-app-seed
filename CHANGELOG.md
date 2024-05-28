@@ -1,12 +1,5 @@
 # Changelog
 
-## [3.11.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0-prerelease.2...v3.11.0-prerelease.3) (2024-05-28)
-
-
-### Bug Fixes
-
-* default background color for tab-panel [FUI-1489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1489) (#232) 18ccfbb, closes PSD-9
-
 ## [3.10.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6...v3.10.7) (2024-05-28)
 
 
