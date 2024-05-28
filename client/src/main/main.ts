@@ -1,5 +1,8 @@
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
+{{#if FDC3.channels.length}}
+import { FDC3 } from '@genesislcap/foundation-fdc3';
+{{/if}}
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
@@ -40,7 +43,12 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
   @observable ready: boolean = false;
   @observable data: any = null;
 
+  {{#if FDC3.channels.length}}
+  @FDC3 fdc3: FDC3;
+  {{/if}}
+
   async connectedCallback() {
+    console.log('test');
     this.registerDIDependencies();
     super.connectedCallback();
     this.addEventListeners();
@@ -98,6 +106,12 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
   {{#if FDC3.channels.length}}
   FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
+
+    this.fdc3.addChannelListener('{{this.name}}', '{{this.type}}',(result) => {
+      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
+      // TODO: Add your listener logic here
+      // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
+    });
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
       console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
       // TODO: Add your listener logic here
