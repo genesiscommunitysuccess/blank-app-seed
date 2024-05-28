@@ -12,7 +12,7 @@ export const onFDC3Ready = async (FDC3ReadyCb: () => any): Promise<void> => {
       });
 };
 
-export const sendMessageOnChannel = async (
+export const sendEventOnChannel = async (
   channelName: string,
   type: string,
   payload: any,
