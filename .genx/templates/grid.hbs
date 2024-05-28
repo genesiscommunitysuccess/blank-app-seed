@@ -16,8 +16,13 @@
     )}
     {{/if}}
   >
-    {{#if config.fdc3EventConfig}}
-    <fdc3-channel-event event-name="onRowClicked" channel-name="{{ fdc3EventConfig.channelName }}" channel-type="{{ fdc3EventConfig.channelType }}"></fdc3-channel-event>
-    {{/if}}
   </grid-pro-genesis-datasource>
+  {{#if config.fdc3EventConfig}}
+  <fdc3-channel-event
+    event-name="rowClicked"
+    channel-name="{{config.fdc3EventConfig.channelName}}"
+    channel-type="{{config.fdc3EventConfig.channelType}}"
+  >
+  </fdc3-channel-event>
+  {{/if}}
 </zero-grid-pro>
