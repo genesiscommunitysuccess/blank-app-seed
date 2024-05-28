@@ -97,7 +97,16 @@ const formatRouteData = (route) => {
 
   const FDC3ClickCategory = 'fdc3';
   const FDC3EventHandlersEnabled = !!route.tiles?.find(t => t.config?.gridOptions?.onRowClicked?.category === FDC3ClickCategory);
+  let fdc3EventConfig;
+  if (FDC3EventHandlersEnabled) {
 
+    const fdc3Args = t.config?.gridOptions?.onRowClicked?.arguments || [];
+    fdc3EventConfig = {
+      eventName: 'onRowClicked',
+      channelName: fdc3Args[0] || '',
+      channelType: fdc3Args[1] || ''
+    };
+  }
   const tiles = route.tiles?.map(tile => ({
     ...tile,
     config: {
@@ -116,6 +125,7 @@ const formatRouteData = (route) => {
     layoutKey,
     tiles,
     FDC3EventHandlersEnabled,
+    fdc3EventConfig,
   }
 };
 
