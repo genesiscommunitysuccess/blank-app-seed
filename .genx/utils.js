@@ -101,7 +101,7 @@ const formatRouteData = (route) => {
   const tiles = route.tiles?.map(tile => {
     let fdc3EventConfig;
     if (FDC3EventHandlersEnabled) {
-      const fdc3Args = t.config?.gridOptions?.onRowClicked?.arguments || [];
+      const fdc3Args = tile.config?.gridOptions?.onRowClicked?.arguments || [];
       fdc3EventConfig = {
         eventName: 'onRowClicked',
         channelName: fdc3Args[0] || '',
