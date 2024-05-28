@@ -1,6 +1,9 @@
 import { customElement, FASTElement } from '@microsoft/fast-element';
 import { {{pascalCase route.name}}Styles as styles } from './{{kebabCase route.name}}.styles';
 import { {{pascalCase route.name}}Template as template } from './{{kebabCase route.name}}.template';
+{{#if FDC3.channels.length}}
+import { FDC3 } from '@genesislcap/foundation-fdc3';
+{{/if}}
 
 @customElement({
   name: '{{kebabCase route.name}}-route',
@@ -11,4 +14,6 @@ export class {{pascalCase route.name}} extends FASTElement {
   constructor() {
     super();
   }
+
+
 }

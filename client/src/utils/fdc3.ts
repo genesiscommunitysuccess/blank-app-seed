@@ -12,26 +12,11 @@ export const onFDC3Ready = async (FDC3ReadyCb: () => any): Promise<void> => {
       });
 };
 
-export const sendEventOnChannel = async (
-  channelName: string,
-  type: string,
-  payload: any,
-): Promise<void> => {
-  fdc3Service.broadcastOnChannel(channelName, type, payload);
+export const sendEventOnChannel = (channelName: string, type: string) => {
+  return async (e: any) => {
+    // check for ag-grid-specific events, fall back to standard events
+    const payload = e.data || e.detail;
+    fdc3Service.broadcastOnChannel(channelName, type, payload);
+  };
 };
-
-export const stripOutBigInt = (object: any): any => {
-
-  object = { ...object };
-
-  Object.keys(object).forEach(key => {
-    if (typeof object[key] === 'bigint') {
-      delete object[key]
-    } else if (typeof object[key] === 'object') {
-      object[key] = stripOutBigInt(object[key]);
-    }
-  })
-
-  return object;
-}
 {{/if}}
