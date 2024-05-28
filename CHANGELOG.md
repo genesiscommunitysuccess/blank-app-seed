@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0-prerelease.3...v3.11.0-prerelease.4) (2024-05-28)
+
+
+### Bug Fixes
+
+* **rapid-design-system:** font fixed for snackbar [FUI-1948](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1948) (#235) 7dfae87, closes FUI-1489
+
 ## [3.11.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0-prerelease.2...v3.11.0-prerelease.3) (2024-05-28)
 
 
