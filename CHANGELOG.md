@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.7...v3.10.8) (2024-05-28)
+
+
+### Bug Fixes
+
+* Add USER_ATTRIBUTES record for admin user (GENC-0) (#236) f887543
+
 ## [3.10.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6...v3.10.7) (2024-05-28)
 
 
