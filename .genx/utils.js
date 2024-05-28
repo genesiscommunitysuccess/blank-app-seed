@@ -115,7 +115,8 @@ const formatRouteData = (route) => {
       createFormUiSchema: formatJSONValue(tile.config?.createFormUiSchema),
       updateFormUiSchema: formatJSONValue(tile.config?.updateFormUiSchema),
       uischema: formatJSONValue(tile.config?.uischema),
-      columns: gridColumnsSerializer(tile.config?.columns)
+      columns: gridColumnsSerializer(tile.config?.columns),
+      fdc3EventConfig,
     }
   }));
 
@@ -125,7 +126,6 @@ const formatRouteData = (route) => {
     layoutKey,
     tiles,
     FDC3EventHandlersEnabled,
-    fdc3EventConfig,
   }
 };
 
