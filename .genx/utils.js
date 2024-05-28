@@ -120,7 +120,7 @@ const formatRouteData = (route) => {
         fdc3EventConfig,
       }
     }
-  }));
+  });
 
   return {
     ...route,
