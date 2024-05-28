@@ -2,6 +2,7 @@ import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/found
 import { EventEmitter } from '@genesislcap/foundation-events';
 {{#if FDC3.channels.length}}
 import { FDC3 } from '@genesislcap/foundation-fdc3';
+import { onFDC3Ready } from '../utils';
 {{/if}}
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
@@ -14,9 +15,6 @@ import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
 import { Store, StoreEventDetailMap } from '../store';
 import designTokens from '../styles/design-tokens.json';
-{{#if FDC3.channels.length}}
-import { listenToChannel, onFDC3Ready } from '../utils';
-{{/if}}
 import { MainStyles as styles } from './main.styles';
 import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 
