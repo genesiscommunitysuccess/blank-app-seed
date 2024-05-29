@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.1...v3.11.2) (2024-05-29)
+
+
+### Bug Fixes
+
+* adding foundation-fdc3 - GENC-292 (#239) fb1676d
+
 ## [3.11.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0...v3.11.1) (2024-05-29)
 
 
