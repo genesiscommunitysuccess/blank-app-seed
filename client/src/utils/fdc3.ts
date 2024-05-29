@@ -18,7 +18,7 @@ export const listenToChannel = async (
   type: string,
   callback: (result: any) => void,
 ): Promise<void> => {
-  fdc3Service.addChannelListener(channelName, type, callback())
+  fdc3Service.addChannelListener(channelName, type, callback)
 };
 
 export const sendEventOnChannel = (channelName: string, type: string) => {
