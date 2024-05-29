@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.8...v3.11.0) (2024-05-29)
+
+
+### Features
+
+* rapid design system and web-core [FUI-1948](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1948) (#234) 3646837
+
 ## [3.10.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.7...v3.10.8) (2024-05-28)
 
 
