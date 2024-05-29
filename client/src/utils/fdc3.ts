@@ -13,19 +13,19 @@ export const onFDC3Ready = async (FDC3ReadyCb: () => any): Promise<void> => {
       });
 };
 
-export const sendMessageOnChannel = async (
-  channelName: string,
-  type: string,
-  payload: any,
-): Promise<void> => {
-  await fdc3Service.broadcastOnChannel(channelName, type, payload)
-};
-
 export const listenToChannel = async (
   channelName: string,
   type: string,
   callback: (result: any) => void,
 ): Promise<void> => {
-  fdc3Service.addChannelListener(channelName, type, callback)
+  fdc3Service.addChannelListener(channelName, type, callback())
+};
+
+export const sendEventOnChannel = (channelName: string, type: string) => {
+  return async (e: any) => {
+    // check for ag-grid-specific events, fall back to standard events
+    const payload = e.data || e.detail;
+    await fdc3Service.broadcastOnChannel(channelName, type, payload)
+  };
 };
 {{/if}}
