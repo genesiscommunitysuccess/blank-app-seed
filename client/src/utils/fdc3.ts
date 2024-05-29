@@ -1,6 +1,7 @@
 {{#if FDC3.includeDependencies}}
 import { DefaultFDC3 } from '@genesislcap/foundation-fdc3';
 {{/if}}
+
 export const isFDC3 = (): boolean => !!(window as any).fdc3;
 {{#if FDC3.includeDependencies}}
 const fdc3Service = new DefaultFDC3();
