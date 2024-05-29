@@ -89,7 +89,7 @@
   },
   "dependencies": {
     {{#if FDC3.includeDependencies}}
-    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    "@finos/fdc3": "^1.2.0",
     {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
