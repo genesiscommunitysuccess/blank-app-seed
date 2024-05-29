@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.2...v3.11.3) (2024-05-29)
+
+
+### Bug Fixes
+
+* fdc3 file to unix file endings and fix linting error GENC-292 (#242) 50471e0
+
 ## [3.11.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.1...v3.11.2) (2024-05-29)
 
 
