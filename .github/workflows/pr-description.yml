@@ -1,0 +1,22 @@
+# Interpolates %YOUR-BRANCH-NAME% to PR branch name in a PR description
+
+name: Update PR description
+
+on:
+  pull_request:
+
+jobs:
+  update-pr-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Do action
+        uses: nefrob/pr-description@v1.1.2
+        with:
+          content: ${{github.head_ref}}
+          regex: "%YOUR-BRANCH-NAME%"
+          regexFlags: ig
+          token: ${{secrets.GITHUB_TOKEN}}
+          appendContentOnMatchOnly: true
