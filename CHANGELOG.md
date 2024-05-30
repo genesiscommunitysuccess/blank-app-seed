@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.12.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.3...v3.12.0) (2024-05-30)
+
+
+### Features
+
+* upgrade to GSF 8.0.0 GENC-513 (#244) 73b250b
+
 ## [3.11.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.2...v3.11.3) (2024-05-29)
 
 
