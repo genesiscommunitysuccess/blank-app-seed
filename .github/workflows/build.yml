@@ -42,7 +42,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew build
+        run: ./gradlew build --info
 
       - name: Lint UI
         working-directory: /tmp/testapp/client
@@ -58,7 +58,7 @@ jobs:
 
       - name: Create Server Dockerfile
         working-directory: /tmp/testapp
-        run: ./gradlew :server:testapp-app:createDockerfile
+        run: ./gradlew :server:testapp-app:createDockerfile --info
 
       - name: Build Docker images
         working-directory: /tmp/testapp
