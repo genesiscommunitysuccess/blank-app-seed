@@ -30,6 +30,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
+      - name: Authenticate on Artifactory
+        run: |
+          jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}" --interactive=false
+
       - name: Configure Gradle
         run: ./.genx/scripts/init-gradle.sh
 
