@@ -5,11 +5,15 @@ on:
     branches: [main, master, develop, alpha, prerelease]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
-      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
+      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}
       USE_DOCKER: 1
     runs-on: ubuntu-latest
     steps:
