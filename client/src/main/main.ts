@@ -3,14 +3,25 @@ import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
-import { FASTElement, customElement, observable, DOM } from '@microsoft/fast-element';
-import { Container, inject, Registration } from '@microsoft/fast-foundation';
-import { DefaultRouteRecognizer } from '@microsoft/fast-router';
+import {
+  baseLayerLuminance,
+  customElement,
+  Container,
+  DefaultRouteRecognizer,
+  DOM,
+  GenesisElement,
+  inject,
+  observable,
+  Registration,
+  StandardLuminance,
+} from '@genesislcap/web-core';
 import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
 import { Store, StoreEventDetailMap } from '../store';
 import designTokens from '../styles/design-tokens.json';
+{{#if FDC3.channels.length}}
+import { listenToChannel, onFDC3Ready } from '../utils';
+{{/if}}
 import { MainStyles as styles } from './main.styles';
 import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './main.template';
 
@@ -25,7 +36,7 @@ const name = '{{rootElement}}';
   template,
   styles,
 })
-export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTElement) {
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
   @App app: App;
   @Connect connect!: Connect;
   @Container container!: Container;
@@ -44,6 +55,9 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
     this.readyStore();
     await this.loadPBCs();
     await this.loadRemotes();
+    {{#if FDC3.channels.length}}
+    onFDC3Ready(this.FDC3ReadyHandler);
+    {{/if}}
     DOM.queueUpdate(() => {
       configureDesignSystem(this.provider, designTokens);
     });
@@ -89,6 +103,18 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(FASTEleme
     return this.ready ? MainTemplate : LoadingTemplate;
   }
 
+  {{#if FDC3.channels.length}}
+  FDC3ReadyHandler = () => {
+    {{#each FDC3.channels}}
+    listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
+      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
+      // TODO: Add your listener logic here
+      // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
+    });
+    {{/each}}
+  };
+
+  {{/if}}
   private registerDIDependencies() {
     this.container.register(
       Registration.transient(DefaultRouteRecognizer, DefaultRouteRecognizer),

@@ -5,13 +5,12 @@ import {
   Settings as LoginSettings,
 } from '@genesislcap/foundation-login';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
-import { optional } from '@microsoft/fast-foundation';
-import { Route } from '@microsoft/fast-router';
+import { optional, Route } from '@genesislcap/web-core';
 import { defaultLayout, loginLayout } from '../layouts';
-import { NotFound } from './not-found/not-found';
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
+import { NotFound } from './not-found/not-found';
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -39,7 +38,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
 
   async configure() {
     this.configureAnalytics();
-    this.title = 'Blank App Demo';
+    this.title = '{{capitalCase appName}}';
     this.defaultLayout = defaultLayout;
 
     const authPath = 'login';
@@ -56,6 +55,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
             '@genesislcap/foundation-login'
           );
           configure(this.container, {
+            hostPath: 'login',
             autoConnect: true,
             defaultRedirectUrl: '{{kebabCase routes.[0].name}}',
             ...ssoSettings,

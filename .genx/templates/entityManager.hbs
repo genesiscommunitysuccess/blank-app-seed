@@ -1,4 +1,7 @@
 <entity-management
+    design-system-prefix="rapid"
+    enable-row-flashing
+    enable-cell-flashing
     {{#if config.title}}
     title="{{ config.title }}"
     {{/if}}
@@ -22,8 +25,16 @@
     {{#if config.deleteEvent}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}
+    {{#if config.gridOptions}}
+    :gridOptions=${() => (
+      {{{config.gridOptions}}}
+    )}
+    {{/if}}
     {{#if config.snapshot}}
     :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
+    {{/if}}
+    {{#if config.reqrep}}
+    :datasourceConfig=${() => ({pollingInterval: 5000 })}
     {{/if}}
     {{#if config.columns}}
     :columns=${() => {{{ config.columns }}} }

@@ -15,7 +15,8 @@
     },
     "federation": {
       "remotes": [
-        "@genesislcap/foundation-zero"
+        "@genesislcap/foundation-zero",
+        "@genesislcap/rapid-design-system"
       ]
     }
   },
@@ -28,7 +29,7 @@
     "clean": "genx clean dist node_modules",
     "dev": "npm run dev:webpack",
     "dev:docker": "npm run dev -- --host 0.0.0.0",
-    "dev:intellij": "genx dev -e ENABLE_SSO",
+    "dev:intellij": "genx dev -e ENABLE_SSO -b webpack",
     "dev:no-open": "npm run dev -- --no-open",
     "dev:https": "npm run dev -- --https",
     "dev:vite": "genx dev -e API_HOST,ENABLE_SSO -b vite",
@@ -87,6 +88,9 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
+    {{#if FDC3.includeDependencies}}
+    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
@@ -96,6 +100,7 @@
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
@@ -103,11 +108,10 @@
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
-    "@microsoft/fast-components": "^2.21.6",
-    "@microsoft/fast-element": "^1.7.0",
-    "@microsoft/fast-foundation": "^2.33.4",
-    "@microsoft/fast-router": "^0.4.2",
-    "@microsoft/fast-web-utilities": "^5.1.0",
+    "@genesislcap/rapid-design-system": "{{versions.UI}}",
+    "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
+    "@genesislcap/web-core": "{{versions.UI}}",
+    "numeral": "2.0.6",
     "rxjs": "^7.5.4",
     "tslib": "^2.3.1"
   },
@@ -121,12 +125,16 @@
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
-    "@genesislcap/g2plot-chart": "{{versions.UI}}"
-}
+    "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "@genesislcap/rapid-design-system": "{{versions.UI}}",
+    "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
+    "@genesislcap/web-core": "{{versions.UI}}"
+  }
 }

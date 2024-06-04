@@ -1,4 +1,4 @@
-import { css } from '@microsoft/fast-element';
+import { css } from '@genesislcap/web-core';
 import { mixinScreen } from '../../styles';
 
 export const NotFoundStyles = css`

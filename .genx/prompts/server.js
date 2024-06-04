@@ -1,24 +1,23 @@
 const {mavenArtifactVersionRegex} = require('./validators');
+const {parseJSONArgument} = require('../utils');
 
-const parsecsv = (inputEntities) => {
-  if (!inputEntities){
-    return [];
-  }
-  try {
-    return JSON.parse(inputEntities);
-  } catch (error) {
-    console.error("Error parsing `csv` parameter as JSON:", error.message);
-    return [];
-  }
-}
+const parsecsv = parseJSONArgument('csv', []);
 
 module.exports = async (inquirer, prevAns = {}) => {
     const {
+      description = prevAns.description,
       groupId = prevAns.groupId,
       applicationVersion = prevAns.applicationVersion,
       enableDeployPlugin = prevAns.enableDeployPlugin,
       csv = prevAns.csv,
     } = await inquirer.prompt([
+      {
+        name: 'description',
+        type: 'input',
+        message: 'Project Description',
+        when: !prevAns.description,
+        default:'\n'
+      },
       {
         name: 'groupId',
         type: 'input',
@@ -44,13 +43,14 @@ module.exports = async (inquirer, prevAns = {}) => {
       {
         name: 'csv',
         type: 'input',
-        message: 'Generate empty CSV for entities? (config in json format)',
+        message: 'Generate empty CSV for entities? (config in JSON format)',
         when: !prevAns.csv,
         default: '[]'
       },
     ]);
 
     return {
+      description,
       groupId,
       applicationVersion,
       enableDeployPlugin,

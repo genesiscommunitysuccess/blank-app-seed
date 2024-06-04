@@ -1,0 +1,7 @@
+<rapid-layout-region type="tabs">
+    {{#each route.tiles}}
+    <rapid-layout-item title="{{this.title}}">
+        {{> (lookup . 'type') }}
+    </rapid-layout-item>
+    {{/each}}
+</rapid-layout-region>

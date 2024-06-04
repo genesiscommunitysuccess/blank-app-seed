@@ -4,6 +4,7 @@ This project has been created from the Genesis Blank Application Seed. Our seeds
 their projects. Each seed adheres to strict Genesis best practices, and has passed numerous performance, compliance and
 accessibility checks. 
 
+{{description}}
 {{!
 
 # Testing
@@ -56,8 +57,7 @@ When first opening the project, if you receive a notification from IntelliJ IDE 
 ### Web Client
 
 The Web client for this project can be found [here](./client/README.md). It is built using Genesis's next
-generation web development framework, which is based on Web Components. Our state-of-the-art design system and component
-set is built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/).
+generation web development framework, which is based on Web Components.
 
 # License
 

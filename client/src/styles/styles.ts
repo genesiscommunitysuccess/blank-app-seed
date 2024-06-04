@@ -1,4 +1,4 @@
-import { css } from '@microsoft/fast-element';
+import { css } from '@genesislcap/web-core';
 import { mixinCardTitle } from './typography';
 
 export const stylesCardHeading = css`
@@ -22,9 +22,9 @@ export const mixinCardStyles = `
 /**
  * Temp as these parts are being removed from foundation-ui
  */
-export const hideZeroButtonParts = `
-  zero-button::part(info1),
-  zero-button::part(info2) {
+export const hideRapidButtonParts = `
+  rapid-button::part(info1),
+  rapid-button::part(info2) {
     display: none;
   }
 `;

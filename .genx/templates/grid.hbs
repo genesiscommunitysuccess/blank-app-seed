@@ -1,14 +1,20 @@
-<zero-grid-pro>
+<rapid-grid-pro
+  enable-row-flashing
+  enable-cell-flashing
+  >
   <grid-pro-genesis-datasource
     resource-name="{{config.resourceName}}"
     {{#if config.snapshot}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
-    {{#if config.deferredGridOptions}}
+    {{#if config.reqrep}}
+    :datasourceConfig=${() => ({pollingInterval: 5000 })}
+    {{/if}}
+    {{#if config.gridOptions}}
     :deferredGridOptions=${() => (
-      {{{config.deferredGridOptions}}}
+      {{{config.gridOptions}}}
     )}
     {{/if}}
   >
   </grid-pro-genesis-datasource>
-</zero-grid-pro>
+</rapid-grid-pro>

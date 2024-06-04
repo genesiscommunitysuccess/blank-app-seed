@@ -1,13 +1,14 @@
 {
   "name": "@genesislcap/blank-app-seed",
   "description": "Genesis Blank App Seed",
-  "version": "2.7.0",
+  "version": "3.12.2",
   "license": "Apache-2.0",
   "scripts": {
     "release": "semantic-release"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "conventional-changelog-conventionalcommits": "^6.1.0",
     "semantic-release": "^21.0.7",

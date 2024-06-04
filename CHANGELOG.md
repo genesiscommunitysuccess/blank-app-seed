@@ -1,5 +1,289 @@
 # Changelog
 
+## [3.12.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.1...v3.12.2) (2024-06-03)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#251) 1887971
+
+## [3.12.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.0...v3.12.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#246) ed746f4
+
+## [3.12.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.3...v3.12.0) (2024-05-30)
+
+
+### Features
+
+* upgrade to GSF 8.0.0 GENC-513 (#244) 73b250b
+
+## [3.11.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.2...v3.11.3) (2024-05-29)
+
+
+### Bug Fixes
+
+* fdc3 file to unix file endings and fix linting error GENC-292 (#242) 50471e0
+
+## [3.11.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.1...v3.11.2) (2024-05-29)
+
+
+### Bug Fixes
+
+* adding foundation-fdc3 - GENC-292 (#239) fb1676d
+
+## [3.11.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.0...v3.11.1) (2024-05-29)
+
+
+### Bug Fixes
+
+* various Rapid fixes [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#238) 771f414
+
+## [3.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.8...v3.11.0) (2024-05-29)
+
+
+### Features
+
+* rapid design system and web-core [FUI-1948](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1948) (#234) 3646837
+
+## [3.10.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.7...v3.10.8) (2024-05-28)
+
+
+### Bug Fixes
+
+* Add USER_ATTRIBUTES record for admin user (GENC-0) (#236) f887543
+
+## [3.10.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.6...v3.10.7) (2024-05-28)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#230) a94d95b
+
+## [3.10.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.5...v3.10.6) (2024-05-23)
+
+
+### Bug Fixes
+
+* ability to set position in search-bar GENC-498 (#227) 279093b, closes PSD-9
+
+## [3.10.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.4...v3.10.5) (2024-05-22)
+
+
+### Bug Fixes
+
+* Using stripping out bigints - GENC-500 (#220) a1e7d84
+
+## [3.10.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.3...v3.10.4) (2024-05-22)
+
+
+### Bug Fixes
+
+* overflow-wrap for long string in snackbar GENC-494 (#219) d5f4f58
+
+## [3.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.2...v3.10.3) (2024-05-21)
+
+
+### Bug Fixes
+
+* snackbar auto-close/stacking/height tweaks [FUI-2010](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2010) (#217) b4d0c55
+
+## [3.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.1...v3.10.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* bigdecimal number formatting GENC-496 (#215) df6c8ba
+
+## [3.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.10.0...v3.10.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#214) e54dfdd
+
+## [3.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.3...v3.10.0) (2024-05-17)
+
+
+### Features
+
+* automated dependency version update [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#213) c16ed52
+
+## [3.9.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.2...v3.9.3) (2024-05-17)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#212) b052b6f
+
+## [3.9.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.1...v3.9.2) (2024-05-15)
+
+
+### Bug Fixes
+
+* upgrade grid-tabulator to v6 [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#208) 0ec9fb5
+
+## [3.9.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.9.0...v3.9.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#206) 0a4494d
+
+## [3.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.8.0...v3.9.0) (2024-05-08)
+
+
+### Features
+
+* handle reqrep datasource types for grid and em GENC-436 (#205) 7b0ae77
+
+## [3.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.1...v3.8.0) (2024-05-08)
+
+
+### Features
+
+* Delete fields dictionary file (GENC-411) (#204) 8b3f5a8
+
+## [3.7.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.7.0...v3.7.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* handle json forms default values [skip-ci] PA-1207 (#203) 60903c0
+
+## [3.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.6.0...v3.7.0) (2024-05-02)
+
+
+### Features
+
+* upgrading to GSF 7.2.1 - always start evaluator. (GENC-415) (#201) 3fb4277
+
+## [3.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.2...v3.6.0) (2024-04-30)
+
+
+### Features
+
+* upgrading to GSF 7.2 (#200) b2db27c
+
+## [3.5.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.1...v3.5.2) (2024-04-30)
+
+
+### Bug Fixes
+
+* updated default user details + added profiles. (GENC-357) (#193) 044f0f4
+
+## [3.5.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.5.0...v3.5.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* add hostPath to login configuration (AUTH-422) (#199) d51825e
+
+## [3.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.2...v3.5.0) (2024-04-29)
+
+
+### Features
+
+* added project description to README. (GENC-356) (#191) b5fd5df
+
+## [3.4.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.1...v3.4.2) (2024-04-29)
+
+
+### Bug Fixes
+
+* default HTML page title to app name GENC-375 (#197) 5134fd4
+
+## [3.4.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.4.0...v3.4.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* remove side-bar menu contents GENC-371 (#194) b28e908
+
+## [3.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.1...v3.4.0) (2024-04-27)
+
+
+### Features
+
+* Add PrimaryIfSingleNode system definition setting to automatically set a cluster node as primary if no other hosts are defined (GSF-6789) (#196) 667bf30
+
+## [3.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.3.0...v3.3.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* add webpack to plugin ui command. (GENC-372) (#195) 930bab3
+
+## [3.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.2.0...v3.3.0) (2024-04-23)
+
+
+### Features
+
+* add getDateFormatter GENC-318 (#190) 2008ee6
+
+## [3.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.1.0...v3.2.0) (2024-04-23)
+
+
+### Features
+
+* add support for number formatting GENC-265 (#189) cf6aeae
+
+## [3.1.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.0.0...v3.1.0) (2024-04-22)
+
+
+### Features
+
+* enable cell/row flashing in grids GENC-311 (#188) 9cce9df
+
+## [3.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.1...v3.0.0) (2024-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* reversing logic to check for artifacts in the release repo by default (DVOP-630) (#187)
+
+### Bug Fixes
+
+* reversing logic to check for artifacts in the release repo by default (DVOP-630) (#187) 6212261
+
+## [2.11.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.11.0...v2.11.1) (2024-04-18)
+
+
+### Bug Fixes
+
+* copying auth data folder to genesis-home and license report plugin version (GSF-6771) (#186) d1369cc, closes PSD-9
+
+## [2.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.10.0...v2.11.0) (2024-04-15)
+
+
+### Features
+
+* Add parent folder for h2 database GENC-289 (#181) ee8b51c
+
+## [2.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.9.0...v2.10.0) (2024-04-12)
+
+
+### Features
+
+* new layout types GENC-286 (#182) 06a6641
+
+## [2.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.8.0...v2.9.0) (2024-04-12)
+
+
+### Features
+
+* FDC3 support GENC-224 (#180) ac35e42
+
+## [2.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.7.0...v2.8.0) (2024-04-11)
+
+
+### Features
+
+* global foundation-ui error handling - overlays [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#179) 4eff966
+
 ## [2.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v2.6.0...v2.7.0) (2024-04-10)
 
 

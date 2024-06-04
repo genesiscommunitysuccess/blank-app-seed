@@ -1,5 +1,5 @@
 const versions = require('./versions.json');
-const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData } = require('./utils');
+const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData, validateRoute } = require('./utils');
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -14,15 +14,20 @@ module.exports = async (data, utils) => {
 
   registerPartials(utils);
 
-  data.routes
-    .forEach((route) => {
-      if (!route.name) {
-        console.warn('Invalid route - missing name', route);
-        return;
-      }
-      const routeData = formatRouteData(route);
-      generateRoute(routeData, utils);
-    });
+  data.routes = data.routes
+    .filter(validateRoute)
+    .map(formatRouteData);
+
+  const FDC3EventHandlersEnabled  = data.routes.find(route => route.FDC3EventHandlersEnabled);
+  const FDC3ListenersEnabled = data.ui?.fdc3?.channels?.length;
+  data.FDC3 = {
+    includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
+    channels: data.ui?.fdc3?.channels || []
+  };
+
+  data.routes.forEach(route => {
+    generateRoute(route, utils);
+  });
 
   data.csv
     .map(entity => ({

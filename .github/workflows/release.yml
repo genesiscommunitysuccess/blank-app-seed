@@ -2,19 +2,19 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, prerelease]
 
 jobs:
   release:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{secrets.GH_USER_TOKEN}}
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -22,8 +22,18 @@ jobs:
         env:
           GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
         run: |
+          touch /tmp/dist-tag # create a blank file, so it's always there even if we don't do a release
           npm install
           npm run release
+
+      - name: Set dist tag
+        id: dist-tag
+        run: |
+          {
+            echo 'DIST_TAG<<EOF'
+            cat /tmp/dist-tag
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
       - name: Generate .npmignore
         run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore && cat .npmignore
@@ -35,4 +45,5 @@ jobs:
         uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{secrets.NPM_TOKEN}}
+          tag: ${{ steps.dist-tag.outputs.DIST_TAG }}
 
