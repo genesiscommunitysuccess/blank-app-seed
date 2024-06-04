@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.12.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.2...v3.12.3) (2024-06-04)
+
+
+### Bug Fixes
+
+* pinning down ajv version [FUI-2027](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2027) (#252) 5e90a9f, closes PSD-9
+
 ## [3.12.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.1...v3.12.2) (2024-06-03)
 
 
