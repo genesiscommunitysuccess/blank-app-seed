@@ -1,0 +1,8 @@
+  {{#if route.tiles}}
+  <zero-layout auto-save-key="{{route.layoutKey}}">
+     {{> (lookup ./route 'layoutType') }}
+  </zero-layout>
+  {{else}}
+  <!-- insert template code here -->
+  Welcome to {{sentenceCase route.name}}
+  {{/if}}
