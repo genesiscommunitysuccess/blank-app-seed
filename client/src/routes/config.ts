@@ -1,16 +1,15 @@
 import { Auth, Session } from '@genesislcap/foundation-comms';
-import {
-  defaultLoginConfig,
-  LoginConfig,
-  Settings as LoginSettings,
-} from '@genesislcap/foundation-login';
+import { defaultLoginConfig, LoginConfig } from '@genesislcap/foundation-login';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
-import { optional, Route } from '@genesislcap/web-core';
+import { NavigationPhase, optional, Route } from '@genesislcap/web-core';
 import { defaultLayout, loginLayout } from '../layouts';
+import { logger } from '../utils';
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
 import { NotFound } from './not-found/not-found';
+import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
+import { LoginSettings } from './types';
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -72,12 +71,21 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         childRouters: true,
       },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+      {
+        path: defaultNotPermittedRoute,
+        element: NotPermitted,
+        title: 'Not Permitted',
+        name: defaultNotPermittedRoute,
+      },
       {{#each routes}}
       {
         path: '{{kebabCase this.name}}',
         element: {{pascalCase this.name}},
         title: '{{sentenceCase this.name}}',
         name: '{{kebabCase this.name}}',
+        {{#if this.permissions.viewRight}}
+        settings: { isPermitted: () => this.auth.currentUser.hasPermission('{{this.permissions.viewRight}}') },
+        {{/if}}
         navItems: [
           {
             title: '{{sentenceCase this.name}}',
@@ -85,6 +93,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
               name: 'cog',
               variant: 'solid',
             },
+            permission: '{{this.permissions.viewRight}}',
           },
         ],
       },
@@ -116,13 +125,14 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
          * If logged in don't block
          */
         if (this.auth.isLoggedIn) {
+          this.redirectIfNotPermitted(settings, phase);
           return;
         }
 
         /**
          * If allowAutoAuth and session is valid try to connect+auto-login
          */
-        if (this.loginConfig.autoAuth && (await this.auth.reAuthFromSession())) {
+        if (this.loginConfig.autoAuth && (await this.reAuthFromSession(settings, phase))) {
           return;
         }
 
@@ -135,5 +145,25 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         });
       },
     });
+  }
+
+  private async reAuthFromSession(settings: LoginSettings, phase: NavigationPhase) {
+    return this.auth.reAuthFromSession().then((authenticated) => {
+      logger.info(`reAuthFromSession. authenticated: ${authenticated}`);
+      if (authenticated) {
+        this.redirectIfNotPermitted(settings, phase);
+      }
+      return authenticated;
+    });
+  }
+
+  private redirectIfNotPermitted(settings: LoginSettings, phase: NavigationPhase) {
+    const { path } = phase.route.endpoint;
+    if (settings?.isPermitted && !settings.isPermitted()) {
+      logger.warn(`Not permitted - Redirecting URL from ${path} to ${defaultNotPermittedRoute}.`);
+      phase.cancel(() => {
+        Route.name.replace(phase.router, defaultNotPermittedRoute);
+      });
+    }
   }
 }
