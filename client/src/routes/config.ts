@@ -8,7 +8,7 @@ import { logger } from '../utils';
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
 import { NotFound } from './not-found/not-found';
-import { NotPermitted } from './not-permitted/not-permitted';
+import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
 import { LoginSettings } from './types';
 
 // eslint-disable-next-line
@@ -71,7 +71,12 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         childRouters: true,
       },
       { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
-      { path: 'not-permitted', element: NotPermitted, title: 'Not Permitted', name: 'not-permitted' },
+      {
+        path: defaultNotPermittedRoute,
+        element: NotPermitted,
+        title: 'Not Permitted',
+        name: defaultNotPermittedRoute,
+      },
       {{#each routes}}
       {
         path: '{{kebabCase this.name}}',
@@ -155,10 +160,9 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
   private redirectIfNotPermitted(settings: LoginSettings, phase: NavigationPhase) {
     const { path } = phase.route.endpoint;
     if (settings?.isPermitted && !settings.isPermitted()) {
-      const route = 'not-permitted';
-      logger.warn(`Not permitted - Redirecting URL from ${path} to ${route}.`);
+      logger.warn(`Not permitted - Redirecting URL from ${path} to ${defaultNotPermittedRoute}.`);
       phase.cancel(() => {
-        Route.name.replace(phase.router, route);
+        Route.name.replace(phase.router, defaultNotPermittedRoute);
       });
     }
   }
