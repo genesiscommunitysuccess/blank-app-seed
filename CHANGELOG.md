@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.4...v3.13.0) (2024-06-14)
+
+
+### Features
+
+* support for route permissions based on right codes GENC-469 (#255) c7f4358
+
 ## [3.12.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.3...v3.12.4) (2024-06-07)
 
 
