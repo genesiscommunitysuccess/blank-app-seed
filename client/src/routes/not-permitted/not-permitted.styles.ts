@@ -11,5 +11,6 @@ export const NotPermittedStyles = css`
 
   h1 {
     text-align: center;
+    color: var(--neutral-foreground-rest);
   }
 `;

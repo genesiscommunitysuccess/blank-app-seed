@@ -8,4 +8,8 @@ export const NotFoundStyles = css`
     align-items: center;
     justify-content: center;
   }
+
+  h1 {
+    color: var(--neutral-foreground-rest);
+  }
 `;
