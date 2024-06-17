@@ -8,6 +8,7 @@ import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+import { NotPermittedComponent } from './not-permitted-component';
 
 /**
  * Ensure tree shaking doesn't remove these.
@@ -15,6 +16,7 @@ import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
 FoundationRouter;
 EntityManagement;
 Form;
+NotPermittedComponent;
 
 /**
  * registerComponents.

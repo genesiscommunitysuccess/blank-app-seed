@@ -1,15 +1,13 @@
 import { css } from '@genesislcap/web-core';
-import { mixinScreen } from '../../styles';
+import { errorMessageStyles, mixinScreen } from '../../styles';
 
 export const NotFoundStyles = css`
+  ${errorMessageStyles}
+
   :host {
     ${mixinScreen('flex')}
 
     align-items: center;
     justify-content: center;
-  }
-
-  h1 {
-    color: var(--neutral-foreground-rest);
   }
 `;
