@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.0...v3.13.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* foundation-ui resource and datasource enhancements [skip-ci] [FUI-1993](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1993) (#256) 2e64739
+
+## [3.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.4...v3.13.0) (2024-06-14)
+
+
+### Features
+
+* support for route permissions based on right codes GENC-469 (#255) c7f4358
+
+## [3.12.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.3...v3.12.4) (2024-06-07)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#254) 4a681aa
+
 ## [3.12.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.2...v3.12.3) (2024-06-04)
 
 
