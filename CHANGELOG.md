@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.0...v3.13.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* foundation-ui resource and datasource enhancements [skip-ci] [FUI-1993](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1993) (#256) 2e64739
+
 ## [3.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.4...v3.13.0) (2024-06-14)
 
 
