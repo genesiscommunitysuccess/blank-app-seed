@@ -1,9 +1,25 @@
-import { css } from '@genesislcap/web-core';
+import { errorColor } from '@genesislcap/rapid-design-system';
+import { css, neutralLayer4 } from '@genesislcap/web-core';
 import { mixinCardTitle } from './typography';
 
 export const stylesCardHeading = css`
   header h1 {
     ${mixinCardTitle}
+  }
+`;
+
+export const errorMessageStyles = css`
+  .error-message {
+    color: var(--neutral-foreground-rest);
+    background-color: ${neutralLayer4};
+    border-color: ${errorColor};
+    border-radius: 7px;
+    border-style: solid;
+    border-width: 4px;
+    padding: 5px;
+    margin: 15px;
+    text-align: center;
+    width: fit-content;
   }
 `;
 

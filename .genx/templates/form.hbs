@@ -1,10 +1,18 @@
-<foundation-form
-  design-system-prefix="rapid"
-  resourceName="{{config.resourceName}}"
-  {{#if config.uischema}}
-  :uischema=${() => (
-    {{{config.uischema}}}
-  )}
-  {{/if}}
->
-</foundation-form>
+${whenElse(
+    (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
+    html`
+      <foundation-form
+        design-system-prefix="rapid"
+        resourceName="{{config.resourceName}}"
+        {{#if config.uischema}}
+        :uischema=${() => (
+          {{{config.uischema}}}
+        )}
+        {{/if}}
+      >
+      </foundation-form>
+    `,
+    html`
+        <not-permitted-component></not-permitted-component>
+    `,
+)}
