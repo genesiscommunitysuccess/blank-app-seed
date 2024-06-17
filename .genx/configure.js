@@ -19,7 +19,7 @@ module.exports = async (data, utils) => {
   data.applicationVersionWeb = data.applicationVersion.split('-').shift();
   data.versions = versions;
 
-  registerPartials(utils);
+  registerPartials(utils, data.framework);
 
   data.routes = data.routes.filter(validateRoute).map(formatRouteData);
 

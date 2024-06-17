@@ -18,15 +18,16 @@ const getPathByFramework = {
     clientSrcPath: `../../client/src/app/pages`,
     route: (clientSrcPath, routeName) => `${clientSrcPath}/${routeName}`,
     component: (routeDir, routeName) => `${routeDir}/${routeName}.component.ts`,
-    template: (routeDir, routeName) => `${routeDir}/${routeName}.component.html`,
+    template: (routeDir, routeName) =>
+      `${routeDir}/${routeName}.component.html`,
     style: (routePath, routeName) => `${routePath}/${routeName}.component.css`,
   },
-}
+};
 
 const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
   const routeName = changeCase.paramCase(route.name);
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
-  const { 
+  const {
     clientSrcPath,
     route: getRouteDir,
     component: getComponentTarget,
@@ -36,10 +37,19 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
   const routeDir = getRouteDir(clientSrcPath, routeName);
 
   const filesToWrite = [
-    { source: `${sourceTemplateDir}/route.hbs`, target: getComponentTarget(routeDir, routeName) },
-    { source: `${sourceTemplateDir}/route.template.hbs`, target: getTemplateTarget(routeDir, routeName) },
-    { source: `${sourceTemplateDir}/route.styles.hbs`, target:  getStyleTarget(routeDir, routeName) },
-  ]
+    {
+      source: `${sourceTemplateDir}/route.hbs`,
+      target: getComponentTarget(routeDir, routeName),
+    },
+    {
+      source: `${sourceTemplateDir}/route.template.hbs`,
+      target: getTemplateTarget(routeDir, routeName),
+    },
+    {
+      source: `${sourceTemplateDir}/route.styles.hbs`,
+      target: getStyleTarget(routeDir, routeName),
+    },
+  ];
 
   makeDirectory(resolve(__dirname, routeDir));
   filesToWrite.forEach(({ source, target }) => {
@@ -49,6 +59,6 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
       resolve(__dirname, source),
     );
   });
-}
+};
 
 module.exports = generateRoute;
