@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.1...v3.14.0) (2024-06-17)
+
+
+### Features
+
+* handle component view/update permissions GENC-470 (#257) 7c3c3b6
+
 ## [3.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.0...v3.13.1) (2024-06-17)
 
 
