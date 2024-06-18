@@ -1,10 +1,11 @@
+import { isDev } from '@genesislcap/foundation-utils';
 import { html, whenElse } from '@genesislcap/web-core';
 import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent{{#if route.FDC3EventHandlersEnabled}}, sendEventOnChannel{{/if}} } from '../../utils';
 import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
   {{#if route.tiles}}
-  <rapid-layout auto-save-key="{{route.layoutKey}}">
+  <rapid-layout auto-save-key="${() => (isDev() ? null : '{{route.layoutKey}}')}">
      {{> (lookup ./route 'layoutType') }}
   </rapid-layout>
   {{else}}
