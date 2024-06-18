@@ -17,7 +17,6 @@ const getDirClientTemp = (frameworkName) => {
 };
 
 const excludeFrameworks = (selectedFramework) => {
-  debugger;
   const mainClientDirPath = path.join(
     __dirname,
     `../../${DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS)}`,

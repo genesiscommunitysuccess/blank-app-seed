@@ -13,12 +13,7 @@ config();
 
 module.exports = {
   plugins: [
-    new DefinePlugin(
-      resolveDefineConfig([
-        'API_HOST',
-        'GENX_*',
-      ]),
-    ),
+    resolveDefineConfig(['GENX_*']),
     new DefinePlugin(pkgConfig),
   ],
   module: {
