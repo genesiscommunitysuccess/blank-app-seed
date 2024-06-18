@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.14.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.0...v3.14.1) (2024-06-18)
+
+
+### Bug Fixes
+
+* do not use foundation layout autosave during dev GENC-528 (#258) ac4b2fd
+
 ## [3.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.1...v3.14.0) (2024-06-17)
 
 
