@@ -105,6 +105,7 @@
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
+    "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
@@ -119,7 +120,6 @@
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
-    "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-inbox": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
@@ -130,11 +130,15 @@
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
+    "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/foundation-zero": "{{versions.UI}}",
     "@genesislcap/foundation-zero-grid-pro": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
-    "@genesislcap/web-core": "{{versions.UI}}"
+    "@genesislcap/web-core": "{{versions.UI}}",
+    "@genesislcap/foundation-forms": {
+      "ajv": "8.14.0"
+    }
   }
 }

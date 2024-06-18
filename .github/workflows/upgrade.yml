@@ -10,23 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{secrets.GH_USER_TOKEN}}
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Set up Jfrog CLI
-        uses: jfrog/setup-jfrog-cli@v3
+        uses: jfrog/setup-jfrog-cli@v4
         with:
           version: latest
 
       - name: Authenticate on Artifactory
         run: |
-          jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}" --interactive=false
+          jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}" --interactive=false
 
       - name: Update to latest versions if available
         run: node .genx/scripts/update-versions

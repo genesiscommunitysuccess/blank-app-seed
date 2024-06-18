@@ -5,18 +5,22 @@ on:
     branches: [main, master, develop, alpha, prerelease]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
-      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_PASSWORD }}
+      genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}
       USE_DOCKER: 1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -42,7 +46,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew build
+        run: ./gradlew build --info
 
       - name: Lint UI
         working-directory: /tmp/testapp/client
@@ -58,7 +62,7 @@ jobs:
 
       - name: Create Server Dockerfile
         working-directory: /tmp/testapp
-        run: ./gradlew :server:testapp-app:createDockerfile
+        run: ./gradlew :server:testapp-app:createDockerfile --info
 
       - name: Build Docker images
         working-directory: /tmp/testapp

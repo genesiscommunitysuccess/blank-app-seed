@@ -1,5 +1,68 @@
 # Changelog
 
+## [3.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.1...v3.14.0) (2024-06-17)
+
+
+### Features
+
+* handle component view/update permissions GENC-470 (#257) 7c3c3b6
+
+## [3.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.0...v3.13.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* foundation-ui resource and datasource enhancements [skip-ci] [FUI-1993](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1993) (#256) 2e64739
+
+## [3.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.4...v3.13.0) (2024-06-14)
+
+
+### Features
+
+* support for route permissions based on right codes GENC-469 (#255) c7f4358
+
+## [3.12.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.3...v3.12.4) (2024-06-07)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#254) 4a681aa
+
+## [3.12.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.2...v3.12.3) (2024-06-04)
+
+
+### Bug Fixes
+
+* pinning down ajv version [FUI-2027](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2027) (#252) 5e90a9f, closes PSD-9
+
+## [3.12.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.1...v3.12.2) (2024-06-03)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#251) 1887971
+
+## [3.12.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.0...v3.12.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#246) ed746f4
+
+## [3.12.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.3...v3.12.0) (2024-05-30)
+
+
+### Features
+
+* upgrade to GSF 8.0.0 GENC-513 (#244) 73b250b
+
+## [3.11.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.2...v3.11.3) (2024-05-29)
+
+
+### Bug Fixes
+
+* fdc3 file to unix file endings and fix linting error GENC-292 (#242) 50471e0
+
 ## [3.11.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.11.1...v3.11.2) (2024-05-29)
 
 
