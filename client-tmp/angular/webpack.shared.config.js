@@ -1,21 +1,14 @@
 const path = require('path');
-const { resolveDefineConfig } = require('@genesislcap/build-kit');
-const { config } = require('dotenv');
-const { DefinePlugin } = require('webpack');
-const pkg = require('./package.json');
-const pkgConfig = Object.fromEntries(
-  Object.entries(pkg.config).map(([key, value]) => [
-    key,
-    JSON.stringify(value),
-  ]),
-);
-config();
+
+// Register ts-node to transpile environments TypeScript file
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: {
+    module: 'commonjs'
+  }
+});
 
 module.exports = {
-  plugins: [
-    resolveDefineConfig(['GENX_*']),
-    new DefinePlugin(pkgConfig),
-  ],
   module: {
     rules: [
       {
@@ -46,3 +39,4 @@ module.exports = {
     },
   },
 };
+

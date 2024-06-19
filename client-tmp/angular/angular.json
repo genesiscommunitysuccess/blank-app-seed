@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "basic": {
+    "{{pkgName}}": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -19,7 +19,7 @@
                 "externals": "replace"
               }
             },
-            "outputPath": "dist/basic",
+            "outputPath": "dist/{{pkgName}}",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -44,6 +44,15 @@
           },
           "configurations": {
             "production": {
+              "customWebpackConfig": {
+                "path": "./webpack.prod.config.js"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -59,6 +68,15 @@
               "outputHashing": "all"
             },
             "development": {
+              "customWebpackConfig": {
+                "path": "./webpack.dev.config.js"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -73,10 +91,10 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "basic:build:production"
+              "buildTarget": "{{pkgName}}:build:production"
             },
             "development": {
-              "buildTarget": "basic:build:development"
+              "buildTarget": "{{pkgName}}:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +102,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "basic:build"
+            "buildTarget": "{{pkgName}}:build"
           }
         },
         "test": {

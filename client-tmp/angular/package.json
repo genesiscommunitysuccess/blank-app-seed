@@ -4,15 +4,10 @@
   "scripts": {
     "ng": "ng",
     "bootstrap": "npm install --no-fund --no-audit",
-    "dev": "ng serve",
-    "build": "ng build",
+    "dev": "ng serve --configuration=development",
+    "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
-  },
-  "config": {
-    "PORT": 6060,
-    "API_HOST": "{{apiHost}}",
-    "GENX_ENABLE_SSO": {{enableSSO}}
   },
   "private": true,
   "dependencies": {
@@ -41,7 +36,6 @@
     "@angular/compiler-cli": "^17.1.0",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
-    "dotenv": "^16.4.1",
     "file-loader": "^6.2.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -50,6 +44,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "svg-url-loader": "^8.0.0",
-    "typescript": "~5.3.2"
+    "typescript": "~5.3.2",
+    "ts-node": "10.9.2"
   }
 }
