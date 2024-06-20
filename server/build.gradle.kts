@@ -87,5 +87,10 @@ allprojects {
             from(components["java"])
         }
     }
+    tasks{
+        test {
+            useJUnitPlatform {}
+        }
+    }
 }
 

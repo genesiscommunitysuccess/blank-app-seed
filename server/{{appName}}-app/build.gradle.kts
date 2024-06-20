@@ -15,8 +15,3 @@ sourceSets {
         }
     }
 }
-tasks{
-    test {
-        useJUnitPlatform {}
-    }
-}
