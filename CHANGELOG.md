@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.15.0...v3.16.0) (2024-06-20)
+
+
+### Features
+
+* Add test dependencies to server in blank-app-seed GENC-543 (#259) d87c4f9
+
 ## [3.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.1...v3.15.0) (2024-06-20)
 
 
