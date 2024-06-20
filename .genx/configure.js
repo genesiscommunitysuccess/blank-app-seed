@@ -1,5 +1,5 @@
 const versions = require('./versions.json');
-const { registerPartials, generateRoute, generateEmptyCsv, formatRouteData, validateRoute } = require('./utils');
+const { registerPartials, generateRoute, generateCsv, getCombinedCsvData, formatRouteData, validateRoute } = require('./utils');
 
 /**
  * Signature is `async (data: inquirer.Answers, utils: SeedConfigurationUtils)`
@@ -30,11 +30,8 @@ module.exports = async (data, utils) => {
   });
 
   data.csv
-    .map(entity => ({
-      name: entity.name.toUpperCase(),
-      fields: entity.fields.map( (field, index) => ({name: field.toUpperCase(), isLast: index === (entity.fields.length -1) }))
-    }))
-    .forEach(entity => {
-      generateEmptyCsv(entity, data.appName, utils);
+    .map((entity) => getCombinedCsvData(entity))
+    .forEach((entity) => {
+      generateCsv(entity, utils);
     });
 };
