@@ -9,6 +9,7 @@ subprojects {
 
     dependencies {
         implementation("com.h2database:h2:2.2.224")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.0")
     }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -86,5 +87,12 @@ allprojects {
             from(components["java"])
         }
     }
+    tasks{
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+            useJUnitPlatform()
+        }
+    }
 }
-
