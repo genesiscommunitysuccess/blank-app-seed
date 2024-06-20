@@ -9,6 +9,7 @@ subprojects {
 
     dependencies {
         implementation("com.h2database:h2:2.2.224")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.0")
     }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
