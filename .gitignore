@@ -18,6 +18,7 @@ pids
 .env.*
 
 # Editor directories and files
+.idea
 .vscode
 !.vscode/settings.json
 *.suo
