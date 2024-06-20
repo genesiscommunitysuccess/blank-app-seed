@@ -35,7 +35,7 @@ const prepareCsvData = (entity) => {
   const data = entity.data.map((rows) => ({
     rows: rows?.map((x, index) => ({
       name: x,
-      isLast: index === entity.fields.length - 1,
+      isLast: index === rows.length - 1,
     })),
   }));
 
@@ -68,7 +68,7 @@ const getCombinedCsvData = (entity) => {
   let csvFile;
   const combinedCsv = {
     name: entity.name.toUpperCase(),
-    fields: entity.fields.map((field, index) => ({
+    fields: entity.fields?.map((field, index) => ({
       name: field.toUpperCase(),
       isLast: index === entity.fields.length - 1,
     })),
