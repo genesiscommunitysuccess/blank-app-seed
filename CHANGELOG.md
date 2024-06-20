@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.1...v3.15.0) (2024-06-20)
+
+
+### Features
+
+* ability to add/append data to csv files GENC-473 (#260) 7b337ff
+
 ## [3.14.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.0...v3.14.1) (2024-06-18)
 
 
