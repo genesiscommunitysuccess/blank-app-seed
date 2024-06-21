@@ -1,0 +1,14 @@
+import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CommonModule} from '@angular/common';
+
+@Component({
+  selector: 'app-{{pascalCase route.name}}',
+  standalone: true,
+  imports: [
+    CommonModule,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './{{kebabCase route.name}}.component.html',
+  styleUrls: ['./{{kebabCase route.name}}.component.css'],
+})
+export class {{pascalCase route.name}}Component {}
