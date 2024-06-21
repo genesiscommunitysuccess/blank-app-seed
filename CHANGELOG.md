@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.16.0...v3.16.1) (2024-06-21)
+
+
+### Bug Fixes
+
+* Fix issue with test not trigger assemble itself GENC-543 (#261) ff38c00
+
 ## [3.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.15.0...v3.16.0) (2024-06-20)
 
 
