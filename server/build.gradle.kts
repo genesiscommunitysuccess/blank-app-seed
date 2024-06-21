@@ -37,6 +37,11 @@ tasks {
             dependsOn(subproject.tasks.named("clean"))
         }
     }
+    test {
+        for(subproject in subprojects){
+            dependsOn(subproject.tasks.named("test"))
+        }
+    }
 }
 
 allprojects {
