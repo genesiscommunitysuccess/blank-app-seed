@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.17.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.16.1...v3.17.0) (2024-06-21)
+
+
+### Features
+
+* initial angular support [FUI-1967](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1967) (#211) 9dac381
+
 ## [3.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.16.0...v3.16.1) (2024-06-21)
 
 
