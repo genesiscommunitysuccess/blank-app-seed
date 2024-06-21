@@ -3,7 +3,8 @@ const {
   excludeFrameworks,
   formatRouteData,
   generateRoute,
-  generateEmptyCsv,
+  generateCsv,
+  getCombinedCsvData,
   registerPartials,
   validateRoute,
 } = require('./utils');
@@ -38,14 +39,8 @@ module.exports = async (data, utils) => {
   });
 
   data.csv
-    .map((entity) => ({
-      name: entity.name.toUpperCase(),
-      fields: entity.fields.map((field, index) => ({
-        name: field.toUpperCase(),
-        isLast: index === entity.fields.length - 1,
-      })),
-    }))
+    .map((entity) => getCombinedCsvData(entity))
     .forEach((entity) => {
-      generateEmptyCsv(entity, data.appName, utils);
+      generateCsv(entity, utils);
     });
 };

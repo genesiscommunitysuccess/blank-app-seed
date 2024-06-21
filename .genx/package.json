@@ -1,7 +1,7 @@
 {
   "name": "@genesislcap/blank-app-seed-config",
   "description": "Genesis Blank App Seed Configuration",
-  "version": "3.14.1",
+  "version": "3.16.0",
   "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint .",
@@ -40,6 +40,7 @@
           ".sh",
           ".json",
           ".js",
+          ".kt",
           ".kts",
           ".ts",
           ".md",

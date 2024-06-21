@@ -1,1 +1,6 @@
 {{#each entity.fields}}{{this.name}}{{#unless this.isLast }},{{/unless}}{{/each}}
+{{#if entity.data}}
+{{#each entity.data}}
+{{#each this.rows}}{{this.name}}{{#unless this.isLast }},{{/unless}}{{/each}}
+{{/each}}
+{{/if}}

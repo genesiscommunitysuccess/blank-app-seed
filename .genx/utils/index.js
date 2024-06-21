@@ -1,7 +1,8 @@
 const excludeFrameworks = require('./excludeFrameworks');
 const formatRouteData = require('./formatRouteData');
 const generateRoute = require('./generateRoute');
-const generateEmptyCsv = require('./generateEmptyCsv');
+const generateCsv = require('./generateCsv');
+const getCombinedCsvData = require('./getCombinedCsvData');
 const makeDirectory = require('./makeDirectory');
 const normalizeFrameworkAlias = require('./normalizeFrameworkAlias');
 const parseJSONArgument = require('./parseJSONArgument');
@@ -12,8 +13,9 @@ const validateFrameworkAlias = require('./validateFrameworkAlias');
 module.exports = {
   excludeFrameworks,
   formatRouteData,
-  generateEmptyCsv,
   generateRoute,
+  generateCsv,
+  getCombinedCsvData,
   makeDirectory,
   normalizeFrameworkAlias,
   parseJSONArgument,

@@ -1,6 +1,6 @@
 const { resolve } = require('node:path');
 
-const generateEmptyCsv = (entity, appName, { writeFileWithData }) => {
+const generateCsv = (entity, { writeFileWithData }) => {
   writeFileWithData(
     resolve(
       __dirname,
@@ -10,5 +10,4 @@ const generateEmptyCsv = (entity, appName, { writeFileWithData }) => {
     resolve(__dirname, '../templates/csv.hbs'),
   );
 };
-
-module.exports = generateEmptyCsv;
+module.exports = generateCsv;
