@@ -4,7 +4,6 @@ import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
 import * as zeroDesignSystem from '@genesislcap/foundation-zero';
-import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
@@ -56,10 +55,5 @@ export async function registerComponents() {
    */
   zeroDesignSystem
     .provideDesignSystem()
-    .register(
-      zeroDesignSystem.baseComponents,
-      zeroGridComponents,
-      g2plotChartsComponents,
-      foundationLayoutComponents,
-    );
+    .register(zeroDesignSystem.baseComponents, g2plotChartsComponents, foundationLayoutComponents);
 }

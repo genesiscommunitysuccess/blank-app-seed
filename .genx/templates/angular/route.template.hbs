@@ -1,7 +1,7 @@
   {{#if route.tiles}}
-  <zero-layout auto-save-key="{{route.layoutKey}}">
+  <rapid-layout auto-save-key="{{route.layoutKey}}">
      {{> (lookup ./route 'layoutType') }}
-  </zero-layout>
+  </rapid-layout>
   {{else}}
   <!-- insert template code here -->
   Welcome to {{sentenceCase route.name}}

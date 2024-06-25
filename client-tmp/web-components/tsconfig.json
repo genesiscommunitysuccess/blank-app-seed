@@ -40,6 +40,9 @@
     "strictNullChecks": false,
     "target": "ES2015"
   },
-  "include": ["src/**/*"],
+  "include": [
+    "globals.d.ts" ,
+    "src/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }
