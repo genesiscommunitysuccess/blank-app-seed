@@ -1,6 +1,5 @@
 // import { configure } from '@genesislcap/foundation-auth/config';
 import type { Router } from '@angular/router';
-import { INTERNAL_URLS } from '../app.routes';
 
 /**
  * Configure the micro frontend

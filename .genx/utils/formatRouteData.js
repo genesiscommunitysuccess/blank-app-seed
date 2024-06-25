@@ -11,18 +11,29 @@ const formatRouteData = (route) => {
   const FDC3EventHandlersEnabled = !!route.tiles?.find(
     (t) => t.config?.gridOptions?.onRowClicked?.category === FDC3ClickCategory,
   );
+  const tiles = route.tiles?.map((tile, index) => {
+    const config = tile.config || {};
+    const {
+      gridOptions,
+      createFormUiSchema,
+      updateFormUiSchema,
+      uischema,
+      columns,
+    } = config;
 
-  const tiles = route.tiles?.map((tile) => ({
-    ...tile,
-    config: {
-      ...(tile.config || {}),
-      gridOptions: gridOptionsSerializer(tile.config?.gridOptions),
-      createFormUiSchema: formatJSONValue(tile.config?.createFormUiSchema),
-      updateFormUiSchema: formatJSONValue(tile.config?.updateFormUiSchema),
-      uischema: formatJSONValue(tile.config?.uischema),
-      columns: gridColumnsSerializer(tile.config?.columns),
-    },
-  }));
+    return {
+      ...tile,
+      config: {
+        ...config,
+        index,
+        gridOptions: gridOptionsSerializer(gridOptions),
+        createFormUiSchema: formatJSONValue(createFormUiSchema),
+        updateFormUiSchema: formatJSONValue(updateFormUiSchema),
+        uischema: formatJSONValue(uischema),
+        columns: gridColumnsSerializer(columns),
+      },
+    };
+  });
 
   return {
     ...route,

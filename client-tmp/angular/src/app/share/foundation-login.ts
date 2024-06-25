@@ -1,6 +1,6 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
-import { INTERNAL_URLS } from '../app.routes';
+import { AUTH_PATH } from '../app-routing.module';
 import { DI } from '@microsoft/fast-foundation';
 
 const ssoSettings =
@@ -24,9 +24,9 @@ export const configureFoundationLogin = ({
 }) => {
   configure(DI.getOrCreateDOMContainer(), {
     showConnectionIndicator: true,
-    hostPath: INTERNAL_URLS.auth,
+    hostPath: AUTH_PATH,
     redirectHandler: () => {
-      router.navigate([INTERNAL_URLS.homepage])
+      router.navigate(['{{kebabCase routes.[0].name}}'])
     },
     ...ssoSettings,
   });
