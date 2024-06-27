@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.18.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.1...v3.18.2) (2024-06-27)
+
+
+### Bug Fixes
+
+* correct updateRight for form component GENC-574 (#267) c82b626
+
 ## [3.18.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.0...v3.18.1) (2024-06-27)
 
 
