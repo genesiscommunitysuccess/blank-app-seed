@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.3...v3.19.0) (2024-06-28)
+
+
+### Features
+
+* upgrade angular client to v18 - [FUI-2054](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2054) (#264) d5c2480
+
 ## [3.18.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.2...v3.18.3) (2024-06-28)
 
 
