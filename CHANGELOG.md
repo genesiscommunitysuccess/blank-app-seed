@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.19.0...v3.20.0) (2024-07-01)
+
+
+### Features
+
+* compactProcessStrategy set for DEV in GSF 8.1 (#265) 982e756
+
 ## [3.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.3...v3.19.0) (2024-06-28)
 
 
