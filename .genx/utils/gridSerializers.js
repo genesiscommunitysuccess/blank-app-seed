@@ -1,10 +1,27 @@
 const formatJSONValue = require('./formatJSONValue');
-const gridColumnsSerializer = require('./gridColumnsSerializer');
 
-const gridOptionsSerializer = (options, pad = '      ') => {
+function gridColumnsSerializer(columns, pad = '      ') {
+  if (!columns) {
+    return undefined;
+  }
+
+  try {
+    const columnsSerialized = columns.map((column) => {
+      return gridOptionsSerializer(column)
+    }
+    );
+    return `[\n${pad}${columnsSerialized}]`;
+  } catch (e) {
+    throw e
+  }
+};
+
+
+function gridOptionsSerializer(options, pad = '      ') {
   if (!options) {
     return undefined;
   }
+
   try {
     let output = `{\n`;
     Object.keys(options).forEach((key) => {
@@ -25,9 +42,9 @@ const gridOptionsSerializer = (options, pad = '      ') => {
     });
     output += `${pad}}\n`;
     return output;
-  } catch {
-    return undefined;
+  } catch (e) {
+    throw e;
   }
 };
 
-module.exports = gridOptionsSerializer;
+module.exports = {gridColumnsSerializer, gridOptionsSerializer} ;

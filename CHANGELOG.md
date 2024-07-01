@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.3...v3.19.0) (2024-06-28)
+
+
+### Features
+
+* upgrade angular client to v18 - [FUI-2054](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2054) (#264) d5c2480
+
+## [3.18.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.2...v3.18.3) (2024-06-28)
+
+
+### Bug Fixes
+
+* move serializers to single file GENC-0 (#268) 9016d47
+
+## [3.18.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.1...v3.18.2) (2024-06-27)
+
+
+### Bug Fixes
+
+* correct updateRight for form component GENC-574 (#267) c82b626
+
+## [3.18.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.0...v3.18.1) (2024-06-27)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#266) e91328e
+
 ## [3.18.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.17.1...v3.18.0) (2024-06-25)
 
 
