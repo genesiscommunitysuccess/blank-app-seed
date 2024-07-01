@@ -1,5 +1,8 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
+{{#if route.tiles}}
+import { getDateFormatter, getNumberFormatter } from '../../utils';
+{{/if}}
 
 @Component({
   selector: 'app-{{pascalCase route.name}}',
