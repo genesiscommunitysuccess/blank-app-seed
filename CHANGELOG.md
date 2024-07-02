@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.0...v3.20.1) (2024-07-02)
+
+
+### Bug Fixes
+
+* adding missing formatting helpers GENC-547 (#269) b8c0e8c
+
 ## [3.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.19.0...v3.20.0) (2024-07-01)
 
 
