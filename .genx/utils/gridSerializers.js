@@ -7,15 +7,14 @@ function gridColumnsSerializer(columns, pad = '      ') {
 
   try {
     const columnsSerialized = columns.map((column) => {
-      return gridOptionsSerializer(column)
-    }
-    );
+      return gridOptionsSerializer(column);
+    });
     return `[\n${pad}${columnsSerialized}]`;
   } catch (e) {
-    throw e
+    console.error('Error serializing grid columns:', e.message);
+    throw e;
   }
-};
-
+}
 
 function gridOptionsSerializer(options, pad = '      ') {
   if (!options) {
@@ -43,8 +42,9 @@ function gridOptionsSerializer(options, pad = '      ') {
     output += `${pad}}\n`;
     return output;
   } catch (e) {
+    console.error('Error serializing grid options:', e.message);
     throw e;
   }
-};
+}
 
-module.exports = {gridColumnsSerializer, gridOptionsSerializer} ;
+module.exports = { gridColumnsSerializer, gridOptionsSerializer };

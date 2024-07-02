@@ -1,4 +1,7 @@
-const {gridOptionsSerializer, gridColumnsSerializer } = require('./gridSerializers');
+const {
+  gridOptionsSerializer,
+  gridColumnsSerializer,
+} = require('./gridSerializers');
 const formatJSONValue = require('./formatJSONValue');
 const getLayoutType = require('./getLayoutType');
 

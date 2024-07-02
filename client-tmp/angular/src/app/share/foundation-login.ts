@@ -1,6 +1,6 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
-import { AUTH_PATH } from '../app-routing.module';
+import { AUTH_PATH } from '../app.config';
 import { DI } from '@microsoft/fast-foundation';
 
 const ssoSettings =

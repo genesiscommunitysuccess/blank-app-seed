@@ -28,6 +28,7 @@
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "numeral": "2.0.6",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -39,6 +40,7 @@
     "@angular/compiler-cli": "^18.0.4",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
+    "@types/numeral": "^2.0.5",
     "file-loader": "^6.2.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

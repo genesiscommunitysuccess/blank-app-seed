@@ -1,6 +1,7 @@
 import type { MainMenu } from './types/menu'
 import type { LayoutComponentName } from './types/layout';
-import { AUTH_PATH } from './app-routing.module';
+
+export const AUTH_PATH = 'login'
 
 export const layoutComponentName = {
   default: 'DefaultLayoutComponent',

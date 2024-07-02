@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { AUTH_PATH } from '../app-routing.module';
-
+import { AUTH_PATH } from '../app.config';
 
 @Injectable({
   providedIn: 'root',

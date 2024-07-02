@@ -5,8 +5,7 @@ import { AuthLoginComponent } from './pages/auth-login/auth-login.component';
 {{#each routes}}
 import { {{pascalCase this.name}}Component } from './pages/{{kebabCase this.name}}/{{kebabCase this.name}}.component';
 {{/each}}
-
-export const AUTH_PATH = 'login'
+import { AUTH_PATH } from './app.config';
 
 export const routes: Routes = [
   {
