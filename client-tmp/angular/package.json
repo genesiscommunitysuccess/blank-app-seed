@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "bootstrap": "npm install --no-fund --no-audit",
-    "dev": "ng serve --configuration=development",
+    "dev": "ng serve --configuration=development --open",
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
