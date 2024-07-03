@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.1...v3.20.2) (2024-07-03)
+
+
+### Bug Fixes
+
+* update PROFILE_USER.csv GENC-606 (#271) 51f558e
+
 ## [3.20.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.0...v3.20.1) (2024-07-02)
 
 
