@@ -12,26 +12,20 @@ ${whenElse(
             {{#if config.createEvent}}
             createEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.createEvent }}')}"
             {{#if config.createFormUiSchema}}
-            :createFormUiSchema=${() => (
-                {{{ config.createFormUiSchema }}}
-            )}
+            :createFormUiSchema=${() => uiSchemaCreate }
             {{/if}}
             {{/if}}
             {{#if config.updateEvent}}
             updateEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.updateEvent }}')}"
             {{#if config.updateFormUiSchema}}
-            :updateFormUiSchema=${() => (
-                {{{ config.updateFormUiSchema }}}
-            )}
+            :updateFormUiSchema=${() => uiSchemaUpdate }
             {{/if}}
             {{/if}}
             {{#if config.deleteEvent}}
             deleteEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.deleteEvent }}')}"
             {{/if}}
             {{#if config.gridOptions}}
-            :gridOptions=${() => (
-            {{{config.gridOptions}}}
-            )}
+            :gridOptions=${() => gridOptions }
             {{/if}}
             {{#if config.snapshot}}
             :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
@@ -40,7 +34,7 @@ ${whenElse(
             :datasourceConfig=${() => ({pollingInterval: 5000 })}
             {{/if}}
             {{#if config.columns}}
-            :columns=${() => {{{ config.columns }}} }
+            :columns=${() => columnDefs }
             {{/if}}
             {{#if config.modalPosition}}
             modal-position="{{ config.modalPosition }}"

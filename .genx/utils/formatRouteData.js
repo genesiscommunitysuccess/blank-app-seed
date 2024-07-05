@@ -15,6 +15,7 @@ const formatRouteData = (route) => {
   );
   const tiles = route.tiles?.map((tile, index) => {
     const config = tile.config || {};
+    const componentName = `${route.name} ${tile.title} component`;
     const {
       gridOptions,
       createFormUiSchema,
@@ -25,6 +26,7 @@ const formatRouteData = (route) => {
 
     return {
       ...tile,
+      componentName,
       config: {
         ...config,
         index,

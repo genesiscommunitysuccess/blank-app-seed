@@ -1,5 +1,6 @@
 const { resolve } = require('node:path');
 const makeDirectory = require('./makeDirectory');
+const generateTile = require('./generateTile');
 const {
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORK_ANGULAR_ALIAS,
@@ -59,6 +60,13 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
       resolve(__dirname, source),
     );
   });
+
+  // Remove condition after adding changes for angular
+  if (framework === FRAMEWORK_WEB_COMPONENTS_ALIAS && route?.tiles?.length) {
+    route.tiles.forEach((tile) => {
+      generateTile(tile, route, { changeCase, writeFileWithData }, framework);
+    });
+  }
 };
 
 module.exports = generateRoute;

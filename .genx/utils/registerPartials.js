@@ -6,20 +6,21 @@ const {
 } = require('../static');
 
 const registerPartials = ({ registerPartial }, framework) => {
+  // It can be reverted after adding changes for angular
   const rootTemplateDir = `../${DIRS_MAP.get(DIR_TEMPLATE_ROOT_ALIAS)}`;
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
 
   registerPartial(
     'grid-layout',
-    resolve(__dirname, `${rootTemplateDir}/gridLayout.hbs`),
+    resolve(__dirname, `${sourceTemplateDir}/gridLayout.hbs`),
   );
   registerPartial(
     'tabs-layout',
-    resolve(__dirname, `${rootTemplateDir}/tabsLayout.hbs`),
+    resolve(__dirname, `${sourceTemplateDir}/tabsLayout.hbs`),
   );
   registerPartial(
     'horizontal-layout',
-    resolve(__dirname, `${rootTemplateDir}/horizontalLayout.hbs`),
+    resolve(__dirname, `${sourceTemplateDir}/horizontalLayout.hbs`),
   );
   registerPartial(
     'smart-form',

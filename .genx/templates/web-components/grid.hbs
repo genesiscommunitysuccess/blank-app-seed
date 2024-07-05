@@ -14,9 +14,7 @@ ${whenElse(
           :datasourceConfig=${() => ({pollingInterval: 5000 })}
           {{/if}}
           {{#if config.gridOptions}}
-          :deferredGridOptions=${() => (
-            {{{config.gridOptions}}}
-          )}
+          :deferredGridOptions=${() => gridOptions}
           {{/if}}
         >
         </grid-pro-genesis-datasource>
