@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.2...v3.20.3) (2024-07-05)
+
+
+### Bug Fixes
+
+* compactProcessesStrategy in the correct place (#272) b0b7b15
+
 ## [3.20.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.1...v3.20.2) (2024-07-03)
 
 
