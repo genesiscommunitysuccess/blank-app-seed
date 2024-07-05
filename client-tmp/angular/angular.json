@@ -39,7 +39,9 @@
               "size-sensor",
               "pdfast",
               "fmin",
-              "@json-schema-tools/dereferencer"
+              "@json-schema-tools/dereferencer",
+              "numeral",
+              "numeral/locales"
             ]
           },
           "configurations": {

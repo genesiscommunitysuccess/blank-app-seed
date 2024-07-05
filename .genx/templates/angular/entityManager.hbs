@@ -1,4 +1,5 @@
-<entity-management
+<ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+  <entity-management
     design-system-prefix="rapid"
     enable-row-flashing
     enable-cell-flashing
@@ -42,4 +43,9 @@
     {{#if config.enableSearchBar}}
     enable-search-bar
     {{/if}}
-></entity-management>
+  ></entity-management>
+</ng-container>
+
+<ng-template #notPermitted{{ config.index }}>
+  <not-permitted-component></not-permitted-component>
+</ng-template>

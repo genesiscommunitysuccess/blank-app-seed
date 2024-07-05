@@ -1,0 +1,11 @@
+<ng-container [ngSwitch]="elementType">
+    <h1 *ngSwitchCase="'h1'" class="error-message">\{{ message }}</h1>
+    <h2 *ngSwitchCase="'h2'" class="error-message">\{{ message }}</h2>
+    <h3 *ngSwitchCase="'h3'" class="error-message">\{{ message }}</h3>
+    <h4 *ngSwitchCase="'h4'" class="error-message">\{{ message }}</h4>
+    <h5 *ngSwitchCase="'h5'" class="error-message">\{{ message }}</h5>
+    <h6 *ngSwitchCase="'h6'" class="error-message">\{{ message }}</h6>
+    <p *ngSwitchCase="'p'" class="error-message">\{{ message }}</p>
+    <span *ngSwitchCase="'span'" class="error-message">\{{ message }}</span>
+    <div *ngSwitchDefault class="error-message">\{{ message }}</div>
+</ng-container>

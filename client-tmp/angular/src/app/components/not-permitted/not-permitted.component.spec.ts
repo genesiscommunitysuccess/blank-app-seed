@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthLoginComponent } from './auth-login.component';
+import { NotPermittedComponent } from './not-permitted.component';
 
-describe('AuthLoginComponent', () => {
-  let component: AuthLoginComponent;
-  let fixture: ComponentFixture<AuthLoginComponent>;
+describe('NotPermittedComponent', () => {
+  let component: NotPermittedComponent;
+  let fixture: ComponentFixture<NotPermittedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthLoginComponent],
+      imports: [NotPermittedComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AuthLoginComponent);
+    fixture = TestBed.createComponent(NotPermittedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

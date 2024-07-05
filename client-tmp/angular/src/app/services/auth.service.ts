@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Auth } from '@genesislcap/foundation-comms';
-import {DI} from "@microsoft/fast-foundation";
+import { DI } from "@microsoft/fast-foundation";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  auth: Auth;
 
-  async isUserAuthenticated(): Promise<boolean> {
-    const auth: Auth = DI.getOrCreateDOMContainer().get(Auth);
-    return auth.isLoggedIn
+  constructor() {
+    this.auth = DI.getOrCreateDOMContainer().get(Auth);
+  }
+
+  isUserAuthenticated(): boolean {
+    return this.auth.isLoggedIn;
+  }
+
+  hasUserPermission(permissionCode: string): boolean {
+    return this.auth.currentUser.hasPermission(permissionCode);
   }
 }
