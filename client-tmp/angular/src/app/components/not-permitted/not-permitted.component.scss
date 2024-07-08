@@ -1,7 +1,0 @@
-@import '../../../styles/mixins';
-
-:host {
-  @include screen('flex');
-  align-items: center;
-  justify-content: center;
-}

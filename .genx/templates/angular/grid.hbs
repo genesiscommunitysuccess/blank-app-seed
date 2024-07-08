@@ -1,24 +1,28 @@
-<ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
-  <rapid-grid-pro
-    enable-row-flashing
-    enable-cell-flashing
-    >
-    <grid-pro-genesis-datasource
-      resource-name="{{config.resourceName}}"
-      {{#if config.snapshot}}
-      isSnapshot="{{config.snapshot}}"
-      {{/if}}
-      {{#if config.reqrep}}
-      [datasourceConfig]="tile{{ config.index }}.reqrep"
-      {{/if}}
-      {{#if config.gridOptions}}
-      [deferredGridOptions]="tile{{ config.index }}.gridOptions"
-      {{/if}}
-    >
-    </grid-pro-genesis-datasource>
-  </rapid-grid-pro>
-</ng-container>
+<section>
+  <ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+    <rapid-grid-pro
+      enable-row-flashing
+      enable-cell-flashing
+      >
+      <grid-pro-genesis-datasource
+        resource-name="{{config.resourceName}}"
+        {{#if config.snapshot}}
+        isSnapshot="{{config.snapshot}}"
+        {{/if}}
+        {{#if config.reqrep}}
+        [datasourceConfig]="tile{{ config.index }}.reqrep"
+        {{/if}}
+        {{#if config.gridOptions}}
+        [deferredGridOptions]="tile{{ config.index }}.gridOptions"
+        {{/if}}
+      >
+      </grid-pro-genesis-datasource>
+    </rapid-grid-pro>
+  </ng-container>
 
-<ng-template #notPermitted{{ config.index }}>
-  <not-permitted-component></not-permitted-component>
-</ng-template>
+  <ng-template #notPermitted{{ config.index }}>
+    <section style="contain: content; display: flex; height: 100%; width: 100%; overflow-y: auto; align-items: center; justify-content: center;">
+      <app-error-message elementType="h3" message="You do not have access to view this component."></app-error-message>
+    </section>
+  </ng-template>
+</section>

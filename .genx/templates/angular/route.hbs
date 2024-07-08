@@ -2,13 +2,13 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User, getUser } from '@genesislcap/foundation-user';
 import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
-import { NotPermittedComponent } from '../../components/not-permitted/not-permitted.component'
+import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 
 @Component({
   selector: 'app-{{pascalCase route.name}}',
   standalone: true,
   imports: [
-    NotPermittedComponent,
+    ErrorMessageComponent,
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

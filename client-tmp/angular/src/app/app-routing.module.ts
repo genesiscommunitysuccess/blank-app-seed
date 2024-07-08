@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { PermissionsGuard } from './guards/permissions.guard';
 import { AuthLoginComponent } from './pages/auth-login/auth-login.component';
-import { NotPermittedRouteComponent } from './pages/not-permitted-route/not-permitted-route.component';
+import { NotPermittedComponent } from './pages/not-permitted/not-permitted.component';
 {{#each routes}}
 import { {{pascalCase this.name}}Component } from './pages/{{kebabCase this.name}}/{{kebabCase this.name}}.component';
 {{/each}}
@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: `${NOT_PERMITTED_PATH}`,
-    component: NotPermittedRouteComponent,
+    component: NotPermittedComponent,
   },
   {{#each routes}}
   {

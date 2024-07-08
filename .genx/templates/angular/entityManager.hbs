@@ -1,51 +1,55 @@
-<ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
-  <entity-management
-    design-system-prefix="rapid"
-    enable-row-flashing
-    enable-cell-flashing
-    {{#if config.title}}
-    title="{{ config.title }}"
-    {{/if}}
-    resourceName="{{ config.resourceName }}"
-    {{#if config.createEvent}}
-    createEvent="{{ config.createEvent }}"
-    {{#if config.createFormUiSchema}}
-    [createFormUiSchema]="tile{{ config.index }}.createFormUiSchema"
-    {{/if}}
-    {{/if}}
-    {{#if config.updateEvent}}
-    updateEvent="{{ config.updateEvent }}"
-    {{#if config.updateFormUiSchema}}
-    [updateFormUiSchema]="tile{{ config.index }}.updateFormUiSchema"
-    {{/if}}
-    {{/if}}
-    {{#if config.deleteEvent}}
-    deleteEvent="{{ config.deleteEvent }}"
-    {{/if}}
-    {{#if config.gridOptions}}
-    [gridOptions]="{{ config.gridOptions }}"
-    {{/if}}
-    {{#if config.snapshot}}
-    [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
-    {{/if}}
-    {{#if config.reqrep}}
-    [datasourceConfig]="tile{{ config.index }}.reqrep"
-    {{/if}}
-    {{#if config.columns}}
-    [columns]="tile{{ config.index }}.columns"
-    {{/if}}
-    {{#if config.modalPosition}}
-    modal-position="{{ config.modalPosition }}"
-    {{/if}}
-    {{#if config.sizeColumnsToFit}}
-    size-columns-to-fit
-    {{/if}}
-    {{#if config.enableSearchBar}}
-    enable-search-bar
-    {{/if}}
-  ></entity-management>
-</ng-container>
+<section>
+  <ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+    <entity-management
+      design-system-prefix="rapid"
+      enable-row-flashing
+      enable-cell-flashing
+      {{#if config.title}}
+      title="{{ config.title }}"
+      {{/if}}
+      resourceName="{{ config.resourceName }}"
+      {{#if config.createEvent}}
+      createEvent="{{ config.createEvent }}"
+      {{#if config.createFormUiSchema}}
+      [createFormUiSchema]="tile{{ config.index }}.createFormUiSchema"
+      {{/if}}
+      {{/if}}
+      {{#if config.updateEvent}}
+      updateEvent="{{ config.updateEvent }}"
+      {{#if config.updateFormUiSchema}}
+      [updateFormUiSchema]="tile{{ config.index }}.updateFormUiSchema"
+      {{/if}}
+      {{/if}}
+      {{#if config.deleteEvent}}
+      deleteEvent="{{ config.deleteEvent }}"
+      {{/if}}
+      {{#if config.gridOptions}}
+      [gridOptions]="{{ config.gridOptions }}"
+      {{/if}}
+      {{#if config.snapshot}}
+      [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
+      {{/if}}
+      {{#if config.reqrep}}
+      [datasourceConfig]="tile{{ config.index }}.reqrep"
+      {{/if}}
+      {{#if config.columns}}
+      [columns]="tile{{ config.index }}.columns"
+      {{/if}}
+      {{#if config.modalPosition}}
+      modal-position="{{ config.modalPosition }}"
+      {{/if}}
+      {{#if config.sizeColumnsToFit}}
+      size-columns-to-fit
+      {{/if}}
+      {{#if config.enableSearchBar}}
+      enable-search-bar
+      {{/if}}
+    ></entity-management>
+  </ng-container>
 
-<ng-template #notPermitted{{ config.index }}>
-  <not-permitted-component></not-permitted-component>
-</ng-template>
+  <ng-template #notPermitted{{ config.index }}>
+    <section style="contain: content; display: flex; height: 100%; width: 100%; overflow-y: auto; align-items: center; justify-content: center;">
+      <app-error-message elementType="h3" message="You do not have access to view this component."></app-error-message>
+    </section>
+  </ng-template>
+</section>

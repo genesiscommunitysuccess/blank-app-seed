@@ -1,17 +1,19 @@
-<ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
-  <rapid-g2plot-chart
-    type="{{ config.type }}"
-    [config]="tile{{ config.index }}.chartConfig"
-  >
-    <chart-datasource
-      resourceName="{{ config.resourceName }}"
-      server-fields="{{ config.xField }} {{ config.yField }}"
-    ></chart-datasource>
-  </rapid-g2plot-chart>
-</ng-container>
+<section>
+  <ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+    <rapid-g2plot-chart
+      type="{{ config.type }}"
+      [config]="tile{{ config.index }}.chartConfig"
+    >
+      <chart-datasource
+        resourceName="{{ config.resourceName }}"
+        server-fields="{{ config.xField }} {{ config.yField }}"
+      ></chart-datasource>
+    </rapid-g2plot-chart>
+  </ng-container>
 
-<ng-template #notPermitted{{ config.index }}>
-  <not-permitted-component></not-permitted-component>
-</ng-template>
-
-
+  <ng-template #notPermitted{{ config.index }}>
+    <section style="contain: content; display: flex; height: 100%; width: 100%; overflow-y: auto; align-items: center; justify-content: center;">
+      <app-error-message elementType="h3" message="You do not have access to view this component."></app-error-message>
+    </section>
+  </ng-template>
+</section>

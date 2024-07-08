@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotPermittedRouteComponent } from './not-permitted-route.component';
+import { NotPermittedRouteComponent } from './not-permitted.component';
 
 describe('NotPermittedRouteComponent', () => {
   let component: NotPermittedRouteComponent;
