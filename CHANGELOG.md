@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.3...v3.20.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#274) 581c96b
+
 ## [3.20.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.2...v3.20.3) (2024-07-05)
 
 
