@@ -1,0 +1,6 @@
+import { ColDef } from '@ag-grid-community/core';
+import { getDateFormatter, getNumberFormatter{{#if route.FDC3EventHandlersEnabled}}, sendEventOnChannel{{/if}} } from '../../../utils';
+
+{{#if tile.config.columns}}
+export const columnDefs: ColDef[] = {{{ tile.config.columns }}}
+{{/if}}

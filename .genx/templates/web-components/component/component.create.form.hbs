@@ -1,0 +1,8 @@
+import { UiSchema } from '@genesislcap/foundation-forms';
+
+{{#if tile.config.createFormUiSchema}}
+export const createFormSchema: UiSchema = {{{ tile.config.createFormUiSchema }}}
+{{/if}}
+{{#if tile.config.uischema}}
+export const createFormSchema: UiSchema = {{{ tile.config.uischema }}}
+{{/if}}

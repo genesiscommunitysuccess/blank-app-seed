@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.5...v3.21.0) (2024-07-09)
+
+
+### Features
+
+* implement the generated UI code structure proposal GENC-533 (#275) 9bc3847
+
+## [3.20.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.4...v3.20.5) (2024-07-09)
+
+
+### Bug Fixes
+
+* bump GSF to 8.1.3 [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#276) 6c9904f
+
+## [3.20.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.3...v3.20.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#274) 581c96b
+
+## [3.20.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.2...v3.20.3) (2024-07-05)
+
+
+### Bug Fixes
+
+* compactProcessesStrategy in the correct place (#272) b0b7b15
+
 ## [3.20.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.1...v3.20.2) (2024-07-03)
 
 

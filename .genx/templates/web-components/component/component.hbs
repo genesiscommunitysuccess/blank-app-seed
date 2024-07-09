@@ -1,0 +1,13 @@
+import { User } from '@genesislcap/foundation-user';
+import { customElement, GenesisElement } from '@genesislcap/web-core';
+import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
+import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
+
+@customElement({
+  name: '{{kebabCase tile.componentName}}',
+  template,
+  styles,
+})
+export class {{pascalCase tile.componentName}} extends GenesisElement {
+  @User user: User;
+}
