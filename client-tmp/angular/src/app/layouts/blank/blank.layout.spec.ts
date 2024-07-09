@@ -10,7 +10,7 @@ describe('BlankLayoutComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BlankLayoutComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     });
     fixture = TestBed.createComponent(BlankLayoutComponent);
     component = fixture.componentInstance;
