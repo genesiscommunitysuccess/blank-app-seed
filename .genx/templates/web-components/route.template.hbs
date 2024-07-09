@@ -1,7 +1,13 @@
 import { isDev } from '@genesislcap/foundation-utils';
-import { html, whenElse } from '@genesislcap/web-core';
-import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent{{#if route.FDC3EventHandlersEnabled}}, sendEventOnChannel{{/if}} } from '../../utils';
+import { html } from '@genesislcap/web-core';
 import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
+{{#each route.tiles}}
+import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
+{{/each}}
+
+{{#each route.tiles}}
+{{pascalCase this.componentName}};
+{{/each}}
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
   {{#if route.tiles}}

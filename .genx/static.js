@@ -54,6 +54,13 @@ const DIR_TEMPLATE_BY_FRAMEWORK = {
   [FRAMEWORK_ANGULAR_ALIAS]: DIRS_MAP.get(DIR_TEMPLATE_ANGULAR_ALIAS),
 };
 
+const COMPONENT_TYPE = {
+  'entity-manager': 'manager',
+  'grid-pro': 'grid',
+  'smart-form': 'form',
+  'chart': 'chart'
+}
+
 const TEXTS = {
   INTRO_API_HOST:
     'You can override the default Genesis server URL used during local developent.',
@@ -77,6 +84,7 @@ const TEXTS = {
 };
 
 module.exports = {
+  COMPONENT_TYPE,
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORK_ANGULAR_ALIAS,
   FRAMEWORK_REACT_ALIAS,
