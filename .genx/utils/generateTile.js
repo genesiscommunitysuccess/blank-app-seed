@@ -1,6 +1,7 @@
 const { resolve } = require('node:path');
 const makeDirectory = require('./makeDirectory');
 const {
+  COMPONENT_TYPE,
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORK_ANGULAR_ALIAS,
   DIR_TEMPLATE_BY_FRAMEWORK,
@@ -37,7 +38,7 @@ const getFilesToWrite = (tile, tileName, routeName, path, sourceTemplateDir) => 
         gridOptions: getGridOptionsTarget,
       } = path;
 
-      const routeDir = getRouteDir(clientSrcPath, tileName, tile.type, routeName);
+      const routeDir = getRouteDir(clientSrcPath, tileName, tile.componentType, routeName);
 
       const componentIndexFile = {
         source: `${sourceTemplateDir}/component/component.index.hbs`,
@@ -119,7 +120,7 @@ const generateTile = (tile, route, { changeCase, writeFileWithData }, framework)
     clientSrcPath,
     route: getRouteDir,
   } = getPathByFramework[framework];
-  const routeDir = getRouteDir(clientSrcPath, tileName, tile.type, routeName);
+  const routeDir = getRouteDir(clientSrcPath, tileName, tile.componentType, routeName);
 
   const filesToWrite = getFilesToWrite(tile, tileName, routeName, getPathByFramework[framework], sourceTemplateDir)
 

@@ -4,6 +4,7 @@ const {
 } = require('./gridSerializers');
 const formatJSONValue = require('./formatJSONValue');
 const getLayoutType = require('./getLayoutType');
+const { COMPONENT_TYPE } = require('../static');
 
 const formatRouteData = (route) => {
   const layoutKey = route?.layoutKey || `${route.name}_${Date.now()}`;
@@ -15,7 +16,8 @@ const formatRouteData = (route) => {
   );
   const tiles = route.tiles?.map((tile, index) => {
     const config = tile.config || {};
-    const componentName = `${route.name}-${tile.title.replace(/[^0-9a-z]/gi, '')}-${tile.type}`;
+    const componentType = COMPONENT_TYPE[tile.type];
+    const componentName = `${route.name}-${tile.title.replace(/[^0-9a-z]/gi, '')}-${componentType}`;
     const {
       gridOptions,
       createFormUiSchema,
@@ -27,6 +29,7 @@ const formatRouteData = (route) => {
     return {
       ...tile,
       componentName,
+      componentType,
       config: {
         ...config,
         index,
