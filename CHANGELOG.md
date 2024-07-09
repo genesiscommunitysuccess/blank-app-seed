@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.5...v3.21.0) (2024-07-09)
+
+
+### Features
+
+* implement the generated UI code structure proposal GENC-533 (#275) 9bc3847
+
 ## [3.20.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.4...v3.20.5) (2024-07-09)
 
 
