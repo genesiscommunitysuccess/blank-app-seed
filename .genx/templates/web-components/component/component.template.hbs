@@ -2,13 +2,13 @@ import { html, whenElse } from '@genesislcap/web-core';
 import { getViewUpdateRightComponent } from '../../../utils';
 import type { {{pascalCase tile.componentName}} } from './{{kebabCase tile.title}}';
 {{#if tile.config.createFormUiSchema}}
-import { uiSchemaCreate } from './{{kebabCase tile.title}}.create.form.schema';
+import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
 {{#if tile.config.uischema}}
-import { uiSchemaCreate } from './{{kebabCase tile.title}}.create.form.schema';
+import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
 {{#if tile.config.updateFormUiSchema}}
-import { uiSchemaUpdate } from './{{kebabCase tile.title}}.update.form.schema';
+import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
 {{/if}}
 {{#if tile.config.columns}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';

@@ -1,3 +1,5 @@
+import { UiSchema } from '@genesislcap/foundation-forms';
+
 {{#if tile.config.updateFormUiSchema}}
-export const uiSchemaUpdate = {{{ tile.config.updateFormUiSchema }}}
+export const updateFormSchema: UiSchema = {{{ tile.config.updateFormUiSchema }}}
 {{/if}}

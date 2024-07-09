@@ -9,7 +9,7 @@ const {
 const getPathByFramework = {
   [FRAMEWORK_WEB_COMPONENTS_ALIAS]: {
     clientSrcPath: `../../client/src/routes`,
-    route: (clientSrcPath, tileName, routeName) => `${clientSrcPath}/${routeName}/${tileName}-component`,
+    route: (clientSrcPath, tileName, tileType, routeName) => `${clientSrcPath}/${routeName}/${tileName}-${tileType}`,
     index: (componentPath) => `${componentPath}/index.ts`,
     component: (componentPath, tileName) => `${componentPath}/${tileName}.ts`,
     template: (componentPath, tileName) => `${componentPath}/${tileName}.template.ts`,
@@ -37,7 +37,7 @@ const getFilesToWrite = (tile, tileName, routeName, path, sourceTemplateDir) => 
         gridOptions: getGridOptionsTarget,
       } = path;
 
-      const routeDir = getRouteDir(clientSrcPath, tileName, routeName);
+      const routeDir = getRouteDir(clientSrcPath, tileName, tile.type, routeName);
 
       const componentIndexFile = {
         source: `${sourceTemplateDir}/component/component.index.hbs`,
@@ -119,7 +119,7 @@ const generateTile = (tile, route, { changeCase, writeFileWithData }, framework)
     clientSrcPath,
     route: getRouteDir,
   } = getPathByFramework[framework];
-  const routeDir = getRouteDir(clientSrcPath, tileName, routeName);
+  const routeDir = getRouteDir(clientSrcPath, tileName, tile.type, routeName);
 
   const filesToWrite = getFilesToWrite(tile, tileName, routeName, getPathByFramework[framework], sourceTemplateDir)
 

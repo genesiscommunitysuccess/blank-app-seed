@@ -12,13 +12,13 @@ ${whenElse(
             {{#if config.createEvent}}
             createEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.createEvent }}')}"
             {{#if config.createFormUiSchema}}
-            :createFormUiSchema=${() => uiSchemaCreate }
+            :createFormUiSchema=${() => createFormSchema }
             {{/if}}
             {{/if}}
             {{#if config.updateEvent}}
             updateEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.updateEvent }}')}"
             {{#if config.updateFormUiSchema}}
-            :updateFormUiSchema=${() => uiSchemaUpdate }
+            :updateFormUiSchema=${() => updateFormSchema}
             {{/if}}
             {{/if}}
             {{#if config.deleteEvent}}
