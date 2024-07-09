@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.20.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.4...v3.20.5) (2024-07-09)
+
+
+### Bug Fixes
+
+* bump GSF to 8.1.3 [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#276) 6c9904f
+
 ## [3.20.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.3...v3.20.4) (2024-07-08)
 
 
