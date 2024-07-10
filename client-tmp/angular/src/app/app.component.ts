@@ -48,4 +48,5 @@ export class AppComponent implements AfterViewInit {
     });
     {{/each}}
   };
+  {{/if}}
 }
