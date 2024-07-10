@@ -1,13 +1,8 @@
 const { resolve } = require('node:path');
-const {
-  DIR_TEMPLATE_ROOT_ALIAS,
-  DIRS_MAP,
-  DIR_TEMPLATE_BY_FRAMEWORK,
-} = require('../static');
+const { DIR_TEMPLATE_BY_FRAMEWORK } = require('../static');
 
 const registerPartials = ({ registerPartial }, framework) => {
   // It can be reverted after adding changes for angular
-  const rootTemplateDir = `../${DIRS_MAP.get(DIR_TEMPLATE_ROOT_ALIAS)}`;
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
 
   registerPartial(

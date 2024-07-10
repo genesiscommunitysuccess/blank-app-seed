@@ -58,8 +58,8 @@ const COMPONENT_TYPE = {
   'entity-manager': 'manager',
   'grid-pro': 'grid',
   'smart-form': 'form',
-  'chart': 'chart'
-}
+  chart: 'chart',
+};
 
 const TEXTS = {
   INTRO_API_HOST:

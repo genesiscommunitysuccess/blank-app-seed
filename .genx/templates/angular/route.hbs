@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { User, getUser } from '@genesislcap/foundation-user';
 import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
+{{#if route.FDC3EventHandlersEnabled}}
+import { sendEventOnChannel } from '../../utils';
+{{/if}}
 
 @Component({
   selector: 'app-{{pascalCase route.name}}',
@@ -16,6 +19,7 @@ import { ErrorMessageComponent } from '../../components/error-message/error-mess
   styleUrls: ['./{{kebabCase route.name}}.component.css'],
 })
 export class {{pascalCase route.name}}Component {
+  sendEventOnChannel = sendEventOnChannel;
   canUserViewElement = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
   
   {{#each route.tiles}}
