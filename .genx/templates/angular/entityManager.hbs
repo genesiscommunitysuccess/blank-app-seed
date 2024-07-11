@@ -1,5 +1,5 @@
-<section style="contain: content; display: flex; height: 100%; width: 100%; overflow-y: auto; align-items: center; justify-content: center;">
-  <ng-container *ngIf="canUserViewElement('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+<section style="height: 100%; width: 100%;">
+  <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
     <entity-management
       design-system-prefix="rapid"
       enable-row-flashing
@@ -9,19 +9,19 @@
       {{/if}}
       resourceName="{{ config.resourceName }}"
       {{#if config.createEvent}}
-      createEvent="{{ config.createEvent }}"
+      [createEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined"
       {{#if config.createFormUiSchema}}
       [createFormUiSchema]="tile{{ config.index }}.createFormUiSchema"
       {{/if}}
       {{/if}}
       {{#if config.updateEvent}}
-      updateEvent="{{ config.updateEvent }}"
+      [updateEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined"
       {{#if config.updateFormUiSchema}}
       [updateFormUiSchema]="tile{{ config.index }}.updateFormUiSchema"
       {{/if}}
       {{/if}}
       {{#if config.deleteEvent}}
-      deleteEvent="{{ config.deleteEvent }}"
+      [deleteEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined"
       {{/if}}
       {{#if config.gridOptions}}
       [gridOptions]="{{ config.gridOptions }}"
@@ -48,6 +48,10 @@
   </ng-container>
 
   <ng-template #notPermitted{{ config.index }}>
-    <app-error-message elementType="h3" message="You do not have access to view this component."></app-error-message>
+    <app-error-message
+      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
+      elementType="h3"
+      message="You do not have access to view this component.">
+    </app-error-message>
   </ng-template>
 </section>
