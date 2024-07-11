@@ -20,7 +20,7 @@ import { sendEventOnChannel } from '../../utils';
 })
 export class {{pascalCase route.name}}Component {
   sendEventOnChannel = sendEventOnChannel;
-  canUserViewElement = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
   
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
