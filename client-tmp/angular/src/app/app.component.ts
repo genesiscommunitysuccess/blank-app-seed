@@ -4,7 +4,7 @@ import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 import type { LayoutComponentName } from './types/layout';
 import { configureFoundationLogin } from './share/foundation-login';
 {{#if FDC3.channels.length}}
-import { listenToChannel, onFDC3Ready } from '../utils';
+import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}
 
 // Genesis Components
