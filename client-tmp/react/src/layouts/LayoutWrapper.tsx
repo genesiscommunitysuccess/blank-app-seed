@@ -1,17 +1,15 @@
 import React, { ReactNode } from 'react';
 import BlankLayout from './blank/BlankLayout';
 import DefaultLayout from './default/DefaultLayout';
-import SimpleLayout from './simple/SimpleLayout';
 
 interface LayoutWrapperProps {
-  layout: 'blank' | 'default' | 'simple';
+  layout: 'blank' | 'default';
   children: ReactNode;
 }
 
 const layoutMap = {
   blank: BlankLayout,
   default: DefaultLayout,
-  simple: SimpleLayout,
 };
 
 const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ layout, children }) => {

@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  unstable_HistoryRouter as HistoryRouter,
   Routes,
   Route,
   useLocation,
 } from 'react-router-dom';
+import history from './utils/history';
 import LayoutWrapper from './layouts/LayoutWrapper';
 import { routeLayouts } from './config';
 import AuthGuard from './guards/AuthGuard';
@@ -53,11 +54,11 @@ const LayoutWithLocation = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router>
+      <HistoryRouter history={history}>
         <Routes>
           <Route path="*" element={<LayoutWithLocation />} />
         </Routes>
-      </Router>
+      </HistoryRouter>
     </AuthProvider>
   );
 };

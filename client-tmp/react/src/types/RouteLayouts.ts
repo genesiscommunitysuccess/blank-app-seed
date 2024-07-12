@@ -1,3 +1,3 @@
 export interface RouteLayouts {
-  [key: string]: 'blank' | 'default' | 'simple';
+  [key: string]: 'blank' | 'default';
 }

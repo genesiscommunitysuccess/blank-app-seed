@@ -20,7 +20,7 @@ const {{pascalCase route.name}} = () => {
   {{/each}}
 
   return (
-    <section className="{{kebabCase route.name}}">
+    <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
       <rapid-layout auto-save-key="{{route.layoutKey}}">
         {{> (lookup ./route 'layoutType') }}

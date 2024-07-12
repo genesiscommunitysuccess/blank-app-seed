@@ -2,8 +2,18 @@
   "name": "{{pkgName}}",
   "version": "{{applicationVersionWeb}}",
   "private": true,
+  "scripts": {
+    "bootstrap": "npm i --legacy-peer-deps",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix"
+  },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "29.2.0",
     "@ag-grid-community/core": "29.2.0",
+    "@ag-grid-community/csv-export": "29.2.0",
     "@ag-grid-enterprise/core": "29.2.0",
     "@ag-grid-enterprise/row-grouping": "29.2.0",
     "@ag-grid-enterprise/server-side-row-model": "29.2.0",
@@ -16,57 +26,25 @@
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
-    "@testing-library/jest-dom": "^6.4.5",
-    "@testing-library/react": "^15.0.7",
-    "@testing-library/user-event": "^14.5.2",
     "history": "^5.3.0",
-    "react": "^19.0.0-beta-b498834eab-20240506",
-    "react-dom": "^19.0.0-beta-b498834eab-20240506",
-    "react-router-dom": "^6.23.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^3.5.2"
-  },
-  "scripts": {
-    "bootstrap": "npm i --force --no-fund --no-audit",
-    "dev": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
-    "prettier": "npx prettier --write .",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react": "^19.0.0-beta-94eed63c49-20240425",
+    "react-dom": "^19.0.0-beta-94eed63c49-20240425",
+    "react-router-dom": "6.24.1"
   },
   "devDependencies": {
-    "@genesislcap/build-kit": "^14.177.2",
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.11.25",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/parser": "^7.12.0",
-    "eslint": "^9.4.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "react-app-rewired": "^2.2.1",
-    "sass": "^1.75.0",
-    "sass-loader": "^13.3.2",
-    "typescript": "^5.4.5"
-  }
+    "@types/react": "npm:types-react@alpha",  
+    "@types/react-dom": "npm:types-react-dom@alpha",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  },  
+  "overrides": {  
+    "@types/react": "npm:types-react@alpha",  
+    "@types/react-dom": "npm:types-react-dom@alpha"  
+  } 
 }
