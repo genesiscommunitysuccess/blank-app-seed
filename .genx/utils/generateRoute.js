@@ -7,7 +7,6 @@ const {
   FRAMEWORK_REACT_ALIAS,
   DIR_TEMPLATE_BY_FRAMEWORK,
 } = require('../static');
-const { get } = require('node:http');
 
 const getPathByFramework = {
   [FRAMEWORK_WEB_COMPONENTS_ALIAS]: {
