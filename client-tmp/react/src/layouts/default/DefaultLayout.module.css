@@ -1,0 +1,71 @@
+.default-layout {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.default-layout zero-design-system-provider {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.default-layout foundation-header {
+  z-index: 999;
+  height: 44px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  align-items: center;
+  border: none;
+}
+
+.routes-wrapper {
+  display: flex;
+}
+
+.default-layout app-footer,
+.content {
+  width: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  min-height: calc(100vh - 88px);
+}
+
+.default-layout app-footer {
+  height: 44px;
+  bottom: 0;
+}
+
+.has-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.default-layout zero-flyout {
+  width: 100%;
+  height: 100%;
+}
+
+.default-layout zero-flyout::part(flyout) {
+  width: 40%;
+  min-width: 320px;
+  padding: 0;
+}
+
+.default-layout zero-flyout::part(content) {
+  height: 100%;
+}
+
+.default-layout foundation-alerts {
+  --design-unit: 2.5;
+  --stroke-width: 1;
+}
+
+.default-layout foundation-alerts::part(filter-button) {
+  --design-unit: 4;
+}
