@@ -20,7 +20,6 @@ export class AppComponent {
     private router: Router,
   ) {
       configureFoundationLogin({ router });
-
       
     // Set layout componet based on route
     router.events.subscribe((event: any) => {

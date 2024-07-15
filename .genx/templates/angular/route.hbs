@@ -1,14 +1,15 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { User, getUser } from '@genesislcap/foundation-user';
 import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
-{{#if route.tiles}}
-import { getDateFormatter, getNumberFormatter } from '../../utils';
-{{/if}}
+import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
+import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 
 @Component({
   selector: 'app-{{pascalCase route.name}}',
   standalone: true,
   imports: [
+    ErrorMessageComponent,
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -16,6 +17,8 @@ import { getDateFormatter, getNumberFormatter } from '../../utils';
   styleUrls: ['./{{kebabCase route.name}}.component.css'],
 })
 export class {{pascalCase route.name}}Component {
+  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+  
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
     "createFormUiSchema": {{{ this.config.createFormUiSchema }}},{{/if}}{{#if this.config.updateFormUiSchema}}
