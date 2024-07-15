@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.22.0...v3.23.0) (2024-07-15)
+
+
+### Features
+
+* react blank-app-seed (#278) 83b1767
+
 ## [3.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.21.0...v3.22.0) (2024-07-15)
 
 
