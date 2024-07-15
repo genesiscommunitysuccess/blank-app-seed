@@ -19,12 +19,14 @@ ${whenElse(
           :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
           {{/if}}
         ></grid-pro-genesis-datasource>
+        {{#if config.gridOptions}}
         ${repeat(
           (x) => gridOptions?.columnDefs,
           html`
             <grid-pro-column :definition=${(x) => x}></grid-pro-column>
           `,
         )}
+        {{/if}}
       </rapid-grid-pro>
     `,
     html`
