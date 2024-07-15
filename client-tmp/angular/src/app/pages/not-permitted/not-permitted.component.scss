@@ -1,0 +1,12 @@
+@import '../../../styles/mixins';
+
+:host {
+  @include screen('flex');
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+  color: var(--neutral-foreground-rest);
+}

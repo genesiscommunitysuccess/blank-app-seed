@@ -13,12 +13,6 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./custom-webpack.config.js",
-              "mergeStrategies": {
-                "externals": "replace"
-              }
-            },
             "outputPath": "dist/{{pkgName}}",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -39,7 +33,9 @@
               "size-sensor",
               "pdfast",
               "fmin",
-              "@json-schema-tools/dereferencer"
+              "@json-schema-tools/dereferencer",
+              "numeral",
+              "numeral/locales"
             ]
           },
           "configurations": {
@@ -107,13 +103,26 @@
         },
         "test": {
           "builder": "@angular-builders/custom-webpack:karma",
-          "options": {
-            "customWebpackConfig": {
-              "path": "./custom-webpack.config.js",
-              "mergeStrategies": {
-                "externals": "replace"
+          "configurations": {
+            "production": {
+              "customWebpackConfig": {
+                "path": "./webpack.prod.config.js",
+                "mergeStrategies": {
+                  "externals": "replace"
+                }
               }
             },
+            "development": {
+              "customWebpackConfig": {
+                "path": "./webpack.dev.config.js",
+                "mergeStrategies": {
+                  "externals": "replace"
+                }
+              }
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": ["src/favicon.ico", "src/assets"],
