@@ -35,6 +35,7 @@
     "react-router-dom": "6.24.1"
   },
   "devDependencies": {
+    "@types/node": "^20.14.10",
     "@types/react": "npm:types-react@alpha",  
     "@types/react-dom": "npm:types-react-dom@alpha",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
