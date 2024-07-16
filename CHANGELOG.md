@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.23.0...v3.24.0) (2024-07-16)
+
+
+### Features
+
+* add auto headerCaseType to grid/entity-manager GENC-654 (#280) 47b0520
+
 ## [3.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.22.0...v3.23.0) (2024-07-15)
 
 
