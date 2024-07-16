@@ -3,6 +3,9 @@ import type { Router } from '@angular/router';
 import { AUTH_PATH } from '../app.config';
 import { DI } from '@microsoft/fast-foundation';
 
+// eslint-disable-next-line
+declare var GENX_ENABLE_SSO: boolean;
+
 const ssoSettings =
   typeof GENX_ENABLE_SSO !== 'undefined' && GENX_ENABLE_SSO === true
     ? {

@@ -52,14 +52,15 @@ const DIR_TEMPLATE_BY_FRAMEWORK = {
     DIR_TEMPLATE_WEB_COMPONENT_ALIAS,
   ),
   [FRAMEWORK_ANGULAR_ALIAS]: DIRS_MAP.get(DIR_TEMPLATE_ANGULAR_ALIAS),
+  [FRAMEWORK_REACT_ALIAS]: DIRS_MAP.get(FRAMEWORK_REACT_ALIAS),
 };
 
 const COMPONENT_TYPE = {
   'entity-manager': 'manager',
   'grid-pro': 'grid',
   'smart-form': 'form',
-  'chart': 'chart'
-}
+  chart: 'chart',
+};
 
 const TEXTS = {
   INTRO_API_HOST:

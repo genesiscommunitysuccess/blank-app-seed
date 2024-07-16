@@ -3,6 +3,7 @@ ${whenElse(
     html`
         <entity-management
             design-system-prefix="rapid"
+            header-case-type="capitalCase"
             enable-row-flashing
             enable-cell-flashing
             {{#if config.title}}
@@ -48,6 +49,6 @@ ${whenElse(
         ></entity-management>
     `,
     html`
-        <not-permitted-component></not-permitted-component>
+      <not-permitted-component></not-permitted-component>
     `,
 )}

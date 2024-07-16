@@ -1,18 +1,34 @@
-<rapid-grid-pro
-  enable-row-flashing
-  enable-cell-flashing
-  >
-  <grid-pro-genesis-datasource
-    resource-name="{{config.resourceName}}"
-    {{#if config.snapshot}}
-    isSnapshot="{{config.snapshot}}"
-    {{/if}}
-    {{#if config.reqrep}}
-    [datasourceConfig]="tile{{ config.index }}.reqrep"
-    {{/if}}
-    {{#if config.gridOptions}}
-    [deferredGridOptions]="tile{{ config.index }}.gridOptions"
-    {{/if}}
-  >
-  </grid-pro-genesis-datasource>
-</rapid-grid-pro>
+<section style="height: 100%; width: 100%;">
+  <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+    <rapid-grid-pro
+      header-case-type="capitalCase"
+      only-template-col-defs
+      enable-row-flashing
+      enable-cell-flashing
+      >
+      <grid-pro-genesis-datasource
+        resource-name="{{config.resourceName}}"
+        {{#if config.snapshot}}
+        isSnapshot="{{config.snapshot}}"
+        {{/if}}
+        {{#if config.reqrep}}
+        [datasourceConfig]="tile{{ config.index }}.reqrep"
+        {{/if}}
+        {{#if config.gridOptions}}
+        [deferredGridOptions]="{ onRowClicked: tile{{ config.index }}.gridOptions.onRowClicked }"
+        {{/if}}
+      ></grid-pro-genesis-datasource>
+      {{#if config.gridOptions}}
+      <grid-pro-column *ngFor="let columnDef of tile{{ config.index }}.gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
+      {{/if}}
+    </rapid-grid-pro>
+  </ng-container>
+
+  <ng-template #notPermitted{{ config.index }}>
+    <app-error-message
+      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
+      elementType="h3"
+      message="You do not have access to view this component.">
+    </app-error-message>
+  </ng-template>
+</section>

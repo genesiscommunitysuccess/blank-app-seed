@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.23.0...v3.24.0) (2024-07-16)
+
+
+### Features
+
+* add auto headerCaseType to grid/entity-manager GENC-654 (#280) 47b0520
+
+## [3.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.22.0...v3.23.0) (2024-07-15)
+
+
+### Features
+
+* react blank-app-seed (#278) 83b1767
+
+## [3.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.21.0...v3.22.0) (2024-07-15)
+
+
+### Features
+
+* angular handle route, component view/update permissions - [FUI-2066](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2066) (#273) 8c73b16
+
 ## [3.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.5...v3.21.0) (2024-07-09)
 
 

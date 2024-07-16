@@ -1,0 +1,15 @@
+<section class="error-message-wrapper">
+  <div class="error-message" style="color: var(--neutral-foreground-rest); background-color: var(--neutral-layer-4); border-color: var(--error-color); border-radius: 7px; border-style: solid; border-width: 4px; padding: 5px; margin: 15px; text-align: center; width: fit-content;">
+      <ng-container [ngSwitch]="elementType">
+        <h1 *ngSwitchCase="'h1'">\{{ message }}</h1>
+        <h2 *ngSwitchCase="'h2'">\{{ message }}</h2>
+        <h3 *ngSwitchCase="'h3'">\{{ message }}</h3>
+        <h4 *ngSwitchCase="'h4'">\{{ message }}</h4>
+        <h5 *ngSwitchCase="'h5'">\{{ message }}</h5>
+        <h6 *ngSwitchCase="'h6'">\{{ message }}</h6>
+        <p *ngSwitchCase="'p'">\{{ message }}</p>
+        <span *ngSwitchCase="'span'">\{{ message }}</span>
+        <div *ngSwitchDefault>\{{ message }}</div>
+      </ng-container>
+  </div>
+</section>

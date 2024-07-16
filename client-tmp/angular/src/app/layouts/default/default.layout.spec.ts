@@ -1,34 +1,49 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import * as StateChangerSelector from '../../store/state-changer/state-changer.selectors';
-
+import { Router } from '@angular/router';
 import { DefaultLayoutComponent } from './default.layout';
+import { ElementRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+class MockRouter {
+  navigate = jasmine.createSpy('navigate');
+}
+
+class MockElementRef implements ElementRef {
+  nativeElement = {};
+}
 
 describe('DefaultLayoutComponent', () => {
   let component: DefaultLayoutComponent;
   let fixture: ComponentFixture<DefaultLayoutComponent>;
+  let router: MockRouter;
+  let elementRef: MockElementRef;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [DefaultLayoutComponent],
       providers: [
-        provideMockStore({
-          initialState: {},
-          selectors: [
-            { selector: StateChangerSelector.getCriteria, value: 'initial-criteria' },
-            { selector: StateChangerSelector.getResourceName, value: 'initial-resource-name' },
-          ],
-        }),
+        { provide: Router, useClass: MockRouter },
+        { provide: ElementRef, useClass: MockElementRef }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    });
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(DefaultLayoutComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router) as unknown as MockRouter;
+    elementRef = TestBed.inject(ElementRef) as unknown as MockElementRef;
+    component.designSystemProviderElement = elementRef;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate to a path', () => {
+    const path = 'some/path';
+    component.navigateAngular(path);
+    expect(router.navigate).toHaveBeenCalledWith([path]);
   });
 });

@@ -1,5 +1,9 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { User, getUser } from '@genesislcap/foundation-user';
+import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
+import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
+import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 import { environment } from '../../../environments/environment';
 {{#if route.tiles}}
 import { getDateFormatter, getNumberFormatter } from '../../utils';
@@ -9,6 +13,7 @@ import { getDateFormatter, getNumberFormatter } from '../../utils';
   selector: 'app-{{pascalCase route.name}}',
   standalone: true,
   imports: [
+    ErrorMessageComponent,
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -17,13 +22,14 @@ import { getDateFormatter, getNumberFormatter } from '../../utils';
 })
 export class {{pascalCase route.name}}Component {
   environment = environment;
-
+  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+  
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
     "createFormUiSchema": {{{ this.config.createFormUiSchema }}},{{/if}}{{#if this.config.updateFormUiSchema}}
     "updateFormUiSchema": {{{ this.config.updateFormUiSchema }}},{{/if}}{{#if this.config.uischema}}
     "uischema": {{{ this.config.uischema }}},{{/if}}{{#if this.config.gridOptions}}
-    "gridOptions": {{{ this.config.gridOptions }}},{{/if}}{{#if this.config.reqrep}}
+    "gridOptions": {{{ this.config.gridOptions }}} as GridOptionsConfig,{{/if}}{{#if this.config.reqrep}}
     "reqrep": {{{ this.config.reqrep }}},{{/if}}{{#if this.config.columns}}
     "columns": {{{ this.config.columns }}},{{/if}}{{#if this.config.type}}
     "chartConfig": { {{#ifEquals this.config.type 'pie'}}
