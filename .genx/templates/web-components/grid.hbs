@@ -2,6 +2,8 @@ ${whenElse(
     (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
     html`
       <rapid-grid-pro
+        header-case-type="capitalCase"
+        only-template-col-defs
         enable-row-flashing
         enable-cell-flashing
         >
@@ -14,10 +16,17 @@ ${whenElse(
           :datasourceConfig=${() => ({pollingInterval: 5000 })}
           {{/if}}
           {{#if config.gridOptions}}
-          :deferredGridOptions=${() => gridOptions}
+          :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
           {{/if}}
-        >
-        </grid-pro-genesis-datasource>
+        ></grid-pro-genesis-datasource>
+        {{#if config.gridOptions}}
+        ${repeat(
+          (x) => gridOptions?.columnDefs,
+          html`
+            <grid-pro-column :definition=${(x) => x}></grid-pro-column>
+          `,
+        )}
+        {{/if}}
       </rapid-grid-pro>
     `,
     html`

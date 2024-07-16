@@ -1,6 +1,8 @@
 <section style="height: 100%; width: 100%;">
   <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
     <rapid-grid-pro
+      header-case-type="capitalCase"
+      only-template-col-defs
       enable-row-flashing
       enable-cell-flashing
       >
@@ -13,10 +15,12 @@
         [datasourceConfig]="tile{{ config.index }}.reqrep"
         {{/if}}
         {{#if config.gridOptions}}
-        [deferredGridOptions]="tile{{ config.index }}.gridOptions"
+        [deferredGridOptions]="{ onRowClicked: tile{{ config.index }}.gridOptions.onRowClicked }"
         {{/if}}
-      >
-      </grid-pro-genesis-datasource>
+      ></grid-pro-genesis-datasource>
+      {{#if config.gridOptions}}
+      <grid-pro-column *ngFor="let columnDef of tile{{ config.index }}.gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
+      {{/if}}
     </rapid-grid-pro>
   </ng-container>
 
