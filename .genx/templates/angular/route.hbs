@@ -4,6 +4,10 @@ import { User, getUser } from '@genesislcap/foundation-user';
 import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
 import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
+import { environment } from '../../../environments/environment';
+{{#if route.tiles}}
+import { getDateFormatter, getNumberFormatter } from '../../utils';
+{{/if}}
 
 @Component({
   selector: 'app-{{pascalCase route.name}}',
@@ -17,6 +21,7 @@ import { ErrorMessageComponent } from '../../components/error-message/error-mess
   styleUrls: ['./{{kebabCase route.name}}.component.css'],
 })
 export class {{pascalCase route.name}}Component {
+  environment = environment;
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
   
   {{#each route.tiles}}
