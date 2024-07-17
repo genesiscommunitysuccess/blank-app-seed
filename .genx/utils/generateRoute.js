@@ -4,6 +4,7 @@ const generateTile = require('./generateTile');
 const {
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORK_ANGULAR_ALIAS,
+  FRAMEWORK_REACT_ALIAS,
   DIR_TEMPLATE_BY_FRAMEWORK,
 } = require('../static');
 
@@ -23,11 +24,17 @@ const getPathByFramework = {
       `${routeDir}/${routeName}.component.html`,
     style: (routePath, routeName) => `${routePath}/${routeName}.component.css`,
   },
+  [FRAMEWORK_REACT_ALIAS]: {
+    clientSrcPath: `../../client/src/pages`,
+    route: (clientSrcPath, routeName) => `${clientSrcPath}/${routeName}`,
+    component: (routeDir, routeName, changeCase) =>
+      `${routeDir}/${changeCase.pascalCase(routeName)}.jsx`,
+    style: (routePath, routeName, changeCase) =>
+      `${routePath}/${changeCase.pascalCase(routeName)}.css`,
+  },
 };
 
 const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
-  const routeName = changeCase.paramCase(route.name);
-  const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
   const {
     clientSrcPath,
     route: getRouteDir,
@@ -35,22 +42,27 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     template: getTemplateTarget,
     style: getStyleTarget,
   } = getPathByFramework[framework];
+  const routeName = changeCase.paramCase(route.name);
+  const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
   const routeDir = getRouteDir(clientSrcPath, routeName);
 
   const filesToWrite = [
     {
       source: `${sourceTemplateDir}/route.hbs`,
-      target: getComponentTarget(routeDir, routeName),
-    },
-    {
-      source: `${sourceTemplateDir}/route.template.hbs`,
-      target: getTemplateTarget(routeDir, routeName),
+      target: getComponentTarget(routeDir, routeName, changeCase),
     },
     {
       source: `${sourceTemplateDir}/route.styles.hbs`,
-      target: getStyleTarget(routeDir, routeName),
+      target: getStyleTarget(routeDir, routeName, changeCase),
     },
   ];
+
+  if (getTemplateTarget) {
+    filesToWrite.push({
+      source: `${sourceTemplateDir}/route.template.hbs`,
+      target: getTemplateTarget(routeDir, routeName),
+    });
+  }
 
   makeDirectory(resolve(__dirname, routeDir));
   filesToWrite.forEach(({ source, target }) => {
@@ -61,7 +73,7 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     );
   });
 
-  // Remove condition after adding changes for angular
+  // Remove condition after adding changes for angular & react
   if (framework === FRAMEWORK_WEB_COMPONENTS_ALIAS && route?.tiles?.length) {
     route.tiles.forEach((tile) => {
       generateTile(tile, route, { changeCase, writeFileWithData }, framework);

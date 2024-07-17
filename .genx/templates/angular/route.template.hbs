@@ -1,5 +1,5 @@
   {{#if route.tiles}}
-  <rapid-layout auto-save-key="{{route.layoutKey}}">
+  <rapid-layout [auto-save-key]="environment.production ? '{{route.layoutKey}}' : null">
      {{> (lookup ./route 'layoutType') }}
   </rapid-layout>
   {{else}}

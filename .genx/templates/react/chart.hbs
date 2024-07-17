@@ -1,0 +1,9 @@
+<rapid-g2plot-chart
+  type="{{ config.type }}"
+  config={tile{{ config.index }}.chartConfig}
+>
+  <chart-datasource
+    resourceName="{{ config.resourceName }}"
+    server-fields="{{ config.xField }} {{ config.yField }}"
+  ></chart-datasource>
+</rapid-g2plot-chart>
