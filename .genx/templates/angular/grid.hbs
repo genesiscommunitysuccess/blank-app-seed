@@ -1,10 +1,9 @@
-<section style="height: 100%; width: 100%;">
-  <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
     <rapid-grid-pro
       header-case-type="capitalCase"
       only-template-col-defs
       enable-row-flashing
       enable-cell-flashing
+      [ngStyle]="{ display: hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none' }"
       >
       <grid-pro-genesis-datasource
         resource-name="{{config.resourceName}}"
@@ -22,13 +21,16 @@
       <grid-pro-column *ngFor="let columnDef of tile{{ config.index }}.gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
       {{/if}}
     </rapid-grid-pro>
-  </ng-container>
-
-  <ng-template #notPermitted{{ config.index }}>
+  <section 
+    [ngStyle]="{ 
+      height: '100%',
+      width: '100%',
+      display: !hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none'
+    }"
+  >
     <app-error-message
       style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
       elementType="h3"
       message="You do not have access to view this component.">
     </app-error-message>
-  </ng-template>
-</section>
+  </section>

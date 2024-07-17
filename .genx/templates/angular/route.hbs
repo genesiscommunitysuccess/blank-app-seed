@@ -23,7 +23,9 @@ import { sendEventOnChannel } from '../../utils';
 export class {{pascalCase route.name}}Component {
   environment = environment;
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+{{#if route.FDC3EventHandlersEnabled}}
   sendEventOnChannel = sendEventOnChannel;
+{{/if}}
   
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
