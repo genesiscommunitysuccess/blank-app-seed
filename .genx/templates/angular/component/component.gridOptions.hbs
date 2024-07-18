@@ -1,5 +1,8 @@
 import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
-import { getDateFormatter, getNumberFormatter{{#if route.FDC3EventHandlersEnabled}}, sendEventOnChannel{{/if}} } from '../../../utils';
+import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
+{{#if route.FDC3EventHandlersEnabled}}
+    import { sendEventOnChannel } from '../../../utils';
+{{/if}}
 
 {{#if tile.config.gridOptions}}
 export const gridOptions: GridOptionsConfig = {{{ tile.config.gridOptions }}}

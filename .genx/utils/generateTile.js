@@ -148,7 +148,6 @@ const generateTile = (
     componentType: tile.componentType,
     config: tile.config,
   };
-  console.log({ tileData });
   const routeName = changeCase.paramCase(route.name);
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
   const { clientSrcPath, route: getRouteDir } = getPathByFramework[framework];
