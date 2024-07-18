@@ -1,20 +1,20 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User, getUser } from '@genesislcap/foundation-user';
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
-import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
-import { getViewUpdateRightComponent } from '../../utils';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
+{{#each route.tiles}}
+import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
+{{/each}}
 import { environment } from '../../../environments/environment';
-{{#if route.FDC3EventHandlersEnabled}}
-import { sendEventOnChannel } from '../../utils';
-{{/if}}
+
 
 @Component({
-  selector: 'app-{{pascalCase route.name}}',
+  selector: 'app-{{kebabCase route.name}}',
   standalone: true,
   imports: [
     ErrorMessageComponent,
+    {{#each route.tiles}}
+    {{pascalCase this.componentName}},
+    {{/each}}
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -23,26 +23,4 @@ import { sendEventOnChannel } from '../../utils';
 })
 export class {{pascalCase route.name}}Component {
   environment = environment;
-  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
-{{#if route.FDC3EventHandlersEnabled}}
-  sendEventOnChannel = sendEventOnChannel;
-{{/if}}
-
-  {{#each route.tiles}}
-  tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
-    "createFormUiSchema": {{{ this.config.createFormUiSchema }}},{{/if}}{{#if this.config.updateFormUiSchema}}
-    "updateFormUiSchema": {{{ this.config.updateFormUiSchema }}},{{/if}}{{#if this.config.uischema}}
-    "uischema": {{{ this.config.uischema }}},{{/if}}{{#if this.config.gridOptions}}
-    "gridOptions": {{{ this.config.gridOptions }}} as GridOptionsConfig,{{/if}}{{#if this.config.reqrep}}
-    "reqrep": {{{ this.config.reqrep }}},{{/if}}{{#if this.config.columns}}
-    "columns": {{{ this.config.columns }}},{{/if}}{{#if this.config.type}}
-    "chartConfig": { {{#ifEquals this.config.type 'pie'}}
-      "radius": 0.75,
-      "angleField": "value",
-      "colorField": "groupBy",{{else}}
-      "xField": "groupBy",
-      "yField": "value",{{/ifEquals}}
-    },{{/if}}
-  }{{#unless @last}};{{/unless}}
-  {{/each}}
 }

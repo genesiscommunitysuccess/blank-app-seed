@@ -73,8 +73,13 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     );
   });
 
-  // Remove condition after adding changes for angular & react
-  if (framework === FRAMEWORK_WEB_COMPONENTS_ALIAS && route?.tiles?.length) {
+  // Remove condition after adding changes for react
+  if (
+    [FRAMEWORK_WEB_COMPONENTS_ALIAS, FRAMEWORK_ANGULAR_ALIAS].includes(
+      framework,
+    ) &&
+    route?.tiles?.length
+  ) {
     route.tiles.forEach((tile) => {
       generateTile(tile, route, { changeCase, writeFileWithData }, framework);
     });

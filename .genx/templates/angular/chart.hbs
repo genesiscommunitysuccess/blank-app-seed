@@ -2,7 +2,7 @@
   <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
     <rapid-g2plot-chart
       type="{{ config.type }}"
-      [config]="tile{{ config.index }}.chartConfig"
+      [config]="chartConfig"
     >
       <chart-datasource
         resourceName="{{ config.resourceName }}"
