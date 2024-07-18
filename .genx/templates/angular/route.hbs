@@ -5,8 +5,8 @@ import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
 import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 import { environment } from '../../../environments/environment';
-{{#if route.tiles}}
-import { getDateFormatter, getNumberFormatter } from '../../utils';
+{{#if route.FDC3EventHandlersEnabled}}
+import { sendEventOnChannel } from '../../utils';
 {{/if}}
 
 @Component({
@@ -23,6 +23,9 @@ import { getDateFormatter, getNumberFormatter } from '../../utils';
 export class {{pascalCase route.name}}Component {
   environment = environment;
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+{{#if route.FDC3EventHandlersEnabled}}
+  sendEventOnChannel = sendEventOnChannel;
+{{/if}}
   
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}

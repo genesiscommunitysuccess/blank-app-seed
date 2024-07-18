@@ -17,9 +17,9 @@ const BlankLayout: React.FC<BlankLayoutProps> = ({ children }) =>{
   }, []);
 
   return (
-  <zero-design-system-provider className={styles['blank-layout']}>
+  <rapid-design-system-provider className={styles['blank-layout']}>
     <section className={styles.content}>{children}</section>
-  </zero-design-system-provider>
+  </rapid-design-system-provider>
 );
 };
 
