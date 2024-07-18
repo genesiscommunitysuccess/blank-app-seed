@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.24.0...v3.25.0) (2024-07-18)
+
+
+### Features
+
+* FDC3 support in angular - [FUI-2068](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2068) (#281) 8d30d4c
+
 ## [3.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.23.0...v3.24.0) (2024-07-16)
 
 
