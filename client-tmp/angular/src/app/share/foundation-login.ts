@@ -1,7 +1,9 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
 import { AUTH_PATH } from '../app.config';
+import { css } from '@microsoft/fast-element';
 import { DI } from '@microsoft/fast-foundation';
+import logo from '../../assets/logo.svg';
 
 // eslint-disable-next-line
 declare var GENX_ENABLE_SSO: boolean;
@@ -32,6 +34,9 @@ export const configureFoundationLogin = ({
       router.navigate(['{{kebabCase routes.[0].name}}'])
     },
     ...ssoSettings,
+    logo: css `
+      content: url("${logo}");
+    `,
   });
 
   return define({
