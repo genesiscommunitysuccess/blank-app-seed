@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
-  PORT: 6060,
-  GENX_ENABLE_SSO: {{enableSSO}}
+  PORT: 4200,
+  ENABLE_SSO: {{enableSSO}},
+  HOST: 'localhost',
+  PROTOCOL: 'http',
 };
