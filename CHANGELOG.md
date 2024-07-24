@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.2...v3.26.0) (2024-07-24)
+
+
+### Features
+
+* sso in angular [FUI-2069](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2069) (#282) 577c5a3
+
 ## [3.25.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.1...v3.25.2) (2024-07-23)
 
 
