@@ -94,6 +94,7 @@
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
+    "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",

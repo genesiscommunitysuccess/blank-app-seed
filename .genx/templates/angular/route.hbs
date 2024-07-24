@@ -1,8 +1,9 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User, getUser } from '@genesislcap/foundation-user';
-import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
-import { getDateFormatter, getNumberFormatter, getViewUpdateRightComponent } from '../../utils';
+import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
+import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
+import { getViewUpdateRightComponent } from '../../utils';
 import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 import { environment } from '../../../environments/environment';
 {{#if route.FDC3EventHandlersEnabled}}
@@ -26,7 +27,7 @@ export class {{pascalCase route.name}}Component {
 {{#if route.FDC3EventHandlersEnabled}}
   sendEventOnChannel = sendEventOnChannel;
 {{/if}}
-  
+
   {{#each route.tiles}}
   tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
     "createFormUiSchema": {{{ this.config.createFormUiSchema }}},{{/if}}{{#if this.config.updateFormUiSchema}}
