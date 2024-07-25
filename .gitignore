@@ -26,6 +26,9 @@ pids
 *.sln
 *.sw?
 .DS_Store
+.idea/gradle.xml
+.idea/misc.xml
+.idea/vcs.xml
 
 # Development
 target/
@@ -36,6 +39,7 @@ build/
 *.ignore
 *~
 .gradle
+client/.angular
 client/bootstrapDone
 .husky/.gitignore
 build-cache/

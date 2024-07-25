@@ -1,8 +1,7 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
 import { AUTH_PATH } from '../app.config';
-import { css } from '@microsoft/fast-element';
-import { DI } from '@microsoft/fast-foundation';
+import { css, DI } from '@genesislcap/web-core';
 import logo from '../../assets/logo.svg';
 
 // eslint-disable-next-line
