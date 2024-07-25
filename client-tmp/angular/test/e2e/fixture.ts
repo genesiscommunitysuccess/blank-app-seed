@@ -11,7 +11,7 @@ export type FixtureConfig = {
 
 export type Fixture = {
   config: FixtureConfig;
-  homePage: ProtectedPage;
+  protectedPage: ProtectedPage;
 };
 
 const { PORT, API_HOST } = environment;

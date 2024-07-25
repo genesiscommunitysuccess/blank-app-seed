@@ -19,7 +19,10 @@
     "dev": "ng serve --configuration=development --open",
     "dev:docker": "npm run dev -- --host 0.0.0.0",
     "dev:no-open": "npm run dev -- --no-open",
+    "dev:intellij": "npm run dev",
     "dev:https": "npm run dev -- --https",
+    "dev:webpack": "npm run dev",
+    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "lint": "genx lint --profile",
     "lint:fix": "genx lint --fix",
     "lint:eslint": "genx lint -l eslint --profile",
@@ -30,19 +33,6 @@
     "test:e2e:ui": "genx test --e2e --interactive",
     "test:coverage": "ng test --no-watch --code-coverage",
     "test:unit:watch": "ng test --watch"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,js}": [
-      "eslint"
-    ],
-    "*.styles.ts": [
-      "stylelint"
-    ]
   },
   "eslintConfig": {
     "extends": "@genesislcap/eslint-config",
@@ -57,6 +47,7 @@
     "@angular-devkit/build-angular": "^18.0.4",
     "@angular/cli": "^18.0.4",
     "@angular/compiler-cli": "^18.0.4",
+    "@genesislcap/design-system-configurator": "{{versions.UI}}",
     "@genesislcap/eslint-config": "{{versions.UI}}",
     "@genesislcap/prettier-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
