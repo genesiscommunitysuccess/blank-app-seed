@@ -3,12 +3,12 @@
     {{#each route.tiles}}
         {{#ifEquals @index 0}}
         <rapid-layout-item title="{{../title}}">
-            {{> (lookup ../this 'type') ../this}}
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
         </rapid-layout-item>
         {{/ifEquals}}
         {{#ifEquals @index 1}}
         <rapid-layout-item title="{{../title}}">
-            {{> (lookup ../this 'type') ../this}}
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
         </rapid-layout-item>
         {{/ifEquals}}
     {{/each}}
@@ -17,12 +17,12 @@
     {{#each route.tiles}}
         {{#ifEquals @index 2}}
         <rapid-layout-item title="{{../title}}">
-            {{> (lookup ../this 'type') ../this}}
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
         </rapid-layout-item>
         {{/ifEquals}}
         {{#ifEquals @index 3}}
         <rapid-layout-item title="{{../title}}">
-            {{> (lookup ../this 'type') ../this}}
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
         </rapid-layout-item>
         {{/ifEquals}}
     {{/each}}
