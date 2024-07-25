@@ -1,0 +1,19 @@
+<rapid-design-system-provider #designSystemProvider>
+  <foundation-header
+    #foundationHeader
+    show-luminance-toggle-button
+    show-misc-toggle-button
+    (luminance-icon-clicked)="onLuminanceToogle()"
+    [navigateTo]="navigateAngular"
+  >
+    <section class="routes-wrapper" slot="routes">
+      <rapid-button *ngFor="let menuLink of allRoutes" (click)="navigate(menuLink.path)" >
+        <rapid-icon name="\{{ menuLink.icon }}"></rapid-icon>
+        \{{ menuLink.title }}
+      </rapid-button>
+    </section>
+  </foundation-header>
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</rapid-design-system-provider>

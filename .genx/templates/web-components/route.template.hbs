@@ -1,0 +1,21 @@
+import { isDev } from '@genesislcap/foundation-utils';
+import { html } from '@genesislcap/web-core';
+import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
+{{#each route.tiles}}
+import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
+{{/each}}
+
+{{#each route.tiles}}
+{{pascalCase this.componentName}};
+{{/each}}
+
+export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
+  {{#if route.tiles}}
+  <rapid-layout auto-save-key="${() => (isDev() ? null : '{{route.layoutKey}}')}">
+     {{> (lookup ./route 'layoutType') }}
+  </rapid-layout>
+  {{else}}
+  <!-- insert template code here -->
+  Welcome to {{sentenceCase route.name}}
+  {{/if}}
+`;

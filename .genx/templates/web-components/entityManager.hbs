@@ -1,0 +1,54 @@
+${whenElse(
+    (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
+    html`
+        <entity-management
+            design-system-prefix="rapid"
+            header-case-type="capitalCase"
+            enable-row-flashing
+            enable-cell-flashing
+            {{#if config.title}}
+            title="{{ config.title }}"
+            {{/if}}
+            resourceName="{{ config.resourceName }}"
+            {{#if config.createEvent}}
+            createEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.createEvent }}')}"
+            {{#if config.createFormUiSchema}}
+            :createFormUiSchema=${() => createFormSchema }
+            {{/if}}
+            {{/if}}
+            {{#if config.updateEvent}}
+            updateEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.updateEvent }}')}"
+            {{#if config.updateFormUiSchema}}
+            :updateFormUiSchema=${() => updateFormSchema}
+            {{/if}}
+            {{/if}}
+            {{#if config.deleteEvent}}
+            deleteEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.deleteEvent }}')}"
+            {{/if}}
+            {{#if config.gridOptions}}
+            :gridOptions=${() => gridOptions }
+            {{/if}}
+            {{#if config.snapshot}}
+            :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
+            {{/if}}
+            {{#if config.reqrep}}
+            :datasourceConfig=${() => ({pollingInterval: 5000 })}
+            {{/if}}
+            {{#if config.columns}}
+            :columns=${() => columnDefs }
+            {{/if}}
+            {{#if config.modalPosition}}
+            modal-position="{{ config.modalPosition }}"
+            {{/if}}
+            {{#if config.sizeColumnsToFit}}
+            size-columns-to-fit
+            {{/if}}
+            {{#if config.enableSearchBar}}
+            enable-search-bar
+            {{/if}}
+        ></entity-management>
+    `,
+    html`
+      <not-permitted-component></not-permitted-component>
+    `,
+)}

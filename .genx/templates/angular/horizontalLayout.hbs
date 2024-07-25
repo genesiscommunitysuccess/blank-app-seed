@@ -1,0 +1,7 @@
+<rapid-layout-region>
+    {{#each route.tiles}}
+    <rapid-layout-item title="{{this.title}}">
+        <app-{{kebabCase this.componentName}}></app-{{kebabCase this.componentName}}>
+    </rapid-layout-item>
+    {{/each}}
+</rapid-layout-region>

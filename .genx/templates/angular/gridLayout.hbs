@@ -1,0 +1,30 @@
+<rapid-layout-region type="horizontal">
+    <rapid-layout-region type="vertical">
+    {{#each route.tiles}}
+        {{#ifEquals @index 0}}
+        <rapid-layout-item title="{{../title}}">
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
+        </rapid-layout-item>
+        {{/ifEquals}}
+        {{#ifEquals @index 1}}
+        <rapid-layout-item title="{{../title}}">
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
+        </rapid-layout-item>
+        {{/ifEquals}}
+    {{/each}}
+    </rapid-layout-region>
+    <rapid-layout-region type="vertical">
+    {{#each route.tiles}}
+        {{#ifEquals @index 2}}
+        <rapid-layout-item title="{{../title}}">
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
+        </rapid-layout-item>
+        {{/ifEquals}}
+        {{#ifEquals @index 3}}
+        <rapid-layout-item title="{{../title}}">
+            <app-{{kebabCase ../componentName}}></app-{{kebabCase ../componentName}}>
+        </rapid-layout-item>
+        {{/ifEquals}}
+    {{/each}}
+    </rapid-layout-region>
+</rapid-layout-region>

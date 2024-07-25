@@ -1,0 +1,8 @@
+  {{#if route.tiles}}
+  <rapid-layout [auto-save-key]="environment.production ? '{{route.layoutKey}}' : null">
+     {{> (lookup ./route 'layoutType') }}
+  </rapid-layout>
+  {{else}}
+  <!-- insert template code here -->
+  Welcome to {{sentenceCase route.name}}
+  {{/if}}

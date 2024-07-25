@@ -1,0 +1,53 @@
+{
+  "name": "{{pkgName}}",
+  "version": "{{applicationVersionWeb}}",
+  "private": true,
+  "scripts": {
+    "baseline": "npm run clean && npm run bootstrap",
+    "bootstrap": "npm i --legacy-peer-deps",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "serve": "vite preview",
+    "clean": "rm -rf node_modules dist",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix"
+  },
+  "dependencies": {
+    "@ag-grid-community/client-side-row-model": "29.2.0",
+    "@ag-grid-community/core": "29.2.0",
+    "@ag-grid-community/csv-export": "29.2.0",
+    "@ag-grid-enterprise/core": "29.2.0",
+    "@ag-grid-enterprise/row-grouping": "29.2.0",
+    "@ag-grid-enterprise/server-side-row-model": "29.2.0",
+    "@genesislcap/foundation-comms": "{{versions.UI}}",
+    "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-entity-management": "{{versions.UI}}",
+    "@genesislcap/foundation-header": "{{versions.UI}}",
+    "@genesislcap/foundation-ui": "{{versions.UI}}",
+    "@genesislcap/rapid-design-system": "{{versions.UI}}",
+    "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
+    "@genesislcap/foundation-layout": "{{versions.UI}}",
+    "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "history": "^5.3.0",
+    "react": "^19.0.0-beta-94eed63c49-20240425",
+    "react-dom": "^19.0.0-beta-94eed63c49-20240425",
+    "react-router-dom": "6.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "npm:types-react@alpha",  
+    "@types/react-dom": "npm:types-react-dom@alpha",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  },  
+  "overrides": {  
+    "@types/react": "npm:types-react@alpha",  
+    "@types/react-dom": "npm:types-react-dom@alpha"  
+  } 
+}
