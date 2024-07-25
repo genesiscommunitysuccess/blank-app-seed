@@ -1,21 +1,16 @@
 const { execSync } = require('child_process');
 const glob = require('glob');
 const path = require('path');
-
-// Get all .css files using the glob pattern
 const cssFiles = glob.sync(path.join(__dirname, '**/*.css'));
 
-// If no CSS files are found, exit
 if (cssFiles.length === 0) {
   console.log('No CSS files found.');
   process.exit(0);
 }
 
-// Create the command string
 const command = `genx lint -l stylelint ${cssFiles.join(' ')}`;
 
 try {
-  // Execute the command
   execSync(command, { stdio: 'inherit' });
 } catch (error) {
   console.error('Error running stylelint:', error);
