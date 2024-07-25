@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.26.0...v3.27.0) (2024-07-25)
+
+
+### Features
+
+* Implement the generated UI code structure proposal (angular) (#287) 6d61502, closes FUI-2099 FUI-2099 FUI-2099
+
 ## [3.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.2...v3.26.0) (2024-07-24)
 
 
