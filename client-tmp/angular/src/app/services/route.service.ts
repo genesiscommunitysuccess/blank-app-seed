@@ -4,13 +4,12 @@ import { getApp } from '@genesislcap/foundation-shell/app';
 import { FoundationRoute, FoundationRouteNavItem, getNavItems } from '@genesislcap/foundation-ui';
 import { PBCContainer } from '../../pbc/container';
 import { AUTH_PATH, NOT_PERMITTED_PATH } from '../app.config';
-import { AuthGuard } from '../guards/auth.guard';
+import { ChainedGuard } from '../guards/chained.guard';
 import { AuthLoginComponent } from '../pages/auth-login/auth-login.component';
 import { NotPermittedComponent } from '../pages/not-permitted/not-permitted.component';
 {{#each routes}}
 import { {{pascalCase this.name}}Component } from '../pages/{{kebabCase this.name}}/{{kebabCase this.name}}.component';
 {{/each}}
-import { ConnectionGuard } from '../guards/connection.guard';
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +32,7 @@ export class RouteService {
         {{#each routes}}
         {
             path: '{{kebabCase this.name}}',
-            canActivate: [ConnectionGuard, AuthGuard{{#if this.permissions.viewRight}}, PermissionsGuard{{/if}}],
+            canActivate: [ChainedGuard],
             component: {{pascalCase this.name}}Component,
             data: {
                 permissionCode: '{{this.permissions.viewRight}}',
@@ -63,10 +62,10 @@ export class RouteService {
                 title: route.title,
                 path: route.path,
                 /**
-                 * Ask about PBC PermissionsGuard / viewRight in PBC context, as we may need to apply data point here.
+                 * Ask about permissions.viewRight in PBC context, as we may need to apply a data.permissionCode here.
                  * Not sure if they are added to the filesystem prior to handlebars template processing across the files.
                  */
-                canActivate: [ConnectionGuard, AuthGuard],
+                canActivate: [ChainedGuard],
                 component: PBCContainer,
                 data: {
                     ...route.settings,

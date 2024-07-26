@@ -12,7 +12,8 @@ export class PermissionsGuard implements CanActivate {
   constructor(protected router: Router) {}
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
-    if (!this.user.hasPermission(route.data['permissionCode'])) {
+    const { permissionCode } = route.data;
+    if (permissionCode && !this.user.hasPermission(permissionCode)) {
       await this.router.navigate([`/${NOT_PERMITTED_PATH}`]);
       return false;
     }
