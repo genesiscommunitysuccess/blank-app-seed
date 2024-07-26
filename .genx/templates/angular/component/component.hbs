@@ -39,7 +39,7 @@ export class {{pascalCase tile.componentName}} {
   columnDefs = columnDefs;{{/if}}{{#if tile.config.gridOptions}}
   gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.reqrep}}
   reqrep = { pollingInterval: 5000 };{{/if}}{{#if tile.config.type}}
-  chartConfig = { {{#ifEquals this.config.type 'pie'}}
+  chartConfig = { {{#ifEquals tile.config.type 'pie'}}
       "radius": 0.75,
       "angleField": "value",
       "colorField": "groupBy",{{else}}
