@@ -4,11 +4,14 @@ const {
 } = require('./gridSerializers');
 const formatJSONValue = require('./formatJSONValue');
 const getLayoutType = require('./getLayoutType');
-const { COMPONENT_TYPE } = require('../static');
+const { COMPONENT_TYPE, FRAMEWORK_ANGULAR_ALIAS } = require('../static');
 
-const formatRouteData = (route) => {
+const formatRouteData = (framework, route) => {
   const layoutKey = route?.layoutKey || `${route.name}_${Date.now()}`;
-  const layoutType = route?.layoutType || getLayoutType(route);
+  const layoutType =
+    framework === FRAMEWORK_ANGULAR_ALIAS
+      ? 'tabs-panel'
+      : route?.layoutType || getLayoutType(route);
 
   const FDC3ClickCategory = 'fdc3';
   const FDC3EventHandlersEnabled = !!route.tiles?.find(

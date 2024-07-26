@@ -1,8 +1,10 @@
 import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { getUser } from '@genesislcap/foundation-user';
-import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
 import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.gridOptions}}
+import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
+{{/if}}
 {{#if tile.config.createFormUiSchema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
