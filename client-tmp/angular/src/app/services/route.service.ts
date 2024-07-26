@@ -10,6 +10,7 @@ import { NotPermittedComponent } from '../pages/not-permitted/not-permitted.comp
 {{#each routes}}
 import { {{pascalCase this.name}}Component } from '../pages/{{kebabCase this.name}}/{{kebabCase this.name}}.component';
 {{/each}}
+import { ConnectionGuard } from '../guards/connection.guard';
 
 @Injectable({
     providedIn: 'root'
@@ -32,7 +33,7 @@ export class RouteService {
         {{#each routes}}
         {
             path: '{{kebabCase this.name}}',
-            canActivate: [AuthGuard{{#if this.permissions.viewRight}}, PermissionsGuard{{/if}}],
+            canActivate: [ConnectionGuard, AuthGuard{{#if this.permissions.viewRight}}, PermissionsGuard{{/if}}],
             component: {{pascalCase this.name}}Component,
             data: {
                 permissionCode: '{{this.permissions.viewRight}}',
@@ -61,6 +62,11 @@ export class RouteService {
             return <Route>{
                 title: route.title,
                 path: route.path,
+                /**
+                 * Ask about PBC PermissionsGuard / viewRight in PBC context, as we may need to apply data point here.
+                 * Not sure if they are added to the filesystem prior to handlebars template processing across the files.
+                 */
+                canActivate: [ConnectionGuard, AuthGuard],
                 component: PBCContainer,
                 data: {
                     ...route.settings,
