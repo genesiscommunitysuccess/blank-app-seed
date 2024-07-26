@@ -11,9 +11,6 @@ import { deriveElementTag } from './utils';
     template: `<div #container class="container"></div>`, // todo get rid of the extra div
     styles: [`
         .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 100%;
             height: 100%;
         }
