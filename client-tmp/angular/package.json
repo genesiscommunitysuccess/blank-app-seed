@@ -4,19 +4,54 @@
   "version": "{{applicationVersionWeb}}",
   "private": true,
   "license": "UNLICENSED",
-  "scripts": {
-    "ng": "ng",
-    "bootstrap": "npm install --no-fund --no-audit",
-    "dev": "ng serve --configuration=development --open",
-    "build": "ng build --configuration=production",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+  "genx": {
+    "app": {
+      "rootElement": "{{rootElement}}"
+    }
   },
+  "scripts": {
+    "baseline": "npm run clean && npm run bootstrap",
+    "bootstrap": "npm install --no-fund --no-audit",
+    "bootstrap:ci": "npm ci --no-fund --no-audit",
+    "build": "ng build --configuration=production",
+    "build:stats": "npm run build --stats-json",
+    "clean": "genx clean dist node_modules",
+    "dev": "ng serve --configuration=development --open",
+    "dev:docker": "npm run dev -- --host 0.0.0.0",
+    "dev:no-open": "npm run dev -- --no-open",
+    "dev:intellij": "npm run dev",
+    "dev:https": "npm run dev -- --https",
+    "dev:webpack": "npm run dev",
+    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
+    "lint": "genx lint --profile",
+    "lint:fix": "genx lint --fix",
+    "lint:eslint": "genx lint -l eslint --profile",
+    "lint:stylelint": "node lint-css.js",
+    "test": "ng test",
+    "test:e2e": "genx test --e2e",
+    "test:e2e:debug": "genx test --e2e --debug",
+    "test:e2e:ui": "genx test --e2e --interactive",
+    "test:coverage": "ng test --no-watch --code-coverage",
+    "test:unit:watch": "ng test --watch"
+  },
+  "eslintConfig": {
+    "extends": "@genesislcap/eslint-config",
+    "ignorePatterns": ["**/dist/**", "**/public/**", "**/coverage/**", "**/test/**", "playwright.config.ts"]
+  },
+  "stylelint": {
+    "extends": "@genesislcap/stylelint-config"
+  },
+  "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-devkit/build-angular": "^18.0.4",
     "@angular/cli": "^18.0.4",
     "@angular/compiler-cli": "^18.0.4",
+    "@genesislcap/design-system-configurator": "{{versions.UI}}",
+    "@genesislcap/eslint-config": "{{versions.UI}}",
+    "@genesislcap/prettier-config": "{{versions.UI}}",
+    "@genesislcap/foundation-testing": "{{versions.UI}}",
+    "@genesislcap/genx": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
     "@types/numeral": "^2.0.5",
@@ -29,7 +64,9 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "svg-url-loader": "^8.0.0",
     "typescript": "~5.4.5",
-    "ts-node": "10.9.2"
+    "ts-node": "10.9.2",
+    "dotenv": "16.4.5",
+    "@types/node": "20.14.11"
   },
   "dependencies": {
     "@angular/animations": "^18.0.4",

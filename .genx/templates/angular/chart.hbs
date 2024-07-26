@@ -1,6 +1,6 @@
 <rapid-g2plot-chart
   type="{{ config.type }}"
-  [config]="tile{{ config.index }}.chartConfig"
+  [config]="chartConfig"
   [ngStyle]="hasUserPermission('{{config.permissions.viewRight}}') ? { width: '100%', height: '100%' } : { display: 'none' }"
 >
   <chart-datasource

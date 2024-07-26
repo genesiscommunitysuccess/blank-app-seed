@@ -6,10 +6,10 @@ import { DI } from '@microsoft/fast-foundation';
 import logo from '../../assets/logo.svg';
 
 // eslint-disable-next-line
-declare var GENX_ENABLE_SSO: boolean;
+declare var ENABLE_SSO: boolean;
 
 const ssoSettings =
-  typeof GENX_ENABLE_SSO !== 'undefined' && GENX_ENABLE_SSO === true
+  typeof ENABLE_SSO !== 'undefined' && ENABLE_SSO === true
     ? {
         autoAuth: true,
         sso: {

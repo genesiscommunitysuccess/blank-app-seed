@@ -6,37 +6,44 @@ const {
   DIR_TEMPLATE_BY_FRAMEWORK,
 } = require('../static');
 
-const getPathByFramework = {
-  [FRAMEWORK_WEB_COMPONENTS_ALIAS]: {
-    clientSrcPath: `../../client/src/routes`,
-    route: (clientSrcPath, tileName, tileType, routeName) =>
-      `${clientSrcPath}/${routeName}/${tileName}-${tileType}`,
-    index: (componentPath) => `${componentPath}/index.ts`,
-    component: (componentPath, tileName) => `${componentPath}/${tileName}.ts`,
-    template: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.template.ts`,
-    style: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.styles.ts`,
-    addForm: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.create.form.schema.ts`,
-    updateForm: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.update.form.schema.ts`,
-    columnDefs: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.column.defs.ts`,
-    gridOptions: (componentPath, tileName) =>
-      `${componentPath}/${tileName}.gridOptions.ts`,
-  },
-  // Placeholder for angular part
-  [FRAMEWORK_ANGULAR_ALIAS]: {},
+const defaultPathGetters = {
+  index: (componentPath) => `${componentPath}/index.ts`,
+  addForm: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.create.form.schema.ts`,
+  updateForm: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.update.form.schema.ts`,
+  columnDefs: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.column.defs.ts`,
+  gridOptions: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.gridOptions.ts`,
 };
 
-const getFilesToWrite = (
-  tile,
-  tileName,
-  routeName,
-  path,
-  sourceTemplateDir,
-) => {
+const getPathByFramework = {
+  [FRAMEWORK_WEB_COMPONENTS_ALIAS]: {
+    ...defaultPathGetters,
+    clientSrcPath: `../../client/src/routes`,
+    route: (clientSrcPath, tile, routeName) =>
+      `${clientSrcPath}/${routeName}/${tile.name}-${tile.componentType}`,
+    component: (componentPath, tile) => `${componentPath}/${tile.name}.ts`,
+    template: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.template.ts`,
+    style: (componentPath, tile) => `${componentPath}/${tile.name}.styles.ts`,
+  },
+  [FRAMEWORK_ANGULAR_ALIAS]: {
+    ...defaultPathGetters,
+    clientSrcPath: `../../client/src/app/pages`,
+    route: (clientSrcPath, tile, routeName) =>
+      `${clientSrcPath}/${routeName}/${tile.name}-${tile.componentType}`,
+    component: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.component.ts`,
+    template: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.component.html`,
+    style: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.component.css`,
+  },
+};
+
+const getFilesToWrite = (tileData, routeName, path, sourceTemplateDir) => {
   const {
     clientSrcPath,
     route: getRouteDir,
@@ -50,51 +57,46 @@ const getFilesToWrite = (
     gridOptions: getGridOptionsTarget,
   } = path;
 
-  const routeDir = getRouteDir(
-    clientSrcPath,
-    tileName,
-    tile.componentType,
-    routeName,
-  );
+  const routeDir = getRouteDir(clientSrcPath, tileData, routeName);
 
   const componentIndexFile = {
     source: `${sourceTemplateDir}/component/component.index.hbs`,
-    target: getComponentIndexTarget(routeDir, tileName),
+    target: getComponentIndexTarget(routeDir, tileData),
   };
 
   const componentFile = {
     source: `${sourceTemplateDir}/component/component.hbs`,
-    target: getComponentTarget(routeDir, tileName),
+    target: getComponentTarget(routeDir, tileData),
   };
 
   const componentTemplateFile = {
     source: `${sourceTemplateDir}/component/component.template.hbs`,
-    target: getTemplateTarget(routeDir, tileName),
+    target: getTemplateTarget(routeDir, tileData),
   };
 
   const componentStylesFile = {
     source: `${sourceTemplateDir}/component/component.styles.hbs`,
-    target: getStyleTarget(routeDir, tileName),
+    target: getStyleTarget(routeDir, tileData),
   };
 
   const componentAddFormFile = {
     source: `${sourceTemplateDir}/component/component.create.form.hbs`,
-    target: getAddFormTarget(routeDir, tileName),
+    target: getAddFormTarget(routeDir, tileData),
   };
 
   const componentUpdateFormFile = {
     source: `${sourceTemplateDir}/component/component.update.form.hbs`,
-    target: getUpdateFormTarget(routeDir, tileName),
+    target: getUpdateFormTarget(routeDir, tileData),
   };
 
   const componentColumnsFile = {
     source: `${sourceTemplateDir}/component/component.column.defs.hbs`,
-    target: getColumnDefsTarget(routeDir, tileName),
+    target: getColumnDefsTarget(routeDir, tileData),
   };
 
   const componentGridOptionsFile = {
     source: `${sourceTemplateDir}/component/component.gridOptions.hbs`,
-    target: getGridOptionsTarget(routeDir, tileName),
+    target: getGridOptionsTarget(routeDir, tileData),
   };
 
   const filesToWrite = [
@@ -104,23 +106,23 @@ const getFilesToWrite = (
     componentStylesFile,
   ];
 
-  switch (tile.type) {
+  switch (tileData.type) {
     case 'entity-manager':
-      if (tile.config?.columns) {
+      if (tileData.config?.columns) {
         filesToWrite.push(componentColumnsFile);
       }
-      if (tile.config?.gridOptions) {
+      if (tileData.config?.gridOptions) {
         filesToWrite.push(componentGridOptionsFile);
       }
-      if (tile.config?.createFormUiSchema) {
+      if (tileData.config?.createFormUiSchema) {
         filesToWrite.push(componentAddFormFile);
       }
-      if (tile.config?.updateFormUiSchema) {
+      if (tileData.config?.updateFormUiSchema) {
         filesToWrite.push(componentUpdateFormFile);
       }
       break;
     case 'grid-pro':
-      if (tile.config?.gridOptions) {
+      if (tileData.config?.gridOptions) {
         filesToWrite.push(componentGridOptionsFile);
       }
       break;
@@ -140,20 +142,19 @@ const generateTile = (
   { changeCase, writeFileWithData },
   framework,
 ) => {
-  const tileName = changeCase.paramCase(tile.title);
+  const tileData = {
+    ...tile,
+    name: changeCase.paramCase(tile.title),
+    componentType: tile.componentType,
+    config: tile.config,
+  };
   const routeName = changeCase.paramCase(route.name);
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
   const { clientSrcPath, route: getRouteDir } = getPathByFramework[framework];
-  const routeDir = getRouteDir(
-    clientSrcPath,
-    tileName,
-    tile.componentType,
-    routeName,
-  );
+  const routeDir = getRouteDir(clientSrcPath, tileData, routeName);
 
   const filesToWrite = getFilesToWrite(
-    tile,
-    tileName,
+    tileData,
     routeName,
     getPathByFramework[framework],
     sourceTemplateDir,

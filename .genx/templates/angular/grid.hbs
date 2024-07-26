@@ -11,14 +11,14 @@
         isSnapshot="{{config.snapshot}}"
         {{/if}}
         {{#if config.reqrep}}
-        [datasourceConfig]="tile{{ config.index }}.reqrep"
+        [datasourceConfig]="reqrep"
         {{/if}}
         {{#if config.gridOptions}}
-        [deferredGridOptions]="{ onRowClicked: tile{{ config.index }}.gridOptions.onRowClicked }"
+        [deferredGridOptions]="{ onRowClicked: gridOptions.onRowClicked }"
         {{/if}}
       ></grid-pro-genesis-datasource>
       {{#if config.gridOptions}}
-      <grid-pro-column *ngFor="let columnDef of tile{{ config.index }}.gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
+      <grid-pro-column *ngFor="let columnDef of gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
       {{/if}}
     </rapid-grid-pro>
   <section 

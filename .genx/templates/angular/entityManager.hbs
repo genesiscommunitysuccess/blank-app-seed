@@ -12,13 +12,13 @@
       {{#if config.createEvent}}
       [createEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined"
       {{#if config.createFormUiSchema}}
-      [createFormUiSchema]="tile{{ config.index }}.createFormUiSchema"
+      [createFormUiSchema]="createFormSchema"
       {{/if}}
       {{/if}}
       {{#if config.updateEvent}}
       [updateEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined"
       {{#if config.updateFormUiSchema}}
-      [updateFormUiSchema]="tile{{ config.index }}.updateFormUiSchema"
+      [updateFormUiSchema]="updateFormSchema"
       {{/if}}
       {{/if}}
       {{#if config.deleteEvent}}
@@ -31,10 +31,10 @@
       [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
       {{/if}}
       {{#if config.reqrep}}
-      [datasourceConfig]="tile{{ config.index }}.reqrep"
+      [datasourceConfig]="reqrep"
       {{/if}}
       {{#if config.columns}}
-      [columns]="tile{{ config.index }}.columns"
+      [columns]="columnDefs"
       {{/if}}
       {{#if config.modalPosition}}
       modal-position="{{ config.modalPosition }}"
