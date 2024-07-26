@@ -1,4 +1,4 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA{{#if tile.config.type}}, ViewChild, AfterViewInit{{/if}} } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { getUser } from '@genesislcap/foundation-user';
 import { getViewUpdateRightComponent } from '../../../utils';
@@ -31,7 +31,8 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class {{pascalCase tile.componentName}} {
+export class {{pascalCase tile.componentName}} {{#if tile.config.type}}implements AfterViewInit{{/if}}{
+  {{#if tile.config.type}}@ViewChild('{{camelCase tile.componentName}}') {{camelCase tile.componentName}} : any;{{/if}}
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);{{#if tile.config.createFormUiSchema}}
   createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
   uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
@@ -39,7 +40,7 @@ export class {{pascalCase tile.componentName}} {
   columnDefs = columnDefs;{{/if}}{{#if tile.config.gridOptions}}
   gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.reqrep}}
   reqrep = { pollingInterval: 5000 };{{/if}}{{#if tile.config.type}}
-  chartConfig = { {{#ifEquals this.config.type 'pie'}}
+  chartConfig = { {{#ifEquals tile.config.type 'pie'}}
       "radius": 0.75,
       "angleField": "value",
       "colorField": "groupBy",{{else}}
@@ -47,4 +48,9 @@ export class {{pascalCase tile.componentName}} {
       "yField": "value",{{/ifEquals}}
   };{{/if}}
   
+  {{#if tile.config.type}}
+    ngAfterViewInit() {
+      this.{{camelCase tile.componentName}}.nativeElement.renderChart();
+    }
+  {{/if}}
 }
