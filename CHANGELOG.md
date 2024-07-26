@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.27.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.1...v3.27.2) (2024-07-26)
+
+
+### Bug Fixes
+
+* react grid template (#293) 26fcd14
+
 ## [3.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.0...v3.27.1) (2024-07-26)
 
 
