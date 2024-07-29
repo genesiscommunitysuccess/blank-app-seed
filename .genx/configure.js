@@ -21,8 +21,13 @@ module.exports = async (data, utils) => {
   data.versions = versions;
 
   registerPartials(utils, data.framework);
-
-  data.routes = data.routes.filter(validateRoute).map(formatRouteData);
+  const formatRouteDataForFramework = formatRouteData.bind(
+    this,
+    data.framework,
+  );
+  data.routes = data.routes
+    .filter(validateRoute)
+    .map(formatRouteDataForFramework);
 
   const FDC3EventHandlersEnabled = data.routes.find(
     (route) => route.FDC3EventHandlersEnabled,
