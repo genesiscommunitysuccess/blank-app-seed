@@ -19,6 +19,7 @@ import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
+import { OnlyTemplateColDefsDirective } from '../../../directive/only-template-col-defs.directive';
 {{/if}}
 
 @Component({
@@ -28,7 +29,8 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
   standalone: true,
   imports: [
     CommonModule,
-  ],
+  ],{{#if tile.config.gridOptions}}
+  exports: [OnlyTemplateColDefsDirective],{{/if}}
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class {{pascalCase tile.componentName}} {
