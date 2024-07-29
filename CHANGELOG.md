@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.27.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.2...v3.27.3) (2024-07-29)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#295) a4bf7fa
+
+## [3.27.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.1...v3.27.2) (2024-07-26)
+
+
+### Bug Fixes
+
+* react grid template (#293) 26fcd14
+
+## [3.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.0...v3.27.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#292) 33cf11d
+
 ## [3.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.26.0...v3.27.0) (2024-07-25)
 
 
