@@ -1,11 +1,7 @@
 import { Router } from '@angular/router';
 
 export default class BaseLayout {
-  router: Router;
-
-  constructor(router: Router) {
-    this.router = router;
-  }
+  constructor(protected router: Router) {}
 
   navigate(path: string) {
     this.router.navigate([path]);

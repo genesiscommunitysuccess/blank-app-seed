@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import { configureDesignSystem, FoundationRouteNavItem } from '@genesislcap/foundation-ui';
+import { baseLayerLuminance, StandardLuminance } from '@genesislcap/web-core';
 import * as designTokens from '../../../styles/design-tokens.json';
+import { RouteService } from '../../services/route.service';
 import BaseLayout from '../base.layout';
-import { mainMenu } from '../../app.config';
+import { registerStylesTarget } from '../../../pbc/utils';
 
 @Component({
   selector: 'app-default-layout',
@@ -13,16 +14,20 @@ import { mainMenu } from '../../app.config';
 })
 export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit {
   @ViewChild('designSystemProvider') designSystemProviderElement!: ElementRef;
-  allRoutes = mainMenu;
+  navItems: FoundationRouteNavItem[] = [];
 
   constructor(
+    private el: ElementRef,
     router: Router,
+    routeService: RouteService,
   ) {
     super(router);
+    this.navItems = routeService.getNavItems();
   }
 
   ngAfterViewInit() {
     configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
+    registerStylesTarget(this.el.nativeElement, 'layout');
   }
   
   navigateAngular = (path: string) => {

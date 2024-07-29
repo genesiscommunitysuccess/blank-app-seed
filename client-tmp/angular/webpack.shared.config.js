@@ -32,11 +32,24 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'foundationZero/ZeroDesignSystem': path.resolve(
-        __dirname,
-        'node_modules/@genesislcap/foundation-zero',
-      ),
+      'pbc': path.resolve(
+          __dirname,
+          'src/pbc',
+      )
     },
+  },
+  /**
+   * Ensure webpack handles module loading strictly to allow module federation fallbacks.
+   */
+  output: {
+    strictModuleErrorHandling: true,
+    strictModuleExceptionHandling: true,
+  },
+  /**
+   * Mark the 'foundationZero/ZeroDesignSystem' module federated remote as external.
+   */
+  externals: {
+    'foundationZero/ZeroDesignSystem': 'foundationZero/ZeroDesignSystem',
   },
 };
 

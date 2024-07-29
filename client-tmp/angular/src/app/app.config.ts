@@ -1,4 +1,3 @@
-import type { MainMenu } from './types/menu'
 import type { LayoutComponentName } from './types/layout';
 
 export const AUTH_PATH = 'login'
@@ -19,15 +18,3 @@ export const layoutComponentImportsByName = {
 export const layoutNameByRouteMap: Map<string, LayoutComponentName> = new Map([
   [`/${AUTH_PATH}`, layoutComponentName.blank],
 ]);
-
-export const mainMenu: MainMenu = [
-  {{#each routes}}
-  {
-    index: {{@index}},
-    path: '{{kebabCase this.name}}',
-    title: '{{#if this.title}}{{this.title}}{{else}}{{this.name}}{{/if}}',
-    icon: '{{this.icon}}',
-    variant: 'solid'
-  }{{#unless @last}},{{/unless}}
-  {{/each}}
-];

@@ -1,26 +1,28 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 import type { LayoutComponentName } from './types/layout';
 import { configureFoundationLogin } from './share/foundation-login';
+import { registerComponents } from './share/genesis-components';
+import { getStore } from './store';
+import { customEventFactory, registerStylesTarget } from '../pbc/utils';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}
-
-// Genesis Components
-import './share/genesis-components';
 
 @Component({
   selector: '{{rootElement}}',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutName?: LayoutComponentName;
   title = '{{capitalCase appName}}';
+  store = getStore();
 
   constructor(
-    private router: Router,
+    private el: ElementRef,
+    router: Router,
   ) {
       configureFoundationLogin({ router });
       
@@ -30,6 +32,43 @@ export class AppComponent implements AfterViewInit {
         this.layoutName = getLayoutNameByRoute(event.urlAfterRedirects);
       }
     });
+  }
+
+  ngOnInit() {
+    this.addEventListeners();
+    this.readyStore();
+    registerStylesTarget(this.el.nativeElement, 'main');
+    this.loadRemotes();
+  }
+
+  ngOnDestroy() {
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  async loadRemotes() {
+    await registerComponents();
+  }
+
+  addEventListeners() {
+    this.el.nativeElement.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  removeEventListeners() {
+    this.el.nativeElement.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  readyStore() {
+    this.dispatchCustomEvent('store-connected', this.el.nativeElement);
+    this.dispatchCustomEvent('store-ready', true);
+  }
+
+  disconnectStore() {
+    this.dispatchCustomEvent('store-disconnected');
+  }
+
+  dispatchCustomEvent(type: string, detail?: any) {
+    this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
   }
 
   ngAfterViewInit() {

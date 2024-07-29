@@ -1,19 +1,18 @@
 <rapid-design-system-provider #designSystemProvider>
+  <pbc-elements-renderer [target]="['layout-start']"></pbc-elements-renderer>
   <foundation-header
     #foundationHeader
     show-luminance-toggle-button
     show-misc-toggle-button
     (luminance-icon-clicked)="onLuminanceToogle()"
     [navigateTo]="navigateAngular"
+    [routeNavItems]="navItems"
   >
-    <section class="routes-wrapper" slot="routes">
-      <rapid-button *ngFor="let menuLink of allRoutes" (click)="navigate(menuLink.path)" >
-        <rapid-icon name="\{{ menuLink.icon }}"></rapid-icon>
-        \{{ menuLink.title }}
-      </rapid-button>
-    </section>
   </foundation-header>
   <section class="content">
+    <pbc-elements-renderer [target]="['content-start']"></pbc-elements-renderer>
     <router-outlet></router-outlet>
+    <pbc-elements-renderer [target]="['content', 'content-end']"></pbc-elements-renderer>
   </section>
+  <pbc-elements-renderer [target]="['layout', 'layout-end']"></pbc-elements-renderer>
 </rapid-design-system-provider>
