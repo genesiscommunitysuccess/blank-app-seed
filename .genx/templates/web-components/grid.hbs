@@ -2,8 +2,8 @@ ${whenElse(
     (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
     html`
       <rapid-grid-pro
-        header-case-type="capitalCase"
-        only-template-col-defs
+        header-case-type="capitalCase"{{#if config.gridOptions?.columnDefs}}
+        only-template-col-defs{{/if}}
         enable-row-flashing
         enable-cell-flashing
         >
