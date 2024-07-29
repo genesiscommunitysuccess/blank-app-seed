@@ -1,10 +1,19 @@
 const { resolve } = require('node:path');
-const { DIR_TEMPLATE_BY_FRAMEWORK } = require('../static');
+const {
+  DIR_TEMPLATE_BY_FRAMEWORK,
+  FRAMEWORK_ANGULAR_ALIAS,
+} = require('../static');
 
 const registerPartials = ({ registerPartial }, framework) => {
   // It can be reverted after adding changes for angular
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
 
+  if (framework === FRAMEWORK_ANGULAR_ALIAS) {
+    registerPartial(
+      'tabs-panel',
+      resolve(__dirname, `${sourceTemplateDir}/tabsPanel.hbs`),
+    );
+  }
   registerPartial(
     'grid-layout',
     resolve(__dirname, `${sourceTemplateDir}/gridLayout.hbs`),
