@@ -28,8 +28,7 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
   standalone: true,
   imports: [
     CommonModule,
-  ],{{#if tile.config.gridOptions}}
-  exports: [OnlyTemplateColDefsDirective],{{/if}}
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class {{pascalCase tile.componentName}} {
