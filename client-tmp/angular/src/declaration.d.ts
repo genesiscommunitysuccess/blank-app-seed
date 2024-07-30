@@ -9,3 +9,4 @@ declare module "*.svg" {
 declare module '@genesislcap/pbc-auth-ui';
 declare module '@genesislcap/pbc-documents-ui';
 declare module '@genesislcap/pbc-reconciliation-ui';
+declare module '@genesislcap/pbc-reporting-ui';

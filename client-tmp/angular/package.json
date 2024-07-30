@@ -88,6 +88,7 @@
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
+    "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
