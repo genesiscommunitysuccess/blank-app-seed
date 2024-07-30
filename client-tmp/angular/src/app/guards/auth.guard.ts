@@ -1,21 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { AUTH_PATH } from '../app.config';
+import { PermissionsGuard } from './permissions.guard';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
-
-  canActivate(): boolean {
-    const isUserAuthenticated = this.authService.isUserAuthenticated();
-
-    if (!isUserAuthenticated) {
+export class AuthGuard extends PermissionsGuard {
+  override async canActivate(): Promise<boolean> {
+    if (!this.user.isAuthenticated) {
+      this.user.trackPath();
       this.router.navigate([`/${AUTH_PATH}`]);
       return false;
     }
