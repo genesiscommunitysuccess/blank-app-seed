@@ -1,6 +1,6 @@
     <rapid-grid-pro
-      header-case-type="capitalCase"{{#if config.gridOptions}}
-      [onlyTemplateColDefs]="gridOptions.columnDefs"{{/if}}
+      header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
+      only-template-col-defs{{/if}}
       enable-row-flashing
       enable-cell-flashing
       [ngStyle]="{ display: hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none' }"
