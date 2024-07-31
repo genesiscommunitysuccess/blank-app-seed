@@ -1,5 +1,5 @@
 <section style="height: 100%; width: 100%;">
-  <ng-container {{#if config.permissions.viewRight}}*ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}"{{/if}}>
+  <ng-container {{#if !!config.permissions.viewRight}}*ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}"{{/if}}>
     <entity-management
       design-system-prefix="rapid"
       header-case-type="capitalCase"
@@ -46,7 +46,7 @@
       enable-search-bar
       {{/if}}
     ></entity-management>
-  </ng-container>{{#if config.permissions.viewRight}}
+  </ng-container>{{#if !!config.permissions.viewRight}}
 
   <ng-template #notPermitted{{ config.index }}>
     <app-error-message
