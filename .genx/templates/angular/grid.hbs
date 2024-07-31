@@ -2,7 +2,7 @@
       header-case-type="capitalCase"
       only-template-col-defs
       enable-row-flashing
-      enable-cell-flashing{{#if !!config.permissions.viewRight}}
+      enable-cell-flashing{{#if config.permissions.viewRight}}
       [ngStyle]="{ display: hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none' }"{{/if}}
       >
       <grid-pro-genesis-datasource
@@ -20,7 +20,7 @@
       {{#if config.gridOptions}}
       <grid-pro-column *ngFor="let columnDef of gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
       {{/if}}
-    </rapid-grid-pro>{{#if !!config.permissions.viewRight}}
+    </rapid-grid-pro>{{#if config.permissions.viewRight}}
   <section 
     [ngStyle]="{ 
       height: '100%',
