@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.28.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.1...v3.28.2) (2024-08-01)
+
+
+### Bug Fixes
+
+* rename {{appName}}-data-pipeline.kts to {{appName}}-data-pipelines.kts (#300) 4643a82
+
 ## [3.28.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.0...v3.28.1) (2024-07-29)
 
 
