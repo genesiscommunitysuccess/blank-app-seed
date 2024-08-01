@@ -1,6 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ErrorMessageComponent } from '../../components/error-message/error-message.component';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
 {{/each}}
@@ -11,7 +10,6 @@ import { environment } from '../../../environments/environment';
   selector: 'app-{{kebabCase route.name}}',
   standalone: true,
   imports: [
-    ErrorMessageComponent,
     {{#each route.tiles}}
     {{pascalCase this.componentName}},
     {{/each}}

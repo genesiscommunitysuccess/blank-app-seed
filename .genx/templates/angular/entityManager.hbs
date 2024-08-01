@@ -1,5 +1,5 @@
 <section style="height: 100%; width: 100%;">
-  <ng-container *ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}">
+  <ng-container {{#if config.permissions.viewRight}}*ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}"{{/if}}>
     <entity-management
       design-system-prefix="rapid"
       header-case-type="capitalCase"
@@ -46,7 +46,7 @@
       enable-search-bar
       {{/if}}
     ></entity-management>
-  </ng-container>
+  </ng-container>{{#if config.permissions.viewRight}}
 
   <ng-template #notPermitted{{ config.index }}>
     <app-error-message
@@ -54,5 +54,5 @@
       elementType="h3"
       message="You do not have access to view this component.">
     </app-error-message>
-  </ng-template>
+  </ng-template>{{/if}}
 </section>

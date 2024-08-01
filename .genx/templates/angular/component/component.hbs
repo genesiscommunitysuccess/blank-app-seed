@@ -1,6 +1,7 @@
 import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { getUser } from '@genesislcap/foundation-user';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { getViewUpdateRightComponent } from '../../../utils';
 {{#if tile.config.gridOptions}}
 import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
@@ -27,6 +28,7 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
   styleUrl: './{{kebabCase tile.title}}.component.css',
   standalone: true,
   imports: [
+    ErrorMessageComponent,
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
