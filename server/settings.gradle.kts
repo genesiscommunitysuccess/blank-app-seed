@@ -1,4 +1,4 @@
-rootProject.name = "genesisproduct-{{appName}}"
+rootProject.name = "server"
 
 pluginManagement {
     pluginManagement {
