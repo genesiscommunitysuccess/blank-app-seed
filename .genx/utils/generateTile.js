@@ -166,7 +166,6 @@ const generateTile = (
     routeName,
     getPathByFramework[framework],
     sourceTemplateDir,
-    framework,
   );
 
   makeDirectory(resolve(__dirname, routeDir));
