@@ -2,7 +2,7 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     base
-    id("com.github.node-gradle.node") version "3.1.1"
+    id("com.github.node-gradle.node") version "7.0.1"
     distribution
 }
 
@@ -24,38 +24,13 @@ artifacts {
     }
 }
 
-allprojects {
-    apply(plugin = "com.github.node-gradle.node")
-    apply(plugin = "base")
-
-    node {
-        // Version of Node to use.
-        version.set("20.8.1")
-
-        // Version of NPM to use.
-        npmVersion.set("10.1.0")
-
-        // If true, it will download node using above parameters.
-        // If false, it will try to use globally installed node.
-        download.set(false)
-    }
-
-    tasks {
-        // Setup custom clean task to be run when "clean" task runs.
-        val npmClean = register("npmClean", NpmTask::class) {
-            args.set(listOf("run", "clean"))
-            delete(".bootstrapDone")
-        }
-
-        clean {
-            // Depend on the custom npmClean task, the default gradle one deletes the "build" folder by default
-            // and the project build won't work without it.
-            dependsOn(npmClean)
-        }
-    }
-}
-
 tasks {
+
+    val npmClean = register("npmClean", NpmTask::class) {
+        args.set(listOf("run", "clean"))
+        delete(".bootstrapDone")
+    }
+
     val npmBootstrap = register("npmBootstrap", NpmTask::class) {
         val workingDir = layout.projectDirectory.asFile
         args.set(listOf("run", "bootstrap"))
@@ -63,7 +38,7 @@ tasks {
         doLast { File(workingDir, ".bootstrapDone").createNewFile() }
     }
 
-    val npmBuild = register("npmBuild", NpmTask::class) {
+    val npmAssemble = register("npmAssemble", NpmTask::class) {
         args.set(listOf("run", "build"))
         inputs.dir("src")
         outputs.dir("dist")
@@ -71,30 +46,28 @@ tasks {
     }
 
     val test = register("test", NpmTask::class) {
-        dependsOn(build)
+        dependsOn(npmBootstrap)
+        dependsOn(assemble)
         args.set(listOf("run", "test"))
         inputs.files(fileTree("src"))
         inputs.file("package.json")
 
         val testsExecutedMarkerName: String = "${projectDir}/.tests.executed"
-        // Below some potentially useful config snippets if we want to be efficient with test executions.
-
-        // allows easy triggering re-tests
         doLast {
             File(testsExecutedMarkerName).appendText("delete this file to force re-execution JavaScript tests")
         }
         outputs.file(testsExecutedMarkerName)
     }
 
-    distZip {
-        dependsOn(npmBuild)
-    }
-
-    distTar {
-        dependsOn(npmBuild)
-    }
-
     assemble {
-        dependsOn(npmBuild)
+        dependsOn(npmAssemble)
+    }
+    
+    clean {
+        dependsOn(npmClean)
+    }
+
+    build {
+        dependsOn(test)
     }
 }
