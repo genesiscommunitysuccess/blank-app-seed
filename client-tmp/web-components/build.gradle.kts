@@ -59,6 +59,14 @@ tasks {
         outputs.file(testsExecutedMarkerName)
     }
 
+    distZip {
+        dependsOn(npmAssemble)
+    }
+
+    distTar {
+        dependsOn(npmAssemble)
+    }
+
     assemble {
         dependsOn(npmAssemble)
     }
