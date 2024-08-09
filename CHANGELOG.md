@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.28.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.3...v3.28.4) (2024-08-09)
+
+
+### Bug Fixes
+
+* removing node versions from client build (PA-1349) (#306) 851800e
+
 ## [3.28.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.2...v3.28.3) (2024-08-01)
 
 
