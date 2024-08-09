@@ -1,0 +1,32 @@
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { getUser } from '@genesislcap/foundation-user';
+import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
+import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.gridOptions}}
+import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
+{{/if}}
+{{#if tile.config.createFormUiSchema}}
+import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
+{{/if}}
+{{#if tile.config.uischema}}
+import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
+{{/if}}
+{{#if tile.config.updateFormUiSchema}}
+import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
+{{/if}}
+{{#if tile.config.columns}}
+import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
+{{/if}}
+{{#if tile.config.gridOptions}}
+import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
+{{/if}}
+import './{{kebabCase tile.title}}.component.css';
+
+const {{pascalCase tile.componentName}} = () => {
+  return (
+    {{> (lookup tile 'type') tile}}
+  );
+};
+
+export default {{pascalCase tile.componentName}};
