@@ -23,7 +23,7 @@ const {{pascalCase route.name}} = () => {
   return (
     <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
-     <rapid-layout auto-save-key="{{#if environment.REACT_APP_PRODUCTION}}{{route.layoutKey}}{{else}}{{null}}{{/if}}">
+      <rapid-layout auto-save-key={environment.REACT_APP_PRODUCTION ? "{{route.layoutKey}}" : null}>
         {{> (lookup ./route 'layoutType') }}
       </rapid-layout>
       {{else}}
