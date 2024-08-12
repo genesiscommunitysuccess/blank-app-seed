@@ -1,11 +1,7 @@
 import './{{pascalCase route.name}}.css';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 const {{pascalCase route.name}} = () => {
-  console.log('Environment', environment);
-  console.log('REACT_APP_PRODUCTION:', environment.REACT_APP_PRODUCTION);
-  console.log('route', route);
-  console.log('route.layoutKey', route.layoutKey)
   {{#each route.tiles}}
   const tile{{this.config.index}} = { {{#if this.config.createFormUiSchema}}
     "createFormUiSchema": {{{ this.config.createFormUiSchema }}},{{/if}}{{#if this.config.updateFormUiSchema}}
@@ -27,7 +23,7 @@ const {{pascalCase route.name}} = () => {
   return (
     <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
-      <rapid-layout auto-save-key='{{route.layoutKey}}'>
+      <rapid-layout auto-save-key="{{environment.REACT_APP_PRODUCTION}}">
         {{ (lookup ./route 'layoutType') }}
       </rapid-layout>
       {{else}}
