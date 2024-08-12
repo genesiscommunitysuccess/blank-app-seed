@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.28.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.4...v3.28.5) (2024-08-12)
+
+
+### Bug Fixes
+
+* sanitise db namespace to avoid breaking postgres [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#307) 399b265
+
 ## [3.28.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.3...v3.28.4) (2024-08-09)
 
 
