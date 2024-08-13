@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.6...v3.29.0) (2024-08-13)
+
+
+### Features
+
+* Implement the generated UI code structure proposal (react) - [FUI-2139](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2139) (#305) 6054353
+
 ## [3.28.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.5...v3.28.6) (2024-08-12)
 
 
