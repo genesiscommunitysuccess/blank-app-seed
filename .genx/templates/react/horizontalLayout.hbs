@@ -1,7 +1,7 @@
 <rapid-layout-region>
-    {{#each route.tiles}}
-    <rapid-layout-item title="{{this.title}}">
-        {{> (lookup . 'type') }}
-    </rapid-layout-item>
-    {{/each}}
+  {{#each route.tiles}}
+  <rapid-layout-item title="{{this.title}}">
+    <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
+  </rapid-layout-item>
+  {{/each}}
 </rapid-layout-region>

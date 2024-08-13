@@ -9,29 +9,29 @@
     {{#if config.createEvent}}
     createEvent="{{ config.createEvent }}"
     {{#if config.createFormUiSchema}}
-    createFormUiSchema={tile{{ config.index }}.createFormUiSchema}
+    createFormUiSchema={createFormUiSchema}
     {{/if}}
     {{/if}}
     {{#if config.updateEvent}}
     updateEvent="{{ config.updateEvent }}"
     {{#if config.updateFormUiSchema}}
-    updateFormUiSchema={tile{{ config.index }}.updateFormUiSchema}
+    updateFormUiSchema={updateFormUiSchema}
     {{/if}}
     {{/if}}
     {{#if config.deleteEvent}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}
     {{#if config.gridOptions}}
-    gridOptions={{{ config.gridOptions }}}
+    gridOptions={gridOptions}
     {{/if}}
     {{#if config.snapshot}}
     datasourceConfig={ isSnapshot: {{ config.snapshot }} }
     {{/if}}
     {{#if config.reqrep}}
-    datasourceConfig={tile{{ config.index }}.reqrep}
+    datasourceConfig={reqrep}
     {{/if}}
     {{#if config.columns}}
-    columns={tile{{ config.index }}.columns}
+    columns={columnDefs}
     {{/if}}
     {{#if config.modalPosition}}
     modal-position="{{ config.modalPosition }}"

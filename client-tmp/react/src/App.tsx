@@ -1,11 +1,11 @@
-import React from 'react';
+import { useEffect } from 'react';
 import {
   unstable_HistoryRouter as HistoryRouter,
   Routes,
   Route,
   useLocation,
 } from 'react-router-dom';
-import history from './utils/history';
+import { history } from './utils/history';
 import LayoutWrapper from './layouts/LayoutWrapper';
 import { routeLayouts } from './config';
 import AuthGuard from './guards/AuthGuard';
@@ -15,12 +15,30 @@ import AuthPage from './pages/auth/AuthPage';
 {{#each routes}}
 import {{pascalCase this.name}} from './pages/{{kebabCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
+{{#if FDC3.channels.length}}
+import { listenToChannel, onFDC3Ready } from './utils';
+{{/if}}
 // Genesis Components
 import './share/genesis-components';
 
 const LayoutWithLocation = () => {
   const location = useLocation();
   const layout = routeLayouts[location.pathname] || 'default';
+  {{#if FDC3.channels.length}}
+  useEffect(() => {
+    {{#each FDC3.channels}}
+    listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
+      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
+      // TODO: Add your listener logic here
+      // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
+    });
+    {{/each}}
+    
+    return () => {
+      console.log('Component is being unmounted');
+    };
+  }, []);
+  {{/if}}
 
   let pageComponent;
 

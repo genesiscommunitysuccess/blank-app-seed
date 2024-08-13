@@ -44,6 +44,7 @@ const getPathByFramework = {
   },
   [FRAMEWORK_REACT_ALIAS]: {
     ...defaultPathGetters,
+    index: (componentPath) => `${componentPath}/index.js`,
     clientSrcPath: `../../client/src/pages`,
     route: (clientSrcPath, tile, routeName) =>
       `${clientSrcPath}/${routeName}/${tile.name}-${tile.componentType}`,
