@@ -3,6 +3,7 @@ const makeDirectory = require('./makeDirectory');
 const {
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
   FRAMEWORK_ANGULAR_ALIAS,
+  FRAMEWORK_REACT_ALIAS,
   DIR_TEMPLATE_BY_FRAMEWORK,
 } = require('../static');
 
@@ -41,6 +42,16 @@ const getPathByFramework = {
     style: (componentPath, tile) =>
       `${componentPath}/${tile.name}.component.css`,
   },
+  [FRAMEWORK_REACT_ALIAS]: {
+    ...defaultPathGetters,
+    clientSrcPath: `../../client/src/pages`,
+    route: (clientSrcPath, tile, routeName) =>
+      `${clientSrcPath}/${routeName}/${tile.name}-${tile.componentType}`,
+    component: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.component.jsx`,
+    style: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.component.css`,
+  },
 };
 
 const getFilesToWrite = (tileData, routeName, path, sourceTemplateDir) => {
@@ -69,11 +80,6 @@ const getFilesToWrite = (tileData, routeName, path, sourceTemplateDir) => {
     target: getComponentTarget(routeDir, tileData),
   };
 
-  const componentTemplateFile = {
-    source: `${sourceTemplateDir}/component/component.template.hbs`,
-    target: getTemplateTarget(routeDir, tileData),
-  };
-
   const componentStylesFile = {
     source: `${sourceTemplateDir}/component/component.styles.hbs`,
     target: getStyleTarget(routeDir, tileData),
@@ -99,12 +105,14 @@ const getFilesToWrite = (tileData, routeName, path, sourceTemplateDir) => {
     target: getGridOptionsTarget(routeDir, tileData),
   };
 
-  const filesToWrite = [
-    componentIndexFile,
-    componentFile,
-    componentTemplateFile,
-    componentStylesFile,
-  ];
+  const filesToWrite = [componentIndexFile, componentFile, componentStylesFile];
+
+  if (getTemplateTarget) {
+    filesToWrite.push({
+      source: `${sourceTemplateDir}/component/component.template.hbs`,
+      target: getTemplateTarget(routeDir, tileData),
+    });
+  }
 
   switch (tileData.type) {
     case 'entity-manager':
