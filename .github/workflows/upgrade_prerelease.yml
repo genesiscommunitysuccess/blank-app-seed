@@ -2,6 +2,7 @@ name: Upgrade prerelease
 
 on:
   workflow_dispatch: # Manual
+  pull_request: # temp trigger
   schedule:
     - cron: '0 8 * * 1-5' # Weekdays 8AM UTC
 
