@@ -1,5 +1,3 @@
-rootProject.name = "server"
-
 pluginManagement {
     pluginManagement {
         val genesisVersion: String by settings
@@ -38,6 +36,8 @@ plugins {
 }
 
 genesis {
+    productName = {{appName}}
+
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
