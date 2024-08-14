@@ -11,7 +11,7 @@
     datasourceConfig="reqrep"
     {{/if}}
     {{#if config.gridOptions}}
-    deferredGridOptions=\{{ onRowClicked: gridOptions.onRowClicked }}
+    deferredGridOptions=\{{ onRowClicked: gridOptions?.onRowClicked }}
     {{/if}}
   ></grid-pro-genesis-datasource>
 </rapid-grid-pro>
