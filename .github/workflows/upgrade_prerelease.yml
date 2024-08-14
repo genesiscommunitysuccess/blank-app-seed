@@ -1,0 +1,18 @@
+name: Upgrade prerelease
+
+on:
+  workflow_dispatch: # Manual
+  schedule:
+    - cron: '0 8 * * 1-5' # Weekdays 8AM UTC
+
+concurrency: upgrade-prerelease
+
+jobs:
+  upgrade:
+    uses: ./.github/workflows/upgrade.yml
+    with: 
+      branch: prerelease
+    secrets:
+      GH_USER_TOKEN: ${{ secrets.GH_USER_TOKEN }}
+      JFROG_LIBS_RELEASE_CLIENT_RO_USER: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
+      JFROG_LIBS_RELEASE_CLIENT_RO_KEY: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}
