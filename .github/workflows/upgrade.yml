@@ -6,7 +6,7 @@ on:
       branch:
         type: string
         required: true
-        description: The branch that will be attmped to be upgraded
+        description: The branch that will be upgraded
       patch-only:
         type: boolean
         required: false
