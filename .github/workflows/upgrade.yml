@@ -82,8 +82,8 @@ jobs:
             repo = process.env.REPO,
             title = 'fix: automated dependency version update [skip-ci] PSD-9',
             body  = 'Automated PR',
-            head  = 'chore-dep-update',
-            base  = 'main';
+            head  = 'chore-dep-update-${{inputs.branch}}',
+            base  = '${{inputs.branch}}';
           
           (async () => {
             const response = await octokit.request(
