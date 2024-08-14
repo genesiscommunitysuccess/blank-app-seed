@@ -1,17 +1,35 @@
-name: Upgrade
+name: Ω Workflow - Upgrade dependencies
 
 on:
-  workflow_dispatch: # Manual
-  schedule:
-    - cron: '0 9 * * 1' # Mondays 9AM UTC
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+        description: The branch that will be upgraded
+      patch-only:
+        type: boolean
+        required: false
+        description: Only update if there are newer patch versions
+    secrets:
+      GH_USER_TOKEN:
+        required: true
+      JFROG_LIBS_RELEASE_CLIENT_RO_USER:
+        required: true
+      JFROG_LIBS_RELEASE_CLIENT_RO_KEY:
+        required: true
 
 jobs:
   upgrade:
     runs-on: ubuntu-latest
     environment: deploy
+    env:
+      BRANCH: ${{ inputs.branch }}
+      PATCH_ARG: ${{ inputs.patch-only && '--patch-only' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           token: ${{secrets.GH_USER_TOKEN}}
 
       - name: Set up Node
@@ -29,7 +47,7 @@ jobs:
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}" --interactive=false
 
       - name: Update to latest versions if available
-        run: node .genx/scripts/update-versions
+        run: node .genx/scripts/update-versions ${PATCH_ARG}
 
       - name: Check for changes
         id: versions
@@ -39,10 +57,10 @@ jobs:
         if: steps.versions.outputs.CHANGED
         run: |
           git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
-          git checkout -b chore-dep-update
+          git checkout -b chore-dep-update-${BRANCH}
           git add --all
           git commit -m "fix: automated dependency version update [skip-ci] PSD-9"
-          git push -f --set-upstream origin chore-dep-update
+          git push -f --set-upstream origin chore-dep-update-${BRANCH}
 
       - name: Raise PR
         if: steps.versions.outputs.CHANGED
@@ -75,5 +93,3 @@ jobs:
           EOT
 
           node /tmp/create-pr/index
-
-
