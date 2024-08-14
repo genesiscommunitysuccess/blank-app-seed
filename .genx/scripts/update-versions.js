@@ -46,7 +46,7 @@ const latest = { UI, GSF, Auth };
 console.log('Current:', current);
 console.log('Latest:', latest);
 
-if (current.UI !== UI || current.GSF !== GSF) {
+if (current.UI !== UI || current.GSF !== GSF || current.Auth !== Auth) {
   console.log('Newer versions available');
   const path = resolve(__dirname, '../versions.json');
   if (!dryRun) {
