@@ -52,6 +52,8 @@ const getPathByFramework = {
       `${componentPath}/${tile.name}.component.jsx`,
     style: (componentPath, tile) =>
       `${componentPath}/${tile.name}.component.css`,
+    gridOptions: (componentPath, tile) =>
+      `${componentPath}/${tile.name}.gridOptions.js`,
   },
 };
 
