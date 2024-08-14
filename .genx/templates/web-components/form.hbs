@@ -1,0 +1,16 @@
+${whenElse(
+    (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}'),
+    html`
+      <foundation-form
+        design-system-prefix="rapid"
+        resourceName="{{config.resourceName}}"
+        {{#if config.uischema}}
+        :uischema=${() => createFormSchema }
+        {{/if}}
+      >
+      </foundation-form>
+    `,
+    html`
+        <not-permitted-component></not-permitted-component>
+    `,
+)}

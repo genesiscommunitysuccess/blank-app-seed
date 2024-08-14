@@ -1,0 +1,35 @@
+${whenElse(
+    (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
+    html`
+      <rapid-grid-pro
+        header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
+        only-template-col-defs{{/if}}
+        enable-row-flashing
+        enable-cell-flashing
+        >
+        <grid-pro-genesis-datasource
+          resource-name="{{config.resourceName}}"
+          {{#if config.snapshot}}
+          isSnapshot="{{config.snapshot}}"
+          {{/if}}
+          {{#if config.reqrep}}
+          :datasourceConfig=${() => ({pollingInterval: 5000 })}
+          {{/if}}
+          {{#if config.gridOptions}}
+          :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
+          {{/if}}
+        ></grid-pro-genesis-datasource>
+        {{#if config.gridOptions}}
+        ${repeat(
+          (x) => gridOptions?.columnDefs,
+          html`
+            <grid-pro-column :definition=${(x) => x}></grid-pro-column>
+          `,
+        )}
+        {{/if}}
+      </rapid-grid-pro>
+    `,
+    html`
+        <not-permitted-component></not-permitted-component>
+    `,
+)}

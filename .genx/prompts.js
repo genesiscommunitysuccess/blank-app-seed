@@ -1,7 +1,12 @@
 const apiPrompts = require('./prompts/api');
 const genesisServerPrompts = require('./prompts/server');
 const uiPrompts = require('./prompts/ui');
-const {description: packageDescription, license, name, version} = require('./package.json');
+const {
+  description: packageDescription,
+  license,
+  name,
+  version,
+} = require('./package.json');
 
 module.exports = async (inquirer, prevAns = {}) => {
   console.log(`
@@ -11,9 +16,10 @@ module.exports = async (inquirer, prevAns = {}) => {
   Version: ${version}
   License: ${license}`);
 
-  const {apiHost, enableSSO} = await apiPrompts(inquirer, prevAns)
-  const {description, groupId, applicationVersion, enableDeployPlugin, csv} = await genesisServerPrompts(inquirer, prevAns);
-  const {routes, ui} = await uiPrompts(inquirer, prevAns);
+  const { apiHost, enableSSO } = await apiPrompts(inquirer, prevAns);
+  const { description, groupId, applicationVersion, enableDeployPlugin, csv } =
+    await genesisServerPrompts(inquirer, prevAns);
+  const { routes, ui, framework } = await uiPrompts(inquirer, prevAns);
 
   return {
     apiHost,
@@ -25,5 +31,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     enableDeployPlugin,
     csv,
     ui,
+    framework,
   };
 };

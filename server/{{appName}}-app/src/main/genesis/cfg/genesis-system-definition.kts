@@ -37,8 +37,9 @@ systemDefinition {
             hosts {
                 host(LOCAL_HOST)
             }
-
-            item(name = "DbNamespace", value = "{{appName}}")
+            
+            item(name = "ZeroMQConnectToLocalhostViaLoopback", value = "true")
+            item(name = "DbNamespace", value = "{{localGenId}}")
             item(name = "PrimaryIfSingleNode", value = "true")
             item(name = "ClusterPort", value = "6000")
             item(name = "location", value = "LO")

@@ -1,0 +1,16 @@
+<rapid-g2plot-chart
+  type="{{ config.type }}"
+  [config]="chartConfig"{{#if config.permissions.viewRight}}
+  [ngStyle]="hasUserPermission('{{config.permissions.viewRight}}') ? { width: '100%', height: '100%' } : { display: 'none' }"{{/if}}
+>
+  <chart-datasource
+    resourceName="{{ config.resourceName }}"
+    server-fields="{{ config.xField }} {{ config.yField }}"
+  ></chart-datasource>
+</rapid-g2plot-chart>{{#if config.permissions.viewRight}}
+
+<app-error-message
+  [ngStyle]="!hasUserPermission('{{config.permissions.viewRight}}') ? { width: '100%', height: '100%', display: 'flex', 'justify-content': 'center', 'align-items': 'center' } : { display: 'none' }"
+  elementType="h3"
+  message="You do not have access to view this component.">
+</app-error-message>{{/if}}

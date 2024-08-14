@@ -1,0 +1,18 @@
+<rapid-grid-pro
+  enable-row-flashing
+  enable-cell-flashing
+  >
+  <grid-pro-genesis-datasource
+    resource-name="{{config.resourceName}}"
+    {{#if config.snapshot}}
+    isSnapshot="{{config.snapshot}}"
+    {{/if}}
+    {{#if config.reqrep}}
+    datasourceConfig={tile{{ config.index }}.reqrep}
+    {{/if}}
+    {{#if config.gridOptions}}
+    deferredGridOptions={tile{{ config.index }}.gridOptions}
+    {{/if}}
+  >
+  </grid-pro-genesis-datasource>
+</rapid-grid-pro>

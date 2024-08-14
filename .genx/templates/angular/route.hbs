@@ -1,0 +1,24 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+{{#each route.tiles}}
+import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
+{{/each}}
+import { environment } from '../../../environments/environment';
+
+
+@Component({
+  selector: 'app-{{kebabCase route.name}}',
+  standalone: true,
+  imports: [
+    {{#each route.tiles}}
+    {{pascalCase this.componentName}},
+    {{/each}}
+    CommonModule,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './{{kebabCase route.name}}.component.html',
+  styleUrls: ['./{{kebabCase route.name}}.component.css'],
+})
+export class {{pascalCase route.name}}Component {
+  environment = environment;
+}

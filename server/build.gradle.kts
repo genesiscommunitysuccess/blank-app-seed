@@ -8,7 +8,8 @@ subprojects {
     apply(plugin = "org.gradle.maven-publish")
 
     dependencies {
-        implementation("com.h2database:h2:2.2.224")
+        implementation("com.h2database:h2")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -34,6 +35,11 @@ tasks {
     clean {
         for(subproject in subprojects){
             dependsOn(subproject.tasks.named("clean"))
+        }
+    }
+    test {
+        for(subproject in subprojects){
+            dependsOn(subproject.tasks.named("test"))
         }
     }
 }
@@ -86,5 +92,12 @@ allprojects {
             from(components["java"])
         }
     }
+    tasks{
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+            useJUnitPlatform()
+        }
+    }
 }
-

@@ -1,0 +1,19 @@
+name: Upgrade main
+
+on:
+  workflow_dispatch: # Manual
+  schedule:
+    - cron: '0 8 * * 1-5' # Weekdays 8AM UTC
+
+concurrency: upgrade-main
+
+jobs:
+  upgrade:
+    uses: ./.github/workflows/upgrade.yml
+    with: 
+      branch: main
+      patch-only: true
+    secrets:
+      GH_USER_TOKEN: ${{ secrets.GH_USER_TOKEN }}
+      JFROG_LIBS_RELEASE_CLIENT_RO_USER: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
+      JFROG_LIBS_RELEASE_CLIENT_RO_KEY: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}

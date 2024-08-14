@@ -1,0 +1,17 @@
+import { User } from '@genesislcap/foundation-user';
+import { customElement, GenesisElement } from '@genesislcap/web-core';
+import { {{pascalCase route.name}}Styles as styles } from './{{kebabCase route.name}}.styles';
+import { {{pascalCase route.name}}Template as template } from './{{kebabCase route.name}}.template';
+
+@customElement({
+  name: '{{kebabCase route.name}}-route',
+  template,
+  styles,
+})
+export class {{pascalCase route.name}} extends GenesisElement {
+  @User user: User;
+
+  constructor() {
+    super();
+  }
+}

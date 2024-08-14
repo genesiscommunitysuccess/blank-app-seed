@@ -1,0 +1,14 @@
+  {{#if route.tiles}}
+ <rapid-flex-layout>
+    <rapid-tabs>
+    {{#each route.tiles}}
+      <rapid-tab slot="tab">{{this.title}}</rapid-tab>
+    {{/each}}
+
+    {{> (lookup ./route 'layoutType') }}
+    </rapid-tabs>
+  </rapid-flex-layout>
+  {{else}}
+  <!-- insert template code here -->
+  Welcome to {{sentenceCase route.name}}
+  {{/if}}

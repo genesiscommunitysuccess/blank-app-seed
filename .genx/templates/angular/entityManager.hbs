@@ -1,0 +1,58 @@
+<section style="height: 100%; width: 100%;">
+  <ng-container {{#if config.permissions.viewRight}}*ngIf="hasUserPermission('{{config.permissions.viewRight}}'); else notPermitted{{ config.index }}"{{/if}}>
+    <entity-management
+      design-system-prefix="rapid"
+      header-case-type="capitalCase"
+      enable-row-flashing
+      enable-cell-flashing
+      {{#if config.title}}
+      title="{{ config.title }}"
+      {{/if}}
+      resourceName="{{ config.resourceName }}"
+      {{#if config.createEvent}}
+      [createEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined"
+      {{#if config.createFormUiSchema}}
+      [createFormUiSchema]="createFormSchema"
+      {{/if}}
+      {{/if}}
+      {{#if config.updateEvent}}
+      [updateEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined"
+      {{#if config.updateFormUiSchema}}
+      [updateFormUiSchema]="updateFormSchema"
+      {{/if}}
+      {{/if}}
+      {{#if config.deleteEvent}}
+      [deleteEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined"
+      {{/if}}
+      {{#if config.gridOptions}}
+      [gridOptions]="{{ config.gridOptions }}"
+      {{/if}}
+      {{#if config.snapshot}}
+      [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
+      {{/if}}
+      {{#if config.reqrep}}
+      [datasourceConfig]="reqrep"
+      {{/if}}
+      {{#if config.columns}}
+      [columns]="columnDefs"
+      {{/if}}
+      {{#if config.modalPosition}}
+      modal-position="{{ config.modalPosition }}"
+      {{/if}}
+      {{#if config.sizeColumnsToFit}}
+      size-columns-to-fit
+      {{/if}}
+      {{#if config.enableSearchBar}}
+      enable-search-bar
+      {{/if}}
+    ></entity-management>
+  </ng-container>{{#if config.permissions.viewRight}}
+
+  <ng-template #notPermitted{{ config.index }}>
+    <app-error-message
+      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
+      elementType="h3"
+      message="You do not have access to view this component.">
+    </app-error-message>
+  </ng-template>{{/if}}
+</section>

@@ -1,5 +1,292 @@
 # Changelog
 
+## [3.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.6...v3.29.0) (2024-08-13)
+
+
+### Features
+
+* Implement the generated UI code structure proposal (react) - [FUI-2139](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2139) (#305) 6054353
+
+## [3.28.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.5...v3.28.6) (2024-08-12)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#303) 7e258fc
+
+## [3.28.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.4...v3.28.5) (2024-08-12)
+
+
+### Bug Fixes
+
+* sanitise db namespace to avoid breaking postgres [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#307) 399b265
+
+## [3.28.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.3...v3.28.4) (2024-08-09)
+
+
+### Bug Fixes
+
+* removing node versions from client build (PA-1349) (#306) 851800e
+
+## [3.28.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.2...v3.28.3) (2024-08-01)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#301) 51c6226
+
+## [3.28.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.1...v3.28.2) (2024-08-01)
+
+
+### Bug Fixes
+
+* rename {{appName}}-data-pipeline.kts to {{appName}}-data-pipelines.kts (#300) 4643a82
+
+## [3.28.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.0...v3.28.1) (2024-07-29)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#297) cc8ede5
+
+## [3.28.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.3...v3.28.0) (2024-07-29)
+
+
+### Features
+
+* pbc support in angular [FUI-2065](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2065) (#289) 7662cde
+
+## [3.27.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.2...v3.27.3) (2024-07-29)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#295) a4bf7fa
+
+## [3.27.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.1...v3.27.2) (2024-07-26)
+
+
+### Bug Fixes
+
+* react grid template (#293) 26fcd14
+
+## [3.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.27.0...v3.27.1) (2024-07-26)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#292) 33cf11d
+
+## [3.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.26.0...v3.27.0) (2024-07-25)
+
+
+### Features
+
+* Implement the generated UI code structure proposal (angular) (#287) 6d61502, closes FUI-2099 FUI-2099 FUI-2099
+
+## [3.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.2...v3.26.0) (2024-07-24)
+
+
+### Features
+
+* sso in angular [FUI-2069](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2069) (#282) 577c5a3
+
+## [3.25.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.1...v3.25.2) (2024-07-23)
+
+
+### Bug Fixes
+
+* move formatters to platform [FUI-2064](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2064) (#285) ff712dd
+
+## [3.25.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.25.0...v3.25.1) (2024-07-22)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#284) 7481358
+
+## [3.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.24.0...v3.25.0) (2024-07-18)
+
+
+### Features
+
+* FDC3 support in angular - [FUI-2068](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2068) (#281) 8d30d4c
+
+## [3.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.23.0...v3.24.0) (2024-07-16)
+
+
+### Features
+
+* add auto headerCaseType to grid/entity-manager GENC-654 (#280) 47b0520
+
+## [3.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.22.0...v3.23.0) (2024-07-15)
+
+
+### Features
+
+* react blank-app-seed (#278) 83b1767
+
+## [3.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.21.0...v3.22.0) (2024-07-15)
+
+
+### Features
+
+* angular handle route, component view/update permissions - [FUI-2066](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2066) (#273) 8c73b16
+
+## [3.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.5...v3.21.0) (2024-07-09)
+
+
+### Features
+
+* implement the generated UI code structure proposal GENC-533 (#275) 9bc3847
+
+## [3.20.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.4...v3.20.5) (2024-07-09)
+
+
+### Bug Fixes
+
+* bump GSF to 8.1.3 [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#276) 6c9904f
+
+## [3.20.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.3...v3.20.4) (2024-07-08)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#274) 581c96b
+
+## [3.20.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.2...v3.20.3) (2024-07-05)
+
+
+### Bug Fixes
+
+* compactProcessesStrategy in the correct place (#272) b0b7b15
+
+## [3.20.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.1...v3.20.2) (2024-07-03)
+
+
+### Bug Fixes
+
+* update PROFILE_USER.csv GENC-606 (#271) 51f558e
+
+## [3.20.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.20.0...v3.20.1) (2024-07-02)
+
+
+### Bug Fixes
+
+* adding missing formatting helpers GENC-547 (#269) b8c0e8c
+
+## [3.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.19.0...v3.20.0) (2024-07-01)
+
+
+### Features
+
+* compactProcessStrategy set for DEV in GSF 8.1 (#265) 982e756
+
+## [3.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.3...v3.19.0) (2024-06-28)
+
+
+### Features
+
+* upgrade angular client to v18 - [FUI-2054](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2054) (#264) d5c2480
+
+## [3.18.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.2...v3.18.3) (2024-06-28)
+
+
+### Bug Fixes
+
+* move serializers to single file GENC-0 (#268) 9016d47
+
+## [3.18.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.1...v3.18.2) (2024-06-27)
+
+
+### Bug Fixes
+
+* correct updateRight for form component GENC-574 (#267) c82b626
+
+## [3.18.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.18.0...v3.18.1) (2024-06-27)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#266) e91328e
+
+## [3.18.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.17.1...v3.18.0) (2024-06-25)
+
+
+### Features
+
+* tile support in angular [FUI-1969](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1969) (#253) 2812af6
+
+## [3.17.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.16.1...v3.17.0) (2024-06-21)
+
+
+### Features
+
+* initial angular support [FUI-1967](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1967) (#211) 9dac381
+
+## [3.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.16.0...v3.16.1) (2024-06-21)
+
+
+### Bug Fixes
+
+* Fix issue with test not trigger assemble itself GENC-543 (#261) ff38c00
+
+## [3.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.15.0...v3.16.0) (2024-06-20)
+
+
+### Features
+
+* Add test dependencies to server in blank-app-seed GENC-543 (#259) d87c4f9
+
+## [3.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.1...v3.15.0) (2024-06-20)
+
+
+### Features
+
+* ability to add/append data to csv files GENC-473 (#260) 7b337ff
+
+## [3.14.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.14.0...v3.14.1) (2024-06-18)
+
+
+### Bug Fixes
+
+* do not use foundation layout autosave during dev GENC-528 (#258) ac4b2fd
+
+## [3.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.1...v3.14.0) (2024-06-17)
+
+
+### Features
+
+* handle component view/update permissions GENC-470 (#257) 7c3c3b6
+
+## [3.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.13.0...v3.13.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* foundation-ui resource and datasource enhancements [skip-ci] [FUI-1993](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/1993) (#256) 2e64739
+
+## [3.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.4...v3.13.0) (2024-06-14)
+
+
+### Features
+
+* support for route permissions based on right codes GENC-469 (#255) c7f4358
+
+## [3.12.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.3...v3.12.4) (2024-06-07)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#254) 4a681aa
+
+## [3.12.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.2...v3.12.3) (2024-06-04)
+
+
+### Bug Fixes
+
+* pinning down ajv version [FUI-2027](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2027) (#252) 5e90a9f, closes PSD-9
+
 ## [3.12.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.12.1...v3.12.2) (2024-06-03)
 
 

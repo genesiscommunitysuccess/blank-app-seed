@@ -1,0 +1,36 @@
+    <rapid-grid-pro
+      header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
+      only-template-col-defs{{/if}}
+      enable-row-flashing
+      enable-cell-flashing{{#if config.permissions.viewRight}}
+      [ngStyle]="{ display: hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none' }"{{/if}}
+      >
+      <grid-pro-genesis-datasource
+        resource-name="{{config.resourceName}}"
+        {{#if config.snapshot}}
+        isSnapshot="{{config.snapshot}}"
+        {{/if}}
+        {{#if config.reqrep}}
+        [datasourceConfig]="reqrep"
+        {{/if}}
+        {{#if config.gridOptions}}
+        [deferredGridOptions]="{ onRowClicked: gridOptions.onRowClicked }"
+        {{/if}}
+      ></grid-pro-genesis-datasource>
+      {{#if config.gridOptions}}
+      <grid-pro-column *ngFor="let columnDef of gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
+      {{/if}}
+    </rapid-grid-pro>{{#if config.permissions.viewRight}}
+  <section 
+    [ngStyle]="{ 
+      height: '100%',
+      width: '100%',
+      display: !hasUserPermission('{{config.permissions.viewRight}}') ? 'block' : 'none'
+    }"
+  >
+    <app-error-message
+      style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;"
+      elementType="h3"
+      message="You do not have access to view this component.">
+    </app-error-message>
+  </section>{{/if}}
