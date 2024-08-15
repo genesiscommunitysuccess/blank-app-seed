@@ -30,7 +30,7 @@ jobs:
     env:
       BRANCH: ${{ inputs.branch }}
       PATCH_ARG: ${{ inputs.patch-only && '--patch-only' || '' }}
-      SKIP_SERVER_ARG: ${{ inputs.patch-only && '--skip-server' || '' }}
+      SKIP_SERVER_ARG: ${{ inputs.skip-server && '--skip-server' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
