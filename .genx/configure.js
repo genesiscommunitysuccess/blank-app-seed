@@ -16,7 +16,7 @@ module.exports = async (data, utils) => {
   // populate additional data fields
   data.pkgName = data.appName.replace(/[\W_]/g, '').toLowerCase();
   data.rootElement = `${data.pkgName}-root`;
-  data.localGenId = data.appName.toUpperCase().replace('-', '_');
+  data.localGenId = data.appName.toUpperCase().replace(/-/g, '_');
   data.applicationVersionWeb = data.applicationVersion.split('-').shift();
   data.versions = versions;
 
