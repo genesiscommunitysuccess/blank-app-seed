@@ -39,7 +39,24 @@ const writeJSON = (json, path) => {
   }
 };
 
-const UI = run(`npm info @genesislcap/foundation-ui@${npmVersionMatcher} version`);
+/**
+ * NPM Info returns a string if there's only one version in the channel;, otherwise it returns a valid json array,
+ * where the most recent version will be the last value;
+ * @param {*} output 
+ * @returns 
+ */
+const parseNpmInfo = (output) => {
+  try {
+    const versions = JSON.parse(output);
+    return Array.isArray(versions) ? versions[versions.length-1] : versions;
+  } catch (err) {
+    return output;
+  }
+}
+
+const npmInfo = run(`npm info @genesislcap/foundation-ui@${npmVersionMatcher} version --json`);
+console.debug('Npm raw output:', npmInfo);
+const UI = parseNpmInfo(npmInfo);
 
 const serverOsCommandPipeline = `grep path | tr -s ' ' | sed 's/"path": //g' | awk -F'/' '{print $(NF-1)}' | sort -V | tail -n 1`;
 
