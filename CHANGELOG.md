@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.29.1-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.2...v3.29.1-prerelease.3) (2024-08-15)
+
+
+### Bug Fixes
+
+* useonlytemplatecols not enabled from create GENC-703 (#316) 93c9e9f
+
 ## [3.29.1-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.1...v3.29.1-prerelease.2) (2024-08-15)
 
 
