@@ -11,6 +11,10 @@ on:
         type: boolean
         required: false
         description: Only update if there are newer patch versions
+      skip-server:
+        type: boolean
+        required: false
+        description: Skip updating server dependencies
     secrets:
       GH_USER_TOKEN:
         required: true
@@ -26,6 +30,7 @@ jobs:
     env:
       BRANCH: ${{ inputs.branch }}
       PATCH_ARG: ${{ inputs.patch-only && '--patch-only' || '' }}
+      SKIP_SERVER_ARG: ${{ inputs.skip-server && '--skip-server' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,7 +52,7 @@ jobs:
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}" --interactive=false
 
       - name: Update to latest versions if available
-        run: node .genx/scripts/update-versions ${PATCH_ARG}
+        run: node .genx/scripts/update-versions ${PATCH_ARG} ${SKIP_SERVER_ARG}
 
       - name: Check for changes
         id: versions
