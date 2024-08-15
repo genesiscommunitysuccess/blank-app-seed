@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.29.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1...v3.29.2) (2024-08-15)
+
+
+### Bug Fixes
+
+* handling multiple hyphens when generating DB namespace PA-1361 (#318) 2dbaadb, closes PSD-9 PSD-9 PSD-0 PSD-0 PSD-0 PSD-0 PTC-0
+
 ## [3.29.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.0...v3.29.1) (2024-08-14)
 
 
