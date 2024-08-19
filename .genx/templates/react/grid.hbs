@@ -8,11 +8,10 @@
     isSnapshot="{{config.snapshot}}"
     {{/if}}
     {{#if config.reqrep}}
-    datasourceConfig={tile{{ config.index }}.reqrep}
+    datasourceConfig="reqrep"
     {{/if}}
     {{#if config.gridOptions}}
-    deferredGridOptions={tile{{ config.index }}.gridOptions}
+    deferredGridOptions=\{{ onRowClicked: gridOptions?.onRowClicked }}
     {{/if}}
-  >
-  </grid-pro-genesis-datasource>
+  ></grid-pro-genesis-datasource>
 </rapid-grid-pro>

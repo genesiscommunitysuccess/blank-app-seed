@@ -19,6 +19,9 @@
     "@ag-grid-enterprise/core": "29.2.0",
     "@ag-grid-enterprise/row-grouping": "29.2.0",
     "@ag-grid-enterprise/server-side-row-model": "29.2.0",
+    {{#if FDC3.includeDependencies}}
+    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
