@@ -9,6 +9,7 @@ export const routeLayouts: RouteLayouts = {
 import type { MainMenu } from './types/menu';
 
 export const AUTH_PATH = 'auth';
+export const NOT_PERMITTED_PATH = 'not-permitted';
 
 export const API_DATA = {
   URL: '',

@@ -1,3 +1,4 @@
+{{#if config.permissions.viewRight}}hasUserPermission('{{config.permissions.viewRight}}') ? ({{/if}}
 <rapid-grid-pro
   enable-row-flashing
   enable-cell-flashing
@@ -14,4 +15,7 @@
     deferredGridOptions=\{{ onRowClicked: gridOptions?.onRowClicked }}
     {{/if}}
   ></grid-pro-genesis-datasource>
-</rapid-grid-pro>
+</rapid-grid-pro>{{#if config.permissions.viewRight}} 
+) : (
+<ErrorMessage elementType="h3" message="You do not have access to view this component." />
+){{/if}}

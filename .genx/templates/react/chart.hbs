@@ -1,3 +1,4 @@
+{{#if config.permissions.viewRight}}hasUserPermission('{{config.permissions.viewRight}}') ? ({{/if}}
 <rapid-g2plot-chart
   type="{{ config.type }}"
   config={chartConfig}
@@ -6,4 +7,7 @@
     resourceName="{{ config.resourceName }}"
     server-fields="{{ config.xField }} {{ config.yField }}"
   ></chart-datasource>
-</rapid-g2plot-chart>
+</rapid-g2plot-chart>{{#if config.permissions.viewRight}} 
+) : (
+<ErrorMessage elementType="h3" message="You do not have access to view this component." />
+){{/if}}
