@@ -15,6 +15,7 @@ jobs:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
       genesisArtifactoryPassword: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}
       USE_DOCKER: 1
+      GRADLE_PARAMS: ${{ github.base_ref == 'prerelease' && '-PuseDevRepo=true' || '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +47,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew build -PuseDevRepo=true --info
+        run: ./gradlew ${GRADLE_PARAMS} build --info
 
       - name: Lint UI
         working-directory: /tmp/testapp/client
@@ -62,7 +63,7 @@ jobs:
 
       - name: Create Server Dockerfile
         working-directory: /tmp/testapp
-        run: ./gradlew :server:testapp-app:createDockerfile --info
+        run: ./gradlew ${GRADLE_PARAMS} :server:testapp-app:createDockerfile --info
 
       - name: Build Docker images
         working-directory: /tmp/testapp
