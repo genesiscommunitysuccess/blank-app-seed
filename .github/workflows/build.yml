@@ -46,7 +46,7 @@ jobs:
 
       - name: Build sample app
         working-directory: /tmp/testapp
-        run: ./gradlew build --info
+        run: ./gradlew build -PuseDevRepo=true --info
 
       - name: Lint UI
         working-directory: /tmp/testapp/client
