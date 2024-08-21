@@ -1,5 +1,4 @@
 import './{{pascalCase route.name}}.css';
-import { environment } from '../../environments/environment';
 
 const {{pascalCase route.name}} = () => {
   {{#each route.tiles}}
@@ -23,7 +22,7 @@ const {{pascalCase route.name}} = () => {
   return (
     <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
-      <rapid-layout auto-save-key={environment.REACT_APP_PRODUCTION ? "{{route.layoutKey}}" : null}>
+      <rapid-layout auto-save-key={process.env.NODE_ENV === 'production' ? "{{route.layoutKey}}" : null}>
         {{> (lookup ./route 'layoutType') }}
       </rapid-layout>
       {{else}}
