@@ -1,6 +1,6 @@
 import { base, Page } from '@genesislcap/foundation-testing/e2e';
 import { ProtectedPage } from './pages';
-import { environment } from '../../src/environments/environment'
+import { environment } from '../../src/environments/environment.ts'
 
 export type FixtureConfig = {
   API_HOST: string;

@@ -1,5 +1,5 @@
 import { configDefaults } from '@genesislcap/foundation-testing/e2e';
-import { environment } from './src/environments/environment';
+import { environment } from './src/environments/environment.ts';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
