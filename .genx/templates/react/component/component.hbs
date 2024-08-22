@@ -1,3 +1,13 @@
+
+{{#if tile.config.permissions.viewRight}}
+import { getUser } from '@genesislcap/foundation-user';
+import { getViewUpdateRightComponent } from '../../../utils';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{else}}{{#if tile.config.permissions.updateRight}}
+import { getViewUpdateRightComponent } from '../../../utils';
+import { getUser } from '@genesislcap/foundation-user';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{/if}}{{/if}}
 {{#if tile.config.createFormUiSchema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
@@ -15,7 +25,9 @@ import { gridOptions as tileGridOptions } from './{{kebabCase tile.title}}.gridO
 {{/if}}
 import './{{kebabCase tile.title}}.component.css';
 
-export const {{pascalCase tile.componentName}} = () => { {{#if tile.config.createFormUiSchema}}
+export const {{pascalCase tile.componentName}} = () => { {{#if tile.config.permissions.viewRight}}
+  const hasUserPermission = (permissionCode) => getViewUpdateRightComponent(getUser(), permissionCode);{{else}}{{#if tile.config.permissions.updateRight}}
+  const hasUserPermission = (permissionCode) => getViewUpdateRightComponent(getUser(), permissionCode);{{/if}}{{/if}}{{#if tile.config.createFormUiSchema}}
   const createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
   const uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
   const updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.columns}}

@@ -7,11 +7,13 @@ import {
 } from 'react-router-dom';
 import { history } from './utils/history';
 import LayoutWrapper from './layouts/LayoutWrapper';
-import { routeLayouts } from './config';
+import { AUTH_PATH, NOT_PERMITTED_PATH, routeLayouts } from './config';
 import AuthGuard from './guards/AuthGuard';
+import PermissionsGuard from './guards/PermissionsGuard';
 import { AuthProvider } from './store/AuthContext';
 // Pages Components
-import AuthPage from './pages/auth/AuthPage';
+import AuthPage from './pages/AuthPage/AuthPage';
+import NotPermittedPage from './pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
 import {{pascalCase this.name}} from './pages/{{kebabCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
@@ -41,14 +43,19 @@ const LayoutWithLocation = () => {
   {{/if}}
 
   let pageComponent;
+  let permissionCode = '{{this.permissions.viewRight}}';
 
   switch (location.pathname) {
-    case '/auth':
+    case `/${AUTH_PATH}`:
       pageComponent = <AuthPage />;
+      break;
+    case `/${NOT_PERMITTED_PATH}`:
+      pageComponent = <NotPermittedPage />;
       break;
   {{#each routes}}
     case '/{{kebabCase this.name}}':
       pageComponent = <{{pascalCase this.name}} />;
+      permissionCode = '{{this.permissions.viewRight}}';
       break;
   {{/each}}
     default:
@@ -63,7 +70,9 @@ const LayoutWithLocation = () => {
   } else {
     return (
       <AuthGuard>
-        <LayoutWrapper layout={layout}>{pageComponent}</LayoutWrapper>
+        <PermissionsGuard permissionCode={permissionCode}>
+          <LayoutWrapper layout={layout}>{pageComponent}</LayoutWrapper>
+        </PermissionsGuard>
       </AuthGuard>
     );
   }
