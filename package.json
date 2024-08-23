@@ -1,7 +1,7 @@
 {
   "name": "@genesislcap/blank-app-seed",
   "description": "Genesis Blank App Seed",
-  "version": "3.29.1-prerelease.9",
+  "version": "3.29.1-prerelease.10",
   "license": "Apache-2.0",
   "scripts": {
     "release": "semantic-release"
