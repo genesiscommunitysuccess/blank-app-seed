@@ -12,6 +12,7 @@ jobs:
     uses: ./.github/workflows/upgrade.yml
     with: 
       branch: prerelease
+      skip-server: true
     secrets:
       GH_USER_TOKEN: ${{ secrets.GH_USER_TOKEN }}
       JFROG_LIBS_RELEASE_CLIENT_RO_USER: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}

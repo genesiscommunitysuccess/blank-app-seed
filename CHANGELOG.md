@@ -1,18 +1,74 @@
 # Changelog
 
-## [3.29.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1...v3.29.2) (2024-08-15)
+## [3.29.1-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.9...v3.29.1-prerelease.10) (2024-08-23)
 
 
 ### Bug Fixes
 
-* handling multiple hyphens when generating DB namespace PA-1361 (#318) 2dbaadb, closes PSD-9 PSD-9 PSD-0 PSD-0 PSD-0 PSD-0 PTC-0
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 940ebbc
 
-## [3.29.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.0...v3.29.1) (2024-08-14)
+## [3.29.1-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.8...v3.29.1-prerelease.9) (2024-08-23)
 
 
 ### Bug Fixes
 
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#313) 2b62917
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fea6c6f
+
+## [3.29.1-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.7...v3.29.1-prerelease.8) (2024-08-23)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0fbf0b3
+
+## [3.29.1-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.6...v3.29.1-prerelease.7) (2024-08-20)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#321) b5d9dd9
+
+## [3.29.1-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.5...v3.29.1-prerelease.6) (2024-08-20)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f18c4cf
+
+## [3.29.1-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.4...v3.29.1-prerelease.5) (2024-08-16)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a2c959c
+
+## [3.29.1-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.3...v3.29.1-prerelease.4) (2024-08-16)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 872539b
+
+## [3.29.1-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.2...v3.29.1-prerelease.3) (2024-08-15)
+
+
+### Bug Fixes
+
+* useonlytemplatecols not enabled from create GENC-703 (#316) 93c9e9f
+
+## [3.29.1-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.1...v3.29.1-prerelease.2) (2024-08-15)
+
+
+### Bug Fixes
+
+* handling multiple hyphens when generating DB namespace PA-1361 (#317) ceda4bb
+
+## [3.29.1-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.0...v3.29.1-prerelease.1) (2024-08-14)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#314) 5070baa
 
 ## [3.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.6...v3.29.0) (2024-08-13)
 

@@ -1,11 +1,13 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
+{{#if tile.config.permissions.viewRight}}
 import { getUser } from '@genesislcap/foundation-user';
-import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { getViewUpdateRightComponent } from '../../../utils';
-{{#if tile.config.gridOptions}}
-import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
-{{/if}}
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{else}}{{#if tile.config.permissions.updateRight}}
+import { getViewUpdateRightComponent } from '../../../utils';
+import { getUser } from '@genesislcap/foundation-user';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{/if}}{{/if}}
 {{#if tile.config.createFormUiSchema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
@@ -19,14 +21,28 @@ import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema'
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.gridOptions}}
-import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
+import { gridOptions as tileGridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
 import './{{kebabCase tile.title}}.component.css';
 
-const {{pascalCase tile.componentName}} = () => {
+export const {{pascalCase tile.componentName}} = () => { {{#if tile.config.permissions.viewRight}}
+  const hasUserPermission = (permissionCode) => getViewUpdateRightComponent(getUser(), permissionCode);{{else}}{{#if tile.config.permissions.updateRight}}
+  const hasUserPermission = (permissionCode) => getViewUpdateRightComponent(getUser(), permissionCode);{{/if}}{{/if}}{{#if tile.config.createFormUiSchema}}
+  const createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
+  const uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
+  const updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.columns}}
+  const columnDefs = columnDefs;{{/if}}{{#if tile.config.gridOptions}}
+  const gridOptions = tileGridOptions;{{/if}}{{#if tile.config.reqrep}}
+  const reqrep = { pollingInterval: 5000 };{{/if}}{{#if tile.config.type}}
+  const chartConfig = { {{#ifEquals tile.config.type 'pie'}}
+      "radius": 0.75,
+      "angleField": "value",
+      "colorField": "groupBy",{{else}}
+      "xField": "groupBy",
+      "yField": "value",{{/ifEquals}}
+  };{{/if}}
+
   return (
     {{> (lookup tile 'type') tile}}
   );
 };
-
-export default {{pascalCase tile.componentName}};
