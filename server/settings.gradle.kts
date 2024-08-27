@@ -36,7 +36,7 @@ plugins {
 }
 
 genesis {
-    productName = {{appName}}
+    productName = "{{appName}}"
 
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
