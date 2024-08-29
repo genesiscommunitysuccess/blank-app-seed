@@ -1,8 +1,8 @@
 import { configDefaults } from '@genesislcap/foundation-testing/e2e';
 
-const PROTOCOL = process.env['PROTOCOL'] || 'http';
-const HOST = process.env['HOST'] || 'localhost';
-const PORT = process.env['PORT'] || 4200;
+export const PROTOCOL = process.env['PROTOCOL'] || 'http';
+export const HOST = process.env['HOST'] || 'localhost';
+export const PORT: number = Number(process.env['PORT']) || 5173;
 
 export default {
     ...configDefaults,
