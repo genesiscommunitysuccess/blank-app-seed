@@ -7,14 +7,18 @@ import visualizer from 'rollup-plugin-visualizer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(({ mode, noOpen = false }) => {
+export default defineConfig(({ mode }) => {
+  const https =  process.env.HTTPS === 'true';
+  const open = !(process.env.NO_OPEN === 'true');
+
   const config = {
+    server: {
+      https,
+      open,
+    },
     plugins: [
       react(),
     ],
-    server: {
-      open: !noOpen,
-    },
     build: {
       rollupOptions: {
         plugins: []
