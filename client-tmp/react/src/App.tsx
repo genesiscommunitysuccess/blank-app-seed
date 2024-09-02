@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
 import {
   unstable_HistoryRouter as HistoryRouter,
   Routes,
   Route,
   useLocation,
 } from 'react-router-dom';
-import { history } from './utils/history';
+import { useEffect } from 'react';
+import { history, setApiHost{{#if FDC3.channels.length}}, listenToChannel{{/if}} } from './utils';
 import LayoutWrapper from './layouts/LayoutWrapper';
 import { AUTH_PATH, NOT_PERMITTED_PATH, routeLayouts } from './config';
 import AuthGuard from './guards/AuthGuard';
@@ -17,9 +17,7 @@ import NotPermittedPage from './pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
 import {{pascalCase this.name}} from './pages/{{kebabCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
-{{#if FDC3.channels.length}}
-import { listenToChannel, onFDC3Ready } from './utils';
-{{/if}}
+
 // Genesis Components
 import './share/genesis-components';
 
@@ -79,6 +77,8 @@ const LayoutWithLocation = () => {
 };
 
 const App: React.FC = () => {
+  setApiHost();
+
   return (
     <AuthProvider>
       <HistoryRouter history={history}>

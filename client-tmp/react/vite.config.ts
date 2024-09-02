@@ -10,8 +10,7 @@ export default defineConfig(({ mode }) => {
       react(),
     ],
     define: {
-      'process.env.ENABLE_SSO': false,
-      'process.env.API_HOST': API_HOST,
+      'process.env.API_HOST': JSON.stringify(API_HOST),
     },
     resolve: {
       alias: {
