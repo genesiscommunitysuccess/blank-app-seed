@@ -12,7 +12,7 @@ export const AUTH_PATH = 'auth';
 export const NOT_PERMITTED_PATH = 'not-permitted';
 
 export const API_DATA = {
-  URL: process.env.API_HOST,
+  URL: import.meta.env.VITE_API_HOST,
   AUTH: {
     username: '', // provide login to a user in given environment
     password: '', // provide password to a user in given environment
