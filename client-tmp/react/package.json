@@ -23,7 +23,7 @@
     "test:e2e": "genx test --e2e",
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive",
-    "test:coverage": "genx test --no-watch --code-coverage",
+    "test:coverage": "genx test --no-watch --coverage",
     "test:unit:watch": "genx test --watch"
   },
   "dependencies": {
