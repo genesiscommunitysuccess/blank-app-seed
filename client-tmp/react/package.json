@@ -19,12 +19,12 @@
     "lint:fix": "eslint src/**/*.js src/**/*.jsx --fix",
     "lint:eslint": "npm lint",
     "lint:stylelint": "node lint-css.js",
-    "test": "ng test",
+    "test": "genx test",
     "test:e2e": "genx test --e2e",
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive",
-    "test:coverage": "ng test --no-watch --code-coverage",
-    "test:unit:watch": "ng test --watch"
+    "test:coverage": "genx test --no-watch --coverage",
+    "test:unit:watch": "genx test --watch"
   },
   "dependencies": {
     "@ag-grid-community/client-side-row-model": "29.2.0",
