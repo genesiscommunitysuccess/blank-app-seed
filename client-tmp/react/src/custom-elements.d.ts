@@ -1,7 +1,7 @@
 declare namespace JSX {
   interface IntrinsicElements {
     // Wildcard for all webcomponents:
-    [elemName: string]: any;
+    [elemName: string]: unknown;
   }
 }
 

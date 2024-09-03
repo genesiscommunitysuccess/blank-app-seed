@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.29.1-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.11...v3.29.1-prerelease.12) (2024-09-03)
+
+
+### Bug Fixes
+
+* update unit test commands in package.json (#329) 290a3ab
+
 ## [3.29.1-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.10...v3.29.1-prerelease.11) (2024-08-28)
 
 

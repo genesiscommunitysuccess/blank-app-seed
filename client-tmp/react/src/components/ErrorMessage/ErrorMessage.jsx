@@ -29,7 +29,7 @@ const styles = {
 const ErrorMessage = ({ elementType = 'div', message = '' }) => {
   const ElementType = elementType;
 
-  return (
+  return message && message !== '' && (
     <section style={styles.errorMessageWrapper}>
       <div style={styles.errorMessage}>
         {(() => {
