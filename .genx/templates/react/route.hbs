@@ -1,6 +1,6 @@
 import './{{pascalCase route.name}}.css';
 {{#each route.tiles}}
-import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
+import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
 
 const {{pascalCase route.name}} = () => {
