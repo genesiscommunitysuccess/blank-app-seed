@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.15...v3.30.0-prerelease.1) (2024-09-05)
+
+
+### Features
+
+* add entityLabel so toast popups tell us the type of entity added GENC-762 (#333) 692bda0
+
 ## [3.29.1-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.14...v3.29.1-prerelease.15) (2024-09-05)
 
 
