@@ -1,28 +1,28 @@
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, UserConfig } from 'vite';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(({ mode }) => {
-  const https =  process.env.HTTPS === 'true';
-  const open = !(process.env.NO_OPEN === 'true');
-  const jsonFilePath = resolve(process.cwd(), `env.${mode}.json`);
-  const envConfig = {};
+export default defineConfig(({ mode }: { mode: string }): UserConfig => {
+  const https: boolean = process.env.HTTPS === 'true';
+  const open: boolean = !(process.env.NO_OPEN === 'true');
+  const jsonFilePath: string = resolve(process.cwd(), `env.${mode}.json`);
+  const envConfig: Record<string, string> = {};
   
   if (fs.existsSync(jsonFilePath)) {
-    const jsonContent = fs.readFileSync(jsonFilePath, 'utf-8');
-    const parsedConfig = JSON.parse(jsonContent);
+    const jsonContent: string = fs.readFileSync(jsonFilePath, 'utf-8');
+    const parsedConfig: Record<string, any> = JSON.parse(jsonContent);
   
     for (const key in parsedConfig) {
       envConfig[`import.meta.env.${key}`] = JSON.stringify(parsedConfig[key]);
     }
   }
 
-  const config = {
+  const config: UserConfig = {
     define: envConfig,
     server: {
       https,
