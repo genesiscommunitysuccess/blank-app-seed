@@ -29,7 +29,7 @@ const getPathByFramework = {
     route: (clientSrcPath, routeName, changeCase) =>
       `${clientSrcPath}/${changeCase.pascalCase(routeName)}`,
     component: (routeDir, routeName, changeCase) =>
-      `${routeDir}/${changeCase.pascalCase(routeName)}.jsx`,
+      `${routeDir}/${changeCase.pascalCase(routeName)}.tsx`,
     style: (routeDir, routeName, changeCase) =>
       `${routeDir}/${changeCase.pascalCase(routeName)}.css`,
   },
