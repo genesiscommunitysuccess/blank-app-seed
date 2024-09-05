@@ -33,6 +33,9 @@
       {{#if config.reqrep}}
       [datasourceConfig]="reqrep"
       {{/if}}
+      {{#if config.entityName}}
+      entityLabel="{{ config.entityName }}"
+      {{/if}}
       {{#if config.columns}}
       [columns]="columnDefs"
       {{/if}}
