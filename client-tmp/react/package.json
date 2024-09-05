@@ -21,7 +21,7 @@
     "lint:stylelint": "node lint-css.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:unit:watch": "jest --watch",
+    "test:unit:watch": "jest --watchAll",
     "test:e2e": "genx test --e2e",
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive"
