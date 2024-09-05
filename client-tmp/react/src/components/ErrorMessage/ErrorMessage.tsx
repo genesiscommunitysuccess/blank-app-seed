@@ -3,7 +3,7 @@ import React from 'react';
 const styles = {
   errorMessageWrapper: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
@@ -14,11 +14,11 @@ const styles = {
     backgroundColor: 'var(--neutral-layer-4)',
     borderColor: 'var(--error-color)',
     borderRadius: '7px',
-    borderStyle: 'solid',
+    borderStyle: 'solid' as const,
     borderWidth: '4px',
     padding: '5px',
     margin: '15px',
-    textAlign: 'center',
+    textAlign: 'center' as const,
     width: 'fit-content',
     alignSelf: 'center',
     height: 'auto',
@@ -26,7 +26,12 @@ const styles = {
   },
 };
 
-const ErrorMessage = ({ elementType = 'div', message = '' }) => {
+interface ErrorMessageProps {
+  elementType?: 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+  message?: string;
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ elementType = 'div', message = '' }) => {
   const ElementType = elementType;
 
   return message && message !== '' && (
