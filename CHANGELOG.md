@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.2...v3.30.0-prerelease.3) (2024-09-06)
+
+
+### Bug Fixes
+
+* update GSF and Auth dependency versions [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#336) d5d69e6
+
 ## [3.30.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.1...v3.30.0-prerelease.2) (2024-09-06)
 
 
