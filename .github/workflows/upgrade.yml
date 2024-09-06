@@ -1,4 +1,5 @@
 name: Ω Workflow - Upgrade dependencies
+name: Ω Workflow - Upgrade dependencies
 
 on:
   workflow_call:
@@ -11,6 +12,10 @@ on:
         type: boolean
         required: false
         description: Only update if there are newer patch versions
+      skip-server:
+        type: boolean
+        required: false
+        description: Skip updating server dependencies
     secrets:
       GH_USER_TOKEN:
         required: true
@@ -26,9 +31,11 @@ jobs:
     env:
       BRANCH: ${{ inputs.branch }}
       PATCH_ARG: ${{ inputs.patch-only && '--patch-only' || '' }}
+      SKIP_SERVER_ARG: ${{ inputs.skip-server && '--skip-server' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           ref: ${{ inputs.branch }}
           token: ${{secrets.GH_USER_TOKEN}}
 
@@ -47,7 +54,7 @@ jobs:
           jfrog config add --artifactory-url="https://genesisglobal.jfrog.io/artifactory" --user="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}" --password="${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_KEY }}" --interactive=false
 
       - name: Update to latest versions if available
-        run: node .genx/scripts/update-versions ${PATCH_ARG}
+        run: node .genx/scripts/update-versions ${PATCH_ARG} ${SKIP_SERVER_ARG}
 
       - name: Check for changes
         id: versions
@@ -58,8 +65,10 @@ jobs:
         run: |
           git config --global user.email "ci@genesis.global" && git config --global user.name "CI"
           git checkout -b chore-dep-update-${BRANCH}
+          git checkout -b chore-dep-update-${BRANCH}
           git add --all
           git commit -m "fix: automated dependency version update [skip-ci] PSD-9"
+          git push -f --set-upstream origin chore-dep-update-${BRANCH}
           git push -f --set-upstream origin chore-dep-update-${BRANCH}
 
       - name: Raise PR
@@ -82,6 +91,8 @@ jobs:
             repo = process.env.REPO,
             title = 'fix: automated dependency version update [skip-ci] PSD-9',
             body  = 'Automated PR',
+            head  = 'chore-dep-update-${{inputs.branch}}',
+            base  = '${{inputs.branch}}';
             head  = 'chore-dep-update-${{inputs.branch}}',
             base  = '${{inputs.branch}}';
           

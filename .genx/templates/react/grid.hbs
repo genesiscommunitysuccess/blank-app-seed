@@ -1,4 +1,7 @@
+{{#if config.permissions.viewRight}}hasUserPermission('{{config.permissions.viewRight}}') ? ({{/if}}
 <rapid-grid-pro
+  header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
+  only-template-col-defs{{/if}}
   enable-row-flashing
   enable-cell-flashing
   >
@@ -8,11 +11,18 @@
     isSnapshot="{{config.snapshot}}"
     {{/if}}
     {{#if config.reqrep}}
-    datasourceConfig={tile{{ config.index }}.reqrep}
+    datasourceConfig="reqrep"
     {{/if}}
     {{#if config.gridOptions}}
-    deferredGridOptions={tile{{ config.index }}.gridOptions}
+    deferredGridOptions=\{{ onRowClicked: gridOptions?.onRowClicked }}
     {{/if}}
-  >
-  </grid-pro-genesis-datasource>
-</rapid-grid-pro>
+  ></grid-pro-genesis-datasource>
+  {{#if config.gridOptions}}
+  {gridOptions?.columnDefs?.map((columnDef, index) => (
+    <grid-pro-column key={index} definition={columnDef}></grid-pro-column>
+  ))}
+  {{/if}}
+</rapid-grid-pro>{{#if config.permissions.viewRight}} 
+) : (
+<ErrorMessage elementType="h3" message="You do not have access to view this component." />
+){{/if}}

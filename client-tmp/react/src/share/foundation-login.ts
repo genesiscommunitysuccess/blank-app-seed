@@ -1,7 +1,7 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import { AUTH_PATH } from '../config';
 import { DI } from '@microsoft/fast-foundation';
-import history from '../utils/history';
+import { history } from '../utils/history';
 
 /**
  * Configure the micro frontend

@@ -2,7 +2,7 @@ name: Slack PR notification
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, prerelease]
     types: [opened, reopened]
 
 jobs:
