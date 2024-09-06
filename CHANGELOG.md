@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.3...v3.30.0-prerelease.4) (2024-09-06)
+
+
+### Features
+
+* add unit tests - [FUI-2173](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2173) (#332) a4168f3
+
 ## [3.30.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.2...v3.30.0-prerelease.3) (2024-09-06)
 
 
