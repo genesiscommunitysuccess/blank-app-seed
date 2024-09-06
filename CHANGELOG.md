@@ -1,5 +1,47 @@
 # Changelog
 
+## [3.30.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.3...v3.30.0-prerelease.4) (2024-09-06)
+
+
+### Features
+
+* add unit tests - [FUI-2173](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2173) (#332) a4168f3
+
+## [3.30.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.2...v3.30.0-prerelease.3) (2024-09-06)
+
+
+### Bug Fixes
+
+* update GSF and Auth dependency versions [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#336) d5d69e6
+
+## [3.30.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.1...v3.30.0-prerelease.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#334) 3af309b
+
+## [3.30.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.15...v3.30.0-prerelease.1) (2024-09-05)
+
+
+### Features
+
+* add entityLabel so toast popups tell us the type of entity added GENC-762 (#333) 692bda0
+
+## [3.29.1-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.14...v3.29.1-prerelease.15) (2024-09-05)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9e491e3
+
+## [3.29.1-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.13...v3.29.1-prerelease.14) (2024-09-05)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a9473e4
+
 ## [3.29.1-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.12...v3.29.1-prerelease.13) (2024-09-05)
 
 

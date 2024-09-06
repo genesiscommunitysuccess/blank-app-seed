@@ -35,4 +35,21 @@ describe('ErrorMessage Component', () => {
     expect(wrapper).toHaveStyle('height: 100%');
     expect(wrapper).toHaveStyle('width: 100%');
   });
+
+  test('renders the message as a div element when elementType is unknown', () => {
+    render(<ErrorMessage message={message} elementType="unknown" />);
+    const displayedMessage = screen.getByText(message);
+    expect(displayedMessage.tagName).toBe('DIV');
+    expect(displayedMessage).toBeInTheDocument();
+  });
+
+  test('renders nothing if the message is null', () => {
+    const { container } = render(<ErrorMessage message={null} />);
+    expect(container.firstChild).toBeNull();
+  });
+
+  test('renders nothing if the message is undefined', () => {
+    const { container } = render(<ErrorMessage message={undefined} />);
+    expect(container.firstChild).toBeNull();
+  });
 });
