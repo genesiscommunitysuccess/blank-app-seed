@@ -2,21 +2,21 @@ import { getUser } from '@genesislcap/foundation-user';
 import { getViewUpdateRightComponent } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{#if tile.config.createFormUiSchema}}
-import { createFormSchema as createFormSchemaTile } from './{{kebabCase tile.title}}.create.form.schema';
+import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
 {{/if}}
 {{#if tile.config.uischema}}
-import { createFormSchema as createFormSchemaTile } from './{{kebabCase tile.title}}.create.form.schema';
+import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
 {{/if}}
 {{#if tile.config.updateFormUiSchema}}
-import { updateFormSchema as updateFormSchemaTile } from './{{kebabCase tile.title}}.update.form.schema';
+import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
 {{/if}}
 {{#if tile.config.columns}}
-import { columnDefs as columnDefsTile } from './{{kebabCase tile.title}}.column.defs';
+import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
 {{#if tile.config.gridOptions}}
-import { gridOptions as gridOptionsTile } from './{{kebabCase tile.title}}.gridOptions';
+import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
-import './{{kebabCase tile.title}}.component.css';
+import './{{pascalCase tile.title}}Component.css';
 
 export const {{pascalCase tile.componentName}} = () => {
   const hasUserPermission = (permissionCode) => getViewUpdateRightComponent(getUser(), permissionCode);{{#if tile.config.createFormUiSchema}}

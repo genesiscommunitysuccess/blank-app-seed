@@ -15,7 +15,7 @@ import { AuthProvider } from './store/AuthContext';
 import AuthPage from './pages/AuthPage/AuthPage';
 import NotPermittedPage from './pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
-import {{pascalCase this.name}} from './pages/{{kebabCase this.name}}/{{pascalCase this.name}}';
+import {{pascalCase this.name}} from './pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
 
 // Genesis Components

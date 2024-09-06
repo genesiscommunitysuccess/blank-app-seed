@@ -14,7 +14,7 @@ const getPathByFramework = {
     route: (clientSrcPath, routeName) => `${clientSrcPath}/${routeName}`,
     component: (routeDir, routeName) => `${routeDir}/${routeName}.ts`,
     template: (routeDir, routeName) => `${routeDir}/${routeName}.template.ts`,
-    style: (routePath, routeName) => `${routePath}/${routeName}.styles.ts`,
+    style: (routeDir, routeName) => `${routeDir}/${routeName}.styles.ts`,
   },
   [FRAMEWORK_ANGULAR_ALIAS]: {
     clientSrcPath: `../../client/src/app/pages`,
@@ -22,15 +22,16 @@ const getPathByFramework = {
     component: (routeDir, routeName) => `${routeDir}/${routeName}.component.ts`,
     template: (routeDir, routeName) =>
       `${routeDir}/${routeName}.component.html`,
-    style: (routePath, routeName) => `${routePath}/${routeName}.component.css`,
+    style: (routeDir, routeName) => `${routeDir}/${routeName}.component.css`,
   },
   [FRAMEWORK_REACT_ALIAS]: {
     clientSrcPath: `../../client/src/pages`,
-    route: (clientSrcPath, routeName) => `${clientSrcPath}/${routeName}`,
+    route: (clientSrcPath, routeName, changeCase) =>
+      `${clientSrcPath}/${changeCase.pascalCase(routeName)}`,
     component: (routeDir, routeName, changeCase) =>
       `${routeDir}/${changeCase.pascalCase(routeName)}.jsx`,
-    style: (routePath, routeName, changeCase) =>
-      `${routePath}/${changeCase.pascalCase(routeName)}.css`,
+    style: (routeDir, routeName, changeCase) =>
+      `${routeDir}/${changeCase.pascalCase(routeName)}.css`,
   },
 };
 
@@ -44,7 +45,7 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
   } = getPathByFramework[framework];
   const routeName = changeCase.paramCase(route.name);
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
-  const routeDir = getRouteDir(clientSrcPath, routeName);
+  const routeDir = getRouteDir(clientSrcPath, routeName, changeCase);
 
   const filesToWrite = [
     {
