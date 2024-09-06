@@ -5,7 +5,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
   design-system-prefix="rapid"
   enable-row-flashing
   enable-cell-flashing
-  {{#if config.title}}
+  {{#if config.title~}}
   title="{{ config.title }}"
   {{/if}}
   resourceName="{{ config.resourceName }}"
@@ -25,7 +25,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
   {{else~}}
   updateEvent="{{ config.updateEvent }}"
   {{/if}}
-  {{#if config.updateFormUiSchema}}
+  {{#if config.updateFormUiSchema~}}
   updateFormUiSchema={updateFormSchema}
   {{/if}}
   {{/if}}

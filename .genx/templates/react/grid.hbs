@@ -1,4 +1,6 @@
-{{#if config.permissions.viewRight}}hasUserPermission('{{config.permissions.viewRight}}') ? ({{/if}}
+{{#if config.permissions.viewRight~}}
+hasUserPermission('{{config.permissions.viewRight}}') ? (
+{{/if}}
 <rapid-grid-pro
   header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
   only-template-col-defs{{/if}}
@@ -22,7 +24,9 @@
     <grid-pro-column key={index} definition={columnDef}></grid-pro-column>
   ))}
   {{/if}}
-</rapid-grid-pro>{{#if config.permissions.viewRight}} 
+</rapid-grid-pro>
+{{#if config.permissions.viewRight~}} 
 ) : (
 <ErrorMessage elementType="h3" message="You do not have access to view this component." />
-){{/if}}
+)
+{{/if}}
