@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.30.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.2...v3.30.0) (2024-09-06)
+
+
+### Features
+
+* add entityLabel so toast popups tell us the type of entity added GENC-762 (#333) 692bda0
+* update to GSF 8.3 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#339) 442d9c7
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#314) 5070baa
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#321) b5d9dd9
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#323) aea0500
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#328) 626c48b
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#334) 3af309b
+* handling multiple hyphens when generating DB namespace PA-1361 (#317) ceda4bb
+* update GSF and Auth dependency versions [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#336) d5d69e6
+* update unit test commands in package.json (#329) 290a3ab
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9e491e3
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 940ebbc
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a9473e4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fea6c6f
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0fbf0b3
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f18c4cf
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a2c959c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 872539b
+* useonlytemplatecols not enabled from create GENC-703 (#316) 93c9e9f
+
 ## [3.29.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1...v3.29.2) (2024-08-15)
 
 
