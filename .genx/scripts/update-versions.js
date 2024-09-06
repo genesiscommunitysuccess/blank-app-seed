@@ -84,6 +84,11 @@ if (current.UI !== UI || current.GSF !== GSF || current.Auth !== Auth) {
   } else {
     console.log('Dry run execution, versions will not be written.')
   }
+  if (!dryRun) {
+    writeJSON(latest, path);
+  } else {
+    console.log('Dry run execution, versions will not be written.')
+  }
 } else {
   console.log('No newer versions available');
 }
