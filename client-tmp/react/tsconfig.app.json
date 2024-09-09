@@ -15,10 +15,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": ["node", "react"]
   },
-  "include": ["src" , "**/*.d.ts"],
+  "include": ["src" , "src/**/*.d.ts"],
 }

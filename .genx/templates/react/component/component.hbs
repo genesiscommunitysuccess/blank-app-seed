@@ -20,6 +20,7 @@ import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.ti
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
 {{#if tile.config.gridOptions~}}
+import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
 import './{{pascalCase tile.title}}Component.css';
@@ -43,7 +44,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const columnDefs: typeof columnDefsTile = columnDefsTile;
   {{/if}}
   {{#if tile.config.gridOptions~}}
-  const gridOptions: typeof gridOptionsTile = gridOptionsTile;
+  const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }
   {{/if}}
   {{#if tile.config.reqrep~}}
   const reqrep: { pollingInterval: number } = { pollingInterval: 5000 };

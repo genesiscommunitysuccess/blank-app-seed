@@ -2,25 +2,27 @@
 hasUserPermission('{{config.permissions.viewRight}}') ? (
 {{/if}}
 <rapid-grid-pro
-  header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
-  only-template-col-defs{{/if}}
+  header-case-type="capitalCase"
+  {{#if config.useOnlyTemplateCols~}}
+  only-template-col-defs
+  {{/if}}
   enable-row-flashing
   enable-cell-flashing
   >
   <grid-pro-genesis-datasource
     resource-name="{{config.resourceName}}"
-    {{#if config.snapshot}}
+    {{#if config.snapshot~}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
-    {{#if config.reqrep}}
+    {{#if config.reqrep~}}
     datasourceConfig="reqrep"
     {{/if}}
-    {{#if config.gridOptions}}
-    deferredGridOptions=\{{ onRowClicked: gridOptions?.onRowClicked }}
+    {{#if config.gridOptions~}}
+    deferredGridOptions={deferredGridOptions}
     {{/if}}
   ></grid-pro-genesis-datasource>
   {{#if config.gridOptions}}
-  {gridOptions?.columnDefs?.map((columnDef, index) => (
+  {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
     <grid-pro-column key={index} definition={columnDef}></grid-pro-column>
   ))}
   {{/if}}

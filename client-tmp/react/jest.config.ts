@@ -5,9 +5,9 @@ const config: Config.InitialOptions = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.app.json' }],
   },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testMatch: ["**/?(*.)+(test).[jt]s?(x)"],
   watchPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/dist/"],
 };
