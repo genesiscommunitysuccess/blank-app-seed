@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.5...v3.30.0-prerelease.6) (2024-09-10)
+
+
+### Features
+
+* product name specified with settings plugin property (#331) 082cea0
+
 ## [3.30.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.4...v3.30.0-prerelease.5) (2024-09-09)
 
 
