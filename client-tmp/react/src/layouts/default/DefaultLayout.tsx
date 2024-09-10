@@ -9,6 +9,7 @@ import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '@/pbc/elementsRenderer';
 import { mainMenu } from '@/config';
 import * as designTokens from '@/styles/design-tokens.json';
+import { useNavItems } from '@/hooks/useNavItems';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -20,6 +21,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const foundationHeaderRef = useRef<HTMLElement>(null);
   const allRoutes = mainMenu;
+
+  const navItems = useNavItems();
 
   const onLuminanceToggle = (): void => {
     if (designSystemProviderRef.current) {
@@ -63,6 +66,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         ref={foundationHeaderRef}
         show-luminance-toggle-button
         show-misc-toggle-button
+        routeNavItems={navItems}
         navigateTo={(path) => navigate(path)}
       >
         <section className={styles['routes-wrapper']} slot="routes">
