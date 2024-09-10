@@ -6,8 +6,9 @@ import {
   StandardLuminance,
 } from '@microsoft/fast-components';
 import styles from './DefaultLayout.module.css';
-import { mainMenu } from '../../config';
-import * as designTokens from '../../styles/design-tokens.json';
+import PBCElementsRenderer from '@/pbc/elementsRenderer';
+import { mainMenu } from '@/config';
+import * as designTokens from '@/styles/design-tokens.json';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -57,6 +58,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
 
   return (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
+      <PBCElementsRenderer target={['layout-start']} />
       <foundation-header
         ref={foundationHeaderRef}
         show-luminance-toggle-button
@@ -72,7 +74,12 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
           ))}
         </section>
       </foundation-header>
-      <section className={styles['content']}>{children}</section>
+      <section className={styles['content']}>
+        <PBCElementsRenderer target={['content-start']} />
+        {children}
+        <PBCElementsRenderer target={['content', 'content-end']} />
+      </section>
+      <PBCElementsRenderer target={['layout', 'layout-end']} />
     </rapid-design-system-provider>
   );
 };

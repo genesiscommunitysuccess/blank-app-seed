@@ -4,6 +4,7 @@ import { defineConfig, UserConfig } from 'vite';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
+import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -30,6 +31,7 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     },
     plugins: [
       react(),
+      tsconfigPaths(),
     ],
     build: {
       rollupOptions: {

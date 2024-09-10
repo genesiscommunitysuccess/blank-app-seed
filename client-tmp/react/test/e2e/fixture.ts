@@ -1,6 +1,6 @@
 import { base, Page } from '@genesislcap/foundation-testing/e2e';
 import { ProtectedPage } from './pages';
-import { PORT } from '../../playwright.config';
+import { PORT } from '@/playwright.config';
 
 export type FixtureConfig = {
   API_HOST: string;
