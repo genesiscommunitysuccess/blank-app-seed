@@ -7,9 +7,9 @@ import {
 } from '@microsoft/fast-components';
 import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '@/pbc/elementsRenderer';
-import { mainMenu } from '@/config';
 import * as designTokens from '@/styles/design-tokens.json';
 import { useNavItems } from '@/hooks/useNavItems';
+import { useRoutesContext } from '@/store/RoutesContext';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -17,11 +17,10 @@ interface DefaultLayoutProps {
 
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
-
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const foundationHeaderRef = useRef<HTMLElement>(null);
-  const allRoutes = mainMenu;
-
+  const routes = useRoutesContext();
+  console.log({ routes })
   const navItems = useNavItems();
 
   const onLuminanceToggle = (): void => {
@@ -70,7 +69,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         navigateTo={(path) => navigate(path)}
       >
         <section className={styles['routes-wrapper']} slot="routes">
-          {allRoutes.map((route, index) => (
+          {routes.map((route, index) => (
             <rapid-button key={index} onClick={() => navigate(route.path)}>
               <rapid-icon name={route.icon}></rapid-icon>
               {route.title}

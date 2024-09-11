@@ -4,15 +4,20 @@ import { getApp } from '@genesislcap/foundation-shell/app';
 import PBCContainer from '@/pbc/container';
 import { AUTH_PATH, NOT_PERMITTED_PATH } from '@/config';
 import AuthPage from '@/pages/AuthPage/AuthPage';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import NotPermittedPage from '@/pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
-import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
+import {{pascalCase this.name}} from '@/pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
 
 const routes = [
   {
     path: '',
     element: <Navigate to={AUTH_PATH} replace />,
+  },
+  {
+    path: '/not-found',
+    element: <NotFoundPage />,
   },
   {
     path: AUTH_PATH,
