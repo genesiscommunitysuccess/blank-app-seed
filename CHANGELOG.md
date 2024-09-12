@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.8...v3.30.0-prerelease.9) (2024-09-12)
+
+
+### Features
+
+* integrate TypeScript support into react - [FUI-2157](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2157) (#338) ac55e1f
+
 ## [3.30.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.7...v3.30.0-prerelease.8) (2024-09-11)
 
 
