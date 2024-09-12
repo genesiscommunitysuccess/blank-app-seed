@@ -8,7 +8,7 @@ export const MainStyles = css`
   :host {
     contain: content;
 
-    --nav-height: 39px;
+    --nav-height: 60px;
   }
 
   :host,
