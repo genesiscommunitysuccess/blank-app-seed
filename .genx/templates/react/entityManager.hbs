@@ -1,52 +1,65 @@
-{{#if config.permissions.viewRight}}hasUserPermission('{{config.permissions.viewRight}}') ? ({{/if}}
+{{#if config.permissions.viewRight~}}
+hasUserPermission('{{config.permissions.viewRight}}') ? (
+{{/if}}
 <entity-management
-    design-system-prefix="rapid"
-    enable-row-flashing
-    enable-cell-flashing
-    {{#if config.title}}
-    title="{{ config.title }}"
-    {{/if}}
-    resourceName="{{ config.resourceName }}"
-    {{#if config.createEvent}}
-    createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
-    {{#if config.createFormUiSchema}}
-    createFormUiSchema={createFormSchema}
-    {{/if}}
-    {{/if}}
-    {{#if config.updateEvent}}
-    updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
-    {{#if config.updateFormUiSchema}}
-    updateFormUiSchema={updateFormSchema}
-    {{/if}}
-    {{/if}}
-    {{#if config.deleteEvent}}
-    deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
-    {{/if}}
-    {{#if config.gridOptions}}
-    gridOptions={gridOptions}
-    {{/if}}
-    {{#if config.snapshot}}
-    datasourceConfig={ isSnapshot: {{ config.snapshot }} }
-    {{/if}}
-    {{#if config.reqrep}}
-    datasourceConfig={reqrep}
-    {{/if}}
-    {{#if config.entityName}}
-    entityLabel="{{ config.entityName }}"
-    {{/if}}
-    {{#if config.columns}}
-    columns={columnDefs}
-    {{/if}}
-    {{#if config.modalPosition}}
-    modal-position="{{ config.modalPosition }}"
-    {{/if}}
-    {{#if config.sizeColumnsToFit}}
-    size-columns-to-fit
-    {{/if}}
-    {{#if config.enableSearchBar}}
-    enable-search-bar
-    {{/if}}
-></entity-management>{{#if config.permissions.viewRight}} 
+  design-system-prefix="rapid"
+  enable-row-flashing
+  enable-cell-flashing
+  {{#if config.title~}}
+  title="{{ config.title }}"
+  {{/if}}
+  resourceName="{{ config.resourceName }}"
+  {{#if config.createEvent~}}
+  {{#if config.permissions.updateRight~}}
+  createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
+  {{else~}}
+  createEvent="{{ config.updateEvent }}"
+  {{/if}}
+  {{#if config.createFormUiSchema~}}
+  createFormUiSchema={createFormSchema}
+  {{/if}}
+  {{/if}}
+  {{#if config.updateEvent~}}
+  {{#if config.permissions.updateRight~}}
+  updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
+  {{else~}}
+  updateEvent="{{ config.updateEvent }}"
+  {{/if}}
+  {{#if config.updateFormUiSchema~}}
+  updateFormUiSchema={updateFormSchema}
+  {{/if}}
+  {{/if}}
+  {{#if config.deleteEvent~}}
+  {{#if config.permissions.updateRight~}}
+  deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
+  {{else~}}
+  deleteEvent="{{ config.deleteEvent }}"
+  {{/if}}
+  {{/if}}
+  {{#if config.gridOptions~}}
+  gridOptions={gridOptions}
+  {{/if}}
+  {{#if config.snapshot~}}
+  datasourceConfig={ isSnapshot: {{ config.snapshot }} }
+  {{/if}}
+  {{#if config.reqrep~}}
+  datasourceConfig={reqrep}
+  {{/if}}
+  {{#if config.columns~}}
+  columns={columnDefs}
+  {{/if}}
+  {{#if config.modalPosition~}}
+  modal-position="{{ config.modalPosition }}"
+  {{/if}}
+  {{#if config.sizeColumnsToFit~}}
+  size-columns-to-fit
+  {{/if}}
+  {{#if config.enableSearchBar~}}
+  enable-search-bar
+  {{/if}}
+></entity-management>
+{{#if config.permissions.viewRight~}}
 ) : (
 <ErrorMessage elementType="h3" message="You do not have access to view this component." />
-){{/if}}
+)
+{{/if}}

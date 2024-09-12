@@ -1,11 +1,21 @@
-declare namespace JSX {
-  interface IntrinsicElements {
-    // Wildcard for all webcomponents:
-    [elemName: string]: unknown;
-  }
-}
+import React, { useState, DOMAttributes }  from 'react';
 
-declare module '*.module.css' {
-  const classes: { [key: string]: string };
-  export default classes;
+type CustomElement<T = HTMLElement> = Partial<T & DOMAttributes<T> & { children: any }>;
+
+declare module "react/jsx-runtime" {
+  namespace JSX {
+    interface IntrinsicElements {
+      'entity-management': CustomElement;
+      'foundation-form': CustomElement;
+      'rapid-grid-pro': CustomElement;
+      'grid-pro-genesis-datasource': CustomElement;
+      'grid-pro-column': CustomElement;
+      'rapid-g2plot-chart': CustomElement;
+      'chart-datasource': CustomElement;
+      'client-app-login': CustomElement;
+      'rapid-layout': CustomElement;
+      'rapid-layout-region': CustomElement;
+      'rapid-layout-item': CustomElement;
+    }
+  }
 }

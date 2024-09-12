@@ -16,7 +16,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }: AuthGuardProps) => {
     };
 
     verifyAuth();
-  }, []);
+  }, [checkAuthStatus]);
 
   if (isLoading) {
     return <div>Loading...</div>; // Or some loading component
