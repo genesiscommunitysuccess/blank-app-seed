@@ -53,7 +53,7 @@ const RoutesContext = createContext<RouteObject[]>([]);
 export const RoutesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const pbcRoutes = getApp().routes.map((route) => ({
     title: route.title,
-    path: route.path,
+    path: `/${route.path}`,
     element: <PBCContainer />,
     data: {
       ...route.settings,
