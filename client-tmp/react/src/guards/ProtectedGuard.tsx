@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from 'react';
-import useConnectionGuard from '@/hooks/useConnectionGuard';
-import useAuthGuard from '@/hooks/useAuthGuard';
-import usePermissionsGuard from '@/hooks/usePermissionsGuard';
+import isConnectedHelper from '@/helpers/isConnectedHelper';
+import isAuthenticatedHelper from '@/helpers/isAuthenticatedHelper';
+import hasPermissionHelper from '@/helpers/hasPermissionHelper';
 import { useRoutesContext } from '@/store/RoutesContext';
 import { NOT_PERMITTED_PATH, AUTH_PATH } from '@/config';
 
@@ -9,44 +9,46 @@ enum PermissionState {
   ALLOWED = 'allowed',
   DENIED = 'denied',
   UNKNOWN = 'unknown',
-};
+}
 
-const redirectUrlByPermissionState: { [key in PermissionState]: string } = {
-  [PermissionState.ALLOWED]: '',
+const redirectUrlByPermissionState: { [key in Partial<PermissionState>]?: string } = {
   [PermissionState.DENIED]: NOT_PERMITTED_PATH,
   [PermissionState.UNKNOWN]: AUTH_PATH,
 };
 
-const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
   const routes = useRoutesContext();
-  const [permissionState, setPermissionState] = useState<PermissionState>(PermissionState.UNKNOWN);
-  const isConnected = useConnectionGuard();
-  const isAuthenticated = useAuthGuard();
-  const route = routes.find((r) => r.path === location.pathname);
-  console.log({ routes, path: location.pathname, route });
-  const hasPermission = usePermissionsGuard(route.data?.permissionCode || '');
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const isAuthenticated: boolean | null = null;
+  const route = routes.find(({ path }) => path === location.pathname);
+  const hasPermission = route?.data?.permissionCode ? hasPermissionHelper(route.data?.permissionCode) : true;
 
+  useEffect(() => {
+    isConnectedHelper().then((connectedState: boolean): void => {
+      setIsConnected(connectedState);
+    });
+  }, []);
+  
   useEffect((): void  => {
-    if (isConnected === null || isAuthenticated === null || hasPermission === null) {
+    if (isConnected === null) {
       return;
     }
+
+    const isAuthenticated = isAuthenticatedHelper();
+
+
+    let permissionState;
 
     if (!isConnected || !isAuthenticated) {
-      setPermissionState(PermissionState.UNKNOWN);
+      permissionState = PermissionState.UNKNOWN;
     } else if (hasPermission === false) {
-      setPermissionState(PermissionState.DENIED);
-    } else {
-      setPermissionState(PermissionState.ALLOWED);
+      permissionState = PermissionState.DENIED;
+    } 
+    
+    if (permissionState) {
+      window.location.href = `/${redirectUrlByPermissionState[permissionState]}`;
     }
   }, [routes, isConnected, isAuthenticated, hasPermission]);
-
-  useEffect((): void => {
-    if (redirectUrlByPermissionState[permissionState]) {
-      alert('You are not allowed to access this page.');
-      window.location.href = `/${redirectUrlByPermissionState[permissionState]}`;
-      return;
-    }
-  }, [permissionState]);
 
   return children;
 };

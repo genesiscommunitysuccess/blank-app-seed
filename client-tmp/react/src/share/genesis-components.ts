@@ -6,7 +6,6 @@ import * as zeroDesignSystem from '@genesislcap/foundation-zero';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
-import { configureFoundationLogin } from './foundation-login';
 
 /**
  * Ensure tree shaking doesn't remove these.
@@ -47,8 +46,6 @@ export async function registerComponents() {
           flyout: 'rapid-flyout',
       },
   });
-
-  configureFoundationLogin();
 
   /**
    * May be still required while we transition all PBCs to rapid. Remove when complete.

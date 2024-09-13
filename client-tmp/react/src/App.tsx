@@ -18,6 +18,7 @@ import { AuthProvider } from './store/AuthContext';
 import { RoutesProvider, useRoutesContext } from './store/RoutesContext';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
+import { configureFoundationLogin } from './share/foundation-login';
 import ProtectedGuard from './guards/ProtectedGuard';
 
 const DynamicLayout = () => {
@@ -31,8 +32,12 @@ const DynamicLayout = () => {
   let content;
 
   useEffect(() => {
-    history.listen(handleRouteChange);
     handleRouteChange(location);
+    const unlisten = history.listen(handleRouteChange);
+
+    return () => {
+      unlisten();
+    }
   }, [location]);
 
   if (route) {
@@ -52,7 +57,6 @@ const DynamicLayout = () => {
 };
 
 const App: React.FC = () => {
-  setApiHost();
   const store = useRef(getStore());
   {{#if FDC3.channels.length~}}
   const FDC3ReadyHandler = () => {
@@ -65,6 +69,9 @@ const App: React.FC = () => {
     {{/each}}
   };
   {{/if}}
+
+  setApiHost();
+  configureFoundationLogin({ router: history });
 
   useEffect(() => {
     genesisRegisterComponents();

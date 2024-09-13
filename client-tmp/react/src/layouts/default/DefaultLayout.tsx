@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
 import { useNavigate } from 'react-router-dom';
 import {
   baseLayerLuminance,
@@ -8,7 +8,6 @@ import {
 import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '@/pbc/elementsRenderer';
 import * as designTokens from '@/styles/design-tokens.json';
-import { useNavItems } from '@/hooks/useNavItems';
 import { useRoutesContext } from '@/store/RoutesContext';
 
 interface DefaultLayoutProps {
@@ -20,8 +19,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const foundationHeaderRef = useRef<HTMLElement>(null);
   const routes = useRoutesContext();
-  console.log({ routes })
-  const navItems = useNavItems();
+  const navItems = getNavItems(routes.flatMap((route) => ({
+    path: route.path?.substring(1) || '',
+    navItems: route.data?.navItems,
+  })));
 
   const onLuminanceToggle = (): void => {
     if (designSystemProviderRef.current) {
@@ -68,14 +69,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         routeNavItems={navItems}
         navigateTo={(path) => navigate(path)}
       >
-        <section className={styles['routes-wrapper']} slot="routes">
-          {routes.map((route, index) => (
-            <rapid-button key={index} onClick={() => navigate(route.path)}>
-              <rapid-icon name={route.icon}></rapid-icon>
-              {route.title}
-            </rapid-button>
-          ))}
-        </section>
       </foundation-header>
       <section className={styles['content']}>
         <PBCElementsRenderer target={['content-start']} />
