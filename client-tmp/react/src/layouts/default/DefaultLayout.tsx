@@ -20,7 +20,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const foundationHeaderRef = useRef<HTMLElement>(null);
   const routes = useRoutesContext();
   const navItems = getNavItems(routes.flatMap((route) => ({
-    path: route.path?.substring(1) || '',
+    path: route.path || '',
     navItems: route.data?.navItems,
   })));
 

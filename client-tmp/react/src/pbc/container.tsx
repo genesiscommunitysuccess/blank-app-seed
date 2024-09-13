@@ -1,18 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import { deriveElementTag } from './utils';
+import { useRoutesContext } from '@/store/RoutesContext';
+import { useLocation } from 'react-router-dom';
 
-interface RouteParams {
-  pbcElement?: any;
-  pbcElementTag?: string;
-}
 
 const PBCContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { pbcElement, pbcElementTag } = useParams<RouteParams>();
+  const routes = useRoutesContext();
+  const location = useLocation();
 
   useEffect(() => {
     const loadElement = async () => {
+      const route = routes.find(({ path }) => path === location.pathname);
+      const { data } = route || {};
+      const { pbcElement, pbcElementTag } = data || {};
+
       if (!pbcElement) {
         return;
       }
@@ -23,9 +25,13 @@ const PBCContainer: React.FC = () => {
     };
 
     loadElement();
-  }, [pbcElement, pbcElementTag]);
 
-  return <div ref={containerRef} className="container" style=\{{ width: '100%', height: '100%' }}></div>;
+    return () => {
+      containerRef.current?.replaceChildren();
+    }
+  }, [location.pathname, routes]);
+
+  return <div ref={containerRef} className="container" style={{ width: '100%', height: '100%' }}></div>;
 };
 
 export default PBCContainer;

@@ -24,10 +24,16 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   }
 
   const config: UserConfig = {
-    define: envConfig,
+    define: {
+      ...envConfig,
+      BUILDER: JSON.stringify('vite'),
+    },
     server: {
       https,
       open,
+      fs: {
+        strict: false,
+      }
     },
     plugins: [
       react(),
@@ -41,6 +47,15 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     resolve: {
       alias: {
         'foundationZero/ZeroDesignSystem': resolve(__dirname, 'node_modules/@genesislcap/foundation-zero'),
+        'pbc': resolve(__dirname, 'src/pbc'),
+      },
+      preserveSymlinks: true,
+    },
+    esbuild: {
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true,
+        },
       },
     },
   };
