@@ -7,13 +7,6 @@ const ssoIntro = () => console.log(TEXTS.INTRO_API_SSO);
 module.exports = async (inquirer, prevAns = {}) => {
   apiHostIntro();
   const { apiHost = prevAns.apiHost } = await inquirer.prompt([
-    // {
-    //   name: 'setApiHost',
-    //   type: 'confirm',
-    //   message: TEXTS.MESSAGE_API_SET_HOST,
-    //   when: !prevAns.apiHost,
-    //   default: true,
-    // },
     {
       name: 'apiHost',
       type: 'input',
