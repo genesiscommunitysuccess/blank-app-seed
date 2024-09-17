@@ -1,44 +1,35 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { AppElementPredicate, AppTargetId } from '@genesislcap/foundation-shell/app';
-import { createLogger } from '@genesislcap/foundation-logger';
-import type { ViewTemplate } from '@genesislcap/web-core';
-import { customEventFactory, getTargetElements } from './utils';
+import { getTargetElements } from './utils';
+import { useStore } from '@/hooks/useStore'; // Import the custom hook
 
 interface PBCElementsRendererProps {
   target: AppTargetId;
   predicate?: AppElementPredicate;
 }
 
-const PBCElementsRenderer: React.FC<PBCElementsRendererProps> = ({ target, predicate = () => true }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  // const [templates, setTemplates] = useState<ViewTemplate[]>([]);
-  // const logger = createLogger('pbc-elements-renderer');
+interface PBCContainerElement extends HTMLDivElement {
+  $emit: (type: string, detail: any) => void;
+}
 
-  // // Memoize getTargetElements to avoid recalculating on each render
-  // const fetchTemplates = useCallback(() => {
-  //   return getTargetElements(target, predicate);
-  // }, [target, predicate]);
+const PBCElementsRenderer = ({ target = [], predicate = () => true }: PBCElementsRendererProps) => {
+  const containerRef = useRef<PBCContainerElement>(null);
+  const store = useStore();
 
-  // // Effect to update templates when target or predicate changes
-  // useEffect(() => {
-  //   const fetchedTemplates = fetchTemplates();
-  //   setTemplates(fetchedTemplates);
-  // }, [fetchTemplates]);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.replaceChildren();
+    }
 
-  // // Render templates when templates state changes
-  // useEffect(() => {
-  //   if (containerRef.current && templates.length > 0) {
-  //     containerRef.current.replaceChildren();
-  //     templates.forEach((template) => template.render(null, containerRef.current!));
-  //   }
-  // }, [templates]);
+    const templates = getTargetElements(target, predicate);
+    templates.forEach((currentTemplate) => {
+      if (containerRef.current) {
+        currentTemplate.render(containerRef.current, containerRef.current);
+      }
+    });
+  }, [containerRef, store, predicate, target]);
 
-  // // Custom event emitter
-  // const $emit = (type: string, detail?: any) => {
-  //   containerRef.current?.dispatchEvent(customEventFactory(type, detail));
-  // };
-
-  return <div ref={containerRef} className="container"></div>;
+  return (<div ref={containerRef} className="container"></div>);
 };
 
 export default PBCElementsRenderer;

@@ -10,9 +10,10 @@ import './styles/styles.css'
 const logger = createLogger('main');
 
 function bootstrapApp() {
-  ReactDOM.createRoot(document.getElementById('root')!).render(
+  const rootEelement = document.getElementById('root');
+  ReactDOM.createRoot(rootEelement!).render(
     <React.StrictMode>
-      <App />
+      <App rootElement={rootEelement} />
     </React.StrictMode>,
   )
 }

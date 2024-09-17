@@ -20,6 +20,7 @@ import AuthPage from './pages/AuthPage/AuthPage';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
 import { configureFoundationLogin } from './share/foundation-login';
 import ProtectedGuard from './guards/ProtectedGuard';
+import { storeService } from '@/services/store.service';
 
 const DynamicLayout = () => {
   const location = useLocation();
@@ -56,8 +57,10 @@ const DynamicLayout = () => {
 
 };
 
-const App: React.FC = () => {
-  const store = useRef(getStore());
+const App: React.FC = ({ rootElement }) => {
+  const dispatchCustomEvent = (type: string, detail?: any) => {
+    rootElement.dispatchEvent(customEventFactory(type, detail));
+  };
   {{#if FDC3.channels.length~}}
   const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
@@ -75,27 +78,17 @@ const App: React.FC = () => {
 
   useEffect(() => {
     genesisRegisterComponents();
-
     registerStylesTarget(document.body, 'main');
-
-    const handleStoreConnected = () => {
-      store.current.onConnected();
-    };
-
-    const dispatchCustomEvent = (type: string, detail?: any) => {
-      document.body.dispatchEvent(customEventFactory(type, detail));
-    };
-
-    dispatchCustomEvent('store-connected');
-    dispatchCustomEvent('store-ready', true);
-    document.body.addEventListener('store-connected', handleStoreConnected);
+    rootElement.addEventListener('store-connected', storeService.onConnected);
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
+    dispatchCustomEvent('store-connected');
+    dispatchCustomEvent('store-ready', true);
 
     return () => {
-      document.body.removeEventListener('store-connected', handleStoreConnected);
       dispatchCustomEvent('store-disconnected');
+      rootElement.removeEventListener('store-connected', storeService.onConnected);
     };
   }, []);
 
