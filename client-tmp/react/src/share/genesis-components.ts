@@ -6,10 +6,12 @@ import * as zeroDesignSystem from '@genesislcap/foundation-zero';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+import { FoundationRouter } from '@genesislcap/foundation-ui';
 
 /**
  * Ensure tree shaking doesn't remove these.
  */
+FoundationRouter;
 EntityManagement;
 Form;
 

@@ -9,7 +9,7 @@
     "build": "vite build",
     "build:stats": "npm run build --stats-json",
     "clean": "genx clean dist node_modules",
-    "dev": "vite",
+    "dev": "vite build && vite preview",
     "dev:docker": "npm run dev -- --host 0.0.0.0",
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",
