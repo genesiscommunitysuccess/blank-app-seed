@@ -41,8 +41,9 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     ],
     build: {
       rollupOptions: {
-        plugins: []
-      }
+        plugins: [],
+        treeshake: false,  // Disable tree-shaking because it's causing issues with the Foundation Router
+      },
     },
     resolve: {
       alias: {

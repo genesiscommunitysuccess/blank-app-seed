@@ -25,28 +25,28 @@ export async function registerComponents() {
   * Register any PBC components with the design system
   */
   getApp().registerComponents({
-      designSystem: rapidDesignSystem,
+    designSystem: rapidDesignSystem,
   });
 
   rapidDesignSystem
-      .provideDesignSystem()
-      .register(
-          rapidDesignSystem.baseComponents,
-          rapidGridComponents,
-          g2plotChartsComponents,
-          foundationLayoutComponents,
-      );
+    .provideDesignSystem()
+    .register(
+      rapidDesignSystem.baseComponents,
+      rapidGridComponents,
+      g2plotChartsComponents,
+      foundationLayoutComponents,
+    );
 
   configureHeader({
-      templateOptions: {
-          provider: 'template',
-          icon: 'rapid-icon',
-          button: 'rapid-button',
-          connectionIndicator: 'rapid-connection-indicator',
-          select: 'rapid-select',
-          option: 'rapid-option',
-          flyout: 'rapid-flyout',
-      },
+    templateOptions: {
+      provider: 'template',
+      icon: 'rapid-icon',
+      button: 'rapid-button',
+      connectionIndicator: 'rapid-connection-indicator',
+      select: 'rapid-select',
+      option: 'rapid-option',
+      flyout: 'rapid-flyout',
+    },
   });
 
   /**

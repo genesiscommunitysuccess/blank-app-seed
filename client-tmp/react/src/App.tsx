@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { unstable_HistoryRouter as HistoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import {
   history,
   setApiHost,
   getLayoutNameByRoute,
-  getStore,
   {{#if FDC3.channels.length~}}
   listenToChannel,
   onFDC3Ready,
@@ -61,6 +60,9 @@ const App: React.FC = ({ rootElement }) => {
   const dispatchCustomEvent = (type: string, detail?: any) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
   };
+  const handleStoreConnected = (event: CustomEvent) => {
+    storeService.onConnected(event);
+  };
   {{#if FDC3.channels.length~}}
   const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
@@ -74,12 +76,12 @@ const App: React.FC = ({ rootElement }) => {
   {{/if}}
 
   setApiHost();
+  genesisRegisterComponents();
   configureFoundationLogin({ router: history });
 
   useEffect(() => {
-    genesisRegisterComponents();
+    rootElement.addEventListener('store-connected', handleStoreConnected);
     registerStylesTarget(document.body, 'main');
-    rootElement.addEventListener('store-connected', storeService.onConnected);
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
@@ -87,8 +89,8 @@ const App: React.FC = ({ rootElement }) => {
     dispatchCustomEvent('store-ready', true);
 
     return () => {
+      rootElement.removeEventListener('store-connected', handleStoreConnected);
       dispatchCustomEvent('store-disconnected');
-      rootElement.removeEventListener('store-connected', storeService.onConnected);
     };
   }, []);
 
