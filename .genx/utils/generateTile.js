@@ -44,12 +44,12 @@ const getPathByFramework = {
   },
   [FRAMEWORK_REACT_ALIAS]: {
     ...defaultPathGetters,
-    index: (componentPath) => `${componentPath}/index.jsx`,
+    index: (componentPath) => `${componentPath}/index.tsx`,
     clientSrcPath: `../../client/src/pages`,
     route: (clientSrcPath, tile, routeName, changeCase) =>
       `${clientSrcPath}/${changeCase.pascalCase(routeName)}/${changeCase.pascalCase(tile.name)}${changeCase.pascalCase(tile.componentType)}`,
     component: (componentPath, tile, changeCase) =>
-      `${componentPath}/${changeCase.pascalCase(tile.name)}Component.jsx`,
+      `${componentPath}/${changeCase.pascalCase(tile.name)}Component.tsx`,
     style: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}Component.css`,
     addForm: (componentPath, tile, changeCase) =>
