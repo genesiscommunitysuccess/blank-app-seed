@@ -85,7 +85,7 @@ const App: React.FC = ({ rootElement }) => {
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
-    dispatchCustomEvent('store-connected');
+    dispatchCustomEvent('store-connected', rootElement);
     dispatchCustomEvent('store-ready', true);
 
     return () => {
