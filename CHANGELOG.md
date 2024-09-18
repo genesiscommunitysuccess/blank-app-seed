@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.12...v3.30.0-prerelease.13) (2024-09-18)
+
+
+### Bug Fixes
+
+* update --nav-height value - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#345) 83894b1
+
 ## [3.30.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.11...v3.30.0-prerelease.12) (2024-09-18)
 
 
