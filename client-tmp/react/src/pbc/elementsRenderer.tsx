@@ -18,6 +18,14 @@ const PBCElementsRenderer = ({ target = [], predicate = () => true }: PBCElement
 
   useEffect(() => {
     if (containerRef.current) {
+      containerRef.current.$emit = (type, detail) => {
+        store.emit(type, detail);
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (containerRef.current) {
       containerRef.current.replaceChildren();
     }
 
