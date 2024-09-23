@@ -1,19 +1,34 @@
 import { useState, useEffect } from 'react';
 import { storeService } from '@/services/store.service';
 
-export const useStore = (): any => {
+export const useStore = () => {
   const [state, setState] = useState(storeService.getStore());
 
-  useEffect(() => {
-    // @todo Subscribe to the store updates instead of using interval
-    const intervalId = setInterval(() => {
-      const store = storeService.getStore();
-      console.log('STORE UPDATED', store);
-      setState({ ...store });
-    }, 5000);
+  const handleStoreChange = () => {
+    const newStore = { ...storeService.getStore() };
+    setState(newStore);
+  };
 
-    return () => clearInterval(intervalId);
+  useEffect(() => {
+    const mainStore = storeService.getStore();
+
+    if (!mainStore) {
+      console.error('Main store not found');
+      return;
+    }
+
+    // @todo - that doesn't work - check how to subscribe to store changes
+    // temporary solution with interval in App.tsx
+    const mainStoreSubscription = mainStore.bindingAsRx().subscribe(handleStoreChange);
+
+    return () => {
+      mainStoreSubscription.unsubscribe();
+     
+    };
   }, []);
 
-  return state;
+  return {
+    state,
+    setState,
+  };
 };
