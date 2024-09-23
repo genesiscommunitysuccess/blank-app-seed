@@ -18,10 +18,13 @@ const updateAttributes = (container: HTMLElement | null, store: any, target) => 
 
   Array.from(container.children).forEach(child => {
     if (child.getAttribute('data-pbc-asset-id') === 'inbox-flyout') {
+      child.exit = target;
       if (notifyStore.inboxDisplayState) {
         child.removeAttribute('closed')
+        child.closed = false;
       } else {
         child.setAttribute('closed', 'true')
+        child.closed = true;
       }
     }
     target.appendChild(child);
