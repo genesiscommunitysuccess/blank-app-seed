@@ -3,10 +3,17 @@ import { deriveElementTag } from './utils';
 import { useRoutesContext } from '@/store/RoutesContext';
 import { useLocation } from 'react-router-dom';
 
+type ExtendedRouteObject = RouteObject & {
+  data?: {
+    pbcElementTag?: string;
+    pbcElement?: any;
+  };
+  path: string;
+}
 
 const PBCContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const routes = useRoutesContext();
+  const routes = useRoutesContext() as ExtendedRouteObject[];
   const location = useLocation();
 
   useEffect(() => {
@@ -31,7 +38,7 @@ const PBCContainer: React.FC = () => {
     }
   }, [location.pathname, routes]);
 
-  return <div ref={containerRef} className="container" style={{ width: '100%', height: '100%' }}></div>;
+  return <div ref={containerRef} className="container" style=\{{ width: '100%', height: '100%' }}></div>;
 };
 
 export default PBCContainer;

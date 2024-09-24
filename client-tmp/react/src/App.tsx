@@ -57,7 +57,11 @@ const DynamicLayout = () => {
 
 };
 
-const App: React.FC = ({ rootElement }) => {
+interface AppProps {
+  rootElement: HTMLElement;
+}
+
+const App: React.FC<AppProps> = ({ rootElement }) => {
   const { setState } = useStore();
   const dispatchCustomEvent = (type: string, detail?: any) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
@@ -106,7 +110,7 @@ const App: React.FC = ({ rootElement }) => {
   return (
     <AuthProvider>
       <RoutesProvider>
-        <HistoryRouter history={history}>
+        <HistoryRouter history={history as any}>
           <Routes>
             <Route path="*" element={<DynamicLayout />} />
           </Routes>

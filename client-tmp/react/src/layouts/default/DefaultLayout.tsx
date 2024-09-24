@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
+import { RouteObject } from 'react-router';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -14,11 +15,18 @@ interface DefaultLayoutProps {
   children: ReactNode;
 }
 
+type ExtendedRouteObject = RouteObject & {
+  data?: {
+    navItems?: any;
+  };
+  path: string;
+}
+
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const foundationHeaderRef = useRef<HTMLElement>(null);
-  const routes = useRoutesContext();
+  const routes = useRoutesContext() as ExtendedRouteObject[];
   const navItems = getNavItems(routes.flatMap((route) => ({
     path: route.path || '',
     navItems: route.data?.navItems,
@@ -67,7 +75,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         show-luminance-toggle-button
         show-misc-toggle-button
         routeNavItems={navItems}
-        navigateTo={(path) => navigate(path)}
+        navigateTo={(path: string) => navigate(path)}
       >
       </foundation-header>
       <section className={styles['content']}>

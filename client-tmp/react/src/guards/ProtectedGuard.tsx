@@ -1,4 +1,5 @@
 import { useState, useEffect, ReactNode } from 'react';
+import { RouteObject } from 'react-router';
 import isConnectedHelper from '@/helpers/isConnectedHelper';
 import isAuthenticatedHelper from '@/helpers/isAuthenticatedHelper';
 import hasPermissionHelper from '@/helpers/hasPermissionHelper';
@@ -16,8 +17,15 @@ const redirectUrlByPermissionState: { [key in Partial<PermissionState>]?: string
   [PermissionState.UNKNOWN]: AUTH_PATH,
 };
 
+type ExtendedRouteObject = RouteObject & {
+  data?: {
+    permissionCode?: string;
+  };
+  path: string;
+}
+
 const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-  const routes = useRoutesContext();
+  const routes = useRoutesContext() as ExtendedRouteObject[];
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
   const isAuthenticated: boolean | null = null;
   const route = routes.find(({ path }) => path === location.pathname);
