@@ -4,6 +4,7 @@ import { defineConfig, UserConfig } from 'vite';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
+import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -23,22 +24,39 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   }
 
   const config: UserConfig = {
-    define: envConfig,
+    define: {
+      ...envConfig,
+      BUILDER: JSON.stringify('vite'),
+    },
     server: {
       https,
       open,
+      fs: {
+        strict: false,
+      }
     },
     plugins: [
       react(),
+      tsconfigPaths(),
     ],
     build: {
       rollupOptions: {
-        plugins: []
-      }
+        plugins: [],
+        treeshake: false,  // Disable tree-shaking because it's causing issues with the Foundation Router
+      },
     },
     resolve: {
       alias: {
         'foundationZero/ZeroDesignSystem': resolve(__dirname, 'node_modules/@genesislcap/foundation-zero'),
+        'pbc': resolve(__dirname, 'src/pbc'),
+      },
+      preserveSymlinks: true,
+    },
+    esbuild: {
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true,
+        },
       },
     },
   };

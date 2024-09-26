@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
 import styles from './BlankLayout.module.css';
-import * as designTokens from '../../styles/design-tokens.json';
+import * as designTokens from '@/styles/design-tokens.json';
 
 interface BlankLayoutProps {
   children: ReactNode;

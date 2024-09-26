@@ -1,3 +1,5 @@
+import LayoutName from './LayoutName';
+
 export interface RouteLayouts {
-  [key: string]: 'blank' | 'default';
+  [key: string]: LayoutName;
 }
