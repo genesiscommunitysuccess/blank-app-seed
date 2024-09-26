@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.13...v3.30.0-prerelease.14) (2024-09-26)
+
+
+### Features
+
+* replaced karma with jest in angular (#348) 805d7ec
+
 ## [3.30.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.12...v3.30.0-prerelease.13) (2024-09-18)
 
 
