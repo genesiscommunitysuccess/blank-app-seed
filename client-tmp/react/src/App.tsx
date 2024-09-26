@@ -20,7 +20,6 @@ import { registerComponents as genesisRegisterComponents } from './share/genesis
 import { configureFoundationLogin } from './share/foundation-login';
 import ProtectedGuard from './guards/ProtectedGuard';
 import { storeService } from '@/services/store.service';
-import { useStore } from '@/hooks/useStore';
 
 const DynamicLayout = () => {
   const location = useLocation();
@@ -62,7 +61,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ rootElement }) => {
-  const { setState } = useStore();
   const dispatchCustomEvent = (type: string, detail?: any) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
   };
@@ -94,16 +92,9 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     dispatchCustomEvent('store-connected', rootElement);
     dispatchCustomEvent('store-ready', true);
 
-    // @todo - remove this when we have a proper store
-    const intervalSetStore = setInterval(() => {
-      const newStore = { ...storeService.getStore() };
-      setState(newStore);
-    } , 3000);
-
     return () => {
       rootElement.removeEventListener('store-connected', handleStoreConnected);
       dispatchCustomEvent('store-disconnected');
-      clearInterval(intervalSetStore);
     };
   }, []);
 

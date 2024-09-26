@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { AppElementPredicate, AppTargetId } from '@genesislcap/foundation-shell/app';
 import { customEventFactory, getTargetElements } from './utils';
-import { useStore } from '@/hooks/useStore'; // Import the custom hook
 
 interface PBCElementsRendererProps {
   target: AppTargetId;
@@ -12,28 +11,8 @@ interface PBCContainerElement extends HTMLDivElement {
   $emit: (type: string, detail: any) => void;
 }
 
-const updateAttributes = (container: HTMLElement | null, store: any, target) => {
-  if (!container) return;
-  const notifyStore = store?.storeFragments?.find(({ name }) => name === 'NotifyStore');
-
-  Array.from(container.children).forEach(child => {
-    if (child.getAttribute('data-pbc-asset-id') === 'inbox-flyout') {
-      child.exit = target;
-      if (notifyStore.inboxDisplayState) {
-        child.removeAttribute('closed')
-        child.closed = false;
-      } else {
-        child.setAttribute('closed', 'true')
-        child.closed = true;
-      }
-    }
-    target.appendChild(child);
-  });
-};
-
 const PBCElementsRenderer = ({ target = [], predicate = () => true }: PBCElementsRendererProps) => {
   const containerRef = useRef<PBCContainerElement>(null);
-  const { state: store } = useStore();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -44,26 +23,15 @@ const PBCElementsRenderer = ({ target = [], predicate = () => true }: PBCElement
   }, []);
 
   useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.replaceChildren();
+    }
     const templates = getTargetElements(target, predicate);
-    const temporaryContainer = document.createElement('div');
-    templates.forEach((currentTemplate) => {
+    templates.forEach((currentTemplate: any) => {
       if (containerRef.current) {
-        currentTemplate.render(containerRef.current, temporaryContainer);
+        currentTemplate.render(containerRef.current, containerRef.current);
       }
     });
-
-    // @todo - We could fix boolean props for react by changing pbc template ('elements')
-    // at the moment we are just overwriting the attributes
-    updateAttributes(temporaryContainer, store, containerRef.current);
-
-    return () => {
-      if (containerRef.current) {
-        containerRef.current.replaceChildren();
-      }
-      if (temporaryContainer) {
-        temporaryContainer.remove();
-      }
-    }
   }, [target]);
 
   return (<div ref={containerRef} className="container"></div>);
