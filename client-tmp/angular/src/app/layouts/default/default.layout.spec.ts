@@ -4,7 +4,7 @@ import { DefaultLayoutComponent } from './default.layout';
 import { ElementRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 class MockRouter {
-  navigate = jasmine.createSpy('navigate');
+  navigate = jest.fn();
 }
 
 class MockElementRef implements ElementRef {
