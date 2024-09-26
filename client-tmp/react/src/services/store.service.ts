@@ -10,7 +10,7 @@ import {
 import { DI } from '@genesislcap/web-core';
 
 interface Store extends StoreRoot {}
-type StoreEventDetailMap = StoreRootEventDetailMap & {};
+type StoreEventDetailMap = StoreRootEventDetailMap & Record<string, never>;
 
 declare global {
   interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}

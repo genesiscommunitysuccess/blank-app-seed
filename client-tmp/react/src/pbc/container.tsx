@@ -21,14 +21,13 @@ const PBCContainer: React.FC = () => {
       const element = pbcElement.define ? pbcElement : await pbcElement();
       const tagName = pbcElementTag || deriveElementTag(element.name);
       const customElement = document.createElement(tagName);
-      containerRef.current?.appendChild(customElement);
+      if (containerRef.current) {
+        containerRef.current.replaceChildren();
+        containerRef.current.appendChild(customElement);
+      }
     };
 
     loadElement();
-
-    return () => {
-      containerRef.current?.replaceChildren();
-    }
   }, [location.pathname, routes]);
 
   return <div ref={containerRef} className="container" style={{ width: '100%', height: '100%' }}></div>;

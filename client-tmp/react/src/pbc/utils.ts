@@ -107,7 +107,7 @@ export function customEventFactory(type: string, detail?: any) {
         composed: true,
         detail,
     });
-};
+}
 
 /**
  * @privateRemarks

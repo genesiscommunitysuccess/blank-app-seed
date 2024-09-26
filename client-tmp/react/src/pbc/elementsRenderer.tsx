@@ -32,7 +32,7 @@ const PBCElementsRenderer = ({ target = [], predicate = () => true }: PBCElement
         currentTemplate.render(containerRef.current, containerRef.current);
       }
     });
-  }, [target]);
+  }, [target, predicate]);
 
   return (<div ref={containerRef} className="container"></div>);
 };
