@@ -9,7 +9,7 @@ import type { Router } from '@/utils/history';
  */
 export const configureFoundationLogin = ({ router }:{ router: Router }) => {
   configure(DI.getOrCreateDOMContainer(), {
-    autoConnect: true, // < Workaround - Guard should ensure connection
+    // autoConnect: true, // < Workaround - Guard should ensure connection
     autoAuth: true, // < Allow users to skip login
     showConnectionIndicator: true,
     hostPath: AUTH_PATH,
