@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.14...v3.30.0-prerelease.15) (2024-09-26)
+
+
+### Features
+
+* pbc support in react [FUI-2140](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2140) (#347) 4c41243, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157
+
 ## [3.30.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.13...v3.30.0-prerelease.14) (2024-09-26)
 
 
