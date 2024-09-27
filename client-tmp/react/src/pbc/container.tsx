@@ -38,7 +38,7 @@ const PBCContainer: React.FC = () => {
     loadElement();
   }, [location.pathname, routes]);
 
-  return <div ref={containerRef} className="container" style={{ width: '100%', height: '100%' }}></div>;
+  return <div ref={containerRef} className="container" style=\{{ width: '100%', height: '100%' }}></div>;
 };
 
 export default PBCContainer;
