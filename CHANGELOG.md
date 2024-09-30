@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.15...v3.30.0-prerelease.16) (2024-09-30)
+
+
+### Features
+
+* add webpack builder in react  (#350) 69c4c6b, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140
+
 ## [3.30.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.14...v3.30.0-prerelease.15) (2024-09-26)
 
 
