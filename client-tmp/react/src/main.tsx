@@ -11,11 +11,13 @@ const logger = createLogger('main');
 
 function bootstrapApp() {
   const rootEelement = document.getElementById('root');
-  ReactDOM.createRoot(rootEelement!).render(
-    <React.StrictMode>
-      <App rootElement={rootEelement} />
-    </React.StrictMode>,
-  )
+  if (rootEelement) {
+    ReactDOM.createRoot(rootEelement!).render(
+      <React.StrictMode>
+        <App rootElement={rootEelement} />
+      </React.StrictMode>,
+    )
+  }
 }
 
 registerPBCs()

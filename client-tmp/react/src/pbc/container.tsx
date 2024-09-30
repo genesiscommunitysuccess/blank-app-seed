@@ -1,12 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, RouteObject } from 'react';
 import { deriveElementTag } from './utils';
 import { useRoutesContext } from '@/store/RoutesContext';
 import { useLocation } from 'react-router-dom';
 
+type ExtendedRouteObject = RouteObject & {
+  data?: {
+    pbcElementTag?: string;
+    pbcElement?: any;
+  };
+  path: string;
+}
 
 const PBCContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const routes = useRoutesContext();
+  const routes = useRoutesContext() as ExtendedRouteObject[];
   const location = useLocation();
 
   useEffect(() => {
@@ -21,6 +28,7 @@ const PBCContainer: React.FC = () => {
       const element = pbcElement.define ? pbcElement : await pbcElement();
       const tagName = pbcElementTag || deriveElementTag(element.name);
       const customElement = document.createElement(tagName);
+
       if (containerRef.current) {
         containerRef.current.replaceChildren();
         containerRef.current.appendChild(customElement);

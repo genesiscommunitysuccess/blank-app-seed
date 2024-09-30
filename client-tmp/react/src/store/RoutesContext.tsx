@@ -58,6 +58,7 @@ export const RoutesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     data: {
       ...route.settings,
       pbcElement: route.element,
+      // @ts-expect-error - getApp() is not typed to return the elementTag
       pbcElementTag: route.elementTag,
       navItems: route.navItems,
     },

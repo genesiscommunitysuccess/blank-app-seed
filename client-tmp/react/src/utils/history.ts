@@ -1,5 +1,5 @@
-import { createBrowserHistory, BrowserHistory } from 'history';
+import { createBrowserHistory, History } from 'history';
 
-export type Router = BrowserHistory
+export type Router = History;
 
-export const history: Router = createBrowserHistory();
+export const history = createBrowserHistory() as History;

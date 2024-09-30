@@ -1,7 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'path';
 import { defineConfig, UserConfig } from 'vite';
-import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
@@ -11,21 +10,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   const https: boolean = process.env.HTTPS === 'true';
   const open: boolean = !(process.env.NO_OPEN === 'true');
-  const jsonFilePath: string = resolve(process.cwd(), `env.${mode}.json`);
-  const envConfig: Record<string, string> = {};
-  
-  if (fs.existsSync(jsonFilePath)) {
-    const jsonContent: string = fs.readFileSync(jsonFilePath, 'utf-8');
-    const parsedConfig: Record<string, any> = JSON.parse(jsonContent);
-  
-    for (const key in parsedConfig) {
-      envConfig[`import.meta.env.${key}`] = JSON.stringify(parsedConfig[key]);
-    }
-  }
+  const environmentFile = mode === 'production'
+    ? 'environment.prod.ts' 
+    : 'environment.ts';
+  const environmentPath = resolve(__dirname, 'src/environments', environmentFile);
 
   const config: UserConfig = {
     define: {
-      ...envConfig,
       BUILDER: JSON.stringify('vite'),
     },
     server: {
@@ -42,12 +33,14 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     build: {
       rollupOptions: {
         plugins: [],
-        treeshake: false,  // Disable tree-shaking because it's causing issues with the Foundation Router
+        treeshake: false,
       },
     },
     resolve: {
       alias: {
         'foundationZero/ZeroDesignSystem': resolve(__dirname, 'node_modules/@genesislcap/foundation-zero'),
+        '@': resolve(__dirname, 'src'),
+        '@environment': environmentPath,
         'pbc': resolve(__dirname, 'src/pbc'),
       },
       preserveSymlinks: true,

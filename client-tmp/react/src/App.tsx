@@ -56,7 +56,12 @@ const DynamicLayout = () => {
 
 };
 
-const App: React.FC = ({ rootElement }) => {
+interface AppProps {
+  rootElement: HTMLElement;
+}
+
+const App: React.FC<AppProps> = ({ rootElement }) => {
+  const [isStoreConnected, setIsStoreConnected] = useState(false);
   const dispatchCustomEvent = (type: string, detail?: any) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
   };
@@ -80,24 +85,29 @@ const App: React.FC = ({ rootElement }) => {
   configureFoundationLogin({ router: history });
 
   useEffect(() => {
-    rootElement.addEventListener('store-connected', handleStoreConnected);
     registerStylesTarget(document.body, 'main');
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
-    dispatchCustomEvent('store-connected', rootElement);
-    dispatchCustomEvent('store-ready', true);
+    if (!isStoreConnected) {
+      rootElement.addEventListener('store-connected', handleStoreConnected);
+      dispatchCustomEvent('store-connected', rootElement);
+      dispatchCustomEvent('store-ready', true);
+      setIsStoreConnected(true);
+    }
 
     return () => {
-      rootElement.removeEventListener('store-connected', handleStoreConnected);
-      dispatchCustomEvent('store-disconnected');
+      if (isStoreConnected) {
+        rootElement.removeEventListener('store-connected', handleStoreConnected);
+        dispatchCustomEvent('store-disconnected');
+      }
     };
-  }, []);
+  }, [isStoreConnected]);
 
   return (
     <AuthProvider>
       <RoutesProvider>
-        <HistoryRouter history={history}>
+        <HistoryRouter history={history as any}>
           <Routes>
             <Route path="*" element={<DynamicLayout />} />
           </Routes>
