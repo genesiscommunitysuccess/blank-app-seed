@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.31.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.2...v3.31.0) (2024-10-01)
+
+
+### Features
+
+* add unit tests - [FUI-2173](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2173) (#332) a4168f3
+* integrate TypeScript support into react - [FUI-2157](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2157) (#338) ac55e1f
+* product name specified with settings plugin property (#331) 082cea0
+* release 8.4.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#352) 8f3144e
+* replaced karma with jest in angular (#348) 805d7ec
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#341) 1d38563
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#342) d255814
+* update --nav-height value - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#345) 83894b1
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d7eab5a
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 09ba9a2
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) eabf8c7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5d4f8da
+
 ## [3.30.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.1...v3.30.2) (2024-09-13)
 
 
