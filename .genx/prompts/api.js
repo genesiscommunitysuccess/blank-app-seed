@@ -12,7 +12,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       type: 'input',
       message: TEXTS.MESSAGE_API_HOST,
       when: !prevAns.apiHost,
-      default: 'ws://localhost/gwf/',
+      default: 'ws://localhost:9064/',
       validate: websocketValidator,
     },
   ]);
