@@ -90,35 +90,6 @@
             "buildTarget": "{{pkgName}}:build"
           }
         },
-        "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
-          "configurations": {
-            "production": {
-              "customWebpackConfig": {
-                "path": "./webpack.prod.config.js",
-                "mergeStrategies": {
-                  "externals": "replace"
-                }
-              }
-            },
-            "development": {
-              "customWebpackConfig": {
-                "path": "./webpack.dev.config.js",
-                "mergeStrategies": {
-                  "externals": "replace"
-                }
-              }
-            }
-          },
-          "defaultConfiguration": "development",
-          "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "tsconfig.spec.json",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles/styles.css"],
-            "scripts": []
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
