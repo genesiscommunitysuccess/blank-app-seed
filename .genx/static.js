@@ -67,7 +67,6 @@ const TEXTS = {
     'You can override the default Genesis server URL used during local developent.',
   INTRO_API_SSO:
     'Optionally, you can enable the SSO function, which will redirect to identity provider before starting the application (given we only have one identity provider).',
-  MESSAGE_API_SET_HOST: 'Set API Host',
   MESSAGE_API_HOST: 'API Host (with WebSocket prefix and suffix if any)',
   MESSAGE_API_SSO: 'Init SSO connection before loading application',
   MESSAGE_SERVER_DESCRIPTION: 'Project Description',

@@ -8,18 +8,11 @@ module.exports = async (inquirer, prevAns = {}) => {
   apiHostIntro();
   const { apiHost = prevAns.apiHost } = await inquirer.prompt([
     {
-      name: 'setApiHost',
-      type: 'confirm',
-      message: TEXTS.MESSAGE_API_SET_HOST,
-      when: !prevAns.apiHost,
-      default: true,
-    },
-    {
       name: 'apiHost',
       type: 'input',
       message: TEXTS.MESSAGE_API_HOST,
-      when: ({ setApiHost }) => setApiHost,
-      default: prevAns.apiHost || 'ws://localhost/gwf/',
+      when: !prevAns.apiHost,
+      default: 'ws://localhost:9064',
       validate: websocketValidator,
     },
   ]);
