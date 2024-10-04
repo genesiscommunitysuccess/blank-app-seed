@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.19...v3.30.0-prerelease.20) (2024-10-04)
+
+
+### Bug Fixes
+
+* reduce apiHost steps when using genx in prompt mode - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#343) f6ce411
+
 ## [3.30.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.18...v3.30.0-prerelease.19) (2024-10-03)
 
 
