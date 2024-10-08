@@ -1,10 +1,8 @@
 pluginManagement {
-    pluginManagement {
-        val genesisVersion: String by settings
+    val genesisVersion: String by settings
 
-        plugins {
-            id("global.genesis.settings") version genesisVersion
-        }
+    plugins {
+        id("global.genesis.settings") version genesisVersion
     }
 
     repositories {
@@ -28,6 +26,7 @@ pluginManagement {
                 excludeGroup("org.agrona")
             }
         }
+        google()
     }
 }
 
