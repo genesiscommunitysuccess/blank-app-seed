@@ -12,10 +12,7 @@ jobs:
     uses: ./.github/workflows/upgrade.yml
     with: 
       branch: prerelease
-<<<<<<< HEAD
       skip-server: true
-=======
->>>>>>> 347da15 (chore: enabling selective upgrade for main/prelease branches (GENC-704) (#310) (#311))
     secrets:
       GH_USER_TOKEN: ${{ secrets.GH_USER_TOKEN }}
       JFROG_LIBS_RELEASE_CLIENT_RO_USER: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
