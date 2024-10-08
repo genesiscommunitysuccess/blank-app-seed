@@ -11,6 +11,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     applicationVersion = prevAns.applicationVersion,
     enableDeployPlugin = prevAns.enableDeployPlugin,
     csv = prevAns.csv,
+    excludeGradleWrapper = prevAns.excludeGradleWrapper,
   } = await inquirer.prompt([
     {
       name: 'description',
@@ -42,6 +43,13 @@ module.exports = async (inquirer, prevAns = {}) => {
       default: prevAns.enableDeployPlugin || false,
     },
     {
+      name: 'excludeGradleWrapper',
+      type: 'confirm',
+      message: TEXTS.MESSAGE_EXCLUDE_GRADLE_WRAPPER,
+      when: prevAns.excludeGradleWrapper === undefined,
+      default: prevAns.excludeGradleWrapper || false,
+    },
+    {
       name: 'csv',
       type: 'input',
       message: TEXTS.MESSAGE_SERVER_CSV,
@@ -56,5 +64,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     applicationVersion,
     enableDeployPlugin,
     csv: parsecsv(csv),
+    excludeGradleWrapper,
   };
 };
