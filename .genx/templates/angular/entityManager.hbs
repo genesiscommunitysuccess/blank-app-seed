@@ -5,51 +5,63 @@
       header-case-type="capitalCase"
       enable-row-flashing
       enable-cell-flashing
-      {{#if config.title}}
+      {{#if config.title~}}
       title="{{ config.title }}"
       {{/if}}
       resourceName="{{ config.resourceName }}"
-      {{#if config.createEvent}}
+      {{#if config.createEvent~}}
+      {{#if config.permissions.updateRight~}}
       [createEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined"
-      {{#if config.createFormUiSchema}}
+      {{else~}}
+      createEvent="{{ config.updateEvent }}"
+      {{/if}}
+      {{#if config.createFormUiSchema~}}
       [createFormUiSchema]="createFormSchema"
       {{/if}}
       {{/if}}
-      {{#if config.updateEvent}}
+      {{#if config.updateEvent~}}
+      {{#if config.permissions.updateRight~}}
       [updateEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined"
-      {{#if config.updateFormUiSchema}}
+      {{else~}}
+      updateEvent="{{ config.updateEvent }}"
+      {{/if}}
+      {{#if config.updateFormUiSchema~}}
       [updateFormUiSchema]="updateFormSchema"
       {{/if}}
       {{/if}}
-      {{#if config.deleteEvent}}
+      {{#if config.deleteEvent~}}
+      {{#if config.permissions.updateRight~}}
       [deleteEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined"
+      {{else~}}
+      deleteEvent="{{ config.deleteEvent }}"
       {{/if}}
-      {{#if config.gridOptions}}
+      {{/if}}
+      {{#if config.gridOptions~}}
       [gridOptions]="{{ config.gridOptions }}"
       {{/if}}
-      {{#if config.snapshot}}
+      {{#if config.snapshot~}}
       [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
       {{/if}}
-      {{#if config.reqrep}}
+      {{#if config.reqrep~}}
       [datasourceConfig]="reqrep"
       {{/if}}
-      {{#if config.entityName}}
+      {{#if config.entityName~}}
       entityLabel="{{ config.entityName }}"
       {{/if}}
-      {{#if config.columns}}
+      {{#if config.columns~}}
       [columns]="columnDefs"
       {{/if}}
-      {{#if config.modalPosition}}
+      {{#if config.modalPosition~}}
       modal-position="{{ config.modalPosition }}"
       {{/if}}
-      {{#if config.sizeColumnsToFit}}
+      {{#if config.sizeColumnsToFit~}}
       size-columns-to-fit
       {{/if}}
-      {{#if config.enableSearchBar}}
+      {{#if config.enableSearchBar~}}
       enable-search-bar
       {{/if}}
     ></entity-management>
-  </ng-container>{{#if config.permissions.viewRight}}
+  </ng-container>{{#if config.permissions.viewRight~}}
 
   <ng-template #notPermitted{{ config.index }}>
     <app-error-message

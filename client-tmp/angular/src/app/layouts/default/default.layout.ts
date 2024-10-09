@@ -2,10 +2,10 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { configureDesignSystem, FoundationRouteNavItem } from '@genesislcap/foundation-ui';
 import { baseLayerLuminance, StandardLuminance } from '@genesislcap/web-core';
-import * as designTokens from '../../../styles/design-tokens.json';
-import { RouteService } from '../../services/route.service';
-import BaseLayout from '../base.layout';
-import { registerStylesTarget } from '../../../pbc/utils';
+import * as designTokens from '@/styles/design-tokens.json';
+import { RouteService } from '@/app/services/route.service';
+import BaseLayout from '@/app/layouts/base.layout';
+import { registerStylesTarget } from '@/pbc/utils';
 
 @Component({
   selector: 'app-default-layout',

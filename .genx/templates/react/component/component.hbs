@@ -5,9 +5,9 @@ import { getViewUpdateRightComponent } from '@/utils';
 {{#if tile.config.permissions.viewRight~}}
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 {{else if tile.config.permissions.updateRight~}}
-{{#if tile.type 'form'~}}
-import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
-{{/if}}
+{{#ifEquals tile.type 'form'~}}
+import ErrorMessage from '@/app/components/ErrorMessage/ErrorMessage';
+{{/ifEquals}}
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';

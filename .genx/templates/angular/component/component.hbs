@@ -1,24 +1,32 @@
 import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+{{#ifAny tile.config.permissions.viewRight tile.config.permissions.updateRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
-import { getViewUpdateRightComponent } from '../../../utils';
-{{#if tile.config.gridOptions}}
+import { getViewUpdateRightComponent } from '@/app/utils';
+{{/ifAny}}
+{{#if tile.config.permissions.viewRight~}}
+import { ErrorMessageComponent } from '@/app/components/error-message/error-message.component';
+{{else if tile.config.permissions.updateRight~}}
+{{#ifEquals tile.type 'form'~}}
+import { ErrorMessageComponent } from '@/app/components/error-message/error-message.component';
+{{/ifEquals}}
+{{/if}}
+{{#if tile.config.gridOptions~}}
 import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
 {{/if}}
-{{#if tile.config.createFormUiSchema}}
+{{#if tile.config.createFormUiSchema~}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
-{{#if tile.config.uischema}}
+{{#if tile.config.uischema~}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
-{{#if tile.config.updateFormUiSchema}}
+{{#if tile.config.updateFormUiSchema~}}
 import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
 {{/if}}
-{{#if tile.config.columns}}
+{{#if tile.config.columns~}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
-{{#if tile.config.gridOptions}}
+{{#if tile.config.gridOptions~}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
 
@@ -28,25 +36,49 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
   styleUrl: './{{kebabCase tile.title}}.component.css',
   standalone: true,
   imports: [
+  {{#if tile.config.permissions.viewRight~}}
     ErrorMessageComponent,
+  {{else if tile.config.permissions.updateRight~}}
+  {{#ifEquals tile.type 'form'~}}
+    ErrorMessageComponent,
+  {{/ifEquals}}
+  {{/if}}
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class {{pascalCase tile.componentName}} {
-  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);{{#if tile.config.createFormUiSchema}}
-  createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
-  uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
-  updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.columns}}
-  columnDefs = columnDefs;{{/if}}{{#if tile.config.gridOptions}}
-  gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.reqrep}}
-  reqrep = { pollingInterval: 5000 };{{/if}}{{#if tile.config.type}}
-  chartConfig = { {{#ifEquals tile.config.type 'pie'}}
+  {{#ifAny tile.config.permissions.viewRight tile.config.permissions.updateRight~}}
+  hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);
+  {{/ifAny}}
+  {{#if tile.config.createFormUiSchema~}}
+  createFormSchema = createFormSchema;
+  {{/if}}
+  {{#if tile.config.uischema~}}
+  uischema = createFormSchema;
+  {{/if}}
+  {{#if tile.config.updateFormUiSchema~}}
+  updateFormSchema = updateFormSchema;
+  {{/if}}
+  {{#if tile.config.columns~}}
+  columnDefs = columnDefs;
+  {{/if}}
+  {{#if tile.config.gridOptions~}}
+  gridOptions = gridOptions as GridOptionsConfig;
+  {{/if}}
+  {{#if tile.config.reqrep~}}
+  reqrep = { pollingInterval: 5000 };
+  {{/if}}
+  {{#if tile.config.type~}}
+  chartConfig = {
+  {{#ifEquals tile.config.type 'pie'~}}
       "radius": 0.75,
       "angleField": "value",
-      "colorField": "groupBy",{{else}}
+      "colorField": "groupBy",
+  {{else~}}
       "xField": "groupBy",
-      "yField": "value",{{/ifEquals}}
-  };{{/if}}
-  
+      "yField": "value",
+  {{/ifEquals}}
+  };
+  {{/if}}
 }

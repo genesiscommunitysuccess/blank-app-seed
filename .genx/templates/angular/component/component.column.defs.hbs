@@ -1,9 +1,13 @@
+{{#if tile.config.columns~}}
 import { ColDef } from '@ag-grid-community/core';
+{{/if}}
+{{#ifContains tile.config.columnsString 'getNumberFormatter'}}
 import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
-{{#if route.FDC3EventHandlersEnabled}}
-    import { sendEventOnChannel } from '../../../utils';
+{{/ifContains}}
+{{#if route.FDC3EventHandlersEnabled~}}
+    import { sendEventOnChannel } from '@/app/utils';
 {{/if}}
 
-{{#if tile.config.columns}}
+{{#if tile.config.columns~}}
 export const columnDefs: ColDef[] = {{{ tile.config.columns }}}
 {{/if}}
