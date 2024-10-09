@@ -1,11 +1,13 @@
+{{#ifAny tile.config.permissions.viewRight tile.config.permissions.updateRight~}}
+import { getUser } from '@genesislcap/foundation-user';
+import { getViewUpdateRightComponent } from '@/utils';
+{{/ifAny}}
 {{#if tile.config.permissions.viewRight~}}
-import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 {{else if tile.config.permissions.updateRight~}}
-import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{#if tile.type 'form'~}}
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+{{/if}}
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -26,11 +28,9 @@ import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridO
 import './{{pascalCase tile.title}}Component.css';
 
 export const {{pascalCase tile.componentName}}: React.FC = () => {
-  {{#if tile.config.permissions.viewRight~}}
+  {{#ifAny tile.config.permissions.viewRight tile.config.permissions.updateRight~}}
   const hasUserPermission = (permissionCode: string): boolean => getViewUpdateRightComponent(getUser(), permissionCode);
-  {{else if tile.config.permissions.updateRight~}}
-  const hasUserPermission = (permissionCode: string): boolean => getViewUpdateRightComponent(getUser(), permissionCode);
-  {{/if}}
+  {{/ifAny}}
   {{#if tile.config.createFormUiSchema~}}
   const createFormSchema: typeof createFormSchemaTile = createFormSchemaTile;
   {{/if}}
