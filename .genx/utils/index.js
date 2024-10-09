@@ -1,4 +1,5 @@
 const excludeFrameworks = require('./excludeFrameworks');
+const deleteGradleWrappers = require('./deleteGradleWrappers');
 const formatRouteData = require('./formatRouteData');
 const generateRoute = require('./generateRoute');
 const generateCsv = require('./generateCsv');
@@ -11,6 +12,7 @@ const validateRoute = require('./validateRoute');
 const validateFrameworkAlias = require('./validateFrameworkAlias');
 
 module.exports = {
+  deleteGradleWrappers,
   excludeFrameworks,
   formatRouteData,
   generateRoute,

@@ -7,6 +7,7 @@ const {
   getCombinedCsvData,
   registerPartials,
   validateRoute,
+  deleteGradleWrappers,
 } = require('./utils');
 
 /**
@@ -48,4 +49,8 @@ module.exports = async (data, utils) => {
     .forEach((entity) => {
       generateCsv(entity, utils);
     });
+
+  if (data.excludeGradleWrapper) {
+    deleteGradleWrappers();
+  }
 };
