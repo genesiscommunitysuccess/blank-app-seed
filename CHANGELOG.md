@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.23...v3.30.0-prerelease.24) (2024-10-14)
+
+
+### Bug Fixes
+
+* ignore project-zips folder CIDE-53 (#360) ddb86d5
+
 ## [3.30.0-prerelease.23](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.22...v3.30.0-prerelease.23) (2024-10-08)
 
 
