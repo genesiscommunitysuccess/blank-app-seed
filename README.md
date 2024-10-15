@@ -2,6 +2,35 @@
 
 {{{description}}}
 
+{{!
+
+# Testing
+
+Quick test: 
+
+```
+npx -y @genesislcap/genx@latest init myapp -x
+```
+
+Test local version (assuming `blank-app-seed` exists in current folder): 
+
+```
+npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed
+```
+
+Customise prompt answers: 
+
+```
+npx -y @genesislcap/genx@latest init myapp
+```
+
+Enable SSO (use any API host which has SSO providers configured):
+
+```
+npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --apiHost wss://prim-uat-internal.genesis.global/gwf/
+```
+}}
+
 # Introduction
 
 ## Next Steps
@@ -29,32 +58,6 @@ When first opening the project, if you receive a notification from IntelliJ IDE 
 
 The Web client for this project can be found [here](./client/README.md). It is built using Genesis's next
 generation web development framework, which is based on Web Components.
-
-# Testing
-
-Quick test: 
-
-```
-npx -y @genesislcap/genx@latest init myapp -x
-```
-
-Test local version (assuming `blank-app-seed` exists in current folder): 
-
-```
-npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed
-```
-
-Customise prompt answers: 
-
-```
-npx -y @genesislcap/genx@latest init myapp
-```
-
-Enable SSO (use any API host which has SSO providers configured):
-
-```
-npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --apiHost wss://prim-uat-internal.genesis.global/gwf/
-```
 
 # License
 
