@@ -1,10 +1,7 @@
 # {{appName}}
 
-This project has been created from the Genesis Blank Application Seed. Our seeds allow users to quickly bootstrap
-their projects. Each seed adheres to strict Genesis best practices, and has passed numerous performance, compliance and
-accessibility checks. 
+{{{description}}}
 
-{{description}}
 {{!
 
 # Testing
@@ -42,8 +39,11 @@ To get a simple application running check the [Quick Start](https://learn.genesi
 
 If you need an introduction to the Genesis platform and its modules it's worth heading [here](https://learn.genesis.global/docs/getting-started/learn-the-basics/simple-introduction/).
 
-
 ## Project Structure
+
+This project has been created from the Genesis Blank Application Seed. Our seeds allow users to quickly bootstrap
+their projects. Each seed adheres to strict Genesis best practices, and has passed numerous performance, compliance and
+accessibility checks.
 
 This project contains **server** and **client** directories which contain the server and client code respectively.
 
