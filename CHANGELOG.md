@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.24...v3.30.0-prerelease.25) (2024-10-16)
+
+
+### Bug Fixes
+
+* reformat ReadMe layout & allow markdown in description GENC-845 (#361) a1b8972
+
 ## [3.30.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.23...v3.30.0-prerelease.24) (2024-10-14)
 
 
