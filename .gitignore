@@ -108,3 +108,5 @@ custom-elements.json
 # Gradle tasks
 .bootstrapDone
 .tests.executed
+
+blankappseedtest/
