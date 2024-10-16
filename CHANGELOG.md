@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.32.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.31.1...v3.32.0) (2024-10-16)
+
+
+### Features
+
+* add genesis launcher (#362) b4a6f7e
+
 ## [3.31.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.31.0...v3.31.1) (2024-10-01)
 
 
