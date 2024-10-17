@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.26...v3.30.0-prerelease.27) (2024-10-17)
+
+
+### Features
+
+* allow excluding Gradle wrappers GENC-824 (#357) 5d90d1d
+
 ## [3.30.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.25...v3.30.0-prerelease.26) (2024-10-16)
 
 
