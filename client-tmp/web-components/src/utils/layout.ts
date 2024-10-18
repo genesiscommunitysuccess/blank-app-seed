@@ -1,5 +1,5 @@
-import pkg from '../../package.json';
 import { isDev } from '@genesislcap/foundation-utils';
+import pkg from '../../package.json';
 
 // returning null disables caching
 // returning an id (as long as it's not null) enables caching
