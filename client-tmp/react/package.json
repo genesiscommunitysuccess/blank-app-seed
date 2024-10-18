@@ -2,6 +2,9 @@
   "name": "{{pkgName}}",
   "version": "{{applicationVersionWeb}}",
   "private": true,
+  "config": {
+    "PERSIST_LAYOUT_IN_DEV": false
+  },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
     "bootstrap": "npm i --legacy-peer-deps",
