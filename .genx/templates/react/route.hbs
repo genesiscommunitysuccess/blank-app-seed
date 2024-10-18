@@ -1,4 +1,5 @@
 import './{{pascalCase route.name}}.css';
+import { persistLayout } from '../../utils';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
@@ -7,7 +8,7 @@ const {{pascalCase route.name}} = () => {
   return (
     <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
-      <rapid-layout auto-save-key={process.env.NODE_ENV === 'production' ? "{{route.layoutKey}}" : null}>
+      <rapid-layout auto-save-key={persistLayout('{{route.layoutKey}}')}>
         {{> (lookup ./route 'layoutType') }}
       </rapid-layout>
       {{else}}
