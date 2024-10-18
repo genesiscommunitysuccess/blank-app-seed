@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.27...v3.30.0-prerelease.28) (2024-10-18)
+
+
+### Features
+
+* allow to simply control layout persistence in dev [FUI-2211](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2211) / GENC-871 (#363) c6fd6f5
+
 ## [3.30.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.26...v3.30.0-prerelease.27) (2024-10-17)
 
 
