@@ -22,6 +22,18 @@ import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
 
+{{#if tile.metadata.comment}}
+/*
+{{ tile.metadata.comment }}
+*/
+
+{{/if}}
+{{#if tile.metadata.todo}}
+/*
+{{ tile.metadata.todo }}
+*/
+
+{{/if}}
 @Component({
   selector: 'app-{{kebabCase tile.componentName}}',
   templateUrl: './{{kebabCase tile.title}}.component.html',
