@@ -56,8 +56,8 @@
     "@genesislcap/web-core": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "history": "^5.3.0",
-    "react": "^19.0.0-beta-94eed63c49-20240425",
-    "react-dom": "^19.0.0-beta-94eed63c49-20240425",
+    "react": "^19.0.0-rc-ed966dac-20241007",
+    "react-dom": "^19.0.0-rc-ed966dac-20241007",
     "react-router-dom": "6.24.1",
     "web-vitals": "^2.1.4"
   },
