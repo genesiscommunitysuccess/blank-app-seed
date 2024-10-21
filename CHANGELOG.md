@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.28...v3.30.0-prerelease.29) (2024-10-21)
+
+
+### Features
+
+* update react version (#358) 22bb0ad
+
 ## [3.30.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.27...v3.30.0-prerelease.28) (2024-10-18)
 
 
