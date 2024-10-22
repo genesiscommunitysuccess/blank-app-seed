@@ -76,6 +76,7 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
 
   if (route?.tiles?.length) {
     route.tiles.forEach((tile) => {
+      tile.metadata = tile.metadata || {};
       generateTile(tile, route, { changeCase, writeFileWithData }, framework);
     });
   }
