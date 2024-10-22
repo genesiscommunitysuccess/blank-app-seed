@@ -74,6 +74,7 @@ const TEXTS = {
   MESSAGE_SERVER_GROUP_ID: 'Group Id',
   MESSAGE_SERVER_APPLICATION_VERSION: 'Application Version',
   MESSAGE_SERVER_DEPLOY_PLUGIN: 'Enable deploy plugin?',
+  MESSAGE_EXCLUDE_GRADLE_WRAPPER: 'Exclude Gradle wrapper?',
   MESSAGE_SERVER_CSV:
     'Generate empty CSV for entities? (config in JSON format)',
   MESSAGE_UI_ROTUES: 'Pages config in JSON format',
