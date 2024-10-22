@@ -25,6 +25,18 @@ import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridO
 {{/if}}
 import './{{pascalCase tile.title}}Component.css';
 
+{{#if tile.metadata.comment}}
+/*
+{{ tile.metadata.comment }}
+*/
+
+{{/if}}
+{{#if tile.metadata.todo}}
+/*
+{{ tile.metadata.todo }}
+*/
+
+{{/if}}
 export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{#if tile.config.permissions.viewRight~}}
   const hasUserPermission = (permissionCode: string): boolean => getViewUpdateRightComponent(getUser(), permissionCode);
