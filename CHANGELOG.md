@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.29...v3.30.0-prerelease.30) (2024-10-22)
+
+
+### Features
+
+* adding support for comments/todos in generated UI files GENC-857 (#364) ba999e8
+
 ## [3.30.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.28...v3.30.0-prerelease.29) (2024-10-21)
 
 
