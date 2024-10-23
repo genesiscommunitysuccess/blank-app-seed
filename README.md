@@ -31,7 +31,7 @@ npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --
 ```
 }}
 
-# Introduction
+# Getting Started with Development
 
 ## Next Steps
 
