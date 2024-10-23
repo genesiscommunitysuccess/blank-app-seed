@@ -9,14 +9,14 @@ import type { Router } from '@/utils/history';
  */
 export const configureFoundationLogin = ({ router }:{ router: Router }) => {
   configure(DI.getOrCreateDOMContainer(), {
-    // autoConnect: true, // < Workaround - Guard should ensure connection
+    autoConnect: true,
     autoAuth: true, // < Allow users to skip login
     showConnectionIndicator: true,
     hostPath: AUTH_PATH,
     redirectHandler: () => {
       // workaround for redirect from foundation-login
       setTimeout(() => {
-        const lastPath = getUser().lastPath() ?? '/home';
+        const lastPath = getUser().lastPath() ?? '/{{kebabCase routes.[0].name}}';
         router.push(lastPath);
       }, 0);
     },
