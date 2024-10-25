@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.30...v3.30.0-prerelease.31) (2024-10-25)
+
+
+### Bug Fixes
+
+* home page url - react (#369) 388cf04
+
 ## [3.30.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.29...v3.30.0-prerelease.30) (2024-10-22)
 
 
