@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.33.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.2...v3.33.3) (2024-10-30)
+
+
+### Bug Fixes
+
+* prefix todo comment GENC-857 (#371) 1a0e8bf
+
 ## [3.33.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.1...v3.33.2) (2024-10-30)
 
 
