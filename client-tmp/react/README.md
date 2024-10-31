@@ -3,45 +3,57 @@
 
 This project is built with React.
 
-## Development
-
-1. Install dependencies:
+## Install dependencies:
 
 ```shell
 npm run bootstrap
 ```
 
-2. Start the development server:
+## Development server
 
-```shell
-npm run start
-```
+Run `npm run dev` for a dev server. Navigate to `http://localhost:3000/`. The application will automatically reload if you change any of the source files.
 
-3. Build for production:
+## Build
 
-```shell
-npm run build
-```
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-Preview the production build:
+## Running unit tests
 
-```shell
-npm run serve
-```
+Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/docs/getting-started).
 
-## Clean
+## Running end-to-end tests
 
-Remove `build` and `node_modules` directories:
+Run `npm run test:e2e` to execute the end-to-end tests.
 
-```shell
-npm run clean
-```
+## Linting
 
-Baseline task combines `clean` and `install` tasks into a single command:
+Run `npm run lint` to lint the project.
 
-```shell
-npm run baseline
-```
+## NPM Scripts
+
+- `npm run baseline`: Cleans the project and installs dependencies.
+- `npm run bootstrap`: Installs dependencies without auditing or funding checks.
+- `npm run bootstrap:ci`: Installs dependencies in CI environment without auditing or funding checks.
+- `npm run build`: Builds the project in production configuration.
+- `npm run build:stats`: Builds the project and generates a stats JSON file.
+- `npm run clean`: Cleans the `dist` and `node_modules` directories.
+- `npm run dev`: Serves the project in development mode.
+- `npm run dev:vite`: Serves the project in development mode (specific for vite configuration).
+- `npm run dev:docker`: Serves the project in development mode, accessible from any network interface.
+- `npm run dev:no-open`: Serves the project in development mode without automatically opening the browser.
+- `npm run dev:intellij`: Serves the project in development mode (specific for IntelliJ).
+- `npm run dev:https`: Serves the project in development mode with HTTPS.
+- `npm run dsconfig`: Configures design system based on `src/styles/design-tokens.json`.
+- `npm run lint`: Lints the project using the specified profile.
+- `npm run lint:fix`: Fixes linting errors in the project.
+- `npm run lint:eslint`: Lints the project using ESLint and the specified profile.
+- `npm run lint:stylelint`: Lints CSS using a custom script.
+- `npm run test`: Runs unit tests.
+- `npm run test:e2e`: Runs end-to-end tests.
+- `npm run test:e2e:debug`: Runs end-to-end tests in debug mode.
+- `npm run test:e2e:ui`: Runs end-to-end tests in interactive mode.
+- `npm run test:coverage`: Runs unit tests and generates a code coverage report.
+- `npm run test:unit:watch`: Runs unit tests in watch mode.
 
 ## Further help
 
