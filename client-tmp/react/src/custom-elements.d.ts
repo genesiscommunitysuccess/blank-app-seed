@@ -1,10 +1,11 @@
 import React, { useState, DOMAttributes }  from 'react';
 
-type CustomElement<T = HTMLElement> = Partial<T & DOMAttributes<T> & { children: any }>;
+type CustomElement<T = React.HTMLAttributes<HTMLElement>> = Partial<T & DOMAttributes<T> & { [key: string]: any }>;
 
 declare module "react/jsx-runtime" {
   namespace JSX {
     interface IntrinsicElements {
+      'rapid-design-system-provider': CustomElement;
       'entity-management': CustomElement;
       'foundation-form': CustomElement;
       'rapid-grid-pro': CustomElement;
@@ -16,6 +17,7 @@ declare module "react/jsx-runtime" {
       'rapid-layout': CustomElement;
       'rapid-layout-region': CustomElement;
       'rapid-layout-item': CustomElement;
+      'foundation-header': CustomElement;
     }
   }
 }

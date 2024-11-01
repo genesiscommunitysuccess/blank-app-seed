@@ -48,8 +48,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }
   };
 
-
-
   const value = { user, setUser, checkAuthStatus };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

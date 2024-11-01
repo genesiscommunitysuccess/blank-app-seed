@@ -44,6 +44,7 @@ client/bootstrapDone
 .husky/.gitignore
 build-cache/
 server/h2/
+project-zips
 
 # Ignore Gradle GUI config
 gradle-app.setting

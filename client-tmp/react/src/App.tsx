@@ -1,31 +1,75 @@
+import { useEffect, useState } from 'react';
+import { unstable_HistoryRouter as HistoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import {
-  unstable_HistoryRouter as HistoryRouter,
-  Routes,
-  Route,
-  useLocation,
-} from 'react-router-dom';
-import { useEffect } from 'react';
-import { history, setApiHost{{#if FDC3.channels.length}}, listenToChannel{{/if}} } from './utils';
+  history,
+  setApiHost,
+  getLayoutNameByRoute,
+  {{#if FDC3.channels.length~}}
+  listenToChannel,
+  onFDC3Ready,
+  {{/if}}
+} from './utils';
+import { customEventFactory, registerStylesTarget } from '@/pbc/utils';
 import LayoutWrapper from './layouts/LayoutWrapper';
-import { AUTH_PATH, NOT_PERMITTED_PATH, routeLayouts } from './config';
-import AuthGuard from './guards/AuthGuard';
-import PermissionsGuard from './guards/PermissionsGuard';
+import LayoutName from '@/types/LayoutName';
+import { AUTH_PATH, routeLayouts } from './config';
 import { AuthProvider } from './store/AuthContext';
-// Pages Components
+import { RoutesProvider, useRoutesContext } from './store/RoutesContext';
 import AuthPage from './pages/AuthPage/AuthPage';
-import NotPermittedPage from './pages/NotPermittedPage/NotPermittedPage';
-{{#each routes}}
-import {{pascalCase this.name}} from './pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
-{{/each}}
+import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
+import { configureFoundationLogin } from './share/foundation-login';
+import ProtectedGuard from './guards/ProtectedGuard';
+import { storeService } from '@/services/store.service';
 
-// Genesis Components
-import './share/genesis-components';
-
-const LayoutWithLocation = () => {
+const DynamicLayout = () => {
   const location = useLocation();
-  const layout = routeLayouts[location.pathname] || 'default';
-  {{#if FDC3.channels.length}}
+  const [layoutName, setLayoutName] = useState<LayoutName>(routeLayouts[location.pathname]  || 'default');
+  const handleRouteChange = (location: any) => {
+    setLayoutName(getLayoutNameByRoute(location.pathname));
+  };
+  const route = useRoutesContext().find((r) => r.path === location.pathname);
+  let pageComponent;
+  let content;
+
   useEffect(() => {
+    handleRouteChange(location);
+    const unlisten = history.listen(handleRouteChange);
+
+    return () => {
+      unlisten();
+    }
+  }, [location]);
+
+  if (route) {
+    pageComponent = route.element;
+  } else {
+    pageComponent = <AuthPage />;
+  }
+
+  if (location.pathname === `/${AUTH_PATH}` || location.pathname === '/') {
+    content = pageComponent;
+  } else {
+    content = <ProtectedGuard>{pageComponent}</ProtectedGuard>
+  }
+
+  return <LayoutWrapper layout={layoutName}>{content}</LayoutWrapper>
+
+};
+
+interface AppProps {
+  rootElement: HTMLElement;
+}
+
+const App: React.FC<AppProps> = ({ rootElement }) => {
+  const [isStoreConnected, setIsStoreConnected] = useState(false);
+  const dispatchCustomEvent = (type: string, detail?: any) => {
+    rootElement.dispatchEvent(customEventFactory(type, detail));
+  };
+  const handleStoreConnected = (event: CustomEvent) => {
+    storeService.onConnected(event);
+  };
+  {{#if FDC3.channels.length~}}
+  const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
       console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
@@ -33,59 +77,42 @@ const LayoutWithLocation = () => {
       // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
     });
     {{/each}}
-    
-    return () => {
-      console.log('Component is being unmounted');
-    };
-  }, []);
+  };
   {{/if}}
 
-  let pageComponent;
-  let permissionCode = '{{this.permissions.viewRight}}';
-
-  switch (location.pathname) {
-    case `/${AUTH_PATH}`:
-      pageComponent = <AuthPage />;
-      break;
-    case `/${NOT_PERMITTED_PATH}`:
-      pageComponent = <NotPermittedPage />;
-      break;
-  {{#each routes}}
-    case '/{{kebabCase this.name}}':
-      pageComponent = <{{pascalCase this.name}} />;
-      permissionCode = '{{this.permissions.viewRight}}';
-      break;
-  {{/each}}
-    default:
-      pageComponent = <AuthPage />;
-  }
-
-  if (
-    location.pathname === '/auth' ||
-    location.pathname === '/'
-  ) {
-    return <LayoutWrapper layout={layout}>{pageComponent}</LayoutWrapper>;
-  } else {
-    return (
-      <AuthGuard>
-        <PermissionsGuard permissionCode={permissionCode}>
-          <LayoutWrapper layout={layout}>{pageComponent}</LayoutWrapper>
-        </PermissionsGuard>
-      </AuthGuard>
-    );
-  }
-};
-
-const App: React.FC = () => {
   setApiHost();
+  genesisRegisterComponents();
+  configureFoundationLogin({ router: history });
+
+  useEffect(() => {
+    registerStylesTarget(document.body, 'main');
+    {{#if FDC3.channels.length~}}
+    onFDC3Ready(FDC3ReadyHandler);
+    {{/if}}
+    if (!isStoreConnected) {
+      rootElement.addEventListener('store-connected', handleStoreConnected);
+      dispatchCustomEvent('store-connected', rootElement);
+      dispatchCustomEvent('store-ready', true);
+      setIsStoreConnected(true);
+    }
+
+    return () => {
+      if (isStoreConnected) {
+        rootElement.removeEventListener('store-connected', handleStoreConnected);
+        dispatchCustomEvent('store-disconnected');
+      }
+    };
+  }, [isStoreConnected]);
 
   return (
     <AuthProvider>
-      <HistoryRouter history={history}>
-        <Routes>
-          <Route path="*" element={<LayoutWithLocation />} />
-        </Routes>
-      </HistoryRouter>
+      <RoutesProvider>
+        <HistoryRouter history={history as any}>
+          <Routes>
+            <Route path="*" element={<DynamicLayout />} />
+          </Routes>
+        </HistoryRouter>
+      </RoutesProvider>
     </AuthProvider>
   );
 };
