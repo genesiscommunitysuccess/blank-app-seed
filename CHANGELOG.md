@@ -1,5 +1,35 @@
 # Changelog
 
+## [3.34.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.3...v3.34.0) (2024-11-01)
+
+
+### Features
+
+* 8.5 release (#374) 6317469
+* add genesis launcher (#356) 236417d
+* add webpack builder in react  (#350) 69c4c6b, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140
+* adding support for comments/todos in generated UI files GENC-857 (#364) ba999e8
+* allow excluding Gradle wrappers GENC-824 (#357) 5d90d1d
+* allow to simply control layout persistence in dev [FUI-2211](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2211) / GENC-871 (#363) c6fd6f5
+* pbc support in react [FUI-2140](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2140) (#347) 4c41243, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157
+* update react version (#358) 22bb0ad
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#354) d5b0de0
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#355) a33c5e8
+* home page url - react (#369) 388cf04
+* ignore project-zips folder CIDE-53 (#360) ddb86d5
+* reduce apiHost steps when using genx in prompt mode - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#343) f6ce411
+* reformat ReadMe layout & allow markdown in description GENC-845 (#361) a1b8972
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6f17702
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 31595f3
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3ed1109
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d26e635
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9dbc341
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a324936
+
 ## [3.33.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.2...v3.33.3) (2024-10-30)
 
 
