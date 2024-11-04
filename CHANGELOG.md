@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.34.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.0...v3.34.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* todo and comment formatting (GENC-853) (#376) 56a375c
+
 ## [3.34.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.3...v3.34.0) (2024-11-01)
 
 
