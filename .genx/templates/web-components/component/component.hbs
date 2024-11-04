@@ -5,13 +5,11 @@ import { {{pascalCase tile.title}}Template as template } from './{{kebabCase til
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /*
-{{#if tile.metadata.comment}}
-{{{ tile.metadata.comment }}}
-{{/if}}
+{{#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
 
-{{#if tile.metadata.todo}}
-TODO: {{{ tile.metadata.todo }}}
 {{/if}}
+TODO: {{{ tile.metadata.todo }}}{{/if}}
 */
 {{/ifAny}}
 
