@@ -3,18 +3,18 @@ import { customElement, GenesisElement } from '@genesislcap/web-core';
 import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
 import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 
+{{#ifAny tile.metadata.comment tile.metadata.todo}}
+/*
 {{#if tile.metadata.comment}}
-/*
 {{{ tile.metadata.comment }}}
-*/
-
 {{/if}}
+
 {{#if tile.metadata.todo}}
-/*
 TODO: {{{ tile.metadata.todo }}}
-*/
-
 {{/if}}
+*/
+{{/ifAny}}
+
 @customElement({
   name: '{{kebabCase tile.componentName}}',
   template,
