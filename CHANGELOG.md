@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.30.0-prerelease.34](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.33...v3.30.0-prerelease.34) (2024-11-04)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#375) a5d9161
+* back-porting todo formatting fix to prerelease branch GENC-853 (#377) 8d6f214
+
 ## [3.30.0-prerelease.33](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.32...v3.30.0-prerelease.33) (2024-10-29)
 
 
