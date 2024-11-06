@@ -2,7 +2,7 @@ ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
     `maven-publish`
-    id("global.genesis.genesis-launcher-gui")
+    id("global.genesis.genesis-start-gui")
 }
 
 subprojects {
