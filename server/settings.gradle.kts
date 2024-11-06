@@ -1,10 +1,10 @@
 pluginManagement {
     val genesisVersion: String by settings
-    val launcherVersion: String by settings
+    val startVersion: String by settings
 
     plugins {
         id("global.genesis.settings") version genesisVersion
-        id("global.genesis.genesis-launcher-gui") version launcherVersion
+        id("global.genesis.genesis-start-gui") version startVersion
     }
 
     repositories {
