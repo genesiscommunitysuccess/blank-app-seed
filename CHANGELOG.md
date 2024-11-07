@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.35.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.0...v3.35.1) (2024-11-07)
+
+
+### Bug Fixes
+
+* script name for react templat (GENC-892) (#388) 04e6935
+
 ## [3.35.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.4...v3.35.0) (2024-11-07)
 
 
