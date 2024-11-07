@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.35.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.4...v3.35.0) (2024-11-07)
+
+
+### Features
+
+* support base path in react app GENC-892 (#386) 71b299a
+
 ## [3.34.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.3...v3.34.4) (2024-11-06)
 
 
