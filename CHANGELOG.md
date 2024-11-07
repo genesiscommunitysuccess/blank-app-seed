@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.37...v3.30.0-prerelease.38) (2024-11-07)
+
+
+### Bug Fixes
+
+* script name for react template (GENC-892) (#388) (#389) 5764840
+
 ## [3.30.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.36...v3.30.0-prerelease.37) (2024-11-07)
 
 
