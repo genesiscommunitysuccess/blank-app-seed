@@ -1,5 +1,4 @@
 name: Ω Workflow - Upgrade dependencies
-name: Ω Workflow - Upgrade dependencies
 
 on:
   workflow_call:
