@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { RouteObject } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import isConnectedHelper from '@/helpers/isConnectedHelper';
 import isAuthenticatedHelper from '@/helpers/isAuthenticatedHelper';
 import hasPermissionHelper from '@/helpers/hasPermissionHelper';
@@ -30,13 +31,14 @@ const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { child
   const isAuthenticated: boolean | null = null;
   const route = routes.find(({ path }) => path === location.pathname);
   const hasPermission = route?.data?.permissionCode ? hasPermissionHelper(route.data?.permissionCode) : true;
+  const navigate = useNavigate();
 
   useEffect(() => {
     isConnectedHelper().then((connectedState: boolean): void => {
       setIsConnected(connectedState);
     });
   }, []);
-  
+
   useEffect((): void  => {
     if (isConnected === null) {
       return;
@@ -51,10 +53,10 @@ const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { child
       permissionState = PermissionState.UNKNOWN;
     } else if (hasPermission === false) {
       permissionState = PermissionState.DENIED;
-    } 
-    
+    }
+
     if (permissionState) {
-      window.location.href = `/${redirectUrlByPermissionState[permissionState]}`;
+      navigate(`/${redirectUrlByPermissionState[permissionState]}`);
     }
   }, [routes, isConnected, isAuthenticated, hasPermission]);
 
