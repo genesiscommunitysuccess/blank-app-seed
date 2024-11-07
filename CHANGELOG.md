@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.35.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.1...v3.35.2) (2024-11-07)
+
+
+### Bug Fixes
+
+* references in grid layout template GENC-910 (#391) 25fa964
+
 ## [3.35.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.0...v3.35.1) (2024-11-07)
 
 
