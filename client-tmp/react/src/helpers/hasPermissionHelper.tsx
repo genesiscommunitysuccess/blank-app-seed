@@ -1,10 +1,11 @@
 import { getUser } from '@genesislcap/foundation-user';
 
 const hasPermissionHelper = (permissionCode: string | undefined): boolean => {
-  const user = getUser();
+  if (!permissionCode) {
+    return true;
+  }
 
-  return !!(permissionCode && !user.hasPermission(permissionCode))
-
+  return getUser().hasPermission(permissionCode);
 };
 
 export default hasPermissionHelper;
