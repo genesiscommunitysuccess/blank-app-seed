@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.41](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.40...v3.30.0-prerelease.41) (2024-11-11)
+
+
+### Bug Fixes
+
+* react client - route level permissions - [FUI-2244](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2244) (#392) 6062254
+
 ## [3.30.0-prerelease.40](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.39...v3.30.0-prerelease.40) (2024-11-07)
 
 
