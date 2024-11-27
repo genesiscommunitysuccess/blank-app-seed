@@ -4,13 +4,12 @@ import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.ti
 import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
-/*
-{{#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
-
-{{/if}}
-TODO: {{{ tile.metadata.todo }}}{{/if}}
-*/
+/**
+{{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+ *{{/if}}
+ * TODO: {{{ tile.metadata.todo }}}{{/if}}
+ */
 {{/ifAny}}
 
 @customElement({

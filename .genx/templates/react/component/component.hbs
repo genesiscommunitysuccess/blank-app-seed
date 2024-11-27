@@ -26,13 +26,12 @@ import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridO
 import './{{pascalCase tile.title}}Component.css';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
-/*
-{{#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
-
-{{/if}}
-TODO: {{{ tile.metadata.todo }}}{{/if}}
-*/
+/**
+{{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+ *{{/if}}
+ * TODO: {{{ tile.metadata.todo }}}{{/if}}
+ */
 {{/ifAny}}
 
 export const {{pascalCase tile.componentName}}: React.FC = () => {
