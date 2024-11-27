@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.50](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.49...v3.30.0-prerelease.50) (2024-11-27)
+
+
+### Bug Fixes
+
+* align UI todo/comment code generation output with server code GENC-898 (#394) 7b4b3fa
+
 ## [3.30.0-prerelease.49](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.48...v3.30.0-prerelease.49) (2024-11-27)
 
 
