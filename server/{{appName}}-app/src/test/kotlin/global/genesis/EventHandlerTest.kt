@@ -1,5 +1,5 @@
 /**
- * Full documentation on event handler tests may be found here >> https://learn.genesis.global/docs/server/event-handler/testing/#simple-test
+ * Full documentation on event handler tests may be found here >> https://docs.genesis.global/docs/develop/server-capabilities/core-business-logic-event-handler/#testing
  */
 
 import global.genesis.db.rx.entity.multi.AsyncEntityDb

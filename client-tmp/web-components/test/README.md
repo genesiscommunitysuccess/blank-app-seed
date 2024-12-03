@@ -1,3 +1,3 @@
 # Test
 
-See [@genesislcap/foundation-testing](https://learn.genesis.global/docs/web/testing/foundation-testing/) for more information.
+See [@genesislcap/foundation-testing](https://docs.genesis.global/docs/develop/client-capabilities/testing/) for more information.
