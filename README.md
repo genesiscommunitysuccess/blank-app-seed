@@ -35,9 +35,7 @@ npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --
 
 ## Next steps
 
-To get a simple application running check the [Quick Start](https://learn.genesis.global/docs/getting-started/quick-start/) guide.
-
-If you need an introduction to the Genesis platform and its modules it's worth heading [here](https://learn.genesis.global/docs/getting-started/learn-the-basics/simple-introduction/).
+If you need an introduction to the Genesis platform and its modules it's worth heading [here](https://docs.genesis.global/docs/develop/platform-overview/).
 
 ## Project structure
 
