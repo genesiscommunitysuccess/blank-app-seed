@@ -37,7 +37,11 @@ npx -y @genesislcap/genx@latest init myapp -x -s ./blank-app-seed --enableSSO --
 
 If you need an introduction to the Genesis platform and its modules it's worth heading [here](https://docs.genesis.global/docs/develop/platform-overview/).
 
-## Project structure
+## Project Structure
+
+This project has been created from the Genesis Blank Application Seed. Our seeds allow users to quickly bootstrap
+their projects. Each seed adheres to strict Genesis best practices, and has passed numerous performance, compliance and
+accessibility checks.
 
 This project contains **server** and **client** directories which contain the server and client code respectively.
 

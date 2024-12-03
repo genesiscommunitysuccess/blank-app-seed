@@ -1,509 +1,204 @@
 # Changelog
 
-## [3.30.0-prerelease.57](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.56...v3.30.0-prerelease.57) (2024-12-03)
+## [3.35.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.1...v3.35.2) (2024-11-07)
 
 
 ### Bug Fixes
 
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#395) f97ef08
+* references in grid layout template GENC-910 (#391) 25fa964
 
-## [3.30.0-prerelease.56](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.55...v3.30.0-prerelease.56) (2024-12-03)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3f499f6
-
-## [3.30.0-prerelease.55](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.54...v3.30.0-prerelease.55) (2024-12-03)
+## [3.35.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.0...v3.35.1) (2024-11-07)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 44a331b
+* script name for react templat (GENC-892) (#388) 04e6935
 
-## [3.30.0-prerelease.54](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.53...v3.30.0-prerelease.54) (2024-11-28)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4c4361c
-
-## [3.30.0-prerelease.53](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.52...v3.30.0-prerelease.53) (2024-11-28)
+## [3.35.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.4...v3.35.0) (2024-11-07)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a5a99e5
+* support base path in react app GENC-892 (#386) 71b299a
 
-## [3.30.0-prerelease.52](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.51...v3.30.0-prerelease.52) (2024-11-27)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1ef5436
-
-## [3.30.0-prerelease.51](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.50...v3.30.0-prerelease.51) (2024-11-27)
+## [3.34.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.3...v3.34.4) (2024-11-06)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8c6bf54
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#384) 1606cc6
 
-## [3.30.0-prerelease.50](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.49...v3.30.0-prerelease.50) (2024-11-27)
-
-
-### Bug Fixes
-
-* align UI todo/comment code generation output with server code GENC-898 (#394) 7b4b3fa
-
-## [3.30.0-prerelease.49](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.48...v3.30.0-prerelease.49) (2024-11-27)
+## [3.34.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.2...v3.34.3) (2024-11-06)
 
 
 ### Bug Fixes
 
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#385) ac33c5a
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#379) 801dea5
 
-## [3.30.0-prerelease.48](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.47...v3.30.0-prerelease.48) (2024-11-27)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9f87b1e
-
-## [3.30.0-prerelease.47](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.46...v3.30.0-prerelease.47) (2024-11-27)
+## [3.34.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.1...v3.34.2) (2024-11-04)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 04c62fb
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#372) 5ca7166
 
-## [3.30.0-prerelease.46](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.45...v3.30.0-prerelease.46) (2024-11-25)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5be508f
-
-## [3.30.0-prerelease.45](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.44...v3.30.0-prerelease.45) (2024-11-25)
+## [3.34.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.0...v3.34.1) (2024-11-04)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a52ad4e
+* todo and comment formatting (GENC-853) (#376) 56a375c
 
-## [3.30.0-prerelease.44](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.43...v3.30.0-prerelease.44) (2024-11-21)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4178771
-
-## [3.30.0-prerelease.43](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.42...v3.30.0-prerelease.43) (2024-11-21)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 58044ba
-
-## [3.30.0-prerelease.42](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.41...v3.30.0-prerelease.42) (2024-11-18)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5e77a41
-
-## [3.30.0-prerelease.41](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.40...v3.30.0-prerelease.41) (2024-11-11)
-
-
-### Bug Fixes
-
-* react client - route level permissions - [FUI-2244](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2244) (#392) 6062254
-
-## [3.30.0-prerelease.40](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.39...v3.30.0-prerelease.40) (2024-11-07)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4f65917
-
-## [3.30.0-prerelease.39](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.38...v3.30.0-prerelease.39) (2024-11-07)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 10f2ab7
-
-## [3.30.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.37...v3.30.0-prerelease.38) (2024-11-07)
-
-
-### Bug Fixes
-
-* script name for react template (GENC-892) (#388) (#389) 5764840
-
-## [3.30.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.36...v3.30.0-prerelease.37) (2024-11-07)
-
-
-### Bug Fixes
-
-* references in grid layout template GENC-910 (#390) 64280fa
-
-## [3.30.0-prerelease.36](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.35...v3.30.0-prerelease.36) (2024-11-07)
+## [3.34.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.3...v3.34.0) (2024-11-01)
 
 
 ### Features
 
-* support base path in react app GENC-892 (#381) 388a44d
-
-## [3.30.0-prerelease.35](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.34...v3.30.0-prerelease.35) (2024-11-06)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#378) e4f3afb
-
-## [3.30.0-prerelease.34](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.33...v3.30.0-prerelease.34) (2024-11-04)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#375) a5d9161
-* back-porting todo formatting fix to prerelease branch GENC-853 (#377) 8d6f214
-
-## [3.30.0-prerelease.33](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.32...v3.30.0-prerelease.33) (2024-10-29)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6f17702
-
-## [3.30.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.31...v3.30.0-prerelease.32) (2024-10-29)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d26e635
-
-## [3.30.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.30...v3.30.0-prerelease.31) (2024-10-25)
-
-
-### Bug Fixes
-
-* home page url - react (#369) 388cf04
-
-## [3.30.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.29...v3.30.0-prerelease.30) (2024-10-22)
-
-
-### Features
-
-* adding support for comments/todos in generated UI files GENC-857 (#364) ba999e8
-
-## [3.30.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.28...v3.30.0-prerelease.29) (2024-10-21)
-
-
-### Features
-
-* update react version (#358) 22bb0ad
-
-## [3.30.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.27...v3.30.0-prerelease.28) (2024-10-18)
-
-
-### Features
-
-* allow to simply control layout persistence in dev [FUI-2211](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2211) / GENC-871 (#363) c6fd6f5
-
-## [3.30.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.26...v3.30.0-prerelease.27) (2024-10-17)
-
-
-### Features
-
-* allow excluding Gradle wrappers GENC-824 (#357) 5d90d1d
-
-## [3.30.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.25...v3.30.0-prerelease.26) (2024-10-16)
-
-
-### Features
-
+* 8.5 release (#374) 6317469
 * add genesis launcher (#356) 236417d
-
-## [3.30.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.24...v3.30.0-prerelease.25) (2024-10-16)
-
-
-### Bug Fixes
-
-* reformat ReadMe layout & allow markdown in description GENC-845 (#361) a1b8972
-
-## [3.30.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.23...v3.30.0-prerelease.24) (2024-10-14)
-
-
-### Bug Fixes
-
-* ignore project-zips folder CIDE-53 (#360) ddb86d5
-
-## [3.30.0-prerelease.23](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.22...v3.30.0-prerelease.23) (2024-10-08)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 31595f3
-
-## [3.30.0-prerelease.22](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.21...v3.30.0-prerelease.22) (2024-10-08)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9dbc341
-
-## [3.30.0-prerelease.21](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.20...v3.30.0-prerelease.21) (2024-10-08)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#355) a33c5e8
-
-## [3.30.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.19...v3.30.0-prerelease.20) (2024-10-04)
-
-
-### Bug Fixes
-
-* reduce apiHost steps when using genx in prompt mode - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#343) f6ce411
-
-## [3.30.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.18...v3.30.0-prerelease.19) (2024-10-03)
+* add webpack builder in react  (#350) 69c4c6b, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140
+* adding support for comments/todos in generated UI files GENC-857 (#364) ba999e8
+* allow excluding Gradle wrappers GENC-824 (#357) 5d90d1d
+* allow to simply control layout persistence in dev [FUI-2211](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2211) / GENC-871 (#363) c6fd6f5
+* pbc support in react [FUI-2140](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2140) (#347) 4c41243, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157
+* update react version (#358) 22bb0ad
 
 
 ### Bug Fixes
 
 * automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#354) d5b0de0
-
-## [3.30.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.17...v3.30.0-prerelease.18) (2024-09-30)
-
-
-### Bug Fixes
-
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#355) a33c5e8
+* home page url - react (#369) 388cf04
+* ignore project-zips folder CIDE-53 (#360) ddb86d5
+* reduce apiHost steps when using genx in prompt mode - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#343) f6ce411
+* reformat ReadMe layout & allow markdown in description GENC-845 (#361) a1b8972
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6f17702
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 31595f3
 * updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3ed1109
-
-## [3.30.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.16...v3.30.0-prerelease.17) (2024-09-30)
-
-
-### Bug Fixes
-
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d26e635
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9dbc341
 * updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a324936
 
-## [3.30.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.15...v3.30.0-prerelease.16) (2024-09-30)
-
-
-### Features
-
-* add webpack builder in react  (#350) 69c4c6b, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140 FUI-2140
-
-## [3.30.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.14...v3.30.0-prerelease.15) (2024-09-26)
-
-
-### Features
-
-* pbc support in react [FUI-2140](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2140) (#347) 4c41243, closes FUI-2173 FUI-2173 FUI-2173 FUI-2157 FUI-2157 origin/ak/FUI-2173 ak/FUI-2157 FUI-2157 FUI-2157
-
-## [3.30.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.13...v3.30.0-prerelease.14) (2024-09-26)
-
-
-### Features
-
-* replaced karma with jest in angular (#348) 805d7ec
-
-## [3.30.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.12...v3.30.0-prerelease.13) (2024-09-18)
+## [3.33.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.2...v3.33.3) (2024-10-30)
 
 
 ### Bug Fixes
 
-* update --nav-height value - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#345) 83894b1
+* prefix todo comment GENC-857 (#371) 1a0e8bf
 
-## [3.30.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.11...v3.30.0-prerelease.12) (2024-09-18)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d7eab5a
-
-## [3.30.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.10...v3.30.0-prerelease.11) (2024-09-18)
+## [3.33.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.1...v3.33.2) (2024-10-30)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) eabf8c7
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#370) ea23afa
 
-## [3.30.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.9...v3.30.0-prerelease.10) (2024-09-13)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#342) d255814
-
-## [3.30.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.8...v3.30.0-prerelease.9) (2024-09-12)
-
-
-### Features
-
-* integrate TypeScript support into react - [FUI-2157](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2157) (#338) ac55e1f
-
-## [3.30.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.7...v3.30.0-prerelease.8) (2024-09-11)
+## [3.33.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.33.0...v3.33.1) (2024-10-24)
 
 
 ### Bug Fixes
 
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 09ba9a2
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#365) 7e32096
 
-## [3.30.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.6...v3.30.0-prerelease.7) (2024-09-11)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5d4f8da
-
-## [3.30.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.5...v3.30.0-prerelease.6) (2024-09-10)
-
-
-### Features
-
-* product name specified with settings plugin property (#331) 082cea0
-
-## [3.30.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.4...v3.30.0-prerelease.5) (2024-09-09)
+## [3.33.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.32.0...v3.33.0) (2024-10-22)
 
 
 ### Bug Fixes
 
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#341) 1d38563
+* allow excluding Gradle wrappers GENC-824 (#366) 0980ff2, closes FUI-2211 FUI-2211
 
-## [3.30.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.3...v3.30.0-prerelease.4) (2024-09-06)
+## [3.32.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.31.1...v3.32.0) (2024-10-16)
+
+
+### Bug Fixes
+
+* add genesis launcher (#362) b4a6f7e
+
+## [3.31.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.31.0...v3.31.1) (2024-10-01)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#353) f3e5550
+
+## [3.31.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.2...v3.31.0) (2024-10-01)
 
 
 ### Features
 
 * add unit tests - [FUI-2173](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2173) (#332) a4168f3
-
-## [3.30.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.2...v3.30.0-prerelease.3) (2024-09-06)
-
-
-### Bug Fixes
-
-* update GSF and Auth dependency versions [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#336) d5d69e6
-
-## [3.30.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.1...v3.30.0-prerelease.2) (2024-09-06)
+* integrate TypeScript support into react - [FUI-2157](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2157) (#338) ac55e1f
+* product name specified with settings plugin property (#331) 082cea0
+* release 8.4.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#352) 8f3144e
+* replaced karma with jest in angular (#348) 805d7ec
 
 
 ### Bug Fixes
 
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#334) 3af309b
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#341) 1d38563
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#342) d255814
+* update --nav-height value - [FUI-2207](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2207) (#345) 83894b1
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d7eab5a
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 09ba9a2
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) eabf8c7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5d4f8da
 
-## [3.30.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.15...v3.30.0-prerelease.1) (2024-09-05)
+## [3.30.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.1...v3.30.2) (2024-09-13)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#344) 96e08ca
+
+## [3.30.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0...v3.30.1) (2024-09-09)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#340) 2780e56
+
+## [3.30.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.2...v3.30.0) (2024-09-06)
 
 
 ### Features
 
 * add entityLabel so toast popups tell us the type of entity added GENC-762 (#333) 692bda0
-
-## [3.29.1-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.14...v3.29.1-prerelease.15) (2024-09-05)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9e491e3
-
-## [3.29.1-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.13...v3.29.1-prerelease.14) (2024-09-05)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a9473e4
-
-## [3.29.1-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.12...v3.29.1-prerelease.13) (2024-09-05)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#328) 626c48b
-
-## [3.29.1-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.11...v3.29.1-prerelease.12) (2024-09-03)
-
-
-### Bug Fixes
-
-* update unit test commands in package.json (#329) 290a3ab
-
-## [3.29.1-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.10...v3.29.1-prerelease.11) (2024-08-28)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#323) aea0500
-
-## [3.29.1-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.9...v3.29.1-prerelease.10) (2024-08-23)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 940ebbc
-
-## [3.29.1-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.8...v3.29.1-prerelease.9) (2024-08-23)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fea6c6f
-
-## [3.29.1-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.7...v3.29.1-prerelease.8) (2024-08-23)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0fbf0b3
-
-## [3.29.1-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.6...v3.29.1-prerelease.7) (2024-08-20)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#321) b5d9dd9
-
-## [3.29.1-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.5...v3.29.1-prerelease.6) (2024-08-20)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f18c4cf
-
-## [3.29.1-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.4...v3.29.1-prerelease.5) (2024-08-16)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a2c959c
-
-## [3.29.1-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.3...v3.29.1-prerelease.4) (2024-08-16)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 872539b
-
-## [3.29.1-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.2...v3.29.1-prerelease.3) (2024-08-15)
-
-
-### Bug Fixes
-
-* useonlytemplatecols not enabled from create GENC-703 (#316) 93c9e9f
-
-## [3.29.1-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1-prerelease.1...v3.29.1-prerelease.2) (2024-08-15)
-
-
-### Bug Fixes
-
-* handling multiple hyphens when generating DB namespace PA-1361 (#317) ceda4bb
-
-## [3.29.1-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.0...v3.29.1-prerelease.1) (2024-08-14)
+* update to GSF 8.3 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#339) 442d9c7
 
 
 ### Bug Fixes
 
 * automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#314) 5070baa
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#321) b5d9dd9
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#323) aea0500
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#328) 626c48b
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#334) 3af309b
+* handling multiple hyphens when generating DB namespace PA-1361 (#317) ceda4bb
+* update GSF and Auth dependency versions [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#336) d5d69e6
+* update unit test commands in package.json (#329) 290a3ab
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9e491e3
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 940ebbc
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a9473e4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fea6c6f
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0fbf0b3
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f18c4cf
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a2c959c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 872539b
+* useonlytemplatecols not enabled from create GENC-703 (#316) 93c9e9f
+
+## [3.29.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.1...v3.29.2) (2024-08-15)
+
+
+### Bug Fixes
+
+* handling multiple hyphens when generating DB namespace PA-1361 (#318) 2dbaadb, closes PSD-9 PSD-9 PSD-0 PSD-0 PSD-0 PSD-0 PTC-0
+
+## [3.29.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.29.0...v3.29.1) (2024-08-14)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#313) 2b62917
 
 ## [3.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.28.6...v3.29.0) (2024-08-13)
 
