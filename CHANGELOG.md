@@ -1,5 +1,41 @@
 # Changelog
 
+## [3.36.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.2...v3.36.0) (2024-12-03)
+
+
+### Features
+
+* support base path in react app GENC-892 (#381) 388a44d
+* upgrading gsf 8.6.0 and fui 14.218.2 (#398) ee8fe72
+
+
+### Bug Fixes
+
+* align UI todo/comment code generation output with server code GENC-898 (#394) 7b4b3fa
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#375) a5d9161
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#378) e4f3afb
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#385) ac33c5a
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#395) f97ef08
+* back-porting todo formatting fix to prerelease branch GENC-853 (#377) 8d6f214
+* react client - route level permissions - [FUI-2244](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2244) (#392) 6062254
+* references in grid layout template GENC-910 (#390) 64280fa
+* script name for react template (GENC-892) (#388) (#389) 5764840
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3f499f6
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4c4361c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1ef5436
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9f87b1e
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5be508f
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4178771
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4f65917
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 44a331b
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a5a99e5
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8c6bf54
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 04c62fb
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a52ad4e
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 58044ba
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5e77a41
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 10f2ab7
+
 ## [3.35.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.1...v3.35.2) (2024-11-07)
 
 
