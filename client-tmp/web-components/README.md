@@ -46,9 +46,9 @@ npm run baseline
 
 ## Styling
 
-Genesis components are registered with a [Design System](https://learn.genesis.global/docs/web/design-systems/introduction/),
+Genesis components are registered with a Design System,
 and the default system is named `rapid`. Design systems are highly configurable. You can configure them by importing and
-modifying the tokens directly, or by using our [Design System Configuration](https://learn.genesis.global/docs/web/design-systems/preview/)
+modifying the tokens directly, or by using our [Design System Configuration](https://learn.genesis.global/docs/develop/client-capabilities/styling/direct-customization-genesis-components/styling-direct-dsc/)
 tool in the context of your application.
 
 Simply run the application, configure the design system, select Save Changes, and hit Save on popup, then restart your application.

@@ -10,4 +10,4 @@ By default, the main module will be detected by a module ending with -app.
 You can use the Genesis Gradle Settings plugin property `mainModuleName` to specify a custom name.
 The Genesis Settings plugin is configured in server/settings.gradle.kts with the `genesis` extension.
 
-For more details on project structures, see the [docs](https://learn.genesis.global/docs/operations/project-structure/introduction/).
+For more details on project structures, see the [docs](https://docs.genesis.global/docs/build-deploy-operate/build/project-structure/).
