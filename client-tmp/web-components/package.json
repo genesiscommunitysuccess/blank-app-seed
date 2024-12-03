@@ -89,12 +89,12 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
-    {{#if FDC3.includeDependencies}}
-    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
-    {{/if}}
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
+    {{#if FDC3.includeDependencies}}
+    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-inbox": "{{versions.UI}}",
@@ -120,6 +120,10 @@
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
+    {{#if FDC3.includeDependencies}}
+    "@genesislcap/foundation-fdc3": "{{versions.UI}}",
+    {{/if}}
+    "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-inbox": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
@@ -135,9 +139,6 @@
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
-    "@genesislcap/web-core": "{{versions.UI}}",
-    "@genesislcap/foundation-forms": {
-      "ajv": "8.14.0"
-    }
+    "@genesislcap/web-core": "{{versions.UI}}"
   }
 }

@@ -23,13 +23,12 @@ import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
-/*
-{{#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
-
-{{/if}}
-TODO: {{{ tile.metadata.todo }}}{{/if}}
-*/
+/**
+{{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+ *{{/if}}
+ * TODO: {{{ tile.metadata.todo }}}{{/if}}
+ */
 {{/ifAny}}
 
 @Component({

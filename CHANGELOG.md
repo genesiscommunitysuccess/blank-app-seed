@@ -17,7 +17,7 @@
 ## [3.35.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.34.4...v3.35.0) (2024-11-07)
 
 
-### Features
+### Bug Fixes
 
 * support base path in react app GENC-892 (#386) 71b299a
 
@@ -103,14 +103,14 @@
 ## [3.33.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.32.0...v3.33.0) (2024-10-22)
 
 
-### Features
+### Bug Fixes
 
 * allow excluding Gradle wrappers GENC-824 (#366) 0980ff2, closes FUI-2211 FUI-2211
 
 ## [3.32.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.31.1...v3.32.0) (2024-10-16)
 
 
-### Features
+### Bug Fixes
 
 * add genesis launcher (#362) b4a6f7e
 
