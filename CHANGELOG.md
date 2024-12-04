@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2024-12-04)
+
+
+### Features
+
+* Upgrading genesisStart to latest version (GENC-0) (#400) a66da20
+
 ## [3.30.0-prerelease.57](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.56...v3.30.0-prerelease.57) (2024-12-03)
 
 
