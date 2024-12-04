@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.37.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.36.0...v3.37.0) (2024-12-04)
+
+
+### Features
+
+* Upgrade Genesis Start version (GENC-0) (#401) b997a5f
+
 ## [3.36.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.35.2...v3.36.0) (2024-12-03)
 
 
