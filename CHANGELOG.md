@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2024-12-06)
+
+
+### Features
+
+* changes to upgrade to Kotlin 2.1.0 (GSF-5489) (#403) 37a8ac5
+* Upgrading genesisStart to latest version (GENC-0) (#400) a66da20
+
 ## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2024-12-04)
 
 
