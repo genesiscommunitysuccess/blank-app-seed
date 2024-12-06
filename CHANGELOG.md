@@ -11,6 +11,20 @@
 
 ### Bug Fixes
 
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1a02119
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1270506
+
+## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2024-12-06)
+
+
+### Features
+
+* changes to upgrade to Kotlin 2.1.0 (GSF-5489) (#403) 37a8ac5
+* Upgrading genesisStart to latest version (GENC-0) (#400) a66da20
+
+
+### Bug Fixes
+
 * updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1270506
 
 ## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2024-12-06)
