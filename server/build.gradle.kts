@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
@@ -14,9 +16,9 @@ subprojects {
     }
     tasks {
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions {
-                freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
-                jvmTarget = "17"
+            compilerOptions {
+                freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all", "-Xlambdas=indy")
+                jvmTarget = JvmTarget.JVM_17
             }
         }
     }
