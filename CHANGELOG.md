@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.38.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.37.0...v3.38.0) (2024-12-10)
+
+
+### Features
+
+* changes to upgrade to Kotlin 2.1.0 (GSF-5489) (#404) 821a9bf
+
 ## [3.37.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.36.0...v3.37.0) (2024-12-04)
 
 
