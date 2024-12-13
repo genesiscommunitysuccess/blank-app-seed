@@ -99,9 +99,5 @@
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"
-  },  
-  "overrides": {  
-    "@types/react": "npm:types-react@alpha",  
-    "@types/react-dom": "npm:types-react-dom@alpha"  
-  } 
+  }
 }
