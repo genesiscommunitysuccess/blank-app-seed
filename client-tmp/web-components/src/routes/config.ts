@@ -1,4 +1,5 @@
 import { Auth, Session } from '@genesislcap/foundation-comms';
+import { PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { defaultLoginConfig, LoginConfig } from '@genesislcap/foundation-login';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
 import { NavigationPhase, optional, Route } from '@genesislcap/web-core';
@@ -56,7 +57,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           configure(this.container, {
             hostPath: 'login',
             autoConnect: true,
-            defaultRedirectUrl: '{{kebabCase routes.[0].name}}',
+            defaultRedirectUrl: PUBLIC_PATH + '{{kebabCase routes.[0].name}}',
             ...ssoSettings,
           });
           return define({
