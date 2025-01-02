@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.38.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.38.1...v3.38.2) (2025-01-02)
+
+
+### Bug Fixes
+
+* adjust version [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#413) 9be3ef5
+
 ## [3.38.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.38.0...v3.38.1) (2025-01-02)
 
 
