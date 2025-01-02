@@ -12,6 +12,27 @@
 
 ### Bug Fixes
 
+* adjusting pre-release version (#411) 38c90ae
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#409) 43ba7f5
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8132cb0
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 76586e1
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1a02119
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e68b7f4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8b9d6ae
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1270506
+
+## [3.30.0-prerelease.58](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.57...v3.30.0-prerelease.58) (2025-01-02)
+
+
+### Features
+
+* bump to stable react 19 - [FUI-2273](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2273) (#407) 3e9df73
+* changes to upgrade to Kotlin 2.1.0 (GSF-5489) (#403) 37a8ac5
+* Upgrading genesisStart to latest version (GENC-0) (#400) a66da20
+
+
+### Bug Fixes
+
 * automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#409) 43ba7f5
 * updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8132cb0
 * updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 76586e1
