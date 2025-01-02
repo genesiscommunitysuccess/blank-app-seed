@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.61](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.60...v3.30.0-prerelease.61) (2025-01-02)
+
+
+### Bug Fixes
+
+* adjust pre-release version [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 0bcfdaa
+
 ## [3.30.0-prerelease.60](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.59...v3.30.0-prerelease.60) (2025-01-02)
 
 
