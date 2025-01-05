@@ -38,7 +38,7 @@ ${whenElse(
             entityLabel="{{ config.entityName }}"
             {{/if}}
             {{#if config.columns}}
-            :columns=${() => columnDefs }
+            :columns=${(x) => x.columns}
             {{/if}}
             {{#if config.modalPosition}}
             modal-position="{{ config.modalPosition }}"
