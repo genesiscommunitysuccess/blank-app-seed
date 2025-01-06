@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.64](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.63...v3.30.0-prerelease.64) (2025-01-06)
+
+
+### Features
+
+* ability to add custom events in entity-manager GENC-956 (#415) bb88d5c
+
 ## [3.30.0-prerelease.63](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.62...v3.30.0-prerelease.63) (2025-01-03)
 
 
