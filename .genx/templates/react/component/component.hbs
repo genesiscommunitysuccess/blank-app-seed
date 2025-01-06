@@ -7,6 +7,11 @@ import { getUser } from '@genesislcap/foundation-user';
 import { getViewUpdateRightComponent } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{/if}}
+{{#if tile.config.customEvents}}
+import { getConnect } from '@genesislcap/foundation-comms';
+import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
+import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
+{{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
 {{/if}}
@@ -50,7 +55,36 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
   {{#if tile.config.columns~}}
-  const columnDefs: typeof columnDefsTile = columnDefsTile;
+  const columnDefs: typeof columnDefsTile = [
+    ...columnDefsTile,
+    {{#if tile.config.customEvents}}
+    /**
+     * TODO: Update the action button's icon under `contentTemplate` below.
+     * More information about rapid-icon can be found at: https://docs.genesis.global/docs/develop/client-capabilities/presentation/client-presentation-icon/
+     **/
+    {{#each tile.config.customEvents}}
+    {
+      field: '',
+      headerName: '',
+      minWidth: 50,
+      maxWidth: 50,
+      pinned: 'right',
+      cellRenderer: RapidAgActionRenderer,
+      cellRendererParams: {
+        actionClick: async (rowData) => {
+          const { ROW_REF, ...DETAILS } = rowData;
+          const response = await getConnect().commitEvent("EVENT_{{this}}", {
+            DETAILS,
+          });
+        },
+        contentTemplate: `
+          <rapid-icon name="cog"></rapid-icon>
+        `,
+      } as ActionRendererParams,
+    },
+    {{/each}}
+    {{/if}}
+  ];
   {{/if}}
   {{#if tile.config.gridOptions~}}
   const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }

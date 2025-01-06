@@ -1,7 +1,16 @@
+import { Connect } from '@genesislcap/foundation-comms';
 import { User } from '@genesislcap/foundation-user';
-import { customElement, GenesisElement } from '@genesislcap/web-core';
+import { customElement, GenesisElement, observable } from '@genesislcap/web-core';
 import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
 import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
+{{#if tile.config.columns}}
+import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
+import { ColDef } from '@ag-grid-community/core';
+{{/if}}
+{{#if tile.config.customEvents}}
+import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
+import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
+{{/if}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
@@ -19,4 +28,38 @@ import { {{pascalCase tile.title}}Template as template } from './{{kebabCase til
 })
 export class {{pascalCase tile.componentName}} extends GenesisElement {
   @User user: User;
+  @Connect connect!: Connect;
+
+  {{#if tile.config.columns}}
+  @observable columns: ColDef[] = [
+    ...columnDefs,
+    {{#if tile.config.customEvents}}
+    /**
+     * TODO: Update the action button's icon under `contentTemplate` below.
+     * More information about rapid-icon can be found at: https://docs.genesis.global/docs/develop/client-capabilities/presentation/client-presentation-icon/
+     **/
+    {{#each tile.config.customEvents}}
+    {
+      field: '',
+      headerName: '',
+      minWidth: 50,
+      maxWidth: 50,
+      pinned: 'right',
+      cellRenderer: RapidAgActionRenderer,
+      cellRendererParams: <ActionRendererParams>{
+        actionClick: async (rowData) => {
+          const { ROW_REF, ...DETAILS } = rowData;
+          const response = await this.connect.commitEvent("EVENT_{{this}}", {
+            DETAILS,
+          });
+        },
+        contentTemplate: `
+          <rapid-icon name="cog"></rapid-icon>
+        `,
+      },
+    },
+    {{/each}}
+    {{/if}}
+  ];
+  {{/if}}
 }
