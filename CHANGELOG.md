@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.39.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.38.2...v3.39.0) (2025-01-07)
+
+
+### Features
+
+* ability to add custom events in entity-manager GENC-956 (#415) bb88d5c
+* bump to stable react 19 - [FUI-2273](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2273) (#407) 3e9df73
+* changes to upgrade to Kotlin 2.1.0 (GSF-5489) (#403) 37a8ac5
+* update main with 8.7 release ([PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0)) (#417) 638caf3
+* Upgrading genesisStart to latest version (GENC-0) (#400) a66da20
+
+
+### Bug Fixes
+
+* add tooltip to customEvent GENC-956 (#416) 8f302ec
+* adjust pre-release version [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 0bcfdaa
+* adjust pre-release version [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 38b707d
+* adjusting pre-release version (#411) 38c90ae
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#409) 43ba7f5
+* bump prerelease version [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#412) ad8cbee
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b744a95
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8132cb0
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 76586e1
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1a02119
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0234ea4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e68b7f4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8b9d6ae
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1270506
+
 ## [3.38.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.38.1...v3.38.2) (2025-01-02)
 
 
