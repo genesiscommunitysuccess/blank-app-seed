@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.65](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.64...v3.30.0-prerelease.65) (2025-01-07)
+
+
+### Bug Fixes
+
+* add tooltip to customEvent GENC-956 (#416) 8f302ec
+
 ## [3.30.0-prerelease.64](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.63...v3.30.0-prerelease.64) (2025-01-06)
 
 
