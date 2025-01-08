@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.39.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.1...v3.39.2) (2025-01-08)
+
+
+### Bug Fixes
+
+* customEvent tooltip update GENC-847 (#420) 32b1ca4
+
 ## [3.39.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.0...v3.39.1) (2025-01-08)
 
 
