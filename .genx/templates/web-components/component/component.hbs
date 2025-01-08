@@ -44,6 +44,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
       headerName: '',
       minWidth: 50,
       maxWidth: 50,
+      headerTooltip: '{{capitalCase this}}',
       pinned: 'right',
       cellRenderer: RapidAgActionRenderer,
       cellRendererParams: <ActionRendererParams>{
@@ -54,7 +55,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
           });
         },
         contentTemplate: `
-          <rapid-icon name="cog" tooltip="{{capitalCase this}}"></rapid-icon>
+          <rapid-icon name="cog"></rapid-icon>
         `,
       },
     },
