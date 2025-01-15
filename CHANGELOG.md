@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.69](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.68...v3.30.0-prerelease.69) (2025-01-15)
+
+
+### Features
+
+* use public path for navigation when available [FUI-2071](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2071) (#410) 5e6c1af
+
 ## [3.30.0-prerelease.68](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.67...v3.30.0-prerelease.68) (2025-01-08)
 
 
