@@ -11,7 +11,7 @@ import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`
   {{#if route.tiles}}
-  <rapid-layout auto-save-key="${() => persistLayout('{{route.layoutKey}}')}">
+  <rapid-layout ${ref('layout')} auto-save-key="${() => persistLayout('{{route.layoutKey}}')}">
      {{> (lookup ./route 'layoutType') }}
   </rapid-layout>
   {{else}}

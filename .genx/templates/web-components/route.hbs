@@ -10,8 +10,17 @@ import { {{pascalCase route.name}}Template as template } from './{{kebabCase rou
 })
 export class {{pascalCase route.name}} extends GenesisElement {
   @User user: User;
+  layout: FoundationLayout;
 
   constructor() {
     super();
+    this.loadGenesisCreateLayout();
+  }
+
+  loadGenesisCreateLayout(){
+    const dynamicLayout = '{{route.dynamicLayout}}',
+    if (!this.layout.tryLoadLayoutFromLocalStorage()) {
+      this.layout.loadLayout(dynamicLayout);
+    }
   }
 }
