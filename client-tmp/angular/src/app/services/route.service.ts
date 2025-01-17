@@ -18,8 +18,7 @@ export class RouteService {
     static routes: Routes = [
         {
             path: '',
-            redirectTo: `${AUTH_PATH}`,
-            pathMatch: 'full',
+            component: AuthLoginComponent,
         },
         {
             path: `${AUTH_PATH}`,

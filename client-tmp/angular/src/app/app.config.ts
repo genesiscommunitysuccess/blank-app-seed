@@ -1,6 +1,6 @@
 import type { LayoutComponentName } from './types/layout';
 
-export const AUTH_PATH = 'login'
+export const AUTH_PATH = ''
 export const NOT_PERMITTED_PATH = 'not-permitted'
 
 export const layoutComponentName = {
