@@ -43,4 +43,14 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
         : StandardLuminance.DarkMode,
     );
   };
+
+  // @todo: Workaround - foundation-auth should resolve this issue
+  onHeaderClick = (): void => {
+    if (window.location.pathname.includes('logout')) {
+      sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("sessionId");
+      window.location.reload();
+    }
+  }
 }

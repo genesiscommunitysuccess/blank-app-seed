@@ -1,6 +1,5 @@
 import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
-import { getUser } from '@genesislcap/foundation-user';
 import { css, DI } from '@genesislcap/web-core';
 import { AUTH_PATH } from '../app.config';
 import logo from '../../assets/logo.svg';
@@ -28,12 +27,12 @@ export const configureFoundationLogin = ({
   router: Router;
 }) => {
   configure(DI.getOrCreateDOMContainer(), {
-    // autoConnect: true, // < Guard in place to ensure connection. Keeping the connect form in place for now.
+    autoConnect: true, // < Guard in place to ensure connection. Keeping the connect form in place for now.
     autoAuth: true, // < Allow users to skip login
     showConnectionIndicator: true,
     hostPath: AUTH_PATH,
     redirectHandler: () => {
-      router.navigate([getUser().lastPath() ?? '{{kebabCase routes.[0].name}}'])
+      router.navigate(['home']);
     },
     ...ssoSettings,
     logo: css `
