@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { RouteObject } from 'react-router';
+import { RouteObject, useNavigate } from 'react-router';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
-import { useNavigate } from 'react-router-dom';
 import {
   baseLayerLuminance,
   StandardLuminance,
@@ -10,6 +9,9 @@ import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '@/pbc/elementsRenderer';
 import * as designTokens from '@/styles/design-tokens.json';
 import { useRoutesContext } from '@/store/RoutesContext';
+import { connectService } from '@/services/connect.service.ts';
+import { getUser } from '@genesislcap/foundation-user';
+import { AUTH_PATH } from '@/config';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -43,6 +45,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       );
     }
   };
+
+  if (!connectService.isConnected()) {
+    getUser().trackPath();
+    navigate(`/${AUTH_PATH}`)
+  }
   
   useEffect(() => {
     if (designSystemProviderRef.current) {
