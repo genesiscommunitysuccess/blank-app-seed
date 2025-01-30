@@ -1,7 +1,7 @@
 import { getUser, navigateTo } from '@genesislcap/foundation-auth';
 import { Connect } from '@genesislcap/foundation-comms';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
-import { GENESIS_SOCKET_URL } from '@genesislcap/foundation-utils';
+import { GENESIS_SOCKET_URL, PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { defaultLayout, loginLayout } from '../layouts';
 import { NotFound } from './not-found/not-found';
 import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
