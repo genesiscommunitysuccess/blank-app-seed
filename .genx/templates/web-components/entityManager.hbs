@@ -25,9 +25,7 @@ ${whenElse(
             {{#if config.deleteEvent}}
             deleteEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.deleteEvent }}')}"
             {{/if}}
-            {{#if config.gridOptions}}
-            :gridOptions=${() => gridOptions }
-            {{/if}}
+            :gridOptions=${() => ({ {{#if config.gridOptions}}...gridOptions, {{/if}}suppressRowTransform: true })}
             {{#if config.snapshot}}
             :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
             {{/if}}
