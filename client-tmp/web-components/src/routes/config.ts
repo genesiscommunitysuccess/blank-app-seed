@@ -47,7 +47,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         element: async () => {
           const { configure, defaultAuthConfig } = await import(
             '@genesislcap/foundation-auth/config'
-            );
+          );
           return configure({
             omitRoutes: ['request-account', 'forgot-password'],
             fields: {
