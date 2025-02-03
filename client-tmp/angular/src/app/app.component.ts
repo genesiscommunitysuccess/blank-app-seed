@@ -28,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private el: ElementRef,
     router: Router,
   ) {
+    // @ts-ignore
     configureFoundationAuth({ router, connectService: this.connect });
 
 

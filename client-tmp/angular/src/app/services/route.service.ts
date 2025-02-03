@@ -39,7 +39,7 @@ export class RouteService {
                 navItems: [
                     {
                         navId: 'header',
-                        title: '{{#if this.title}}{{this.title}}{{else}}{{this.name}}{{/if}}',
+                        title: '{{#if this.title}}{{capitalCase this.title}}{{else}}{{this.name}}{{/if}}',
                         icon: {
                             name: '{{this.icon}}',
                             variant: 'solid',
@@ -53,7 +53,7 @@ export class RouteService {
 
     /**
      * @privateRemarks
-     * The shell has access to context, so it's possible for it to return a pre-mapped framework variant of routes. 
+     * The shell has access to context, so it's possible for it to return a pre-mapped framework variant of routes.
      * In this iteration we're doing it inline, given the angular version may move and here we know the shape we need.
      */
     pbcRoutes(): Routes {

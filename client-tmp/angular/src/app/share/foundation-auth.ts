@@ -34,7 +34,7 @@ export const configureFoundationAuth = ({
 
       const lastPath = getUser().lastPath()?.replace(basePath, '');
 
-      router.navigate([lastPath || router.navigate([getUser().lastPath() ?? '{{kebabCase routes.[0].name}}'])]);
+      router.navigate([lastPath ?? '{{kebabCase routes.[0].name}}']);
     },
   });
 };
