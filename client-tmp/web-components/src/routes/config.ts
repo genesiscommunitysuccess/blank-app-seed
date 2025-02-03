@@ -104,5 +104,23 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
       },
       {{/each}}
     );
+
+    this.contributors.push({
+      navigate: async (phase) => {
+        const settings = phase.route.settings;
+
+        /**
+         * If the route is public or the user is authenticated don't block
+         */
+        if (settings?.public || this.user.isAuthenticated) {
+          return;
+        }
+
+        /**
+         * Otherwise route them to login
+         */
+        this.navigationPhaseLoginRedirect(phase);
+      },
+    });
   }
 }
