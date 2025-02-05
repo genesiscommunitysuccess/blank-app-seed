@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { RouteObject, Navigate } from 'react-router-dom';
+import { RouteObject, Navigate } from 'react-router';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import AuthPage from '@/pages/AuthPage/AuthPage';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';

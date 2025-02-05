@@ -1,6 +1,5 @@
 import { useState, useEffect, ReactNode } from 'react';
-import { RouteObject } from 'react-router';
-import { useNavigate } from 'react-router-dom';
+import {RouteObject, useNavigate} from 'react-router';
 import isConnectedHelper from '@/helpers/isConnectedHelper';
 import isAuthenticatedHelper from '@/helpers/isAuthenticatedHelper';
 import hasPermissionHelper from '@/helpers/hasPermissionHelper';
@@ -56,7 +55,11 @@ const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { child
     }
 
     if (permissionState) {
-      navigate(`/${redirectUrlByPermissionState[permissionState]}`);
+      const baseElement = document.querySelector('base');
+      const basePath = baseElement?.getAttribute('href') || '';
+
+      const redirect = `${basePath}${redirectUrlByPermissionState[permissionState]}`;
+      navigate(`/${redirect}`);
     }
   }, [routes, isConnected, isAuthenticated, hasPermission]);
 

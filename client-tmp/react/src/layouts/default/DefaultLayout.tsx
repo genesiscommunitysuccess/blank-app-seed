@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { RouteObject } from 'react-router';
+import { RouteObject, useNavigate } from 'react-router';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
-import { useNavigate } from 'react-router-dom';
 import {
   baseLayerLuminance,
   StandardLuminance,
@@ -10,6 +9,9 @@ import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '@/pbc/elementsRenderer';
 import * as designTokens from '@/styles/design-tokens.json';
 import { useRoutesContext } from '@/store/RoutesContext';
+import { connectService } from '@/services/connect.service.ts';
+import { getUser } from '@genesislcap/foundation-user';
+import { AUTH_PATH } from '@/config';
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -25,7 +27,6 @@ type ExtendedRouteObject = RouteObject & {
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
-  const foundationHeaderRef = useRef<HTMLElement>(null);
   const routes = useRoutesContext() as ExtendedRouteObject[];
   const navItems = getNavItems(routes.flatMap((route) => ({
     path: route.path || '',
@@ -43,25 +44,18 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       );
     }
   };
-  
+
+  if (!connectService.isConnected()) {
+    getUser().trackPath();
+    navigate(`/${AUTH_PATH}`)
+  }
+
   useEffect(() => {
     if (designSystemProviderRef.current) {
       configureDesignSystem(designSystemProviderRef.current, designTokens);
     }
 
-    const handleLuminanceIconClicked = () => {
-      onLuminanceToggle();
-    };
-
-    const foundationHeader = foundationHeaderRef.current;
-    if (foundationHeader) {
-      foundationHeader.addEventListener('luminance-icon-clicked', handleLuminanceIconClicked);
-    }
-
     return () => {
-      if (foundationHeader) {
-        foundationHeader.removeEventListener('luminance-icon-clicked', handleLuminanceIconClicked);
-      }
     };
   }, []);
 
@@ -71,7 +65,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
       <PBCElementsRenderer target={['layout-start']} />
       <foundation-header
-        ref={foundationHeaderRef}
+        onluminance-icon-clicked={onLuminanceToggle}
+        onlogout-clicked={() => navigate(`/${AUTH_PATH}`)}
         show-luminance-toggle-button
         show-misc-toggle-button
         routeNavItems={navItems}

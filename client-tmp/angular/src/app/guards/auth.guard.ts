@@ -9,7 +9,7 @@ export class AuthGuard extends PermissionsGuard {
   override async canActivate(): Promise<boolean> {
     if (!this.user.isAuthenticated) {
       this.user.trackPath();
-      this.router.navigate([`/${AUTH_PATH}`]);
+      await this.router.navigate([`/${AUTH_PATH}`]);
       return false;
     }
     return true;
