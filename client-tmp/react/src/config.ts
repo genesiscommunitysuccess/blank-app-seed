@@ -2,11 +2,11 @@ import { RouteLayouts } from './types/RouteLayouts';
 import { environment } from '@environment';
 
 export const routeLayouts: RouteLayouts = {
-  '/auth': 'blank',
+  '/login': 'blank',
   '/': 'blank',
 };
 
-export const AUTH_PATH = 'auth';
+export const AUTH_PATH = 'login';
 export const NOT_PERMITTED_PATH = 'not-permitted';
 
 export const API_DATA = {
