@@ -29,7 +29,6 @@ export const configureFoundationLogin = ({navigate}: { navigate: NavigateFunctio
       const url = GENESIS_SOCKET_URL;
       await connect.connect(url);
 
-      // const lastPath = getUser().lastPath()?.replace(basePath, '') || '';
       const redirectUrl = '/{{kebabCase routes.[0].name}}';
       navigate(redirectUrl);
     },
