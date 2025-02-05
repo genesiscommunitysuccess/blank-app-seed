@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.79](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.78...v3.30.0-prerelease.79) (2025-02-05)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f4b429c
+
 ## [3.30.0-prerelease.78](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.77...v3.30.0-prerelease.78) (2025-02-05)
 
 
