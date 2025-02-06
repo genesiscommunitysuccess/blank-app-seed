@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.30.0-prerelease.83](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.82...v3.30.0-prerelease.83) (2025-02-06)
+
+
+### Bug Fixes
+
+* revert changes from 8.9 (#430) 4133d7e, closes FUI-2196 PSD-9
+
 ## [3.30.0-prerelease.82](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.30.0-prerelease.81...v3.30.0-prerelease.82) (2025-02-06)
 
 
