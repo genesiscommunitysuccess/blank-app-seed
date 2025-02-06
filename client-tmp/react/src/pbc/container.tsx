@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, RouteObject } from 'react';
 import { deriveElementTag } from './utils';
 import { useRoutesContext } from '@/store/RoutesContext';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 type ExtendedRouteObject = RouteObject & {
   data?: {

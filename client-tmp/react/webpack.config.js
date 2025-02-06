@@ -7,7 +7,7 @@ module.exports = (env, argv) => {
   const https = process.env.HTTPS === 'true';
   const open = !(process.env.NO_OPEN === 'true');
   const environmentFile = mode === 'production'
-    ? 'environment.prod.ts'
+    ? 'environment.prod.ts' 
     : 'environment.ts';
   const environmentPath = resolve(__dirname, 'src/environments', environmentFile);
 
@@ -76,20 +76,6 @@ module.exports = (env, argv) => {
     ],
     devServer: {
       server: https ? 'https' : 'http',
-      proxy: [
-        {
-          context: "/sm",
-          "target": "{{apiHost}}",
-          "secure": false,
-          "pathRewrite": {"^/sm": ""},
-        },
-        {
-          context: "/gwf",
-          "target": "{{apiHost}}",
-          "secure": false,
-          "ws": true
-        }
-      ],
       open,
       static: {
         directory: join(__dirname, 'public'),

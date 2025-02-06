@@ -89,7 +89,6 @@
     "lint-staged": "^12.4.1"
   },
   "dependencies": {
-    "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
@@ -118,7 +117,6 @@
     "tslib": "^2.3.1"
   },
   "overrides": {
-    "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
@@ -141,7 +139,6 @@
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
-    "@genesislcap/web-core": "{{versions.UI}}",
-    "typescript": "5.6.3"
+    "@genesislcap/web-core": "{{versions.UI}}"
   }
 }
