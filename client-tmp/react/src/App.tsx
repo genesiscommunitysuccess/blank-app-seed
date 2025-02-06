@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import {Routes, Route, useLocation, BrowserRouter} from 'react-router';
+import { unstable_HistoryRouter as HistoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import {
+  history,
   setApiHost,
   getLayoutNameByRoute,
   {{#if FDC3.channels.length~}}
@@ -16,6 +17,7 @@ import { AuthProvider } from './store/AuthContext';
 import { RoutesProvider, useRoutesContext } from './store/RoutesContext';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
+import { configureFoundationLogin } from './share/foundation-login';
 import ProtectedGuard from './guards/ProtectedGuard';
 import { storeService } from '@/services/store.service';
 
@@ -31,8 +33,10 @@ const DynamicLayout = () => {
 
   useEffect(() => {
     handleRouteChange(location);
+    const unlisten = history.listen(handleRouteChange);
 
     return () => {
+      unlisten();
     }
   }, [location]);
 
@@ -78,6 +82,7 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
 
   setApiHost();
   genesisRegisterComponents();
+  configureFoundationLogin({ router: history });
 
   useEffect(() => {
     registerStylesTarget(document.body, 'main');
@@ -102,11 +107,11 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   return (
     <AuthProvider>
       <RoutesProvider>
-        <BrowserRouter>
+        <HistoryRouter history={history as any}>
           <Routes>
             <Route path="*" element={<DynamicLayout />} />
           </Routes>
-        </BrowserRouter>
+        </HistoryRouter>
       </RoutesProvider>
     </AuthProvider>
   );
