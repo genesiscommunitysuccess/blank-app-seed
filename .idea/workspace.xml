@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.genx/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.genx/versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="146e805a-da1a-4b6c-be36-cbf56573616d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="Git.Settings">
-    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="KotlinScriptingSettings" supportWarning="false">
     <scriptDefinition className="global.genesis.dictionary.pal.script.FieldsScript" definitionName="Genesis Fields Dictionary">
@@ -139,53 +132,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "prerelease",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "git-widget-placeholder": "ms/release8.8"
   }
 }]]></component>
   <component name="TaskManager">
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="HEAD" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="HEAD" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="e" />
-    <option name="LAST_COMMIT_MESSAGE" value="e" />
   </component>
 </project>
