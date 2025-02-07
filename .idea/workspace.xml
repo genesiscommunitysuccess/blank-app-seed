@@ -3,15 +3,6 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="ChangeListManager">
-    <list default="true" id="146e805a-da1a-4b6c-be36-cbf56573616d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
   <component name="KotlinScriptingSettings" supportWarning="false">
     <scriptDefinition className="global.genesis.dictionary.pal.script.FieldsScript" definitionName="Genesis Fields Dictionary">
       <order>15</order>
@@ -129,13 +120,5 @@
     <option name="FILTER_INFO" value="false" />
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "ms/release8.8"
-  }
-}]]></component>
-  <component name="TaskManager">
-    <servers />
   </component>
 </project>
