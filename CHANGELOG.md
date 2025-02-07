@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.1...v3.40.0-prerelease.2) (2025-02-07)
+
+
+### Bug Fixes
+
+* revert changes 65040e4
+
 ## [3.39.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.3...v3.39.4) (2025-01-16)
 
 
