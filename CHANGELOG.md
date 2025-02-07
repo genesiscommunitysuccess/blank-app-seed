@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.4...v3.40.0) (2025-02-07)
+
+
+### Features
+
+* release 8.8 (#434) 70c3337, closes PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 FUI-2071 PSD-0 PSD-0 PSD-0 PSD-9 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-0 PSD-9 PSD-9
+
 ## [3.39.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.3...v3.39.4) (2025-01-16)
 
 
