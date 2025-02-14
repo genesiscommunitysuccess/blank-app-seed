@@ -1,5 +1,5 @@
 import { getUser, navigateTo } from '@genesislcap/foundation-auth';
-import { Connect } from '@genesislcap/foundation-comms';
+import { Auth, Connect } from '@genesislcap/foundation-comms';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
 import { GENESIS_SOCKET_URL, PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { defaultLayout, loginLayout } from '../layouts';
@@ -28,6 +28,7 @@ const publicPath = typeof PUBLIC_PATH !== 'undefined' ? PUBLIC_PATH : '';
 
 export class MainRouterConfig extends FoundationRouterConfiguration<LoginSettings> {
   @Connect private connect: Connect;
+  @Auth private auth: Auth;
 
   async configure() {
     this.configureAnalytics();
