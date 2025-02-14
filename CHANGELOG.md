@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.2...v3.40.0-prerelease.3) (2025-02-14)
+
+
+### Features
+
+* use foundation-auth as default login [FUI-2196](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2196) (#427) abd0c48
+
 ## [3.40.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.1...v3.40.0-prerelease.2) (2025-02-07)
 
 
