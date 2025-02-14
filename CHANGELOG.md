@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.3...v3.40.0-prerelease.4) (2025-02-14)
+
+
+### Bug Fixes
+
+* include auth in config [FUI-2196](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2196) 1c549d5
+
 ## [3.40.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.2...v3.40.0-prerelease.3) (2025-02-14)
 
 
