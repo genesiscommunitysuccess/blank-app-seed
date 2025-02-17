@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0...v3.40.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* navigate to correct route when logout PA-1578 (#435) 5912467
+
 ## [3.40.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.39.4...v3.40.0) (2025-02-07)
 
 
