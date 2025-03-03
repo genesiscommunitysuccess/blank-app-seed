@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.11...v3.40.0-prerelease.12) (2025-03-03)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e897283
+
 ## [3.40.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.10...v3.40.0-prerelease.11) (2025-03-03)
 
 
