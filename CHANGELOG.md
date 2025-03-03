@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.9...v3.40.0-prerelease.10) (2025-03-03)
+
+
+### Bug Fixes
+
+* update versions build trigger f8783d3
+
 ## [3.40.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.8...v3.40.0-prerelease.9) (2025-02-20)
 
 
