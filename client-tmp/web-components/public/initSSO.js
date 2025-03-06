@@ -1,4 +1,4 @@
-// Set the appHostURL from which the providers are to be fetched.
+// Set the appHostURL from which the providers are to be fetched
 const appHostURL = `${location.protocol}//${location.host}/gwf/`;
 
 const fetchIDPs = async () => {
