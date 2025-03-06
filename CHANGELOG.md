@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.40.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.13...v3.40.0-prerelease.14) (2025-03-06)
+
+
+### Features
+
+* bump GSF to 8.9 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#436) 1295e2b
+
 ## [3.40.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.0-prerelease.12...v3.40.0-prerelease.13) (2025-03-04)
 
 
