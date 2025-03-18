@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.41.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.0...v3.41.1) (2025-03-18)
+
+
+### Bug Fixes
+
+* revert changes e50c69a
+* revert cookies (#438) 754f30a
+
 ## [3.41.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.40.1...v3.41.0) (2025-03-06)
 
 
