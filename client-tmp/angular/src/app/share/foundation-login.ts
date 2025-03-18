@@ -28,12 +28,10 @@ export const configureFoundationLogin = ({
   router: Router;
 }) => {
   configure(DI.getOrCreateDOMContainer(), {
-    // autoConnect: true, // < Guard in place to ensure connection. Keeping the connect form in place for now.
-    autoAuth: true, // < Allow users to skip login
-    showConnectionIndicator: true,
+    autoConnect: true,
     hostPath: AUTH_PATH,
     redirectHandler: () => {
-      router.navigate([getUser().lastPath() ?? '{{kebabCase routes.[0].name}}'])
+      router.navigate(['{{kebabCase routes.[0].name}}'])
     },
     ...ssoSettings,
     logo: css `
