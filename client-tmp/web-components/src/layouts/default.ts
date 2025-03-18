@@ -1,7 +1,5 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
 import type { FoundationRouter } from '@genesislcap/foundation-ui';
-import { FoundationRouteNav } from '@genesislcap/foundation-ui';
-import { PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { css, GenesisElementLayout, html } from '@genesislcap/web-core';
 import type { Store } from '../store';
 
@@ -44,8 +42,6 @@ export const defaultLayout = new GenesisElementLayout(
       <foundation-header
         show-luminance-toggle-button
         show-misc-toggle-button
-        @logout-clicked=${(x) =>
-          FoundationRouteNav.path.push(`${PUBLIC_PATH}/${x.config.loginPath}/logout`)}
         :routeNavItems=${(x) => x.config.getNavItems()}
       ></foundation-header>
       <div class="content">

@@ -1,14 +1,16 @@
-import { getUser, navigateTo } from '@genesislcap/foundation-auth';
-import { Auth, Connect } from '@genesislcap/foundation-comms';
+import { Auth, Session } from '@genesislcap/foundation-comms';
+import { defaultLoginConfig, LoginConfig } from '@genesislcap/foundation-login';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
-import { GENESIS_SOCKET_URL, PUBLIC_PATH } from '@genesislcap/foundation-utils';
+import { PUBLIC_PATH } from '@genesislcap/foundation-utils';
+import { NavigationPhase, optional, Route } from '@genesislcap/web-core';
 import { defaultLayout, loginLayout } from '../layouts';
-import { NotFound } from './not-found/not-found';
-import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
-import { LoginSettings } from './types';
+import { logger } from '../utils';
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
+import { NotFound } from './not-found/not-found';
+import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
+import { LoginSettings } from './types';
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -27,13 +29,17 @@ const ssoSettings =
 const publicPath = typeof PUBLIC_PATH !== 'undefined' ? PUBLIC_PATH : '';
 
 export class MainRouterConfig extends FoundationRouterConfiguration<LoginSettings> {
-  @Connect private connect: Connect;
-  @Auth private auth: Auth;
+  constructor(
+    @Auth private auth: Auth,
+    @Session private session: Session,
+    @optional(LoginConfig)
+    private loginConfig: LoginConfig = { ...defaultLoginConfig, autoAuth: true, autoConnect: true },
+  ) {
+    super();
+  }
 
   async configure() {
     this.configureAnalytics();
-    this.configureRoutePermittedChecks();
-    this.configureFallbackRouteDefinition();
     this.title = '{{capitalCase appName}}';
     this.defaultLayout = defaultLayout;
 
@@ -46,30 +52,21 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         name: 'login',
         title: 'Login',
         element: async () => {
-          const { configure, defaultAuthConfig } = await import(
-            '@genesislcap/foundation-auth/config'
+          const { configure, define } = await import(
+            /* webpackChunkName: "foundation-login" */
+            '@genesislcap/foundation-login'
           );
-          return configure({
-            omitRoutes: ['request-account', 'forgot-password'],
-            fields: {
-              ...defaultAuthConfig.fields,
-              username: {
-                ...defaultAuthConfig.fields.username,
-                pattern: '^[a-zA-Z0-9.@_:-]*$',
-              },
-            },
-            hostPath: this.loginPath,
-            postLoginRedirect: async () => {
-              await this.connect.connect(GENESIS_SOCKET_URL);
-              navigateTo(getUser().lastPath() ?? publicPath + '{{kebabCase routes.[0].name}}');
-            },
-            postLogoutRedirect: () => {
-              if (this.connect.isConnected) {
-                this.connect.disconnect();
-              }
-              defaultAuthConfig.postLogoutRedirect();
-            },
+          configure(this.container, {
+            hostPath: 'login',
+            autoConnect: true,
+            defaultRedirectUrl: publicPath + '{{kebabCase routes.[0].name}}',
             ...ssoSettings,
+          });
+          return define({
+            name: `{{rootElement}}-login`,
+            /**
+             * You can augment the template and styles here when needed.
+             */
           });
         },
         layout: loginLayout,
@@ -106,22 +103,70 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
       {{/each}}
     );
 
+    /**
+     * Example of a FallbackRouteDefinition
+     */
+    this.routes.fallback(() =>
+      this.auth.isLoggedIn ? { redirect: 'not-found' } : { redirect: authPath },
+    );
+
+    /**
+     * Example of a NavigationContributor
+     */
     this.contributors.push({
       navigate: async (phase) => {
         const settings = phase.route.settings;
 
         /**
-         * If the route is public or the user is authenticated don't block
+         * If public route don't block
          */
-        if (settings?.public || this.user.isAuthenticated) {
+        if (settings && settings.public) {
           return;
         }
 
         /**
-         * Otherwise route them to login
+         * If logged in don't block
          */
-        this.navigationPhaseLoginRedirect(phase);
+        if (this.auth.isLoggedIn) {
+          this.redirectIfNotPermitted(settings, phase);
+          return;
+        }
+
+        /**
+         * If allowAutoAuth and session is valid try to connect+auto-login
+         */
+        if (this.loginConfig.autoAuth && (await this.reAuthFromSession(settings, phase))) {
+          return;
+        }
+
+        /**
+         * Otherwise route them somewhere, like to a login
+         */
+        phase.cancel(() => {
+          this.session.captureReturnUrl();
+          Route.name.replace(phase.router, authPath);
+        });
       },
     });
+  }
+
+  private async reAuthFromSession(settings: LoginSettings, phase: NavigationPhase) {
+    return this.auth.reAuthFromSession().then((authenticated) => {
+      logger.info(`reAuthFromSession. authenticated: ${authenticated}`);
+      if (authenticated) {
+        this.redirectIfNotPermitted(settings, phase);
+      }
+      return authenticated;
+    });
+  }
+
+  private redirectIfNotPermitted(settings: LoginSettings, phase: NavigationPhase) {
+    const { path } = phase.route.endpoint;
+    if (settings?.isPermitted && !settings.isPermitted()) {
+      logger.warn(`Not permitted - Redirecting URL from ${path} to ${defaultNotPermittedRoute}.`);
+      phase.cancel(() => {
+        Route.name.replace(phase.router, defaultNotPermittedRoute);
+      });
+    }
   }
 }
