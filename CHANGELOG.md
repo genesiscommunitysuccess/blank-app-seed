@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.41.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.1...v3.41.2) (2025-03-20)
+
+
+### Bug Fixes
+
+* correct path for login redirect 4b06ecb
+* fix angular router e92e502
+* react and angular router fix (#439) 6c7a4da
+* react router fixes 1fd1742
+
 ## [3.41.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.0...v3.41.1) (2025-03-18)
 
 
