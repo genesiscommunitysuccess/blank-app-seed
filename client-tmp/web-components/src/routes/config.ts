@@ -59,7 +59,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           configure(this.container, {
             hostPath: 'login',
             autoConnect: true,
-            defaultRedirectUrl: publicPath + '{{kebabCase routes.[0].name}}',
+            defaultRedirectUrl: publicPath + '/{{kebabCase routes.[0].name}}',
             ...ssoSettings,
           });
           return define({
