@@ -19,7 +19,7 @@ const ssoSettings =
         autoAuth: true,
         sso: {
           toggled: true,
-          identityProvidersPath: 'sso/list',
+          identityProvidersPath: 'gwf/sso/list',
         },
       }
     : {};
@@ -61,7 +61,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
             hostPath: this.loginPath,
             postLoginRedirect: async () => {
               await this.connect.connect(GENESIS_SOCKET_URL);
-              navigateTo(getUser().lastPath() ?? publicPath + '{{kebabCase routes.[0].name}}');
+              navigateTo(getUser().lastPath() ?? publicPath + '/{{kebabCase routes.[0].name}}');
             },
             postLogoutRedirect: () => {
               if (this.connect.isConnected) {
