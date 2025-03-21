@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.41.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.2...v3.41.3) (2025-03-21)
+
+
+### Bug Fixes
+
+* react conflicting dependency ([FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0))  (#442) f950451
+* react dependency conflict 0e69189
+
 ## [3.41.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.1...v3.41.2) (2025-03-20)
 
 
