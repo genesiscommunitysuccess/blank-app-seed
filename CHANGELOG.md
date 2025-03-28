@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.8...v4.0.0-prerelease.9) (2025-03-28)
+
+
+### Bug Fixes
+
+* correct path for login redirect d2f5be8
+
 ## [4.0.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.7...v4.0.0-prerelease.8) (2025-03-27)
 
 
