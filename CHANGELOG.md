@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.3...v4.0.0) (2025-04-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update Gradle to version 8.10.2 (#443)
+
+### Features
+
+* release 8.10 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bd080aa
+* release 8.10 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#445) 702fa54
+
+
+### Build System
+
+* **deps:** update Gradle to version 8.10.2 (#443) 3bfd4c8
+
 ## [3.41.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.2...v3.41.3) (2025-03-21)
 
 
