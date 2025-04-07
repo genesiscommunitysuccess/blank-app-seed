@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0...v4.0.1) (2025-04-07)
+
+
+### Bug Fixes
+
+* use socket url that supports base path 7d349c0
+* use socket url that supports base path (#446) 39cbcab
+
 ## [4.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v3.41.3...v4.0.0) (2025-04-04)
 
 
