@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.1...v4.0.2) (2025-04-08)
+
+
+### Bug Fixes
+
+* webpack version change 19402bb
+* webpack version change (#447) eb33a82
+
 ## [4.0.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0...v4.0.1) (2025-04-07)
 
 
