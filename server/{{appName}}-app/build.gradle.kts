@@ -1,6 +1,7 @@
 dependencies {
     compileOnly(genesis("script-dependencies"))
     genesisGeneratedCode(withTestDependency = true)
+    genesisWeb("global.genesis:client")
     testImplementation(genesis("dbtest"))
     testImplementation(genesis("testsupport"))
     testImplementation(genesis("pal-eventhandler"))
