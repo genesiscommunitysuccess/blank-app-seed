@@ -61,8 +61,9 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
             hostPath: this.loginPath,
             postLoginRedirect: async () => {
               await this.connect.connect(GENESIS_SOCKET_URL);
-              const lastPath = getUser().lastPath() === `${publicPath}/` ? undefined : getUser().lastPath();
-              const defaultPath = publicPath + '/{{kebabCase routes.[0].name}}'
+              const lastPath =
+                getUser().lastPath() === `${publicPath}/` ? undefined : getUser().lastPath();
+              const defaultPath = publicPath + '/{{kebabCase routes.[0].name}}';
               navigateTo(lastPath ?? defaultPath);
             },
             postLogoutRedirect: () => {
