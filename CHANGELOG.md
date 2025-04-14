@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.14...v4.0.0-prerelease.15) (2025-04-14)
+
+
+### Bug Fixes
+
+* adding the deploy plugin instructions [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ebabb63
+* adding the deploy plugin instructions [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#448) 608b8e9
+* lint UI errors [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fbaa3a5
+
 ## [4.0.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.13...v4.0.0-prerelease.14) (2025-04-02)
 
 
