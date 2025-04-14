@@ -53,3 +53,4 @@ genesis {
 
 include("{{appName}}-app")
 includeBuild("../client")
+
