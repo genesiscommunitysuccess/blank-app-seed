@@ -2,7 +2,6 @@ import type { Router } from '@angular/router';
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
 import type { Connect } from '@genesislcap/foundation-comms';
 import { getUser } from '@genesislcap/foundation-user';
-import { GENESIS_SOCKET_URL } from '@genesislcap/foundation-utils';
 import { AUTH_PATH } from '../app.config';
 
 /**
@@ -23,7 +22,7 @@ export const configureFoundationAuth = ({ router, connectService,}: { router: Ro
     },
     hostPath: basePath + AUTH_PATH,
     postLoginRedirect: async () => {
-      const url = GENESIS_SOCKET_URL;
+      const url = API_HOST;
       await connectService.connect(url);
 
       const lastPath = getUser().lastPath()?.replace(basePath, '');
