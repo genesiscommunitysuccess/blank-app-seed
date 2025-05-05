@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.26...v4.0.0-prerelease.27) (2025-05-05)
+
+
+### Bug Fixes
+
+* proxy fixes for react 5dadf2b
+* proxy fixes for react (#451) 70e4bb4
+
 ## [4.0.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.25...v4.0.0-prerelease.26) (2025-05-05)
 
 
