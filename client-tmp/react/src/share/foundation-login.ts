@@ -1,7 +1,7 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
 import { getUser } from '@genesislcap/foundation-user';
 import { AUTH_PATH } from '@/config';
-import { GENESIS_SOCKET_URL } from '@genesislcap/foundation-utils';
+import { environment } from "@/environments/environment.ts";
 import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
 import type { NavigateFunction } from 'react-router';
@@ -26,7 +26,7 @@ export const configureFoundationLogin = ({navigate}: { navigate: NavigateFunctio
     },
     hostPath: basePath + AUTH_PATH,
     postLoginRedirect: async () => {
-      const url = GENESIS_SOCKET_URL;
+      const url = environment.API_HOST;
       await connect.connect(url);
 
       const redirectUrl = '/{{kebabCase routes.[0].name}}';
