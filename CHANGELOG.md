@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.27...v4.0.0-prerelease.28) (2025-05-05)
+
+
+### Bug Fixes
+
+* proxy fixes for angular 9ab6a4e
+* proxy fixes for angular (#452) 074802b
+
 ## [4.0.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.26...v4.0.0-prerelease.27) (2025-05-05)
 
 
