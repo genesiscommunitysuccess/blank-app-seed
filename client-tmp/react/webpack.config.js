@@ -78,16 +78,16 @@ module.exports = (env, argv) => {
       server: https ? 'https' : 'http',
       proxy: [
         {
-          context: "/sm",
-          "target": "{{apiHost}}",
-          "secure": false,
-          "pathRewrite": {"^/sm": ""},
-        },
-        {
           context: "/gwf",
-          "target": "{{apiHost}}",
-          "secure": false,
-          "ws": true
+          target: "{{apiHost}}",
+          pathRewrite: {"^/gwf": ""},
+          secure: false,
+          changeOrigin: true,
+          cookieDomainRewrite: 'localhost',
+          ws: true,
+          headers: {
+            origin: "{{apiHost}}",
+          }
         }
       ],
       open,
