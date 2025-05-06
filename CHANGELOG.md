@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.31...v4.0.0-prerelease.32) (2025-05-06)
+
+
+### Bug Fixes
+
+* add missing gradle files cf014af
+* add missing gradle files (#454) 4d6c6d5
+* add tabulator dependencies 3719dd7
+
 ## [4.0.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.30...v4.0.0-prerelease.31) (2025-05-06)
 
 
