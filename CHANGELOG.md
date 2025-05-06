@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.28...v4.0.0-prerelease.29) (2025-05-06)
+
+
+### Features
+
+* Add new REPORTING profile to seed (RPT-0) 3741569
+* Add new REPORTING profile to seed (RPT-0) (#453) a2b88a5
+
 ## [4.0.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.27...v4.0.0-prerelease.28) (2025-05-05)
 
 
