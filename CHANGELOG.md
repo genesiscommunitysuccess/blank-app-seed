@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.0-prerelease.33](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.32...v4.0.0-prerelease.33) (2025-05-06)
+
+
+### Bug Fixes
+
+* downgrade fui e3455c4
+* downgrade fui (#455) 76701cd
+
 ## [4.0.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.31...v4.0.0-prerelease.32) (2025-05-06)
 
 
