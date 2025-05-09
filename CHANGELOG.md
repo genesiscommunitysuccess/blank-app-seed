@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0-prerelease.36](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.35...v4.0.0-prerelease.36) (2025-05-09)
+
+
+### Bug Fixes
+
+* proxy fixes for angular and react to support base path 75f6bb8
+
 ## [4.0.0-prerelease.35](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.34...v4.0.0-prerelease.35) (2025-05-07)
 
 
