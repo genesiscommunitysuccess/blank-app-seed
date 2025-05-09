@@ -1,10 +1,9 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useEffect, ReactNode } from 'react';
 import {RouteObject, useNavigate} from 'react-router';
-import isConnectedHelper from '@/helpers/isConnectedHelper';
-import isAuthenticatedHelper from '@/helpers/isAuthenticatedHelper';
 import hasPermissionHelper from '@/helpers/hasPermissionHelper';
 import { useRoutesContext } from '@/store/RoutesContext';
 import { NOT_PERMITTED_PATH, AUTH_PATH } from '@/config';
+import { getUser } from '@genesislcap/foundation-user';
 
 enum PermissionState {
   ALLOWED = 'allowed',
@@ -33,35 +32,28 @@ const ProtectedGuard: React.FC<{ children: ReactNode }> = ({ children }: { child
   const navigate = useNavigate();
 
   useEffect(() => {
-    isConnectedHelper().then((connectedState: boolean): void => {
-      setIsConnected(connectedState);
-    });
+    if (!getUser().isAuthenticated){
+        getUser().trackPath();
+        navigate('/login')
+    }
   }, []);
 
   useEffect((): void  => {
-    if (isConnected === null) {
-      return;
-    }
 
-    const isAuthenticated = isAuthenticatedHelper();
-
-
+    const isAuthenticated = getUser().isAuthenticated;
     let permissionState;
 
-    if (!isConnected || !isAuthenticated) {
+    if (!isAuthenticated) {
       permissionState = PermissionState.UNKNOWN;
     } else if (hasPermission === false) {
       permissionState = PermissionState.DENIED;
     }
 
     if (permissionState) {
-      const baseElement = document.querySelector('base');
-      const basePath = baseElement?.getAttribute('href') || '';
-
-      const redirect = `${basePath}${redirectUrlByPermissionState[permissionState]}`;
-      navigate(`/${redirect}`);
+      const redirect = `${redirectUrlByPermissionState[permissionState]}`;
+      navigate(`${redirect}`);
     }
-  }, [routes, isConnected, isAuthenticated, hasPermission]);
+  }, [routes, isAuthenticated, hasPermission]);
 
   return children;
 };

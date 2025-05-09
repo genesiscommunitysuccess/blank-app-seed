@@ -10,6 +10,9 @@ module.exports = (env, argv) => {
     ? 'environment.prod.ts'
     : 'environment.ts';
   const environmentPath = resolve(__dirname, 'src/environments', environmentFile);
+  const apiPrefix = process.env.SOCKET_EXT || 'gwf';
+  const publicPath = process.env.PUBLIC_PATH || '/';
+  const apiBasePath = `${publicPath}${apiPrefix}`;
 
   return {
     mode,
@@ -78,9 +81,9 @@ module.exports = (env, argv) => {
       server: https ? 'https' : 'http',
       proxy: [
         {
-          context: "/gwf",
+          context: apiBasePath,
           target: "{{apiHost}}",
-          pathRewrite: {"^/gwf": ""},
+          pathRewrite: { [`^${apiBasePath}`]: '' },
           secure: false,
           changeOrigin: true,
           cookieDomainRewrite: 'localhost',
