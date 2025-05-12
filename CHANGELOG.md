@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.36...v4.0.0-prerelease.37) (2025-05-12)
+
+
+### Features
+
+* update to 8.11.0 GSF PDS-0 998a093
+* update to 8.11.0 GSF PDS-0 (#456) e3075f7
+
 ## [4.0.0-prerelease.36](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.35...v4.0.0-prerelease.36) (2025-05-09)
 
 
