@@ -72,7 +72,7 @@ tasks {
     assemble {
         dependsOn(npmAssemble)
     }
-    
+
     clean {
         dependsOn(npmClean)
     }

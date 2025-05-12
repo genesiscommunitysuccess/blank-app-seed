@@ -1,23 +1,37 @@
-import {configure, define} from '@genesislcap/foundation-login';
-import { DI } from '@genesislcap/web-core';
+import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
+import { getUser } from '@genesislcap/foundation-user';
 import { AUTH_PATH } from '@/config';
+import { environment } from "@/environments/environment.ts";
+import { Connect } from '@genesislcap/foundation-comms';
+import { DI } from '@genesislcap/web-core';
+import type { NavigateFunction } from 'react-router';
 
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = ({ navigate }:{ navigate: any }) => {
-  configure(DI.getOrCreateDOMContainer(), {
-    autoConnect: true,
-    autoAuth: true, // < Allow users to skip login
-    showConnectionIndicator: true,
-    hostPath: AUTH_PATH,
-    redirectHandler: () => {
-      const lastPath = '/{{kebabCase routes.[0].name}}';
-      navigate(lastPath);
-    },
-  });
+export const configureFoundationLogin = ({navigate}: { navigate: NavigateFunction}) => {
+  const baseElement = document.querySelector('base');
+  const basePath = baseElement?.getAttribute('href') || '';
+  const connect = DI.getOrCreateDOMContainer().get(Connect);
 
-  return define({
-    name: `client-app-login`,
-  });
+
+  configure({
+    name: 'client-app-login',
+    omitRoutes: ['request-account', 'forgot-password'],
+    fields: {
+      ...defaultAuthConfig.fields,
+      username: {
+        ...defaultAuthConfig.fields.username,
+      },
+    },
+    hostPath: basePath + AUTH_PATH,
+    postLoginRedirect: async () => {
+      const url = environment.API_HOST;
+      await connect.connect(url);
+
+      const redirectUrl = '/{{kebabCase routes.[0].name}}';
+      navigate(redirectUrl);
+    },
+  })
 }
+

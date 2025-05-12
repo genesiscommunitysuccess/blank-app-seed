@@ -7,9 +7,12 @@ module.exports = (env, argv) => {
   const https = process.env.HTTPS === 'true';
   const open = !(process.env.NO_OPEN === 'true');
   const environmentFile = mode === 'production'
-    ? 'environment.prod.ts' 
+    ? 'environment.prod.ts'
     : 'environment.ts';
   const environmentPath = resolve(__dirname, 'src/environments', environmentFile);
+  const apiPrefix = process.env.SOCKET_EXT || 'gwf';
+  const publicPath = process.env.PUBLIC_PATH || '/';
+  const apiBasePath = `${publicPath}${apiPrefix}`;
 
   return {
     mode,
@@ -76,6 +79,20 @@ module.exports = (env, argv) => {
     ],
     devServer: {
       server: https ? 'https' : 'http',
+      proxy: [
+        {
+          context: apiBasePath,
+          target: "{{apiHost}}",
+          pathRewrite: { [`^${apiBasePath}`]: '' },
+          secure: false,
+          changeOrigin: true,
+          cookieDomainRewrite: 'localhost',
+          ws: true,
+          headers: {
+            origin: "{{apiHost}}",
+          }
+        }
+      ],
       open,
       static: {
         directory: join(__dirname, 'public'),

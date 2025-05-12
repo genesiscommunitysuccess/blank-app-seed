@@ -45,10 +45,12 @@ genesis {
     }
 
     plugins {
-        genesisDeploy.enabled = {{ enableDeployPlugin }}
+        genesisDeploy.enabled = true
     }
 
 }
 
 
 include("{{appName}}-app")
+includeBuild("../client")
+

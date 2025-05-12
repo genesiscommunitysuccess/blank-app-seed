@@ -99,10 +99,13 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     };
   }, [isStoreConnected]);
 
+  const baseElement = document.querySelector('base');
+  const basePath = baseElement?.getAttribute('href') || '';
+
   return (
     <AuthProvider>
       <RoutesProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basePath}>
           <Routes>
             <Route path="*" element={<DynamicLayout />} />
           </Routes>

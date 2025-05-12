@@ -8,6 +8,10 @@ require('ts-node').register({
   }
 });
 
+const apiPrefix = process.env.SOCKET_EXT || 'gwf';
+const publicPath = process.env.PUBLIC_PATH || '/';
+const apiBasePath = `${publicPath}${apiPrefix}`;
+
 module.exports = {
   module: {
     rules: [
@@ -51,5 +55,23 @@ module.exports = {
   externals: {
     'foundationZero/ZeroDesignSystem': 'foundationZero/ZeroDesignSystem',
   },
+  devServer: {
+      proxy: [
+        {
+          context: apiBasePath,
+          target: "{{apiHost}}",
+          pathRewrite: { [`^${apiBasePath}`]: '' },
+          secure: false,
+          changeOrigin: true,
+          cookieDomainRewrite: 'localhost',
+          ws: true,
+          headers: {
+            origin: "{{apiHost}}",
+          }
+        }
+      ],
+      compress: true,
+      historyApiFallback: true,
+    },
 };
 
