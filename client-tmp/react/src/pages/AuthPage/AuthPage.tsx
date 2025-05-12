@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './AuthPage.css';
 import { configureFoundationLogin } from "@/share/foundation-login.ts";
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 
 const AuthPage: React.FC = () => {
     const navigate = useNavigate();

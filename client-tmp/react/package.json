@@ -7,7 +7,7 @@
   },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
-    "bootstrap": "npm i --legacy-peer-deps",
+    "bootstrap": "npm i",
     "bootstrap:ci": "npm ci --no-fund --no-audit",
     "build": "webpack --mode production",
     "build:vite": "vite build",
@@ -82,7 +82,6 @@
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
-    "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",
     "babel-loader": "^9.2.1",

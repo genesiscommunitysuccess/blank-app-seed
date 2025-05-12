@@ -29,15 +29,11 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
     configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
     registerStylesTarget(this.el.nativeElement, 'layout');
   }
-
+  
   navigateAngular = (path: string) => {
     this.router.navigate([path]);
   };
-
-  onLogout = () => {
-    this.router.navigate(['/login']);
-  };
-
+  
   onLuminanceToogle = (): void => {
     baseLayerLuminance.setValueFor(
       this.designSystemProviderElement.nativeElement,
