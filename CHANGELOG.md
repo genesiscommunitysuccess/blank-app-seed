@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.37...v4.0.0-prerelease.38) (2025-05-12)
+
+
+### Bug Fixes
+
+* add missing import for react 94dc8a8
+
 ## [4.0.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.0-prerelease.36...v4.0.0-prerelease.37) (2025-05-12)
 
 
