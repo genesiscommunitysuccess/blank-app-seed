@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Connect } from '@genesislcap/foundation-comms';
 import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 import type { LayoutComponentName } from './types/layout';
-import { configureFoundationLogin } from './share/foundation-login';
+import { configureFoundationAuth } from './share/foundation-auth';
 import { registerComponents } from './share/genesis-components';
 import { getStore } from './store';
 import { customEventFactory, registerStylesTarget } from '../pbc/utils';
@@ -20,11 +21,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   title = '{{capitalCase appName}}';
   store = getStore();
 
+  // @ts-ignore
+  @Connect connect: Connect;
+
   constructor(
     private el: ElementRef,
     router: Router,
   ) {
-      configureFoundationLogin({ router });
+    // @ts-ignore
+    configureFoundationAuth({ router, connectService: this.connect });
       
     // Set layout componet based on route
     router.events.subscribe((event: any) => {

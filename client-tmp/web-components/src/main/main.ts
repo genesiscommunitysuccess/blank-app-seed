@@ -2,13 +2,11 @@ import {
   Connect,
   ConnectConfig,
   defaultConnectConfig,
-  Session,
 } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
-import { GENESIS_SOCKET_URL } from '@genesislcap/foundation-utils';
 import {
   baseLayerLuminance,
   customElement,
@@ -45,7 +43,6 @@ const name = '{{rootElement}}';
 export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
   @App app: App;
   @Connect connect!: Connect;
-  @Session session!: Session;
   @Container container!: Container;
   @Store store: Store;
 
@@ -56,8 +53,6 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
   @observable data: any = null;
 
   async connectedCallback() {
-    // TODO: remove when using cookie-based auth
-    this.session.setSessionStorageItem('hostUrl', GENESIS_SOCKET_URL);
     this.registerDIDependencies();
     super.connectedCallback();
     this.addEventListeners();
