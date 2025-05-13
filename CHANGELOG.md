@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.0.0-prerelease.1...v5.0.0-prerelease.2) (2025-05-13)
+
+
+### Bug Fixes
+
+* add missing files + remove webpack GENC-0 27c51f0
+* add missing files + remove webpack GENC-0 (#458) 923e16c
+* lint error GENC-0 c9612b8
+
 ## [5.0.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.2...v5.0.0-prerelease.1) (2025-05-12)
 
 
