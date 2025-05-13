@@ -33,6 +33,10 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
   navigateAngular = (path: string) => {
     this.router.navigate([path]);
   };
+
+  onLogout = () => {
+    this.router.navigate(['/login']);
+  };
   
   onLuminanceToogle = (): void => {
     baseLayerLuminance.setValueFor(

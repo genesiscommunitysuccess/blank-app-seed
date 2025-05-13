@@ -36,7 +36,7 @@ const routes = [
       navItems: [
         {
           navId: 'header',
-          title: '{{#if this.title}}{{this.title}}{{else}}{{this.name}}{{/if}}',
+          title: '{{#if this.title}}{{sentenceCase this.title}}{{else}}{{sentenceCase this.name}}{{/if}}',
           icon: {
             name: '{{this.icon}}',
             variant: 'solid',

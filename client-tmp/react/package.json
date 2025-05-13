@@ -7,7 +7,7 @@
   },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
-    "bootstrap": "npm i",
+    "bootstrap": "npm i --legacy-peer-deps",
     "bootstrap:ci": "npm ci --no-fund --no-audit",
     "build": "webpack --mode production",
     "build:vite": "vite build",
