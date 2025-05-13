@@ -1,5 +1,4 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
-import { getUser } from '@genesislcap/foundation-user';
 import { AUTH_PATH } from '@/config';
 import { environment } from "@/environments/environment.ts";
 import { Connect } from '@genesislcap/foundation-comms';

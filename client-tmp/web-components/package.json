@@ -86,8 +86,7 @@
     "@types/node": "20.11.5",
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
-    "lint-staged": "^12.4.1",
-    "webpack": "5.99.0"
+    "lint-staged": "^12.4.1"
   },
   "dependencies": {
     "@genesislcap/foundation-auth": "{{versions.UI}}",
