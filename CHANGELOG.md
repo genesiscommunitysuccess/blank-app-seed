@@ -1,13 +1,79 @@
 # Changelog
 
-## [5.0.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.0.0-prerelease.1...v5.0.0-prerelease.2) (2025-05-13)
+## [5.0.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.2...v5.0.0) (2025-05-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update Gradle to version 8.10.2 (#443)
+* **deps:** update Gradle to version 8.10.2
+
+### Features
+
+* 8.11 Release (GENC-0) (#457) e5963d5
+* Add new REPORTING profile to seed (RPT-0) 3741569
+* Add new REPORTING profile to seed (RPT-0) (#453) a2b88a5
+* update to 8.11.0 GSF PDS-0 998a093
+* update to 8.11.0 GSF PDS-0 (#456) e3075f7
 
 
 ### Bug Fixes
 
-* add missing files + remove webpack GENC-0 27c51f0
-* add missing files + remove webpack GENC-0 (#458) 923e16c
-* lint error GENC-0 c9612b8
+* add missing gradle files cf014af
+* add missing gradle files (#454) 4d6c6d5
+* add missing import for react 94dc8a8
+* add tabulator dependencies 3719dd7
+* adding the deploy plugin instructions [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ebabb63
+* adding the deploy plugin instructions [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#448) 608b8e9
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 4599e1c
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) e5e0be7
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 915104f
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9)  (#440) b5d9c20
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9)  (#441) f5ef40a
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#444) 4aee519
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#450) d1d27d2
+* correct path for login redirect 7aa1a2e
+* correct path for login redirect d2f5be8
+* downgrade fui e3455c4
+* downgrade fui (#455) 76701cd
+* lint UI errors [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fbaa3a5
+* proxy fixes for angular 9ab6a4e
+* proxy fixes for angular (#452) 074802b
+* proxy fixes for angular and react to support base path 75f6bb8
+* proxy fixes for react 5dadf2b
+* proxy fixes for react (#451) 70e4bb4
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 14aced8
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1b14b07
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ca2c47c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) cd218d9
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e89838d
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6353214
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ddd50f3
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 26fbe38
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 70c1642
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7c83e14
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e012493
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 04c963c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4f91206
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 882ca11
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 285a901
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6ff0642
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) dce3d63
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3a63f11
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bc2ccf7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 262376a
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a2c634b
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a6406e3
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 040de3f
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2e81c63
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ba72ef9
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) df42df6
+
+
+### Build System
+
+* **deps:** update Gradle to version 8.10.2 d6db442
+* **deps:** update Gradle to version 8.10.2 (#443) d36be4d
 
 ## [5.0.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v4.0.2...v5.0.0-prerelease.1) (2025-05-12)
 
