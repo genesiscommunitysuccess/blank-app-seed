@@ -1,8 +1,4 @@
-import {
-  Connect,
-  ConnectConfig,
-  defaultConnectConfig,
-} from '@genesislcap/foundation-comms';
+import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
 import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
