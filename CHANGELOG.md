@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.0...v5.1.1) (2025-05-16)
+
+
+### Bug Fixes
+
+* tweak unnecessarily big max heap settings for gradle daemon (GENC-0) 3470a8e
+* tweak unnecessarily big max heap settings for gradle daemon (GENC-0) (#462) f191f03
+* tweak unnecessarily big max heap settings for gradle daemon (GENC-0) (#464) 51ed518
+
 ## [5.1.1-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.0...v5.1.1-prerelease.1) (2025-05-16)
 
 
