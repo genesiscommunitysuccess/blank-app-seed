@@ -66,7 +66,8 @@
     "typescript": "~5.4.5",
     "ts-node": "10.9.2",
     "dotenv": "16.4.5",
-    "@types/node": "20.14.11"
+    "@types/node": "20.14.11",
+    "angular-gridster2": "^19.0.0"
   },
   "dependencies": {
     "@angular/animations": "^18.0.4",

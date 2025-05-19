@@ -12,7 +12,11 @@
   </foundation-header>
   <section class="content">
     <pbc-elements-renderer [target]="['content-start']"></pbc-elements-renderer>
-    <router-outlet></router-outlet>
+    <gridster [options]="options">
+      <gridster-item *ngFor="let item of dashboard" [item]="item">
+        <ng-container *ngComponentOutlet="item.component"></ng-container>
+      </gridster-item>
+    </gridster>
     <pbc-elements-renderer [target]="['content', 'content-end']"></pbc-elements-renderer>
   </section>
   <pbc-elements-renderer [target]="['layout', 'layout-end']"></pbc-elements-renderer>

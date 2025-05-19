@@ -9,6 +9,7 @@ import { DefaultLayoutComponent } from './layouts/default/default.layout';
 import { BlankLayoutComponent } from './layouts/blank/blank.layout';
 import { LayoutLazyLoadDirective } from './directive/app-lazy-load.directive';
 import { RouteService } from './services/route.service';
+import { GridsterModule } from 'angular-gridster2';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RouteService } from './services/route.service';
     RouterModule.forRoot(RouteService.routes),
     PBCContainer,
     PBCElementsRenderer,
+    GridsterModule,
   ],
   providers: [
     RouteService,

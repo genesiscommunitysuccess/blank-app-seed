@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+// This file is generated from a Handlebars template for dynamic layout generation
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { configureDesignSystem, FoundationRouteNavItem } from '@genesislcap/foundation-ui';
 import { baseLayerLuminance, StandardLuminance } from '@genesislcap/web-core';
@@ -6,15 +7,26 @@ import * as designTokens from '../../../styles/design-tokens.json';
 import { RouteService } from '../../services/route.service';
 import BaseLayout from '../base.layout';
 import { registerStylesTarget } from '../../../pbc/utils';
+import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+
+{{#each route.tiles}}
+import { {{pascalCase this.componentName}} } from '../../components/{{kebabCase this.componentName}}/{{kebabCase this.componentName}}.component';
+{{/each}}
 
 @Component({
   selector: 'app-default-layout',
   templateUrl: './default.layout.html',
   styleUrls: ['./default.layout.css'],
 })
-export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit {
+export class DefaultLayoutComponent extends BaseLayout implements OnInit {
   @ViewChild('designSystemProvider') designSystemProviderElement!: ElementRef;
   navItems: FoundationRouteNavItem[] = [];
+  options: GridsterConfig;
+  dashboard: Array<GridsterItem & { component: any }> = [
+    {{#each route.tiles}}
+    { x: {{this.x}}, y: {{this.y}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{pascalCase this.componentName}} },
+    {{/each}}
+  ];
 
   constructor(
     private el: ElementRef,
@@ -28,6 +40,14 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
   ngAfterViewInit() {
     configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
     registerStylesTarget(this.el.nativeElement, 'layout');
+  }
+
+  ngOnInit() {
+    this.options = {
+      draggable: { enabled: true },
+      resizable: { enabled: true },
+      // ...other options as needed
+    };
   }
   
   navigateAngular = (path: string) => {
@@ -47,4 +67,4 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
         : StandardLuminance.DarkMode,
     );
   };
-}
+} 
