@@ -74,6 +74,18 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     );
   });
 
+  // --- ADD: Generate Angular default layout TypeScript file from .hbs template ---
+  if (framework === FRAMEWORK_ANGULAR_ALIAS) {
+    const layoutDir = '../../client/src/app/layouts/default';
+    makeDirectory(resolve(__dirname, layoutDir));
+    writeFileWithData(
+      resolve(__dirname, `${layoutDir}/default.layout.ts`),
+      { route },
+      resolve(__dirname, '../templates/angular/default.layout.ts.hbs')
+    );
+  }
+  // --- END ADD ---
+
   if (route?.tiles?.length) {
     route.tiles.forEach((tile) => {
       tile.metadata = tile.metadata || {};
