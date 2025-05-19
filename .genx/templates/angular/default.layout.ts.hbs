@@ -21,10 +21,10 @@ import { {{pascalCase this.componentName}} } from '../../components/{{kebabCase 
 export class DefaultLayoutComponent extends BaseLayout implements OnInit {
   @ViewChild('designSystemProvider') designSystemProviderElement!: ElementRef;
   navItems: FoundationRouteNavItem[] = [];
-  options: GridsterConfig;
+  options: GridsterConfig = {};
   dashboard: Array<GridsterItem & { component: any }> = [
     {{#each route.tiles}}
-    { x: {{this.x}}, y: {{this.y}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{pascalCase this.componentName}} },
+    { x: {{#if this.x}}{{this.x}}{{else}}{{@index}}{{/if}}, y: {{#if this.y}}{{this.y}}{{else}}0{{/if}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{pascalCase this.componentName}} },
     {{/each}}
   ];
 
