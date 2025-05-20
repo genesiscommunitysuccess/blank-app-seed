@@ -13,10 +13,10 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 {{#*inline "tileName"}}{{#if this.name}}{{kebabCase this.name}}{{else}}{{kebabCase this.title}}{{/if}}{{/inline}}
 
 {{!-- Helper for class name --}}
-{{#*inline "tileClassName"}}{{pascalCase route.name}}{{#if this.name}}{{pascalCase this.name}}{{else}}{{pascalCase this.title}}{{/if}}{{pascalCase this.type}}{{/inline}}
+{{#*inline "tileClassName"}}{{pascalCase name}}{{#if this.name}}{{pascalCase this.name}}{{else}}{{pascalCase this.title}}{{/if}}{{pascalCase this.type}}{{/inline}}
 
 {{#each route.tiles}}
-import { {{> tileClassName}} } from '../pages/{{kebabCase route.name}}/{{> tileName}}-{{kebabCase this.type}}/{{> tileName}}-{{kebabCase this.type}}.component';
+import { Analytics{{pascalCase (replace this.title "_" "")}}{{pascalCase this.type}} } from '../pages/{{kebabCase ../route.name}}/{{kebabCase this.title}}-{{kebabCase this.type}}/{{kebabCase this.title}}.component';
 {{/each}}
 
 @Component({
@@ -30,7 +30,7 @@ export class DefaultLayoutComponent extends BaseLayout implements OnInit {
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem & { component: any }> = [
     {{#each route.tiles}}
-    { x: {{#if this.x}}{{this.x}}{{else}}{{@index}}{{/if}}, y: {{#if this.y}}{{this.y}}{{else}}0{{/if}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{> tileClassName}} },
+    { x: {{#if this.x}}{{this.x}}{{else}}{{@index}}{{/if}}, y: {{#if this.y}}{{this.y}}{{else}}0{{/if}}, cols: 1, rows: 1, label: '{{this.title}}', component: Analytics{{pascalCase (replace this.title "_" "")}}{{pascalCase this.type}} },
     {{/each}}
   ];
 
