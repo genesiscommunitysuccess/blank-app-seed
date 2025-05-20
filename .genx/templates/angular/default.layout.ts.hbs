@@ -13,10 +13,10 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 {{#*inline "tileName"}}{{#if this.name}}{{kebabCase this.name}}{{else}}{{kebabCase this.title}}{{/if}}{{/inline}}
 
 {{!-- Helper for class name --}}
-{{#*inline "tileClassName"}}{{pascalCase ../name}}{{#if this.name}}{{pascalCase this.name}}{{else}}{{pascalCase this.title}}{{/if}}{{pascalCase this.type}}{{/inline}}
+{{#*inline "tileClassName"}}{{pascalCase route.name}}{{#if this.name}}{{pascalCase this.name}}{{else}}{{pascalCase this.title}}{{/if}}{{pascalCase this.type}}{{/inline}}
 
 {{#each route.tiles}}
-import { {{> tileClassName}} } from '../pages/{{kebabCase ../name}}/{{> tileName}}-{{kebabCase this.type}}/{{> tileName}}-{{kebabCase this.type}}.component';
+import { {{> tileClassName}} } from '../pages/{{kebabCase route.name}}/{{> tileName}}-{{kebabCase this.type}}/{{> tileName}}-{{kebabCase this.type}}.component';
 {{/each}}
 
 @Component({
