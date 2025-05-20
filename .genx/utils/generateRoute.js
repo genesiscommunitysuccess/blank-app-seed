@@ -80,7 +80,7 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     makeDirectory(resolve(__dirname, layoutDir));
     writeFileWithData(
       resolve(__dirname, `${layoutDir}/default.layout.ts`),
-      { route },
+      { ...route, route },
       resolve(__dirname, '../templates/angular/default.layout.ts.hbs')
     );
   }
