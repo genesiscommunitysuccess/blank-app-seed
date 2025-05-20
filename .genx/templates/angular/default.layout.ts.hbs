@@ -10,7 +10,7 @@ import { registerStylesTarget } from '../../../pbc/utils';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 
 {{#each route.tiles}}
-import { {{pascalCase this.componentName}} } from '../../components/{{kebabCase this.componentName}}/{{kebabCase this.componentName}}.component';
+import { {{pascalCase ../name}}{{pascalCase this.name}}{{pascalCase this.type}} } from '../pages/{{kebabCase ../name}}/{{kebabCase this.name}}-{{kebabCase this.type}}/{{kebabCase this.name}}-{{kebabCase this.type}}.component';
 {{/each}}
 
 @Component({
@@ -24,7 +24,7 @@ export class DefaultLayoutComponent extends BaseLayout implements OnInit {
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem & { component: any }> = [
     {{#each route.tiles}}
-    { x: {{#if this.x}}{{this.x}}{{else}}{{@index}}{{/if}}, y: {{#if this.y}}{{this.y}}{{else}}0{{/if}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{pascalCase this.componentName}} },
+    { x: {{#if this.x}}{{this.x}}{{else}}{{@index}}{{/if}}, y: {{#if this.y}}{{this.y}}{{else}}0{{/if}}, cols: 1, rows: 1, label: '{{this.title}}', component: {{pascalCase ../name}}{{pascalCase this.name}}{{pascalCase this.type}} },
     {{/each}}
   ];
 
