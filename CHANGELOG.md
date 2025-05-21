@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.1...v5.1.2) (2025-05-21)
+
+
+### Bug Fixes
+
+* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8c7a465
+* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#466) 4a3fe05
+* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#467) 7ee25b6
+
 ## [5.1.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.1...v5.1.2-prerelease.1) (2025-05-21)
 
 
