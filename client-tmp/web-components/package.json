@@ -98,10 +98,8 @@
     {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
-    "@genesislcap/foundation-inbox": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
-    "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
@@ -130,10 +128,8 @@
     {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
-    "@genesislcap/foundation-inbox": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
-    "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
