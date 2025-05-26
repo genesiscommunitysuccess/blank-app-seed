@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.1.2-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.1...v5.1.2-prerelease.2) (2025-05-26)
+
+
+### Bug Fixes
+
+* removed deprecated package inbox 118fb20
+* removed deprecated package inbox (#468) a6f2e42
+* removed deprecated package login 04aa0bc
+* removed deprecated package login 5870b1a
+
 ## [5.1.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.1...v5.1.2-prerelease.1) (2025-05-21)
 
 
