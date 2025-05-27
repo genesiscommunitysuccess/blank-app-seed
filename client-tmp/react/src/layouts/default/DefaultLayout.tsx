@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import { RouteObject, useNavigate } from 'react-router';
+import React, { useEffect, useRef } from 'react';
+import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
 import {
   baseLayerLuminance,
@@ -10,10 +10,9 @@ import PBCElementsRenderer from '@/pbc/elementsRenderer';
 import * as designTokens from '@/styles/design-tokens.json';
 import { useRoutesContext } from '@/store/RoutesContext';
 import { AUTH_PATH } from '@/config';
+import { LOGOUT_URL } from '@genesislcap/foundation-utils';
 
-interface DefaultLayoutProps {
-  children: ReactNode;
-}
+interface DefaultLayoutProps {}
 
 type ExtendedRouteObject = RouteObject & {
   data?: {
@@ -22,7 +21,7 @@ type ExtendedRouteObject = RouteObject & {
   path: string;
 }
 
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const routes = useRoutesContext() as ExtendedRouteObject[];
@@ -59,7 +58,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       <PBCElementsRenderer target={['layout-start']} />
       <foundation-header
         onluminance-icon-clicked={onLuminanceToggle}
-        onlogout-clicked={() => navigate(`/${AUTH_PATH}`)}
+        logout={async () => {
+          await fetch(LOGOUT_URL);
+          window.location.reload()
+        }}
         show-luminance-toggle-button
         show-misc-toggle-button
         routeNavItems={navItems}
@@ -68,7 +70,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       </foundation-header>
       <section className={styles['content']}>
         <PBCElementsRenderer target={['content-start']} />
-        {children}
+        <Outlet />
         <PBCElementsRenderer target={['content', 'content-end']} />
       </section>
       <PBCElementsRenderer target={['layout', 'layout-end']} />
