@@ -3,12 +3,18 @@ import { AUTH_PATH } from '@/config';
 import { environment } from "@/environments/environment.ts";
 import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
-import type { NavigateFunction } from 'react-router';
+import type { NavigateFunction, Location as RouterLocation } from 'react-router-dom';
+
+interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}
 
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = ({navigate}: { navigate: NavigateFunction}) => {
+export const configureFoundationLogin = ({navigate, location}: { navigate: NavigateFunction, location: RouterLocation<LocationState>}) => {
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
   const connect = DI.getOrCreateDOMContainer().get(Connect);
@@ -27,9 +33,8 @@ export const configureFoundationLogin = ({navigate}: { navigate: NavigateFunctio
     postLoginRedirect: async () => {
       const url = environment.API_HOST;
       await connect.connect(url);
-
-      const redirectUrl = '/{{kebabCase routes.[0].name}}';
-      navigate(redirectUrl);
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true });
     },
   })
 }
