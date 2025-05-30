@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.2-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.2...v5.1.2-prerelease.3) (2025-05-30)
+
+
+### Bug Fixes
+
+* react router fixes b6d4754
+* react router fixes (#469) 12e9d1e
+
 ## [5.1.2-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.1...v5.1.2-prerelease.2) (2025-05-26)
 
 
