@@ -13,7 +13,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
   {{#if config.permissions.updateRight~}}
   createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
   {{else~}}
-  createEvent="{{ config.updateEvent }}"
+  createEvent="{{ config.createEvent }}"
   {{/if}}
   {{#if config.createFormUiSchema~}}
   createFormUiSchema={createFormSchema}
