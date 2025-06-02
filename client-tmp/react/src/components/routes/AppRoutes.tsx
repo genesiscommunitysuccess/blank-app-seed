@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from '../../pages/AuthPage/AuthPage';
-import Home from '../../pages/Home/Home';
+import {{pascalCase routes.[0].name}} from '@/pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';
 import DefaultLayout from '../../layouts/default/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
 import { useRoutesContext } from '@/store/RoutesContext';
@@ -14,7 +14,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<AuthPage />} />
       <Route path="/" element={<Navigate to="/{{kebabCase routes.[0].name}}" replace />} />
       <Route element={<DefaultLayout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<{{pascalCase routes.[0].name}} />} />
         {routes.map(route => (<Route
             key={route.path}
             path={route.path}
