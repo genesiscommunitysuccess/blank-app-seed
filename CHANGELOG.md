@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.2-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.4...v5.1.2-prerelease.5) (2025-06-02)
+
+
+### Bug Fixes
+
+* react bug fixes fd97f2b
+* react bug fixes (#471) b3bafdb
+
 ## [5.1.2-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.3...v5.1.2-prerelease.4) (2025-06-02)
 
 
