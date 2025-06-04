@@ -1,6 +1,6 @@
 <rapid-layout-region>
     {{#each route.tiles}}
-    <rapid-layout-item title="{{this.title}}">
+    <rapid-layout-item title="{{this.title}}" registration="{{this.title}}">
         <{{kebabCase this.componentName}}></{{kebabCase this.componentName}}>
     </rapid-layout-item>
     {{/each}}
