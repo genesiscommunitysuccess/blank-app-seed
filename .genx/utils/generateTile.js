@@ -17,6 +17,8 @@ const defaultPathGetters = {
     `${componentPath}/${tile.name}.column.defs.ts`,
   gridOptions: (componentPath, tile) =>
     `${componentPath}/${tile.name}.gridOptions.ts`,
+  customEventForm: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.events.config.ts`,
 };
 
 const getPathByFramework = {
@@ -81,6 +83,7 @@ const getFilesToWrite = (
     updateForm: getUpdateFormTarget,
     columnDefs: getColumnDefsTarget,
     gridOptions: getGridOptionsTarget,
+    customEventForm: getCustomEventFormTarget,
   } = path;
 
   const routeDir = getRouteDir(clientSrcPath, tileData, routeName, changeCase);
@@ -120,6 +123,11 @@ const getFilesToWrite = (
     target: getGridOptionsTarget(routeDir, tileData, changeCase),
   };
 
+  const componentCustomEventFormFile = {
+    source: `${sourceTemplateDir}/component/component.events.config.hbs`,
+    target: getCustomEventFormTarget(routeDir, tileData),
+  };
+
   const filesToWrite = [componentIndexFile, componentFile, componentStylesFile];
 
   if (getTemplateTarget) {
@@ -142,6 +150,9 @@ const getFilesToWrite = (
       }
       if (tileData.config?.updateFormUiSchema) {
         filesToWrite.push(componentUpdateFormFile);
+      }
+      if (tileData.config?.customEvents?.some(event => event.hasForm)) {
+        filesToWrite.push(componentCustomEventFormFile);
       }
       break;
     case 'grid-pro':
