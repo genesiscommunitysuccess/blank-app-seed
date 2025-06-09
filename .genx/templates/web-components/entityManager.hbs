@@ -63,7 +63,7 @@ ${whenElse(
                 resourceName=${(x) => x.getCustomEventResourceName()}
                 :uischema=${(x) => x.getCustomEventUiSchema()}
                 :data=${(x) => x.customEventFormData}
-                @submit=${(x) => x.handleCustomEventSubmit()}
+                @submit-success=${(x) => x.handleCustomEventSubmit()}
               ></foundation-form>
             `,
           )}
