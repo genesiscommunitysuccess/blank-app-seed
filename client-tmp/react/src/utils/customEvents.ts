@@ -33,19 +33,25 @@ interface DefaultValues {
 
 export const mapDefaultValues = (
   defaultValues: DefaultValues,
-  rowData: any,
+  rowData: any
 ): Record<string, any> =>
-  Object.entries(defaultValues).reduce((acc, [key, value]) => ({
-    ...acc,
-    [key]:
-      (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record')
-        ? rowData[(value as RecordTypeValue).mapping || key]
-        : value,
-  }), {});
+  Object.entries(defaultValues).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]:
+        typeof value === 'object' &&
+        value !== null &&
+        'type' in value &&
+        value.type === 'record'
+          ? rowData[(value as RecordTypeValue).mapping || key]
+          : value,
+    }),
+    {}
+  );
 
 export const executeCustomEvent = async (
   customEvent: CustomEvent,
-  rowData: any,
+  rowData: any
 ): Promise<void> => {
   const payload = customEvent.defaultValues
     ? mapDefaultValues(customEvent.defaultValues, rowData)
@@ -58,7 +64,7 @@ export const executeCustomEvent = async (
 
 export const showCustomEventConfirmation = (
   customEvent: CustomEvent,
-  onConfirm: () => Promise<void>,
+  onConfirm: () => Promise<void>
 ): void => {
   showNotificationDialog(
     {
@@ -81,23 +87,30 @@ export const showCustomEventConfirmation = (
   );
 };
 
-export const useCustomEvent = (
-  customEvent: CustomEvent,
-  rowData: any,
-  setFormData: (data: Record<string, any>) => void,
-  setActiveEvent: (event: CustomEventState | null) => void
-) => async () => {
+export const useCustomEvent =
+  (
+    customEvent: CustomEvent,
+    rowData: any,
+    setFormData: (data: Record<string, any>) => void,
+    setActiveEvent: (event: CustomEventState | null) => void
+  ) =>
+  async () => {
     if (customEvent.hasForm) {
       const defaultValues = customEvent.defaultValues || {};
       const formData = mapDefaultValues(defaultValues, rowData);
       setFormData(formData);
-      setActiveEvent({ name: customEvent.name, event: customEvent.baseEvent, rowData });
+      setActiveEvent({
+        name: customEvent.name,
+        event: customEvent.baseEvent,
+        rowData,
+      });
     } else {
       if (customEvent.confirmSubmit?.state === 'enabled') {
-        showCustomEventConfirmation(customEvent, () => executeCustomEvent(customEvent, rowData));
+        showCustomEventConfirmation(customEvent, () =>
+          executeCustomEvent(customEvent, rowData)
+        );
       } else {
         await executeCustomEvent(customEvent, rowData);
       }
     }
   };
-  

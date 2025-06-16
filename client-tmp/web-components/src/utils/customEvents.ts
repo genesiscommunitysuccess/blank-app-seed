@@ -31,18 +31,17 @@ interface DefaultValues {
   [key: string]: DefaultValue;
 }
 
-export const mapDefaultValues = (
-  defaultValues: DefaultValues,
-  rowData: any,
-): Record<string, any> =>
-  Object.entries(defaultValues).reduce((acc, [key, value]) => ({
-    ...acc,
-    [key]:
-      (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record')
-        ? rowData[(value as RecordTypeValue).mapping || key]
-        : value,
-  }), {});
-
+export const mapDefaultValues = (defaultValues: DefaultValues, rowData: any): Record<string, any> =>
+  Object.entries(defaultValues).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]:
+        typeof value === 'object' && value !== null && 'type' in value && value.type === 'record'
+          ? rowData[(value as RecordTypeValue).mapping || key]
+          : value,
+    }),
+    {},
+  );
 
 export const executeCustomEvent = async (
   connect: Connect,
