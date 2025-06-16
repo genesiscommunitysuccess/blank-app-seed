@@ -85,7 +85,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
               rowData,
               setCustomEventFormData,
               setActiveCustomEvent
-           );
+            );
             await handleCustomEvent();
           }
         },
@@ -139,7 +139,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     }
   }, [activeCustomEvent]);
 
-  const handleCustomEventSubmit = async () => {
+  const handleCustomEventSubmit = () => {
     setActiveCustomEvent(null);
     setCustomEventFormData({});
   };

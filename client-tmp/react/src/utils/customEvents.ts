@@ -34,20 +34,14 @@ interface DefaultValues {
 export const mapDefaultValues = (
   defaultValues: DefaultValues,
   rowData: any,
-): Record<string, any> => {
-  const payload: Record<string, any> = {};
-
-  Object.entries(defaultValues).forEach(([key, value]) => {
-    if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record') {
-      const fieldName = (value as RecordTypeValue).mapping || key;
-      payload[key] = rowData[fieldName];
-    } else {
-      payload[key] = value;
-    }
-  });
-
-  return payload;
-};
+): Record<string, any> =>
+  Object.entries(defaultValues).reduce((acc, [key, value]) => ({
+    ...acc,
+    [key]:
+      (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record')
+        ? rowData[(value as RecordTypeValue).mapping || key]
+        : value,
+  }), {});
 
 export const executeCustomEvent = async (
   customEvent: CustomEvent,
@@ -92,12 +86,10 @@ export const useCustomEvent = (
   rowData: any,
   setFormData: (data: Record<string, any>) => void,
   setActiveEvent: (event: CustomEventState | null) => void
-) => {
-  const handleCustomEvent = async () => {
+) => async () => {
     if (customEvent.hasForm) {
       const defaultValues = customEvent.defaultValues || {};
       const formData = mapDefaultValues(defaultValues, rowData);
-
       setFormData(formData);
       setActiveEvent({ name: customEvent.name, event: customEvent.baseEvent, rowData });
     } else {
@@ -108,6 +100,4 @@ export const useCustomEvent = (
       }
     }
   };
-
-  return handleCustomEvent;
-}; 
+  

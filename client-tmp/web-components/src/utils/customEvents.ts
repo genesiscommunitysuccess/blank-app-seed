@@ -34,20 +34,15 @@ interface DefaultValues {
 export const mapDefaultValues = (
   defaultValues: DefaultValues,
   rowData: any,
-): Record<string, any> => {
-  const payload: Record<string, any> = {};
+): Record<string, any> =>
+  Object.entries(defaultValues).reduce((acc, [key, value]) => ({
+    ...acc,
+    [key]:
+      (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record')
+        ? rowData[(value as RecordTypeValue).mapping || key]
+        : value,
+  }), {});
 
-  Object.entries(defaultValues).forEach(([key, value]) => {
-    if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'record') {
-      const fieldName = (value as RecordTypeValue).mapping || key;
-      payload[key] = rowData[fieldName];
-    } else {
-      payload[key] = value;
-    }
-  });
-
-  return payload;
-};
 
 export const executeCustomEvent = async (
   connect: Connect,
