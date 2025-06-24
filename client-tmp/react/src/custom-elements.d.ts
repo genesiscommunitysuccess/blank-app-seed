@@ -14,6 +14,7 @@ declare module "react/jsx-runtime" {
       'rapid-g2plot-chart': CustomElement;
       'chart-datasource': CustomElement;
       'client-app-login': CustomElement;
+      'rapid-modal': CustomElement;
       'rapid-layout': CustomElement;
       'rapid-layout-region': CustomElement;
       'rapid-layout-item': CustomElement;
