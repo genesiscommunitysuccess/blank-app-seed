@@ -1,56 +1,19 @@
 import { useEffect, useState } from 'react';
-import {Routes, Route, useLocation, BrowserRouter} from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import {
   setApiHost,
-  getLayoutNameByRoute,
   {{#if FDC3.channels.length~}}
   listenToChannel,
   onFDC3Ready,
   {{/if}}
 } from './utils';
 import { customEventFactory, registerStylesTarget } from '@/pbc/utils';
-import LayoutWrapper from './layouts/LayoutWrapper';
-import LayoutName from '@/types/LayoutName';
-import { AUTH_PATH, routeLayouts } from './config';
-import { AuthProvider } from './store/AuthContext';
-import { RoutesProvider, useRoutesContext } from './store/RoutesContext';
-import AuthPage from './pages/AuthPage/AuthPage';
+import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
-import ProtectedGuard from './guards/ProtectedGuard';
 import { storeService } from '@/services/store.service';
+import AppRoutes from './components/routes/AppRoutes';
+import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage.tsx";
 
-const DynamicLayout = () => {
-  const location = useLocation();
-  const [layoutName, setLayoutName] = useState<LayoutName>(routeLayouts[location.pathname]  || 'default');
-  const handleRouteChange = (location: any) => {
-    setLayoutName(getLayoutNameByRoute(location.pathname));
-  };
-  const route = useRoutesContext().find((r) => r.path === location.pathname);
-  let pageComponent;
-  let content;
-
-  useEffect(() => {
-    handleRouteChange(location);
-
-    return () => {
-    }
-  }, [location]);
-
-  if (route) {
-    pageComponent = route.element;
-  } else {
-    pageComponent = <AuthPage />;
-  }
-
-  if (location.pathname === `/${AUTH_PATH}` || location.pathname === '/') {
-    content = pageComponent;
-  } else {
-    content = <ProtectedGuard>{pageComponent}</ProtectedGuard>
-  }
-
-  return <LayoutWrapper layout={layoutName}>{content}</LayoutWrapper>
-
-};
 
 interface AppProps {
   rootElement: HTMLElement;
@@ -103,15 +66,11 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   const basePath = baseElement?.getAttribute('href') || '';
 
   return (
-    <AuthProvider>
-      <RoutesProvider>
-        <BrowserRouter basename={basePath}>
-          <Routes>
-            <Route path="*" element={<DynamicLayout />} />
-          </Routes>
-        </BrowserRouter>
-      </RoutesProvider>
-    </AuthProvider>
+    <RoutesProvider>
+        <Router basename={basePath}>
+          <AppRoutes />
+        </Router>
+    </RoutesProvider>
   );
 };
 

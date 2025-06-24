@@ -75,6 +75,7 @@ module.exports = (env, argv) => {
       new Dotenv(),
       new webpack.DefinePlugin({
         BUILDER: JSON.stringify('webpack'),
+        PUBLIC_PATH: JSON.stringify(publicPath),
       }),
     ],
     devServer: {

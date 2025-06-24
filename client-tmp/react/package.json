@@ -51,6 +51,7 @@
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
+    "@genesislcap/foundation-zero-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
     "@genesislcap/rapid-grid-tabulator": "{{versions.UI}}",
@@ -61,7 +62,7 @@
     "history": "^5.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.3",
+    "react-router-dom": "^7.1.3",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {

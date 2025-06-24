@@ -1,13 +1,145 @@
 # Changelog
 
-## [5.1.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.1...v5.1.2) (2025-05-21)
+## [5.2.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.3...v5.2.0-prerelease.4) (2025-06-24)
+
+
+### Features
+
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) abfa76c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#474) 33f5d7c
+
+## [5.2.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.2...v5.2.0-prerelease.3) (2025-06-24)
 
 
 ### Bug Fixes
 
-* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8c7a465
-* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#466) 4a3fe05
+* revert advanced custom events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#473) 892042b
+
+## [5.2.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.1...v5.2.0-prerelease.2) (2025-06-24)
+
+
+### Bug Fixes
+
 * update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#467) 7ee25b6
+
+## [5.2.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.15...v5.2.0-prerelease.1) (2025-06-16)
+
+
+### Features
+
+* advanced custom events - react GENC-1002 13c6bda
+* advanced custom events (react/web-components) GENC-1002 (#472) 2117a89
+* advanced custom events GENC-1002 e31a875
+
+
+### Bug Fixes
+
+* addressed PR feedback GENC-1002 fca014a
+* lint errors GENC-1002 08e5d58
+
+## [5.1.2-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.14...v5.1.2-prerelease.15) (2025-06-13)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 278a23a
+
+## [5.1.2-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.13...v5.1.2-prerelease.14) (2025-06-13)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5dc228c
+
+## [5.1.2-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.12...v5.1.2-prerelease.13) (2025-06-13)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 231a029
+
+## [5.1.2-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.11...v5.1.2-prerelease.12) (2025-06-13)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0f969da
+
+## [5.1.2-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.10...v5.1.2-prerelease.11) (2025-06-11)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6c2de4b
+
+## [5.1.2-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.9...v5.1.2-prerelease.10) (2025-06-11)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9c6249c
+
+## [5.1.2-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.8...v5.1.2-prerelease.9) (2025-06-11)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24ff468
+
+## [5.1.2-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.7...v5.1.2-prerelease.8) (2025-06-11)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8f014d9
+
+## [5.1.2-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.6...v5.1.2-prerelease.7) (2025-06-09)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 19f16a4
+
+## [5.1.2-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.5...v5.1.2-prerelease.6) (2025-06-09)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c46e67f
+
+## [5.1.2-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.4...v5.1.2-prerelease.5) (2025-06-02)
+
+
+### Bug Fixes
+
+* react bug fixes fd97f2b
+* react bug fixes (#471) b3bafdb
+
+## [5.1.2-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.3...v5.1.2-prerelease.4) (2025-06-02)
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 7b0804f
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#470) 4ab2bd3
+
+## [5.1.2-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.2...v5.1.2-prerelease.3) (2025-05-30)
+
+
+### Bug Fixes
+
+* react router fixes b6d4754
+* react router fixes (#469) 12e9d1e
+
+## [5.1.2-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.1...v5.1.2-prerelease.2) (2025-05-26)
+
+
+### Bug Fixes
+
+* removed deprecated package inbox 118fb20
+* removed deprecated package inbox (#468) a6f2e42
+* removed deprecated package login 04aa0bc
+* removed deprecated package login 5870b1a
 
 ## [5.1.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.1...v5.1.2-prerelease.1) (2025-05-21)
 
