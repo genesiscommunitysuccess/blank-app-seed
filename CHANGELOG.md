@@ -1,5 +1,44 @@
 # Changelog
 
+## [5.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2...v5.2.0) (2025-06-24)
+
+
+### Features
+
+* advanced custom events - react GENC-1002 13c6bda
+* advanced custom events (react/web-components) GENC-1002 (#472) 2117a89
+* advanced custom events GENC-1002 e31a875
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) abfa76c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#474) 33f5d7c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#476) 1f4849d
+
+
+### Bug Fixes
+
+* addressed PR feedback GENC-1002 fca014a
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 7b0804f
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#470) 4ab2bd3
+* lint errors GENC-1002 08e5d58
+* react bug fixes fd97f2b
+* react bug fixes (#471) b3bafdb
+* react router fixes b6d4754
+* react router fixes (#469) 12e9d1e
+* removed deprecated package inbox 118fb20
+* removed deprecated package inbox (#468) a6f2e42
+* removed deprecated package login 04aa0bc
+* removed deprecated package login 5870b1a
+* revert advanced custom events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#473) 892042b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 278a23a
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 231a029
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6c2de4b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24ff468
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 19f16a4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5dc228c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0f969da
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9c6249c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8f014d9
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c46e67f
+
 ## [5.2.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.3...v5.2.0-prerelease.4) (2025-06-24)
 
 
