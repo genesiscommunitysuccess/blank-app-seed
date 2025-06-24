@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.2...v5.2.0-prerelease.3) (2025-06-24)
+
+
+### Bug Fixes
+
+* revert advanced custom events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#473) 892042b
+
 ## [5.2.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.1...v5.2.0-prerelease.2) (2025-06-24)
 
 
