@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.3...v5.2.0-prerelease.4) (2025-06-24)
+
+
+### Features
+
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) abfa76c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#474) 33f5d7c
+
 ## [5.2.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.2...v5.2.0-prerelease.3) (2025-06-24)
 
 
