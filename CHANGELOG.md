@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.1...v5.2.0-prerelease.2) (2025-06-24)
+
+
+### Bug Fixes
+
+* update GSF version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#467) 7ee25b6
+
 ## [5.2.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2-prerelease.15...v5.2.0-prerelease.1) (2025-06-16)
 
 
