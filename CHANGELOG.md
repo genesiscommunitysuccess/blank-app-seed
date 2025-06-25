@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.4...v5.2.0-prerelease.5) (2025-06-25)
+
+
+### Features
+
+* advanced custom events (react/web-components) GENC-1002 94765c1
+* advanced custom events (react/web-components) GENC-1002 (#477) c9710fe
+
 ## [5.2.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.3...v5.2.0-prerelease.4) (2025-06-24)
 
 
