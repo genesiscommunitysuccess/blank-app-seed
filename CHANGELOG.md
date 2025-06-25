@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.5...v5.2.0-prerelease.6) (2025-06-25)
+
+
+### Bug Fixes
+
+* check if custom events exist GENC-1002 aad5e1e
+* check if custom events exist GENC-1002 (#478) b1420c2
+
 ## [5.2.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.4...v5.2.0-prerelease.5) (2025-06-25)
 
 
