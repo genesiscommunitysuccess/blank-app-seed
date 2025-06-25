@@ -7,7 +7,9 @@ const { getFormattedComment, getFormattedTodo } = require('./getTodosAndComments
 const getLayoutType = require('./getLayoutType');
 const { COMPONENT_TYPE, FRAMEWORK_ANGULAR_ALIAS } = require('../static');
 
-const formatCustomEvents = (customEvents = []) => {
+const formatCustomEvents = (customEvents) => {
+  if (!customEvents) return;
+
   return customEvents.map(event => ({
     ...event,
     uischema: event.hasForm ? formatJSONValue(event.uischema) : undefined,
