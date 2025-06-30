@@ -64,6 +64,8 @@ ${whenElse(
                 :uischema=${(x) => x.getCustomEventUiSchema()}
                 :data=${(x) => x.customEventFormData}
                 @submit-success=${(x) => x.handleCustomEventSubmit()}
+                @submit=${(_, c) => submitFailureNotification(customEvent(c))}
+                @submit-failure=${(_, c) => submitFailureNotification(customEvent(c))}
               ></foundation-form>
             `,
           )}
