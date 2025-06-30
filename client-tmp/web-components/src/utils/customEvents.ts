@@ -6,6 +6,15 @@ interface ConfirmSubmit {
   message: string;
 }
 
+interface CustomEventError {
+  errors: {
+    message?: string;
+    CODE: string;
+    TEXT: string;
+  }[]
+}
+
+
 export interface CustomEventHandler {
   baseEvent: string;
   name: string;
@@ -44,17 +53,35 @@ export const mapDefaultValues = (defaultValues: DefaultValues, rowData: any): Re
   );
 
 export const executeCustomEvent = async (
-  connect: Connect,
-  customEvent: CustomEventHandler,
-  rowData: any,
+  customEventHandler: CustomEventHandler,
+  rowData: any
 ): Promise<void> => {
-  const payload = customEvent.defaultValues
-    ? mapDefaultValues(customEvent.defaultValues, rowData)
+  const payload = customEventHandler.defaultValues
+    ? mapDefaultValues(customEventHandler.defaultValues, rowData)
     : {};
 
-  await connect.commitEvent(`EVENT_${customEvent.baseEvent}`, {
-    DETAILS: payload,
-  });
+  const res = await getConnect().commitEvent(
+    `EVENT_${customEventHandler.baseEvent}`,
+    { DETAILS: payload }
+  );
+
+  if (res.MESSAGE_TYPE === 'EVENT_NACK') {
+    const err: CustomEventError = {
+      errors:
+        res?.ERROR?.map((e) => ({
+          TEXT: e.TEXT,
+          CODE: e.STATUS_CODE ?? '0 Unknown Error',
+          message:
+            'PATH' in e &&
+            typeof e.PATH === 'string' &&
+            'FIELD' in e &&
+            typeof e.FIELD === 'string'
+              ? e.TEXT.replace(e.PATH, e.FIELD)
+              : undefined,
+        })) ?? [],
+    };
+    submitFailureNotification(new CustomEvent('Error', { detail: err }));
+  }
 };
 
 export const showCustomEventConfirmation = (
@@ -82,7 +109,7 @@ export const showCustomEventConfirmation = (
   );
 };
 
-export const submitFailureNotification = (e: CustomEvent) => {
+export const submitFailureNotification = (e: CustomEvent<CustomEventError>) => {
   e.detail.errors.forEach((submitFailureError) => {
     if (submitFailureError.CODE === 'OPTIMISTIC_CONCURRENCY_ERROR') {
       showNotification(
