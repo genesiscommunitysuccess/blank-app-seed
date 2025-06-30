@@ -14,7 +14,6 @@ interface CustomEventError {
   }[]
 }
 
-
 export interface CustomEventHandler {
   baseEvent: string;
   name: string;
