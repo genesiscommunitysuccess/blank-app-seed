@@ -186,8 +186,8 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
           uischema={getCustomEventUiSchema()}
           data={customEventFormData}
           onsubmit-success={handleCustomEventSubmit}
-          onsubmit={e => submitFailureNotification(customEvent(e))}
-          onsubmit-failure={e => submitFailureNotification(customEvent(e))}
+          onsubmit={submitFailureNotification}
+          onsubmit-failure={submitFailureNotification}
         ></foundation-form>
       </rapid-modal>,
       document.querySelector('rapid-design-system-provider')!
