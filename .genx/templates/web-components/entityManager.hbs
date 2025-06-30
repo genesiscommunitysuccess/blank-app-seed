@@ -54,8 +54,8 @@ ${whenElse(
         <rapid-modal
           ${ref('customEventModal')}
           :onCloseCallback=${(x) => (x.activeCustomEvent = null)}
-          title=${(x) => x.getCustomEventModalTitle()}
         >
+          <h4 slot="top">${(x) => x.getCustomEventModalTitle()}</h4>
           ${when(
             (x) => x.activeCustomEvent,
             html`
