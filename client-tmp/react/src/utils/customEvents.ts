@@ -11,7 +11,7 @@ interface CustomEventError {
     message?: string;
     CODE: string;
     TEXT: string;
-  }[]
+  }[];
 }
 
 export interface CustomEventHandler {
@@ -77,10 +77,7 @@ export const executeCustomEvent = async (
           TEXT: e.TEXT,
           CODE: e.STATUS_CODE ?? '0 Unknown Error',
           message:
-            'PATH' in e &&
-            typeof e.PATH === 'string' &&
-            'FIELD' in e &&
-            typeof e.FIELD === 'string'
+            'PATH' in e && typeof e.PATH === 'string' && 'FIELD' in e && typeof e.FIELD === 'string'
               ? e.TEXT.replace(e.PATH, e.FIELD)
               : undefined,
         })) ?? [],
