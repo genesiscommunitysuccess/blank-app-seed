@@ -173,8 +173,8 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
       <rapid-modal
         ref={customEventModalRef}
         onCloseCallback={() => setActiveCustomEvent(null)}
-        title={getCustomEventModalTitle()}
       >
+        <h4 slot="top">{getCustomEventModalTitle()}</h4>
         <foundation-form
           resourceName={getCustomEventResourceName()}
           uischema={getCustomEventUiSchema()}
