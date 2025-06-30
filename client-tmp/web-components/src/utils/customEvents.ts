@@ -53,17 +53,17 @@ export const mapDefaultValues = (defaultValues: DefaultValues, rowData: any): Re
   );
 
 export const executeCustomEvent = async (
-  customEventHandler: CustomEventHandler,
-  rowData: any
+  connect: Connect,
+  customEvent: CustomEventHandler,
+  rowData: any,
 ): Promise<void> => {
-  const payload = customEventHandler.defaultValues
-    ? mapDefaultValues(customEventHandler.defaultValues, rowData)
+  const payload = customEvent.defaultValues
+    ? mapDefaultValues(customEvent.defaultValues, rowData)
     : {};
 
-  const res = await getConnect().commitEvent(
-    `EVENT_${customEventHandler.baseEvent}`,
-    { DETAILS: payload }
-  );
+  const res = await connect.commitEvent(`EVENT_${customEvent.baseEvent}`, {
+    DETAILS: payload,
+  });
 
   if (res.MESSAGE_TYPE === 'EVENT_NACK') {
     const err: CustomEventError = {
