@@ -1,12 +1,12 @@
 import { getConnect } from '@genesislcap/foundation-comms';
-import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+import { showNotification, showNotificationDialog } from '@genesislcap/foundation-notifications';
 
 interface ConfirmSubmit {
   state: 'enabled' | 'disabled';
   message: string;
 }
 
-export interface CustomEvent {
+export interface CustomEventHandler {
   baseEvent: string;
   name: string;
   hasForm: boolean;
@@ -50,7 +50,7 @@ export const mapDefaultValues = (
   );
 
 export const executeCustomEvent = async (
-  customEvent: CustomEvent,
+  customEvent: CustomEventHandler,
   rowData: any
 ): Promise<void> => {
   const payload = customEvent.defaultValues
@@ -63,7 +63,7 @@ export const executeCustomEvent = async (
 };
 
 export const showCustomEventConfirmation = (
-  customEvent: CustomEvent,
+  customEvent: CustomEventHandler,
   onConfirm: () => Promise<void>
 ): void => {
   showNotificationDialog(
@@ -87,9 +87,43 @@ export const showCustomEventConfirmation = (
   );
 };
 
+export const submitFailureNotification = (e: CustomEvent) => {
+  e.detail.errors.forEach((submitFailureError) => {
+    if (submitFailureError.CODE === 'OPTIMISTIC_CONCURRENCY_ERROR') {
+      showNotification(
+        {
+          title: 'Warning',
+          body: "You're editing an old revision. Please close the form and try editing again",
+          config: {
+            snackbar: {
+              type: 'error',
+            },
+          },
+        },
+        'rapid',
+      );
+    } else {
+      showNotification(
+        {
+          title: 'Error submitting form',
+          body:
+            submitFailureError.message ??
+            (submitFailureError.CODE + ': ' + submitFailureError.TEXT).toString(),
+          config: {
+            snackbar: {
+              type: 'error',
+            },
+          },
+        },
+        'rapid',
+      );
+    }
+  });
+};
+
 export const useCustomEvent =
   (
-    customEvent: CustomEvent,
+    customEvent: CustomEventHandler,
     rowData: any,
     setFormData: (data: Record<string, any>) => void,
     setActiveEvent: (event: CustomEventState | null) => void

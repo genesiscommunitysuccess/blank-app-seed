@@ -1,10 +1,16 @@
 {{#if tile.config.permissions.viewRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.customEvents}}
+import { customEvent } from '@genesislcap/foundation-events';
+{{/if}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{else if tile.config.permissions.updateRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.customEvents}}
+import { customEvent } from '@genesislcap/foundation-events';
+{{/if}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{/if}}
 {{#if tile.config.customEvents}}
@@ -15,7 +21,7 @@ import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
 import { Modal } from '@genesislcap/rapid-design-system';
 import { customEvents, customEventFormSchemas } from './{{pascalCase tile.title}}EventsConfig';
-import { useCustomEvent, type CustomEvent, type CustomEventState } from '../../../utils/customEvents';
+import { useCustomEvent, type CustomEventHandler, type CustomEventState } from '../../../utils/customEvents';
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -38,7 +44,7 @@ import './{{pascalCase tile.title}}Component.css';
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
 {{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
  *{{/if}}
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
@@ -168,7 +174,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
 
   const renderFormModal = () => {
     if (!activeCustomEvent) return null;
-    
+
     return createPortal(
       <rapid-modal
         ref={customEventModalRef}
@@ -180,6 +186,8 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
           uischema={getCustomEventUiSchema()}
           data={customEventFormData}
           onsubmit-success={handleCustomEventSubmit}
+          onsubmit={e => submitFailureNotification(customEvent(e))}
+          onsubmit-failure={e => submitFailureNotification(customEvent(e))}
         ></foundation-form>
       </rapid-modal>,
       document.querySelector('rapid-design-system-provider')!

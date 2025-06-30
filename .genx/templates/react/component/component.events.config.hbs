@@ -1,4 +1,4 @@
-import { CustomEvent } from "../../../utils/customEvents";
+import { CustomEventHandler } from "../../../utils/customEvents";
 
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
@@ -14,7 +14,7 @@ export const customEventFormSchemas = {
   {{/each}}
 };
 
-export const customEvents: CustomEvent[] = [
+export const customEvents: CustomEventHandler[] = [
   {{#each tile.config.customEvents}}
   {
     baseEvent: '{{this.baseEvent}}',
@@ -29,4 +29,4 @@ export const customEvents: CustomEvent[] = [
     defaultValues: {{{this.defaultValues}}},
   },
   {{/each}}
-]; 
+];
