@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.7...v5.2.0-prerelease.8) (2025-07-01)
+
+
+### Bug Fixes
+
+* show server errors in form GENC-1116 (#479) 3cc189f
+
 ## [5.2.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.6...v5.2.0-prerelease.7) (2025-07-01)
 
 
