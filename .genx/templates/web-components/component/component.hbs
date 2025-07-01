@@ -12,7 +12,7 @@ import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
 import { Modal } from '@genesislcap/rapid-design-system';
 import { customEvents, customEventFormSchemas } from './{{kebabCase tile.title}}.events.config';
-import { handleFormCustomEvent, handleNonFormCustomEvent, showCustomEventConfirmation, type CustomEvent, type CustomEventState } from '../../../utils/customEvents';
+import { handleFormCustomEvent, handleNonFormCustomEvent, showCustomEventConfirmation, type CustomEventHandler, type CustomEventState } from '../../../utils/customEvents';
 {{/if}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
@@ -35,7 +35,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
 
   {{#if tile.config.customEvents}}
   customEventModal: Modal;
-  @observable customEvents: CustomEvent[] = customEvents;
+  @observable customEvents: CustomEventHandler[] = customEvents;
   @observable activeCustomEvent: CustomEventState | null = null;
   @observable customEventFormData: Record<string, any> = {};
 
