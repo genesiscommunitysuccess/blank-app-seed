@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.6...v5.2.0-prerelease.7) (2025-07-01)
+
+
+### Bug Fixes
+
+* show title in custom events modal GENC-0 6998f64
+* show title in custom events modal GENC-0 d31f9f3
+* show title in custom events modal GENC-0 (#480) f05aa72
+
 ## [5.2.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.5...v5.2.0-prerelease.6) (2025-06-25)
 
 
