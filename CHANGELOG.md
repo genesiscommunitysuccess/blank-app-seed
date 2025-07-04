@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.11...v5.2.0-prerelease.12) (2025-07-04)
+
+
+### Bug Fixes
+
+* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage f0deb5c
+* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage (#481) 875cbc8
+
 ## [5.2.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.10...v5.2.0-prerelease.11) (2025-07-04)
 
 
