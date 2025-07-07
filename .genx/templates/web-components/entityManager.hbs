@@ -1,6 +1,6 @@
 ${whenElse(
     (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
-    html`
+    html<{{pascalCase componentName}}>`
         <entity-management
             design-system-prefix="rapid"
             header-case-type="capitalCase"
@@ -50,6 +50,27 @@ ${whenElse(
             enable-search-bar
             {{/if}}
         ></entity-management>
+        {{#if config.customEvents}}
+        <rapid-modal
+          ${ref('customEventModal')}
+          :onCloseCallback=${(x) => (x.activeCustomEvent = null)}
+        >
+          <h4 slot="top">${(x) => x.getCustomEventModalTitle()}</h4>
+          ${when(
+            (x) => x.activeCustomEvent,
+            html`
+              <foundation-form
+                resourceName=${(x) => x.getCustomEventResourceName()}
+                :uischema=${(x) => x.getCustomEventUiSchema()}
+                :data=${(x) => x.customEventFormData}
+                @submit-success=${(x) => x.handleCustomEventSubmit()}
+                @submit=${(_, c) => submitFailureNotification(customEvent(c))}
+                @submit-failure=${(_, c) => submitFailureNotification(customEvent(c))}
+              ></foundation-form>
+            `,
+          )}
+        </rapid-modal>
+        {{/if}}
     `,
     html`
       <not-permitted-component></not-permitted-component>

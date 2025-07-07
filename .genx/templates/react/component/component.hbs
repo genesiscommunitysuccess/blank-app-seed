@@ -1,16 +1,27 @@
 {{#if tile.config.permissions.viewRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.customEvents}}
+import { customEvent } from '@genesislcap/foundation-events';
+{{/if}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{else if tile.config.permissions.updateRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
+{{#if tile.config.customEvents}}
+import { customEvent } from '@genesislcap/foundation-events';
+{{/if}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{/if}}
 {{#if tile.config.customEvents}}
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { getConnect } from '@genesislcap/foundation-comms';
 import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
+import { Modal } from '@genesislcap/rapid-design-system';
+import { customEvents, customEventFormSchemas } from './{{pascalCase tile.title}}EventsConfig';
+import { useCustomEvent, type CustomEventHandler, type CustomEventState } from '../../../utils/customEvents';
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -33,7 +44,7 @@ import './{{pascalCase tile.title}}Component.css';
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
 {{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
  *{{/if}}
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
@@ -68,17 +79,24 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
       headerName: '',
       minWidth: 50,
       maxWidth: 50,
+      headerTooltip: '{{this.tooltip}}',
       pinned: 'right',
       cellRenderer: RapidAgActionRenderer,
       cellRendererParams: {
         actionClick: async (rowData) => {
-          const { ROW_REF, ...DETAILS } = rowData;
-          const response = await getConnect().commitEvent("EVENT_{{this}}", {
-            DETAILS,
-          });
+          const customEvent = customEvents.find(e => e.name === '{{this.name}}');
+          if (customEvent) {
+            const handleCustomEvent = useCustomEvent(
+              customEvent,
+              rowData,
+              setCustomEventFormData,
+              setActiveCustomEvent
+            );
+            await handleCustomEvent();
+          }
         },
         contentTemplate: `
-          <rapid-icon name="cog"></rapid-icon>
+          <rapid-icon name="{{this.icon}}"></rapid-icon>
         `,
       } as ActionRendererParams,
     },
@@ -111,6 +129,69 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     xField: 'groupBy',
     yField: 'value',
     {{/ifEquals}}
+  };
+  {{/if}}
+
+  {{#if tile.config.customEvents}}
+  const customEventModalRef = useRef<Modal>(null);
+  const [activeCustomEvent, setActiveCustomEvent] = useState<CustomEventState | null>(null);
+  const [customEventFormData, setCustomEventFormData] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    if (activeCustomEvent) {
+      customEventModalRef.current?.show();
+    } else {
+      customEventModalRef.current?.close();
+    }
+  }, [activeCustomEvent]);
+
+  const handleCustomEventSubmit = () => {
+    setActiveCustomEvent(null);
+    setCustomEventFormData({});
+  };
+
+  const getActiveCustomEvent = () => {
+    if (!activeCustomEvent) return null;
+    return customEvents.find(e => e.name === activeCustomEvent.name);
+  };
+
+  const getCustomEventModalTitle = () => {
+    const customEvent = getActiveCustomEvent();
+    return customEvent?.name || 'Custom Event';
+  };
+
+  const getCustomEventResourceName = () => {
+    if (!activeCustomEvent) return '';
+    return `EVENT_${activeCustomEvent.event}`;
+  };
+
+  const getCustomEventUiSchema = () => {
+    const customEvent = getActiveCustomEvent();
+    return customEvent && customEvent.name in customEventFormSchemas
+      ? customEventFormSchemas[customEvent.name as keyof typeof customEventFormSchemas]
+      : null;
+  };
+
+  const renderFormModal = () => {
+    if (!activeCustomEvent) return null;
+
+    return createPortal(
+      <rapid-modal
+        ref={customEventModalRef}
+        onCloseCallback={() => setActiveCustomEvent(null)}
+      >
+        <h4 slot="top">{getCustomEventModalTitle()}</h4>
+        <foundation-form
+          resourceName={getCustomEventResourceName()}
+          uischema={getCustomEventUiSchema()}
+          data={customEventFormData}
+          onsubmit-success={handleCustomEventSubmit}
+          onsubmit={submitFailureNotification}
+          onsubmit-failure={submitFailureNotification}
+        ></foundation-form>
+      </rapid-modal>,
+      document.querySelector('rapid-design-system-provider')!
+    );
   };
   {{/if}}
 

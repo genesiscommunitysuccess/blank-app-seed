@@ -7,6 +7,16 @@ const { getFormattedComment, getFormattedTodo } = require('./getTodosAndComments
 const getLayoutType = require('./getLayoutType');
 const { COMPONENT_TYPE, FRAMEWORK_ANGULAR_ALIAS } = require('../static');
 
+const formatCustomEvents = (customEvents) => {
+  if (!customEvents) return;
+
+  return customEvents.map(event => ({
+    ...event,
+    uischema: event.hasForm ? formatJSONValue(event.uischema) : undefined,
+    defaultValues: event.defaultValues ? formatJSONValue(event.defaultValues) : undefined,
+  }));
+};
+
 const formatRouteData = (framework, route) => {
   const layoutKey = route?.layoutKey || `${route.name}_${Date.now()}`;
   const layoutType =
@@ -32,6 +42,7 @@ const formatRouteData = (framework, route) => {
       updateFormUiSchema,
       uischema,
       columns,
+      customEvents,
     } = config;
 
     return {
@@ -47,6 +58,7 @@ const formatRouteData = (framework, route) => {
         updateFormUiSchema: formatJSONValue(updateFormUiSchema),
         uischema: formatJSONValue(uischema),
         columns: gridColumnsSerializer(columns),
+        customEvents: formatCustomEvents(customEvents),
       },
       metadata: {
         ...metadata,

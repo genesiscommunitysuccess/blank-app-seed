@@ -1,5 +1,8 @@
-import { html, whenElse, repeat } from '@genesislcap/web-core';
-import { getViewUpdateRightComponent } from '../../../utils';
+import { html, when, whenElse, ref, repeat } from '@genesislcap/web-core';
+{{#if tile.config.customEvents}}
+import { customEvent } from '@genesislcap/foundation-events';
+{{/if}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
 import type { {{pascalCase tile.componentName}} } from './{{kebabCase tile.title}}';
 {{#if tile.config.createFormUiSchema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
