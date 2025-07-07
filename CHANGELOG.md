@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0...v5.3.0) (2025-07-07)
+
+
+### Features
+
+* advanced custom events (react/web-components) GENC-1002 (#477) baccafb
+* advanced events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#483) ba96e02
+
+
+### Bug Fixes
+
+* check if custom events exist GENC-1002 (#478) 89d293c
+* show server errors in form GENC-1116 (#479) d6a1291
+* show title in custom events modal GENC-0 (#480) 554f141
+
 ## [5.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2...v5.2.0) (2025-06-24)
 
 
