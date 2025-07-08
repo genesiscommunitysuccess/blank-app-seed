@@ -1,4 +1,4 @@
-import { EntityManagement } from '@genesislcap/foundation-entity-management';
+import { EntityManagement, SmartFormModal } from '@genesislcap/foundation-entity-management';
 import { Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
@@ -16,6 +16,7 @@ FoundationRouter;
 EntityManagement;
 Form;
 NotPermittedComponent;
+SmartFormModal;
 
 /**
  * registerComponents.

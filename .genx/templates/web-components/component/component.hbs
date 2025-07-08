@@ -10,7 +10,6 @@ import { ColDef } from '@ag-grid-community/core';
 {{#if tile.config.customEvents}}
 import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
-import { Modal } from '@genesislcap/rapid-design-system';
 import { customEvents, customEventFormSchemas } from './{{kebabCase tile.title}}.events.config';
 import { handleFormCustomEvent, handleNonFormCustomEvent, showCustomEventConfirmation, type CustomEventHandler, type CustomEventState } from '../../../utils/customEvents';
 {{/if}}
@@ -34,35 +33,24 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
   @Connect connect!: Connect;
 
   {{#if tile.config.customEvents}}
-  customEventModal: Modal;
   @observable customEvents: CustomEventHandler[] = customEvents;
   @observable activeCustomEvent: CustomEventState | null = null;
   @observable customEventFormData: Record<string, any> = {};
 
-  async handleCustomEventSubmit() {
-    this.activeCustomEvent = null;
-    this.customEventFormData = {};
-    this.customEventModal.close();
-  }
-
   async handleCustomEventClick(eventName: string, rowData: any) {
-    const customEvent = this.customEvents.find(e => e.name === eventName);
+    const customEvent = this.customEvents.find((e) => e.name === eventName);
     if (!customEvent) return;
 
     if (customEvent.hasForm) {
       handleFormCustomEvent(
         customEvent,
         rowData,
-        (data) => this.customEventFormData = data,
-        (event) => this.activeCustomEvent = event,
-        () => this.customEventModal.show()
+        (data) => (this.customEventFormData = data),
+        (event) => (this.activeCustomEvent = event),
       );
     } else {
-      await handleNonFormCustomEvent(
-        this.connect,
-        customEvent,
-        rowData,
-        (onConfirm) => showCustomEventConfirmation(customEvent, onConfirm)
+      await handleNonFormCustomEvent(this.connect, customEvent, rowData, (onConfirm) =>
+        showCustomEventConfirmation(customEvent, onConfirm),
       );
     }
   }
@@ -70,11 +58,6 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
   getActiveCustomEvent() {
     if (!this.activeCustomEvent) return null;
     return this.customEvents.find(e => e.name === this.activeCustomEvent.name);
-  }
-
-  getCustomEventModalTitle() {
-    const customEvent = this.getActiveCustomEvent();
-    return customEvent?.name || 'Custom Event';
   }
 
   getCustomEventResourceName() {
@@ -106,7 +89,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
           await this.handleCustomEventClick('{{this.name}}', rowData);
         },
         contentTemplate: `
-          <rapid-icon name="{{this.icon}}"></rapid-icon>
+          <rapid-icon name="{{this.icon}}" title="{{this.name}}"></rapid-icon>
         `,
       },
     },

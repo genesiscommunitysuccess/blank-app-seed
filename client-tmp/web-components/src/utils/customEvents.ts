@@ -144,14 +144,12 @@ export const handleFormCustomEvent = (
   rowData: any,
   setFormData: (data: Record<string, any>) => void,
   setActiveEvent: (event: CustomEventState) => void,
-  showModal: () => void,
 ): void => {
   const defaultValues = customEvent.defaultValues || {};
   const formData = mapDefaultValues(defaultValues, rowData);
 
   setFormData(formData);
   setActiveEvent({ name: customEvent.name, event: customEvent.baseEvent, rowData });
-  showModal();
 };
 
 export const handleNonFormCustomEvent = async (
