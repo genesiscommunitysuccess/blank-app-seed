@@ -49,6 +49,9 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.columns~}}
     columns={columnDefs}
     {{/if}}
+    {{#if config.entityName}}
+    entityLabel="{{ config.entityName }}"
+    {{/if}}
     {{#if config.modalPosition~}}
     modal-position="{{ config.modalPosition }}"
     {{/if}}

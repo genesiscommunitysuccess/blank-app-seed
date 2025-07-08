@@ -1,8 +1,9 @@
 import { CustomEventHandler } from "../../../utils/customEvents";
+import { UiSchema } from '@genesislcap/foundation-forms';
 
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
-export const {{camelCase this.name}}FormSchema = {{{this.uischema}}};
+export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/if}}
 {{/each}}
 

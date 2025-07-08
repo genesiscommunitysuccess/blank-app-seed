@@ -83,6 +83,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
       maxWidth: 50,
       headerTooltip: '{{this.tooltip}}',
       pinned: 'right',
+      suppressCellFlash: true,
       cellRenderer: RapidAgActionRenderer,
       cellRendererParams: <ActionRendererParams>{
         actionClick: async (rowData) => {
