@@ -19,7 +19,6 @@ import { createPortal } from 'react-dom';
 import { getConnect } from '@genesislcap/foundation-comms';
 import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
-import { SmartFormModal } from '@genesislcap/foundation-entity-management';
 import { UiSchema } from '@genesislcap/foundation-forms';
 import { customEvents, customEventFormSchemas } from './{{pascalCase tile.title}}EventsConfig';
 import { useCustomEvent, type CustomEventState } from '../../../utils/customEvents';
@@ -139,7 +138,6 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
 
   {{#if tile.config.customEvents}}
-  const customEventSmartFormModalRef = useRef<SmartFormModal>(null);
   const [activeCustomEvent, setActiveCustomEvent] = useState<CustomEventState | null>(null);
   const [customEventFormData, setCustomEventFormData] = useState<Record<string, any>>({});
   const [resourceName, setResourceName] = useState<string>('');
@@ -149,8 +147,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   useEffect(() => {
     if (activeCustomEvent) {
       setIsModalVisible(true);
-      customEventSmartFormModalRef.current?.editEntityModal.show();
-    } 
+    }
   }, [activeCustomEvent]);
 
   const renderFormModal = () => {
@@ -158,7 +155,6 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
 
     return createPortal(
       <smart-form-modal
-        ref={customEventSmartFormModalRef}
         entityLabel="{{ tile.config.entityName }}"
         modal-position="{{ tile.config.modalPosition }}"
         modalFormType={isModalVisible && 'update'}
