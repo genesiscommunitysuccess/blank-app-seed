@@ -154,7 +154,7 @@ export const useCustomEvent =
     setActiveEvent: (event: CustomEventState | null) => void,
     setResourceName?: (name: string) => void,
     setUiSchema?: (schema: UiSchema) => void,
-    customEventFormSchemas?: Record<string, any>
+    customEventFormSchemas?: Record<string, UiSchema>
   ) =>
   async () => {
     if (customEvent.hasForm) {
