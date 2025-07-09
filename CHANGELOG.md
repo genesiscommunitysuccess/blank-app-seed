@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.14...v5.2.0-prerelease.15) (2025-07-09)
+
+
+### Bug Fixes
+
+* remove field name for custom events PA-1716 7ed8191
+* remove field name for custom events PA-1716 (#484) eb2ce71
+
 ## [5.2.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.13...v5.2.0-prerelease.14) (2025-07-08)
 
 
