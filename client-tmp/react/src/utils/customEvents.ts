@@ -1,4 +1,5 @@
 import { getConnect } from '@genesislcap/foundation-comms';
+import { UiSchema } from '@genesislcap/foundation-forms';
 import { showNotification, showNotificationDialog } from '@genesislcap/foundation-notifications';
 
 interface ConfirmSubmit {
@@ -150,7 +151,10 @@ export const useCustomEvent =
     customEvent: CustomEventHandler,
     rowData: any,
     setFormData: (data: Record<string, any>) => void,
-    setActiveEvent: (event: CustomEventState | null) => void
+    setActiveEvent: (event: CustomEventState | null) => void,
+    setResourceName?: (name: string) => void,
+    setUiSchema?: (schema: UiSchema) => void,
+    customEventFormSchemas?: Record<string, UiSchema>
   ) =>
   async () => {
     if (customEvent.hasForm) {
@@ -162,6 +166,15 @@ export const useCustomEvent =
         event: customEvent.baseEvent,
         rowData,
       });
+      
+      if (setResourceName) {
+        setResourceName(`EVENT_${customEvent.baseEvent}`);
+      }
+      
+      if (setUiSchema && customEventFormSchemas) {
+        const uiSchema = customEventFormSchemas[customEvent.name];
+        setUiSchema(uiSchema || null);
+      }
     } else {
       if (customEvent.confirmSubmit?.state === 'enabled') {
         showCustomEventConfirmation(customEvent, () =>
