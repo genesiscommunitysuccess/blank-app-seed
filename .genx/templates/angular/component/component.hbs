@@ -53,7 +53,7 @@ export class {{pascalCase tile.componentName}} {
   uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
   updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.gridOptions}}
   gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.reqrep}}
-  reqrep = { pollingInterval: 5000 };{{/if}}{{#if tile.config.columns}}
+  reqrep = { pollingInterval: 5000, requestAutoSetup: false };{{/if}}{{#if tile.config.columns}}
   columnDefs = [
     ...columnDefs,
     {{#if tile.config.customEvents}}

@@ -13,6 +13,7 @@ ${whenElse(
           isSnapshot="{{config.snapshot}}"
           {{/if}}
           {{#if config.reqrep}}
+          request-auto-setup="false"
           :datasourceConfig=${() => ({pollingInterval: 5000 })}
           {{/if}}
           {{#if config.gridOptions}}

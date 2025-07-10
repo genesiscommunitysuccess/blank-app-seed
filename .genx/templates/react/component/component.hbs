@@ -113,7 +113,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }
   {{/if}}
   {{#if tile.config.reqrep~}}
-  const reqrep: { pollingInterval: number } = { pollingInterval: 5000 };
+  const reqrep: { pollingInterval: number } = { pollingInterval: 5000, requestAutoSetup: false };
   {{/if}}
   {{#if tile.config.type~}}
   const chartConfig: {
