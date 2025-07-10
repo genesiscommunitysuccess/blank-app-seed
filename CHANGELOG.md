@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.16...v5.2.0-prerelease.17) (2025-07-10)
+
+
+### Bug Fixes
+
+* set requestAutoSetup: false as default for ReqRep GENC-1168 ed6c00a
+* set requestAutoSetup: false as default for ReqRep GENC-1168 (#486) e2a4679
+
 ## [5.2.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.15...v5.2.0-prerelease.16) (2025-07-10)
 
 
