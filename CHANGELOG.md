@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.2.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.15...v5.2.0-prerelease.16) (2025-07-10)
+
+
+### Features
+
+* smart-form-modal react GENC-1162 d82bf2b
+* use smart-form-modal GENC-1162 (#485) 744ad5b
+
+
+### Bug Fixes
+
+* update type for customEventFormSchemas GENC-1162 9985837
+* use smart-form-modal GENC-1162 d4d112f
+
 ## [5.2.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.14...v5.2.0-prerelease.15) (2025-07-09)
 
 
