@@ -32,7 +32,7 @@ ${whenElse(
             :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
             {{/if}}
             {{#if config.reqrep}}
-            :datasourceConfig=${() => ({pollingInterval: 5000 })}
+            :datasourceConfig=${() => ({pollingInterval: 5000, requestAutoSetup: false})}
             {{/if}}
             {{#if config.entityName}}
             entityLabel="{{ config.entityName }}"

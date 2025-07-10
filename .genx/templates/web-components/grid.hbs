@@ -16,6 +16,7 @@ ${whenElse(
           :datasourceConfig=${() => ({pollingInterval: 5000 })}
           {{/if}}
           {{#if config.gridOptions}}
+          request-auto-setup="false"
           :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
           {{/if}}
         ></grid-pro-genesis-datasource>
