@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.17...v5.2.0-prerelease.18) (2025-07-11)
+
+
+### Bug Fixes
+
+* correct config for reqReps in grid GENC-1168 8e3927c
+* correct config for reqReps in grid GENC-1168 (#487) f9170d4
+
 ## [5.2.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.16...v5.2.0-prerelease.17) (2025-07-10)
 
 
