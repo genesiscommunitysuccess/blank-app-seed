@@ -14,7 +14,7 @@ ${whenElse(
           {{/if}}
           {{#if config.reqrep}}
           request-auto-setup="false"
-          :datasourceConfig=${() => ({pollingInterval: 5000 })}
+          polling-interval="5000"
           {{/if}}
           {{#if config.gridOptions}}
           :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
