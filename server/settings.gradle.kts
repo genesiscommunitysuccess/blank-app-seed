@@ -5,6 +5,7 @@ pluginManagement {
     plugins {
         id("global.genesis.settings") version genesisVersion
         id("global.genesis.genesis-start-gui") version startVersion
+        id("global.genesis.test") version genesisVersion
     }
 
     repositories {
