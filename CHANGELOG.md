@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.18...v5.2.0-prerelease.19) (2025-07-18)
+
+
+### Features
+
+* add-test-plugin [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#488) 71e885b
+
 ## [5.2.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.17...v5.2.0-prerelease.18) (2025-07-11)
 
 
