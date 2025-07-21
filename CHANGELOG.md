@@ -1,5 +1,43 @@
 # Changelog
 
+## [5.4.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.0...v5.4.0-prerelease.1) (2025-07-21)
+
+
+### Features
+
+* add-test-plugin [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#488) 71e885b
+* advanced custom events (react/web-components) GENC-1002 94765c1
+* advanced custom events (react/web-components) GENC-1002 (#477) c9710fe
+* backport main 8.13 (#492) 76884d4
+* smart-form-modal react GENC-1162 d82bf2b
+* use smart-form-modal GENC-1162 (#485) 744ad5b
+
+
+### Bug Fixes
+
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) af97313
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#482) 301b309
+* check if custom events exist GENC-1002 aad5e1e
+* check if custom events exist GENC-1002 (#478) b1420c2
+* correct config for reqReps in grid GENC-1168 8e3927c
+* correct config for reqReps in grid GENC-1168 (#487) f9170d4
+* remove field name for custom events PA-1716 7ed8191
+* remove field name for custom events PA-1716 (#484) eb2ce71
+* set requestAutoSetup: false as default for ReqRep GENC-1168 ed6c00a
+* set requestAutoSetup: false as default for ReqRep GENC-1168 (#486) e2a4679
+* show server errors in form GENC-1116 (#479) 3cc189f
+* show title in custom events modal GENC-0 6998f64
+* show title in custom events modal GENC-0 d31f9f3
+* show title in custom events modal GENC-0 (#480) f05aa72
+* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage f0deb5c
+* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage (#481) 875cbc8
+* update type for customEventFormSchemas GENC-1162 9985837
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 921b9f9
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) aac125a
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ca8beec
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 60b47dc
+* use smart-form-modal GENC-1162 d4d112f
+
 ## [5.2.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.18...v5.2.0-prerelease.19) (2025-07-18)
 
 
