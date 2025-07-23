@@ -1,0 +1,8 @@
+{
+  "MESSAGE_TYPE" : "EVENT_LOGOUT",
+  "SERVICE_NAME" : "AUTH_MANAGER",
+  "DETAILS" : {
+    "USER_NAME" : "BulkClient8:HENDR-PILOT",
+    "SESSION_ID" : "a2c62588-9910-4a95-8089-712598bbaab9"
+  }
+}
