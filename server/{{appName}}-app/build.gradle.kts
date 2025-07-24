@@ -1,3 +1,7 @@
+plugins {
+    id("global.genesis.bdd_automation")
+}
+
 dependencies {
     compileOnly(genesis("script-dependencies"))
     genesisGeneratedCode(withTestDependency = true)
@@ -16,4 +20,3 @@ sourceSets {
         }
     }
 }
-#add plugin
