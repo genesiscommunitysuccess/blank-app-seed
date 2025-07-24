@@ -3,11 +3,18 @@ pluginManagement {
     val startVersion: String by settings
     val bddVersion: String by settings
 
+    plugins {
+        id("global.genesis.settings") version genesisVersion
+        id("global.genesis.genesis-start-gui") version startVersion
+        id("global.genesis.test") version genesisVersion
+        id("global.genesis.bdd_automation") version bddVersion
+    }
+
     repositories {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            val repoUrl = if (extra.properties["useDevRepo"] == "true") {
+            val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
             } else {
                 "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
@@ -26,12 +33,10 @@ pluginManagement {
         }
         google()
     }
+}
 
-    plugins {
-        id("global.genesis.settings") version genesisVersion
-        id("global.genesis.genesis-start-gui") version startVersion
-        id("global.genesis.bdd_automation") version bddVersion
-    }
+plugins {
+    id("global.genesis.settings")
 }
 
 genesis {
