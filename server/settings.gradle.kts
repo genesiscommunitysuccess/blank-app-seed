@@ -1,13 +1,11 @@
 pluginManagement {
     val genesisVersion: String by settings
     val startVersion: String by settings
-    val bddVersion: String by settings
 
     plugins {
         id("global.genesis.settings") version genesisVersion
         id("global.genesis.genesis-start-gui") version startVersion
         id("global.genesis.test") version genesisVersion
-        id("global.genesis.bdd_automation") version bddVersion
     }
 
     repositories {

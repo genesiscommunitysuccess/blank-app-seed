@@ -4,12 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.genx/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.genx/versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="fix: tweak unnecessarily big max heap settings for gradle daemon (GENC-0)">
+      <change afterPath="$PROJECT_DIR$/bdd-tests/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bdd-tests/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bdd-tests/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bdd-tests/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/1-payload/Test/P_R_Test.json" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/1-payload/Test/P_R_Test.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/1-payload/global/P_login.json" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/1-payload/global/P_login.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/1-payload/global/P_logout.json" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/1-payload/global/P_logout.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/3-expected/Test/E_R_Test.json" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/3-expected/Test/E_R_Test.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/4-config/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/4-config/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources/features/Test.feature" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/src/resources/features/Test.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +25,26 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="pozoj/tweak-heap" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="SOFT" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;jacinpoz&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/genesiscommunitysuccess/blank-app-seed.git&quot;,
+    &quot;accountId&quot;: &quot;8cd18ec2-056d-4c17-a076-6478f71faa2b&quot;
+  }
+}</component>
   <component name="KotlinScriptingSettings" supportWarning="false">
     <scriptDefinition className="global.genesis.dictionary.pal.script.FieldsScript" definitionName="Genesis Fields Dictionary">
       <order>15</order>
@@ -137,14 +163,77 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2xBJltpHjDPPckGFcKiS9lhj9m0" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "prerelease",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "#493 on IncludeBDDVersionAndRepositories",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/home/jacinpoz/IdeaProjects/blank-app-seed/bddtests",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/bddtests" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/{{appName}}-app/src/test/resources" />
+      <recent name="$PROJECT_DIR$/bddtests/src" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="" />
+      <created>1747405687670</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747405687670</updated>
+      <workItem from="1747405688696" duration="773000" />
+      <workItem from="1753439722557" duration="1151000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix: tweak unnecessarily big max heap settings for gradle daemon (GENC-0)">
+      <option name="closed" value="true" />
+      <created>1747405887858</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747405887858</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix: tweak unnecessarily big max heap settings for gradle daemon (GENC-0)">
+      <option name="closed" value="true" />
+      <created>1747406040465</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1747406040465</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="RECENT_FILTERS">
@@ -186,6 +275,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="e" />
-    <option name="LAST_COMMIT_MESSAGE" value="e" />
+    <MESSAGE value="fix: tweak unnecessarily big max heap settings for gradle daemon (GENC-0)" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: tweak unnecessarily big max heap settings for gradle daemon (GENC-0)" />
   </component>
 </project>
