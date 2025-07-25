@@ -3,7 +3,7 @@ plugins {
     java
     id("global.genesis.bdd_automation")
 }
-description = "{appName} BDD Testing Framework"
+description = "{{appName}} BDD Testing Framework"
 
 repositories {
     mavenCentral()
