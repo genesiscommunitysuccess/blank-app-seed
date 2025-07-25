@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.genx/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.genx/versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/.genx/versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="def49102-b76e-43df-a4a9-692657cf1aaa" name="Changes" comment="fix: rever workspace.xml changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bdd-tests/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/bdd-tests/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="KotlinScriptingSettings" supportWarning="false">
@@ -139,11 +137,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "prerelease",
+    "git-widget-placeholder": "use-separate-bdd-tests-folder",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="fix: rever workspace.xml changes">
+      <option name="closed" value="true" />
+      <created>1753441064560</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1753441064560</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -186,6 +193,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="e" />
-    <option name="LAST_COMMIT_MESSAGE" value="e" />
+    <MESSAGE value="fix: rever workspace.xml changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: rever workspace.xml changes" />
   </component>
 </project>
