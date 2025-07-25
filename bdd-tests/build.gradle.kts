@@ -40,5 +40,6 @@ java {
 tasks {
     test {
         useJUnitPlatform()
+        notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
     }
 }
