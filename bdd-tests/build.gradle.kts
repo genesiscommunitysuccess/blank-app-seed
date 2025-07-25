@@ -42,4 +42,10 @@ tasks {
         useJUnitPlatform()
         notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
     }
+    named("allureReport") {
+        notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
+    }
+    named("allureGenesisReport") {
+        notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
+    }
 }
