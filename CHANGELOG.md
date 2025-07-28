@@ -1,5 +1,23 @@
 # Changelog
 
+## [5.4.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.1...v5.4.0-prerelease.2) (2025-07-28)
+
+
+### Bug Fixes
+
+* add CucumberRunner af30ae7
+* exclude bdd-tests from root build.gradle.kts e9fe879
+* fix compatibility with configuration cache 5cf2fd5
+* fix description in build.gradle.kts 53fece9
+* mark test task as not compatible with configuration cache to avoid build issues 81ae5e3
+* rever workspace.xml changes c77586c
+* revert workspace.xml changes and disable configuration cache for bdd tests 84bebda
+* revert workspace.xml changes and disable configuration cache for bdd tests b5d2897
+* revert workspace.xml changes and disable configuration cache for bdd tests 08a260e
+* revert workspace.xml changes and disable configuration cache for bdd tests 4a3927e
+* separate bdd tests folder (#494) c12df43
+* use separate bdd tests folder to avoid groovy dependency clashes b1e6bfe
+
 ## [5.4.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.0...v5.4.0-prerelease.1) (2025-07-21)
 
 
