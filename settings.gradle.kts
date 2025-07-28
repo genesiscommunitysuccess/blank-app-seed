@@ -5,4 +5,7 @@ if (gradleFolder.exists()) {
 
     // clients
     includeBuild("client")
+
+    // bdd tests
+    includeBuild("bdd-tests")
 }

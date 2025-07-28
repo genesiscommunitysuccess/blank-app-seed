@@ -1,0 +1,8 @@
+{
+  "MESSAGE_TYPE" : "EVENT_LOGOUT",
+  "SERVICE_NAME" : "AUTH_MANAGER",
+  "DETAILS" : {
+    "USER_NAME" : "",
+    "SESSION_ID" : ""
+  }
+}
