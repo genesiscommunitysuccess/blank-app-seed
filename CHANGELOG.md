@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.2...v5.4.0-prerelease.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* set default baseuri to allow local running bdd tests GENC-1171 (#495) 86e45c8
+
 ## [5.4.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.1...v5.4.0-prerelease.2) (2025-07-28)
 
 
