@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.0...v5.3.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c568129
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#497) f1adb41
+
 ## [5.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0...v5.3.0) (2025-07-07)
 
 
