@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.4.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.4...v5.4.0-prerelease.5) (2025-08-07)
+
+
+### Bug Fixes
+
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#498) 66fa70c
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c568129
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#497) f1adb41
+
 ## [5.4.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.3...v5.4.0-prerelease.4) (2025-08-07)
 
 
