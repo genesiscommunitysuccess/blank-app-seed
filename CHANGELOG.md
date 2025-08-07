@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.3...v5.4.0-prerelease.4) (2025-08-07)
+
+
+### Bug Fixes
+
+* correct args passing [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#496) f3daa00
+
 ## [5.4.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.2...v5.4.0-prerelease.3) (2025-08-05)
 
 
