@@ -11,6 +11,10 @@ export const MainStyles = css`
     --nav-height: 48px;
   }
 
+  foundation-auth:defined {
+    visibility: visible;
+  }
+
   :host,
   rapid-design-system-provider,
   .dynamic-template,
