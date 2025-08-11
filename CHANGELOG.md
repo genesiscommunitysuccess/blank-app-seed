@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.1...v5.3.2) (2025-08-11)
+
+
+### Bug Fixes
+
+* Add foundation-auth:defined selector for Chrome 139 compatibility ed79e1f
+* Add foundation-auth:defined selector for Chrome 139 compatibility (#499) 9260d22
+
 ## [5.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.0...v5.3.1) (2025-08-07)
 
 
