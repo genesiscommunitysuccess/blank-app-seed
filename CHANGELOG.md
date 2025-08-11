@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.4.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.5...v5.4.0-prerelease.6) (2025-08-11)
+
+
+### Bug Fixes
+
+* Add foundation-auth:defined selector for Chrome 139 compatibility ed79e1f
+* Add foundation-auth:defined selector for Chrome 139 compatibility (#499) 9260d22
+* backport main to prerelease [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#500) 4b8dd8d
+
 ## [5.3.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.1...v5.3.2) (2025-08-11)
 
 
