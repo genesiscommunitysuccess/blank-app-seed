@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.6...v5.4.0-prerelease.7) (2025-08-12)
+
+
+### Bug Fixes
+
+* escape commas in CSV files GENC-1188 c25aab1
+* escape commas in CSV files GENC-1188 (#501) 7c32c98
+
 ## [5.4.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.5...v5.4.0-prerelease.6) (2025-08-11)
 
 
