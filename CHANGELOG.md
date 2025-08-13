@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.7...v5.4.0-prerelease.8) (2025-08-13)
+
+
+### Bug Fixes
+
+* added logout endpoint in confog.properties GENC-0 (#502) aa02828
+
 ## [5.4.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.6...v5.4.0-prerelease.7) (2025-08-12)
 
 
