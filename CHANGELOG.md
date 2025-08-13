@@ -1,125 +1,91 @@
 # Changelog
 
-## [5.2.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.18...v5.2.0-prerelease.19) (2025-07-18)
+## [5.4.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.6...v5.4.0-prerelease.7) (2025-08-12)
+
+
+### Bug Fixes
+
+* escape commas in CSV files GENC-1188 c25aab1
+* escape commas in CSV files GENC-1188 (#501) 7c32c98
+
+## [5.4.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.5...v5.4.0-prerelease.6) (2025-08-11)
+
+
+### Bug Fixes
+
+* Add foundation-auth:defined selector for Chrome 139 compatibility ed79e1f
+* Add foundation-auth:defined selector for Chrome 139 compatibility (#499) 9260d22
+* backport main to prerelease [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#500) 4b8dd8d
+
+## [5.3.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.1...v5.3.2) (2025-08-11)
+
+
+### Bug Fixes
+
+* Add foundation-auth:defined selector for Chrome 139 compatibility ed79e1f
+* Add foundation-auth:defined selector for Chrome 139 compatibility (#499) 9260d22
+
+## [5.3.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.0...v5.3.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c568129
+* override analytics [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#497) f1adb41
+
+## [5.3.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0...v5.3.0) (2025-07-07)
 
 
 ### Features
 
-* add-test-plugin [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#488) 71e885b
-
-## [5.2.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.17...v5.2.0-prerelease.18) (2025-07-11)
-
-
-### Bug Fixes
-
-* correct config for reqReps in grid GENC-1168 8e3927c
-* correct config for reqReps in grid GENC-1168 (#487) f9170d4
-
-## [5.2.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.16...v5.2.0-prerelease.17) (2025-07-10)
+* advanced custom events (react/web-components) GENC-1002 (#477) baccafb
+* advanced events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#483) ba96e02
 
 
 ### Bug Fixes
 
-* set requestAutoSetup: false as default for ReqRep GENC-1168 ed6c00a
-* set requestAutoSetup: false as default for ReqRep GENC-1168 (#486) e2a4679
+* check if custom events exist GENC-1002 (#478) 89d293c
+* show server errors in form GENC-1116 (#479) d6a1291
+* show title in custom events modal GENC-0 (#480) 554f141
 
-## [5.2.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.15...v5.2.0-prerelease.16) (2025-07-10)
+## [5.2.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.1.2...v5.2.0) (2025-06-24)
 
 
 ### Features
 
-* smart-form-modal react GENC-1162 d82bf2b
-* use smart-form-modal GENC-1162 (#485) 744ad5b
+* advanced custom events - react GENC-1002 13c6bda
+* advanced custom events (react/web-components) GENC-1002 (#472) 2117a89
+* advanced custom events GENC-1002 e31a875
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) abfa76c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#474) 33f5d7c
+* bump GSF to 8.12 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#476) 1f4849d
 
 
 ### Bug Fixes
 
-* update type for customEventFormSchemas GENC-1162 9985837
-* use smart-form-modal GENC-1162 d4d112f
-
-## [5.2.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.14...v5.2.0-prerelease.15) (2025-07-09)
-
-
-### Bug Fixes
-
-* remove field name for custom events PA-1716 7ed8191
-* remove field name for custom events PA-1716 (#484) eb2ce71
-
-## [5.2.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.13...v5.2.0-prerelease.14) (2025-07-08)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 921b9f9
-
-## [5.2.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.12...v5.2.0-prerelease.13) (2025-07-08)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ca8beec
-
-## [5.2.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.11...v5.2.0-prerelease.12) (2025-07-04)
-
-
-### Bug Fixes
-
-* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage f0deb5c
-* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage (#481) 875cbc8
-
-## [5.2.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.10...v5.2.0-prerelease.11) (2025-07-04)
-
-
-### Bug Fixes
-
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) af97313
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#482) 301b309
-
-## [5.2.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.9...v5.2.0-prerelease.10) (2025-07-03)
-
-
-### Bug Fixes
-
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) aac125a
-
-## [5.2.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.8...v5.2.0-prerelease.9) (2025-07-03)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 60b47dc
-
-## [5.2.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.7...v5.2.0-prerelease.8) (2025-07-01)
-
-
-### Bug Fixes
-
-* show server errors in form GENC-1116 (#479) 3cc189f
-
-## [5.2.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.6...v5.2.0-prerelease.7) (2025-07-01)
-
-
-### Bug Fixes
-
-* show title in custom events modal GENC-0 6998f64
-* show title in custom events modal GENC-0 d31f9f3
-* show title in custom events modal GENC-0 (#480) f05aa72
-
-## [5.2.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.5...v5.2.0-prerelease.6) (2025-06-25)
-
-
-### Bug Fixes
-
-* check if custom events exist GENC-1002 aad5e1e
-* check if custom events exist GENC-1002 (#478) b1420c2
-
-## [5.2.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.4...v5.2.0-prerelease.5) (2025-06-25)
-
-
-### Features
-
-* advanced custom events (react/web-components) GENC-1002 94765c1
-* advanced custom events (react/web-components) GENC-1002 (#477) c9710fe
+* addressed PR feedback GENC-1002 fca014a
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) 7b0804f
+* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#470) 4ab2bd3
+* lint errors GENC-1002 08e5d58
+* react bug fixes fd97f2b
+* react bug fixes (#471) b3bafdb
+* react router fixes b6d4754
+* react router fixes (#469) 12e9d1e
+* removed deprecated package inbox 118fb20
+* removed deprecated package inbox (#468) a6f2e42
+* removed deprecated package login 04aa0bc
+* removed deprecated package login 5870b1a
+* revert advanced custom events [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#473) 892042b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 278a23a
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 231a029
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6c2de4b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24ff468
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 19f16a4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5dc228c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0f969da
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9c6249c
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8f014d9
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c46e67f
 
 ## [5.2.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.2.0-prerelease.3...v5.2.0-prerelease.4) (2025-06-24)
 

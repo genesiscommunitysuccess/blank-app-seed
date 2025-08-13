@@ -5,10 +5,10 @@ plugins {
 
 tasks {
     val tasks = listOf("clean", "assemble", "check", "build")
-    for(taskName in tasks){
-        named(taskName){
+    for (taskName in tasks) {
+        named(taskName) {
             gradle.includedBuilds.forEach {
-                dependsOn(it.task(":$taskName"))
+                if (!it.name.endsWith("bdd-tests")) dependsOn(it.task(":$taskName"))
             }
         }
     }
