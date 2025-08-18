@@ -53,6 +53,9 @@ jobs:
         working-directory: /tmp/testapp/client
         run: npm run lint
 
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+
       - name: Test (unit & integration UI)
         working-directory: /tmp/testapp/client
         run: npm run test && npm run test:e2e
