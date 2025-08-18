@@ -49,7 +49,6 @@ ${whenElse(
             {{#if config.enableSearchBar}}
             enable-search-bar
             {{/if}}
-            confirmation-message="${(x) => x.getActiveCustomEvent()?.confirmSubmit?.state === 'enabled' ? x.getActiveCustomEvent().confirmSubmit.message : null}"
         ></entity-management>
         {{#if config.customEvents}}
         <smart-form-modal
@@ -60,6 +59,7 @@ ${whenElse(
             :formResourceName=${(x) => x.getCustomEventResourceName()}
             :formUiSchema=${(x) => x.getCustomEventUiSchema()}
             :editedEntity=${(x) => x.customEventFormData}
+            confirmation-message="${(x) => x.getActiveCustomEvent()?.confirmSubmit?.state === 'enabled' ? x.getActiveCustomEvent().confirmSubmit.message : null}"
         ></smart-form-modal>
         {{/if}}
     `,
