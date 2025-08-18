@@ -144,7 +144,11 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const [uiSchema, setUiSchema] = useState<UiSchema | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const confirmationMessage = activeCustomEvent?.confirmSubmit?.state === 'enabled' ? activeCustomEvent.confirmSubmit.message : null;
+  function confirmationMessage() {
+    if (!this.activeCustomEvent) return null;
+    const event = customEvents.find(e => e.name === activeCustomEvent.name);
+    return event?.confirmSubmit?.state === 'enabled' ? event.confirmSubmit.message : null;
+  }
 
   useEffect(() => {
     if (activeCustomEvent) {
