@@ -144,6 +144,8 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const [uiSchema, setUiSchema] = useState<UiSchema | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
+  const confirmationMessage = activeCustomEvent?.confirmSubmit?.state === 'enabled' ? activeCustomEvent.confirmSubmit.message : null;
+
   useEffect(() => {
     if (activeCustomEvent) {
       setIsModalVisible(true);
@@ -162,6 +164,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
         formResourceName={resourceName}
         formUiSchema={uiSchema}
         editedEntity={customEventFormData}
+        confirmationMessage={confirmationMessage}
       ></smart-form-modal>,
       document.querySelector('rapid-design-system-provider')!
     );

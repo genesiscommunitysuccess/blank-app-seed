@@ -49,6 +49,7 @@ ${whenElse(
             {{#if config.enableSearchBar}}
             enable-search-bar
             {{/if}}
+            confirmation-message="${(x) => x.activeCustomEvent?.confirmSubmit?.state === 'enabled' ? x.activeCustomEvent.confirmSubmit.message : null}"
         ></entity-management>
         {{#if config.customEvents}}
         <smart-form-modal
