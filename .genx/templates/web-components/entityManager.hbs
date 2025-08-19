@@ -59,6 +59,7 @@ ${whenElse(
             :formResourceName=${(x) => x.getCustomEventResourceName()}
             :formUiSchema=${(x) => x.getCustomEventUiSchema()}
             :editedEntity=${(x) => x.customEventFormData}
+            confirmation-message="${(x) => x.getActiveCustomEvent()?.confirmSubmit?.state === 'enabled' ? x.getActiveCustomEvent().confirmSubmit.message : null}"
         ></smart-form-modal>
         {{/if}}
     `,
