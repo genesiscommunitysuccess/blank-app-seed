@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.4.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.8...v5.4.0-prerelease.9) (2025-08-19)
+
+
+### Features
+
+* support confirmation message for event on entity manager GENC-1185 ea27d49
+* support confirmation message for event on entity manager GENC-1185 (#503) d2b4448
+
+
+### Bug Fixes
+
+* e2e test for wc GENC-1185 9b4dc53
+* react event setup GENC-1185 80e20fd
+* syntax error setting confirmation message GENC-1185 10b2835
+* tweak react syntax GENC-1185 07cf6dd
+* use smart-form-modal for message display GENC-1185 22f7968
+
 ## [5.4.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.7...v5.4.0-prerelease.8) (2025-08-13)
 
 
