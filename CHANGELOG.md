@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.9...v5.4.0-prerelease.10) (2025-08-20)
+
+
+### Bug Fixes
+
+* bump fui version with stacking notification fix PA-1745 ce6ad4d
+* bump fui version with stacking notification fix PA-1745 (#505) 0002d5d
+
 ## [5.4.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.8...v5.4.0-prerelease.9) (2025-08-19)
 
 
