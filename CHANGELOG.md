@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.10...v5.4.0-prerelease.11) (2025-08-29)
+
+
+### Bug Fixes
+
+* update BDD framework version GENC-0 (#507) 233103d
+
 ## [5.4.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.9...v5.4.0-prerelease.10) (2025-08-20)
 
 
