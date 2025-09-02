@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.11...v5.4.0-prerelease.12) (2025-09-02)
+
+
+### Bug Fixes
+
+* bdd tests config to run against the server rather than via the UI GENC-1012 36566f2
+* bdd tests config to run against the server rather than via the UI GENC-1012 (#509) a11bc20
+
 ## [5.4.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.10...v5.4.0-prerelease.11) (2025-08-29)
 
 
