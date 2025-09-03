@@ -50,7 +50,7 @@ systemDefinition {
             }
 
             //ZeroMQ settings required for cluster operation : Read more at https://docs.genesis.global/docs/build-deploy-operate/operate/update-queue#zeromq-configuration-options
-            item(name = "ZeroMqProxyModeEnabled", value = "true")
+            item(name = "ZeroMQProxyModeEnabled", value = "true")
             item(name = "ZeroMQProxyUnicastRelayEnabled", value = "true")
 
         }
