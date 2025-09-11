@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.12...v5.4.0-prerelease.13) (2025-09-11)
+
+
+### Bug Fixes
+
+* bump fui version with vite fixes GENC-1187 817d471
+* bump fui version with vite fixes GENC-1187 (#511) bc6983c
+
 ## [5.4.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.11...v5.4.0-prerelease.12) (2025-09-02)
 
 
