@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.14...v5.4.0-prerelease.15) (2025-09-17)
+
+
+### Features
+
+* support cucumber tags in bdd tests cc918ff
+* support cucumber tags in bdd tests (#512) 652dcf1
+
 ## [5.4.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.13...v5.4.0-prerelease.14) (2025-09-11)
 
 
