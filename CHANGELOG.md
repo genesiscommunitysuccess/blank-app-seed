@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.15...v5.4.0-prerelease.16) (2025-09-17)
+
+
+### Bug Fixes
+
+* update auth version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#513) 1d4027a
+
 ## [5.4.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.14...v5.4.0-prerelease.15) (2025-09-17)
 
 
