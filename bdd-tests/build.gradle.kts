@@ -41,6 +41,11 @@ tasks {
     test {
         useJUnitPlatform()
         notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
+
+        // Support for Cucumber tag filtering via system properties
+        if (System.getProperty("cucumber.filter.tags") != null) {
+            systemProperty("cucumber.filter.tags", System.getProperty("cucumber.filter.tags"))
+        }
     }
     named("allureReport") {
         notCompatibleWithConfigurationCache("Allure test plugin does not support Configuration Cache.")
