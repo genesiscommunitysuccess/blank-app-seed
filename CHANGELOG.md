@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0...v5.5.0) (2025-09-19)
+
+
+### Features
+
+* update GSF version to the latest GENC-1208 23c001d
+* update GSF version to the latest GENC-1208 (#516) 0d46e3b
+
+
+### Bug Fixes
+
+* update FUI to 14.322.0 b7e1234
+
 ## [5.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.2...v5.4.0) (2025-09-19)
 
 
