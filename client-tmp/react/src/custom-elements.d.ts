@@ -8,6 +8,7 @@ declare module "react/jsx-runtime" {
       'rapid-design-system-provider': CustomElement;
       'entity-management': CustomElement;
       'foundation-form': CustomElement;
+      'smart-form-modal': CustomElement;
       'rapid-grid-pro': CustomElement;
       'grid-pro-genesis-datasource': CustomElement;
       'grid-pro-column': CustomElement;

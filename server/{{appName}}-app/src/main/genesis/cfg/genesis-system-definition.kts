@@ -1,5 +1,11 @@
 systemDefinition {
     global {
+        item(name = "DbNamespace", value = "{{localGenId}}")
+        item(name = "PrimaryIfSingleNode", value = "true")
+        item(name = "ClusterPort", value = "6000")
+        item(name = "Location", value = "LO")
+        item(name = "LogFramework", value = "LOG4J2")
+        item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
         item(name = "DbLayer", value = "SQL")
         item(name = "SqlEnableSequenceGeneration", value = true)
         item(name = "DictionarySource", value = "DB")
@@ -15,7 +21,6 @@ systemDefinition {
         item(name = "DbUsername", value = "Enter DB Username")
         item(name = "DbPassword", value = "Enter DB Password")
         item(name = "DbSqlConnectionPoolSize", value = "3")
-        item(name = "DbMode", value = "VANILLA")
         item(name = "GenesisNetProtocol", value = "V2")
         item(name = "ResourcePollerTimeout", value = "5")
         item(name = "ReqRepTimeout", value = "60")
@@ -32,19 +37,34 @@ systemDefinition {
 
     systems {
 
+        //Template setup for a cluster of hosts to help when setting up the application for a HA Prod environment
+        //If you are looking to use containers, the system definition block is not needed and can be removed
+        //  Please see the following docs for container setup guidance : https://docs.genesis.global/docs/build-deploy-operate/deploy/hosting-infrastructure/containers/
+        system(name = "PROD") {
+
+            hosts {
+                //Change these to list each of the servers in your production cluster when known, more than one host being defined means they will try to operate as a cluster
+                //Ensure that firewall is configured for the hosts to be able to communicate per https://docs.genesis.global/docs/build-deploy-operate/deploy/supporting-infrastructure/#firewall
+                host("app-prod-host1")
+                host("app-prod-host2")
+            }
+
+            //ZeroMQ settings required for cluster operation : Read more at https://docs.genesis.global/docs/build-deploy-operate/operate/update-queue#zeromq-configuration-options
+            item(name = "ZeroMQProxyModeEnabled", value = "true")
+            item(name = "ZeroMQProxyUnicastRelayEnabled", value = "true")
+
+        }
+
         system(name = "DEV") {
 
             hosts {
+                //This block is used to run the application locally and will take your local machine host name
                 host(LOCAL_HOST)
             }
-            
+
+            //ZeroMQ settings required for running the app locally : Read more at https://docs.genesis.global/docs/build-deploy-operate/operate/update-queue#zeromq-configuration-options
             item(name = "ZeroMQConnectToLocalhostViaLoopback", value = "true")
-            item(name = "DbNamespace", value = "{{localGenId}}")
-            item(name = "PrimaryIfSingleNode", value = "true")
-            item(name = "ClusterPort", value = "6000")
-            item(name = "location", value = "LO")
-            item(name = "LogFramework", value = "LOG4J2")
-            item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+
         }
 
     }

@@ -1,5 +1,99 @@
 # Changelog
 
+## [5.4.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.15...v5.4.0-prerelease.16) (2025-09-17)
+
+
+### Bug Fixes
+
+* update auth version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#513) 1d4027a
+
+## [5.4.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.14...v5.4.0-prerelease.15) (2025-09-17)
+
+
+### Features
+
+* support cucumber tags in bdd tests cc918ff
+* support cucumber tags in bdd tests (#512) 652dcf1
+
+## [5.4.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.13...v5.4.0-prerelease.14) (2025-09-11)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 82124e1
+
+## [5.4.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.12...v5.4.0-prerelease.13) (2025-09-11)
+
+
+### Bug Fixes
+
+* bump fui version with vite fixes GENC-1187 817d471
+* bump fui version with vite fixes GENC-1187 (#511) bc6983c
+
+## [5.4.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.11...v5.4.0-prerelease.12) (2025-09-02)
+
+
+### Bug Fixes
+
+* bdd tests config to run against the server rather than via the UI GENC-1012 36566f2
+* bdd tests config to run against the server rather than via the UI GENC-1012 (#509) a11bc20
+
+## [5.4.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.10...v5.4.0-prerelease.11) (2025-08-29)
+
+
+### Bug Fixes
+
+* update BDD framework version GENC-0 (#507) 233103d
+
+## [5.4.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.9...v5.4.0-prerelease.10) (2025-08-20)
+
+
+### Bug Fixes
+
+* bump fui version with stacking notification fix PA-1745 ce6ad4d
+* bump fui version with stacking notification fix PA-1745 (#505) 0002d5d
+
+## [5.4.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.8...v5.4.0-prerelease.9) (2025-08-19)
+
+
+### Features
+
+* support confirmation message for event on entity manager GENC-1185 ea27d49
+* support confirmation message for event on entity manager GENC-1185 (#503) d2b4448
+
+
+### Bug Fixes
+
+* e2e test for wc GENC-1185 9b4dc53
+* react event setup GENC-1185 80e20fd
+* syntax error setting confirmation message GENC-1185 10b2835
+* tweak react syntax GENC-1185 07cf6dd
+* use smart-form-modal for message display GENC-1185 22f7968
+
+## [5.4.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.7...v5.4.0-prerelease.8) (2025-08-13)
+
+
+### Bug Fixes
+
+* added logout endpoint in confog.properties GENC-0 (#502) aa02828
+
+## [5.4.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.6...v5.4.0-prerelease.7) (2025-08-12)
+
+
+### Bug Fixes
+
+* escape commas in CSV files GENC-1188 c25aab1
+* escape commas in CSV files GENC-1188 (#501) 7c32c98
+
+## [5.4.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.5...v5.4.0-prerelease.6) (2025-08-11)
+
+
+### Bug Fixes
+
+* Add foundation-auth:defined selector for Chrome 139 compatibility ed79e1f
+* Add foundation-auth:defined selector for Chrome 139 compatibility (#499) 9260d22
+* backport main to prerelease [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#500) 4b8dd8d
+
 ## [5.3.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.1...v5.3.2) (2025-08-11)
 
 

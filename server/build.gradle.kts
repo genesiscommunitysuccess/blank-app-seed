@@ -9,6 +9,7 @@ plugins {
 
 subprojects {
     apply(plugin = "org.gradle.maven-publish")
+    apply(plugin = "global.genesis.test")
 
     dependencies {
         implementation("com.h2database:h2")

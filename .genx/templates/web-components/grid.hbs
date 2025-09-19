@@ -13,7 +13,8 @@ ${whenElse(
           isSnapshot="{{config.snapshot}}"
           {{/if}}
           {{#if config.reqrep}}
-          :datasourceConfig=${() => ({pollingInterval: 5000 })}
+          request-auto-setup="false"
+          polling-interval="5000"
           {{/if}}
           {{#if config.gridOptions}}
           :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}

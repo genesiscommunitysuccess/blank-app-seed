@@ -19,9 +19,9 @@ import { createPortal } from 'react-dom';
 import { getConnect } from '@genesislcap/foundation-comms';
 import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
 import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
-import { Modal } from '@genesislcap/rapid-design-system';
+import { UiSchema } from '@genesislcap/foundation-forms';
 import { customEvents, customEventFormSchemas } from './{{pascalCase tile.title}}EventsConfig';
-import { useCustomEvent, type CustomEventHandler, type CustomEventState } from '../../../utils/customEvents';
+import { useCustomEvent, type CustomEventState } from '../../../utils/customEvents';
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -75,28 +75,33 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
      **/
     {{#each tile.config.customEvents}}
     {
-      field: '',
       headerName: '',
       minWidth: 50,
       maxWidth: 50,
       headerTooltip: '{{this.tooltip}}',
       pinned: 'right',
+      suppressCellFlash: true,
       cellRenderer: RapidAgActionRenderer,
       cellRendererParams: {
         actionClick: async (rowData) => {
+          setIsModalVisible(false);
+
           const customEvent = customEvents.find(e => e.name === '{{this.name}}');
           if (customEvent) {
             const handleCustomEvent = useCustomEvent(
               customEvent,
               rowData,
               setCustomEventFormData,
-              setActiveCustomEvent
+              setActiveCustomEvent,
+              setResourceName,
+              setUiSchema,
+              customEventFormSchemas
             );
             await handleCustomEvent();
           }
         },
         contentTemplate: `
-          <rapid-icon name="{{this.icon}}"></rapid-icon>
+          <rapid-icon name="{{this.icon}}" title="{{this.name}}"></rapid-icon>
         `,
       } as ActionRendererParams,
     },
@@ -108,7 +113,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }
   {{/if}}
   {{#if tile.config.reqrep~}}
-  const reqrep: { pollingInterval: number } = { pollingInterval: 5000 };
+  const reqrep: { pollingInterval: number } = { pollingInterval: 5000, requestAutoSetup: false };
   {{/if}}
   {{#if tile.config.type~}}
   const chartConfig: {
@@ -133,63 +138,38 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
 
   {{#if tile.config.customEvents}}
-  const customEventModalRef = useRef<Modal>(null);
   const [activeCustomEvent, setActiveCustomEvent] = useState<CustomEventState | null>(null);
   const [customEventFormData, setCustomEventFormData] = useState<Record<string, any>>({});
+  const [resourceName, setResourceName] = useState<string>('');
+  const [uiSchema, setUiSchema] = useState<UiSchema | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  function confirmationMessage() {
+    if (!activeCustomEvent) return null;
+    const event = customEvents.find(e => e.name === activeCustomEvent.name);
+    return event?.confirmSubmit?.state === 'enabled' ? event.confirmSubmit.message : null;
+  }
 
   useEffect(() => {
     if (activeCustomEvent) {
-      customEventModalRef.current?.show();
-    } else {
-      customEventModalRef.current?.close();
+      setIsModalVisible(true);
     }
   }, [activeCustomEvent]);
-
-  const handleCustomEventSubmit = () => {
-    setActiveCustomEvent(null);
-    setCustomEventFormData({});
-  };
-
-  const getActiveCustomEvent = () => {
-    if (!activeCustomEvent) return null;
-    return customEvents.find(e => e.name === activeCustomEvent.name);
-  };
-
-  const getCustomEventModalTitle = () => {
-    const customEvent = getActiveCustomEvent();
-    return customEvent?.name || 'Custom Event';
-  };
-
-  const getCustomEventResourceName = () => {
-    if (!activeCustomEvent) return '';
-    return `EVENT_${activeCustomEvent.event}`;
-  };
-
-  const getCustomEventUiSchema = () => {
-    const customEvent = getActiveCustomEvent();
-    return customEvent && customEvent.name in customEventFormSchemas
-      ? customEventFormSchemas[customEvent.name as keyof typeof customEventFormSchemas]
-      : null;
-  };
 
   const renderFormModal = () => {
     if (!activeCustomEvent) return null;
 
     return createPortal(
-      <rapid-modal
-        ref={customEventModalRef}
-        onCloseCallback={() => setActiveCustomEvent(null)}
-      >
-        <h4 slot="top">{getCustomEventModalTitle()}</h4>
-        <foundation-form
-          resourceName={getCustomEventResourceName()}
-          uischema={getCustomEventUiSchema()}
-          data={customEventFormData}
-          onsubmit-success={handleCustomEventSubmit}
-          onsubmit={submitFailureNotification}
-          onsubmit-failure={submitFailureNotification}
-        ></foundation-form>
-      </rapid-modal>,
+      <smart-form-modal
+        entityLabel="{{ tile.config.entityName }}"
+        modal-position="{{ tile.config.modalPosition }}"
+        modalFormType={isModalVisible && 'update'}
+        editModalVisible={isModalVisible}
+        formResourceName={resourceName}
+        formUiSchema={uiSchema}
+        editedEntity={customEventFormData}
+        confirmationMessage={confirmationMessage()}
+      ></smart-form-modal>,
       document.querySelector('rapid-design-system-provider')!
     );
   };

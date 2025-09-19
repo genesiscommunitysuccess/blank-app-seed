@@ -32,7 +32,7 @@ ${whenElse(
             :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
             {{/if}}
             {{#if config.reqrep}}
-            :datasourceConfig=${() => ({pollingInterval: 5000 })}
+            :datasourceConfig=${() => ({pollingInterval: 5000, requestAutoSetup: false})}
             {{/if}}
             {{#if config.entityName}}
             entityLabel="{{ config.entityName }}"
@@ -51,25 +51,16 @@ ${whenElse(
             {{/if}}
         ></entity-management>
         {{#if config.customEvents}}
-        <rapid-modal
-          ${ref('customEventModal')}
-          :onCloseCallback=${(x) => (x.activeCustomEvent = null)}
-        >
-          <h4 slot="top">${(x) => x.getCustomEventModalTitle()}</h4>
-          ${when(
-            (x) => x.activeCustomEvent,
-            html`
-              <foundation-form
-                resourceName=${(x) => x.getCustomEventResourceName()}
-                :uischema=${(x) => x.getCustomEventUiSchema()}
-                :data=${(x) => x.customEventFormData}
-                @submit-success=${(x) => x.handleCustomEventSubmit()}
-                @submit=${(_, c) => submitFailureNotification(customEvent(c))}
-                @submit-failure=${(_, c) => submitFailureNotification(customEvent(c))}
-              ></foundation-form>
-            `,
-          )}
-        </rapid-modal>
+        <smart-form-modal
+            entityLabel="{{ config.entityName }}"
+            modal-position="{{ config.modalPosition }}"
+            :modalFormType=${(x) => !!x.activeCustomEvent && 'update'}
+            :editModalVisible=${(x) => !!x.activeCustomEvent}
+            :formResourceName=${(x) => x.getCustomEventResourceName()}
+            :formUiSchema=${(x) => x.getCustomEventUiSchema()}
+            :editedEntity=${(x) => x.customEventFormData}
+            confirmation-message="${(x) => x.getActiveCustomEvent()?.confirmSubmit?.state === 'enabled' ? x.getActiveCustomEvent().confirmSubmit.message : null}"
+        ></smart-form-modal>
         {{/if}}
     `,
     html`

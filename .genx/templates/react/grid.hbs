@@ -15,7 +15,8 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     isSnapshot="{{config.snapshot}}"
     {{/if}}
     {{#if config.reqrep~}}
-    datasourceConfig="reqrep"
+    polling-interval="5000"
+    request-auto-setup="false"
     {{/if}}
     {{#if config.gridOptions~}}
     deferredGridOptions={deferredGridOptions}
