@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.18...v5.4.0-prerelease.19) (2025-09-22)
+
+
+### Bug Fixes
+
+* update genesisStart version GENC-0 f483e15
+* update genesisStart version GENC-0 (#517) cb37824
+
 ## [5.4.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.17...v5.4.0-prerelease.18) (2025-09-19)
 
 
