@@ -3,7 +3,9 @@
   "version": "{{applicationVersionWeb}}",
   "private": true,
   "config": {
-    "PERSIST_LAYOUT_IN_DEV": false
+    "PERSIST_LAYOUT_IN_DEV": false,
+    "PORT": 6061,
+    "API_HOST_LOCAL": "ws://localhost:9064"
   },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
@@ -14,7 +16,7 @@
     "build:stats": "npm run build --stats-json",
     "clean": "genx clean dist node_modules",
     "dev": "webpack serve --mode development",
-    "dev:vite": "vite build && vite preview",
+    "dev:vite": "PORT=$npm_package_config_PORT API_HOST=$npm_package_config_API_HOST_LOCAL SOCKET_EXT=gwf PUBLIC_PATH=/ vite build && vite preview",
     "dev:docker": "npm run dev -- --host 0.0.0.0",
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",

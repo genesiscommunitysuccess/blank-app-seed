@@ -4,6 +4,7 @@ import { defineConfig, UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
+import { createDevProxies } from '@genesislcap/build-kit/utils/proxy';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -53,6 +54,11 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       },
     },
   };
+
+  const proxies = createDevProxies();
+  if (proxies) {
+    (config.server as any).proxy = proxies as any;
+  }
 
   if (mode === 'stats') {
     config.build.rollupOptions.plugins.push(
