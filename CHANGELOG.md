@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.19...v5.4.0-prerelease.20) (2025-09-26)
+
+
+### Bug Fixes
+
+* remove index-federated.ts file 769b154
+* remove index-federated.ts file (#515) 7f4b431
+
 ## [5.4.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.18...v5.4.0-prerelease.19) (2025-09-22)
 
 
