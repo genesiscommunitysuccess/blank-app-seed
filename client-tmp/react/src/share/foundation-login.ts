@@ -1,6 +1,6 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
-import { AUTH_PATH } from '@/config';
-import { environment } from "@/environments/environment.ts";
+import { AUTH_PATH } from '../config';
+import { environment } from '../environments/environment.ts';
 import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
 import type { NavigateFunction, Location as RouterLocation } from 'react-router-dom';

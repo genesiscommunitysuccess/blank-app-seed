@@ -7,12 +7,12 @@ import {
   onFDC3Ready,
   {{/if}}
 } from './utils';
-import { customEventFactory, registerStylesTarget } from '@/pbc/utils';
+import { customEventFactory, registerStylesTarget } from './pbc/utils';
 import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
-import { storeService } from '@/services/store.service';
+import { storeService } from './services/store.service';
 import AppRoutes from './components/routes/AppRoutes';
-import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage.tsx";
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage.tsx';
 
 
 interface AppProps {

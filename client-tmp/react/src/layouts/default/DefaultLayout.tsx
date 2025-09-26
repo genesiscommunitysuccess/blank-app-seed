@@ -6,10 +6,10 @@ import {
   StandardLuminance,
 } from '@microsoft/fast-components';
 import styles from './DefaultLayout.module.css';
-import PBCElementsRenderer from '@/pbc/elementsRenderer';
-import * as designTokens from '@/styles/design-tokens.json';
-import { useRoutesContext } from '@/store/RoutesContext';
-import { AUTH_PATH } from '@/config';
+import PBCElementsRenderer from '../../pbc/elementsRenderer';
+import * as designTokens from '../../styles/design-tokens.json';
+import { useRoutesContext } from '../../store/RoutesContext';
+import { AUTH_PATH } from '../../config';
 import { LOGOUT_URL } from '@genesislcap/foundation-utils';
 
 interface DefaultLayoutProps {}

@@ -1,5 +1,5 @@
 import { RouteLayouts } from './types/RouteLayouts';
-import { environment } from '@environment';
+import { environment } from './environments/environment';
 
 export const routeLayouts: RouteLayouts = {
   '/login': 'blank',
