@@ -1,32 +1,38 @@
-import { CustomEventHandler } from "../../../utils/customEvents";
+import { type CustomAction, CrudMenuPosition, UiSchema } from '@genesislcap/foundation-entity-management';
 
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
-export const {{camelCase this.name}}FormSchema = {{{this.uischema}}};
+export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/if}}
 {{/each}}
 
-export const customEventFormSchemas = {
-  {{#each tile.config.customEvents}}
-  {{#if this.hasForm}}
-  '{{this.name}}': {{camelCase this.name}}FormSchema,
-  {{/if}}
-  {{/each}}
-};
-
-export const customEvents: CustomEventHandler[] = [
+export const customActions: CustomAction[] = [
   {{#each tile.config.customEvents}}
   {
-    baseEvent: '{{this.baseEvent}}',
     name: '{{this.name}}',
-    hasForm: {{this.hasForm}},
+    action: {
+      type: 'event',
+      event: 'EVENT_{{this.baseEvent}}',
+      hasForm: {{this.hasForm}},
+      {{#if this.hasForm}}
+      uiSchema: {{camelCase this.name}}FormSchema,
+      {{/if}}
+      defaultValues: {{{this.defaultValues}}},
+    },
+    position: CrudMenuPosition.Column,
+    {{#if this.icon}}
+    icon: '{{this.icon}}',
+    {{/if}}
+    {{#if this.tooltip}}
+    tooltip: '{{this.tooltip}}',
+    {{/if}}
     {{#if this.confirmSubmit}}
     confirmSubmit: {
       state: '{{this.confirmSubmit.state}}',
       message: '{{this.confirmSubmit.message}}'
     },
     {{/if}}
-    defaultValues: {{{this.defaultValues}}},
+    requiresSelection: true,
   },
   {{/each}}
-]; 
+];
