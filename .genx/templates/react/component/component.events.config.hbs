@@ -19,7 +19,9 @@ export const customActions: CustomAction[] = [
       {{/if}}
       defaultValues: {{{this.defaultValues}}},
     },
-    position: CrudMenuPosition.Column,
+    {{#if this.position}}
+    position: CrudMenuPosition.{{{pascalCase this.position}}},
+    {{/if}}
     {{#if this.icon}}
     icon: '{{this.icon}}',
     {{/if}}

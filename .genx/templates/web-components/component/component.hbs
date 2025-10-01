@@ -7,10 +7,6 @@ import { {{pascalCase tile.title}}Template as template } from './{{kebabCase til
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 import { ColDef } from '@ag-grid-community/core';
 {{/if}}
-{{#if tile.config.customEvents}}
-import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
-import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
-{{/if}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
