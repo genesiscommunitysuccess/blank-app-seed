@@ -4,9 +4,7 @@ import { getUser } from '@genesislcap/foundation-user';
 import { ErrorMessageComponent } from '../../../components/error-message/error-message.component';
 import { getViewUpdateRightComponent } from '../../../utils';
 {{#if tile.config.customEvents}}
-import { getConnect } from '@genesislcap/foundation-comms';
-import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
-import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
+import { customActions as emCustomActions } from './{{kebabCase tile.title}}.events.config';
 {{/if}}
 {{#if tile.config.gridOptions}}
 import { GridOptionsConfig } from "@genesislcap/rapid-grid-pro";
@@ -56,33 +54,6 @@ export class {{pascalCase tile.componentName}} {
   reqrep = { pollingInterval: 5000, requestAutoSetup: false };{{/if}}{{#if tile.config.columns}}
   columnDefs = [
     ...columnDefs,
-    {{#if tile.config.customEvents}}
-    /**
-     * TODO: Update the action button's icon under `contentTemplate` below.
-     * More information about rapid-icon can be found at: https://docs.genesis.global/docs/develop/client-capabilities/presentation/client-presentation-icon/
-     **/
-    {{#each tile.config.customEvents}}
-    {
-      field: '',
-      headerName: '',
-      minWidth: 50,
-      maxWidth: 50,
-      pinned: 'right',
-      cellRenderer: RapidAgActionRenderer,
-      cellRendererParams: <ActionRendererParams>{
-        actionClick: async (rowData) => {
-          const { ROW_REF, ...DETAILS } = rowData;
-          const response = await getConnect().commitEvent("EVENT_{{this}}", {
-            DETAILS,
-          });
-        },
-        contentTemplate: `
-          <rapid-icon name="cog"></rapid-icon>
-        `,
-      },
-    },
-    {{/each}}
-    {{/if}}
   ];{{/if}}{{#if tile.config.type}}
   chartConfig = { {{#ifEquals tile.config.type 'pie'}}
       "radius": 0.75,
@@ -90,6 +61,6 @@ export class {{pascalCase tile.componentName}} {
       "colorField": "groupBy",{{else}}
       "xField": "groupBy",
       "yField": "value",{{/ifEquals}}
-  };{{/if}}
-  
+  };{{/if}}{{#if tile.config.customEvents}}
+  customActions = emCustomActions;{{/if}}
 }

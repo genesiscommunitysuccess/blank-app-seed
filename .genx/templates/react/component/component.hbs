@@ -1,9 +1,6 @@
 {{#if tile.config.permissions.viewRight~}}
 import { getUser } from '@genesislcap/foundation-user';
-{{#if tile.config.customEvents}}
-import { customEvent } from '@genesislcap/foundation-events';
-{{/if}}
-import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
+import { getViewUpdateRightComponent } from '../../../utils';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{else if tile.config.permissions.updateRight~}}
 import { getUser } from '@genesislcap/foundation-user';
@@ -14,14 +11,7 @@ import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFail
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{/if}}
 {{#if tile.config.customEvents}}
-import { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { getConnect } from '@genesislcap/foundation-comms';
-import type { ActionRendererParams } from '@genesislcap/rapid-grid-pro';
-import { RapidAgActionRenderer } from '@genesislcap/rapid-grid-pro';
-import { UiSchema } from '@genesislcap/foundation-forms';
-import { customEvents, customEventFormSchemas } from './{{pascalCase tile.title}}EventsConfig';
-import { useCustomEvent, type CustomEventState } from '../../../utils/customEvents';
+import { customActions } from './{{pascalCase tile.title}}EventsConfig';
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -66,48 +56,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
   {{#if tile.config.columns~}}
-  const columnDefs: typeof columnDefsTile = [
-    ...columnDefsTile,
-    {{#if tile.config.customEvents}}
-    /**
-     * TODO: Update the action button's icon under `contentTemplate` below.
-     * More information about rapid-icon can be found at: https://docs.genesis.global/docs/develop/client-capabilities/presentation/client-presentation-icon/
-     **/
-    {{#each tile.config.customEvents}}
-    {
-      headerName: '',
-      minWidth: 50,
-      maxWidth: 50,
-      headerTooltip: '{{this.tooltip}}',
-      pinned: 'right',
-      suppressCellFlash: true,
-      cellRenderer: RapidAgActionRenderer,
-      cellRendererParams: {
-        actionClick: async (rowData) => {
-          setIsModalVisible(false);
-
-          const customEvent = customEvents.find(e => e.name === '{{this.name}}');
-          if (customEvent) {
-            const handleCustomEvent = useCustomEvent(
-              customEvent,
-              rowData,
-              setCustomEventFormData,
-              setActiveCustomEvent,
-              setResourceName,
-              setUiSchema,
-              customEventFormSchemas
-            );
-            await handleCustomEvent();
-          }
-        },
-        contentTemplate: `
-          <rapid-icon name="{{this.icon}}" title="{{this.name}}"></rapid-icon>
-        `,
-      } as ActionRendererParams,
-    },
-    {{/each}}
-    {{/if}}
-  ];
+  const columnDefs: typeof columnDefsTile = [...columnDefsTile];
   {{/if}}
   {{#if tile.config.gridOptions~}}
   const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }
@@ -134,44 +83,6 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     xField: 'groupBy',
     yField: 'value',
     {{/ifEquals}}
-  };
-  {{/if}}
-
-  {{#if tile.config.customEvents}}
-  const [activeCustomEvent, setActiveCustomEvent] = useState<CustomEventState | null>(null);
-  const [customEventFormData, setCustomEventFormData] = useState<Record<string, any>>({});
-  const [resourceName, setResourceName] = useState<string>('');
-  const [uiSchema, setUiSchema] = useState<UiSchema | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
-  function confirmationMessage() {
-    if (!activeCustomEvent) return null;
-    const event = customEvents.find(e => e.name === activeCustomEvent.name);
-    return event?.confirmSubmit?.state === 'enabled' ? event.confirmSubmit.message : null;
-  }
-
-  useEffect(() => {
-    if (activeCustomEvent) {
-      setIsModalVisible(true);
-    }
-  }, [activeCustomEvent]);
-
-  const renderFormModal = () => {
-    if (!activeCustomEvent) return null;
-
-    return createPortal(
-      <smart-form-modal
-        entityLabel="{{ tile.config.entityName }}"
-        modal-position="{{ tile.config.modalPosition }}"
-        modalFormType={isModalVisible && 'update'}
-        editModalVisible={isModalVisible}
-        formResourceName={resourceName}
-        formUiSchema={uiSchema}
-        editedEntity={customEventFormData}
-        confirmationMessage={confirmationMessage()}
-      ></smart-form-modal>,
-      document.querySelector('rapid-design-system-provider')!
-    );
   };
   {{/if}}
 

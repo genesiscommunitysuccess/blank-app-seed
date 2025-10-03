@@ -48,6 +48,9 @@
       {{#if config.enableSearchBar}}
       enable-search-bar
       {{/if}}
+      {{#if config.customEvents}}
+      [customActions]="customActions"
+      {{/if}}
     ></entity-management>
   </ng-container>{{#if config.permissions.viewRight}}
 

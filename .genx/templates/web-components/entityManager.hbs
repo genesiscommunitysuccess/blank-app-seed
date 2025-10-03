@@ -49,19 +49,10 @@ ${whenElse(
             {{#if config.enableSearchBar}}
             enable-search-bar
             {{/if}}
+            {{#if config.customEvents}}
+            :customActions=${() => customActions}
+            {{/if}}
         ></entity-management>
-        {{#if config.customEvents}}
-        <smart-form-modal
-            entityLabel="{{ config.entityName }}"
-            modal-position="{{ config.modalPosition }}"
-            :modalFormType=${(x) => !!x.activeCustomEvent && 'update'}
-            :editModalVisible=${(x) => !!x.activeCustomEvent}
-            :formResourceName=${(x) => x.getCustomEventResourceName()}
-            :formUiSchema=${(x) => x.getCustomEventUiSchema()}
-            :editedEntity=${(x) => x.customEventFormData}
-            confirmation-message="${(x) => x.getActiveCustomEvent()?.confirmSubmit?.state === 'enabled' ? x.getActiveCustomEvent().confirmSubmit.message : null}"
-        ></smart-form-modal>
-        {{/if}}
     `,
     html`
       <not-permitted-component></not-permitted-component>
