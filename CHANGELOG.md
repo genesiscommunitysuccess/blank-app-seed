@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.4.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.24...v5.4.0-prerelease.25) (2025-10-06)
+
+
+### Features
+
+* add position + customEvents in angular GENC-1213 38ddcf4
+* handle custom actions by entity-management GENC-1213 b78bf5d
+* handle custom actions by entity-management GENC-1213 (#519) e96b445
+
 ## [5.4.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.23...v5.4.0-prerelease.24) (2025-10-02)
 
 
