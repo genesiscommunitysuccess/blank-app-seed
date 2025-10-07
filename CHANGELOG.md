@@ -1,93 +1,111 @@
 # Changelog
 
-## [5.5.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0...v5.5.0) (2025-09-19)
+## [5.6.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.5.0...v5.6.0-prerelease.1) (2025-10-07)
 
 
 ### Features
 
-* update GSF version to the latest GENC-1208 23c001d
-* update GSF version to the latest GENC-1208 (#516) 0d46e3b
+* add position + customEvents in angular GENC-1213 38ddcf4
+* handle custom actions by entity-management GENC-1213 b78bf5d
+* handle custom actions by entity-management GENC-1213 (#519) e96b445
 
 
 ### Bug Fixes
 
-* update FUI to 14.322.0 b7e1234
+* backport main to prerelease GENC-0 (#520) 59c1ac5
+* remove index-federated.ts file 769b154
+* remove index-federated.ts file (#515) 7f4b431
+* update genesisStart version GENC-0 f483e15
+* update genesisStart version GENC-0 (#517) cb37824
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0a1f905
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3a3fc53
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f2cf4ba
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ae21109
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 56405a7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 96831c7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7b6670e
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0d5e2bc
 
-## [5.4.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.3.2...v5.4.0) (2025-09-19)
+## [5.4.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.26...v5.4.0-prerelease.27) (2025-10-06)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0a1f905
+
+## [5.4.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.25...v5.4.0-prerelease.26) (2025-10-06)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 56405a7
+
+## [5.4.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.24...v5.4.0-prerelease.25) (2025-10-06)
 
 
 ### Features
 
-* add-test-plugin [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#488) 71e885b
-* advanced custom events (react/web-components) GENC-1002 94765c1
-* advanced custom events (react/web-components) GENC-1002 (#477) c9710fe
-* backport main 8.13 (#492) 76884d4
-* BDD framework + GSF change GENC-1208 (#514) ee185b4
-* smart-form-modal react GENC-1162 d82bf2b
-* support confirmation message for event on entity manager GENC-1185 ea27d49
-* support confirmation message for event on entity manager GENC-1185 (#503) d2b4448
-* support cucumber tags in bdd tests cc918ff
-* support cucumber tags in bdd tests (#512) 652dcf1
-* use smart-form-modal GENC-1162 (#485) 744ad5b
+* add position + customEvents in angular GENC-1213 38ddcf4
+* handle custom actions by entity-management GENC-1213 b78bf5d
+* handle custom actions by entity-management GENC-1213 (#519) e96b445
+
+## [5.4.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.23...v5.4.0-prerelease.24) (2025-10-02)
 
 
 ### Bug Fixes
 
-* add CucumberRunner af30ae7
-* added logout endpoint in confog.properties GENC-0 (#502) aa02828
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) af97313
-* automated dependency version update [skip-ci] [PSD-9](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/9) (#482) 301b309
-* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#498) 66fa70c
-* backport main to prerelease [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#500) 4b8dd8d
-* bdd tests config to run against the server rather than via the UI GENC-1012 36566f2
-* bdd tests config to run against the server rather than via the UI GENC-1012 (#509) a11bc20
-* bump fui version with stacking notification fix PA-1745 ce6ad4d
-* bump fui version with stacking notification fix PA-1745 (#505) 0002d5d
-* bump fui version with vite fixes GENC-1187 817d471
-* bump fui version with vite fixes GENC-1187 (#511) bc6983c
-* check if custom events exist GENC-1002 aad5e1e
-* check if custom events exist GENC-1002 (#478) b1420c2
-* correct args passing [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#496) f3daa00
-* correct config for reqReps in grid GENC-1168 8e3927c
-* correct config for reqReps in grid GENC-1168 (#487) f9170d4
-* e2e test for wc GENC-1185 9b4dc53
-* escape commas in CSV files GENC-1188 c25aab1
-* escape commas in CSV files GENC-1188 (#501) 7c32c98
-* exclude bdd-tests from root build.gradle.kts e9fe879
-* fix compatibility with configuration cache 5cf2fd5
-* fix description in build.gradle.kts 53fece9
-* mark test task as not compatible with configuration cache to avoid build issues 81ae5e3
-* react event setup GENC-1185 80e20fd
-* remove field name for custom events PA-1716 7ed8191
-* remove field name for custom events PA-1716 (#484) eb2ce71
-* rever workspace.xml changes c77586c
-* revert workspace.xml changes and disable configuration cache for bdd tests 84bebda
-* revert workspace.xml changes and disable configuration cache for bdd tests b5d2897
-* revert workspace.xml changes and disable configuration cache for bdd tests 08a260e
-* revert workspace.xml changes and disable configuration cache for bdd tests 4a3927e
-* separate bdd tests folder (#494) c12df43
-* set default baseuri to allow local running bdd tests GENC-1171 (#495) 86e45c8
-* set requestAutoSetup: false as default for ReqRep GENC-1168 ed6c00a
-* set requestAutoSetup: false as default for ReqRep GENC-1168 (#486) e2a4679
-* show server errors in form GENC-1116 (#479) 3cc189f
-* show title in custom events modal GENC-0 6998f64
-* show title in custom events modal GENC-0 d31f9f3
-* show title in custom events modal GENC-0 (#480) f05aa72
-* syntax error setting confirmation message GENC-1185 10b2835
-* tweak react syntax GENC-1185 07cf6dd
-* update auth version [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#513) 1d4027a
-* update BDD framework version GENC-0 (#507) 233103d
-* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage f0deb5c
-* Update gradle.properties to disable log4j2 shutdown hook in order to avoid classloader leakage (#481) 875cbc8
-* update type for customEventFormSchemas GENC-1162 9985837
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 82124e1
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 921b9f9
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) aac125a
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ca8beec
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 60b47dc
-* use separate bdd tests folder to avoid groovy dependency clashes b1e6bfe
-* use smart-form-modal for message display GENC-1185 22f7968
-* use smart-form-modal GENC-1162 d4d112f
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3a3fc53
+
+## [5.4.0-prerelease.23](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.22...v5.4.0-prerelease.23) (2025-10-02)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 96831c7
+
+## [5.4.0-prerelease.22](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.21...v5.4.0-prerelease.22) (2025-09-30)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f2cf4ba
+
+## [5.4.0-prerelease.21](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.20...v5.4.0-prerelease.21) (2025-09-30)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7b6670e
+
+## [5.4.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.19...v5.4.0-prerelease.20) (2025-09-26)
+
+
+### Bug Fixes
+
+* remove index-federated.ts file 769b154
+* remove index-federated.ts file (#515) 7f4b431
+
+## [5.4.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.18...v5.4.0-prerelease.19) (2025-09-22)
+
+
+### Bug Fixes
+
+* update genesisStart version GENC-0 f483e15
+* update genesisStart version GENC-0 (#517) cb37824
+
+## [5.4.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.17...v5.4.0-prerelease.18) (2025-09-19)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ae21109
+
+## [5.4.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.16...v5.4.0-prerelease.17) (2025-09-19)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0d5e2bc
 
 ## [5.4.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.4.0-prerelease.15...v5.4.0-prerelease.16) (2025-09-17)
 

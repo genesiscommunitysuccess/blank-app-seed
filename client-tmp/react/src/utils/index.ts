@@ -1,4 +1,3 @@
-export * from './customEvents';
 export * from './fdc3';
 export * from './getLayoutNameByRoute';
 export * from './layout';

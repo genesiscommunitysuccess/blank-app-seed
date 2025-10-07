@@ -61,10 +61,10 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.enableSearchBar~}}
     enable-search-bar
     {{/if}}
+    {{#if config.customEvents}}
+    customActions={customActions}
+    {{/if}}
   ></entity-management>
-  {{#if config.customEvents}}
-  {renderFormModal()}
-  {{/if}}
 </>
 {{#if config.permissions.viewRight~}}
 ) : (
