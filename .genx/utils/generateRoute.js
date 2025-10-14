@@ -80,6 +80,6 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
       generateTile(tile, route, { changeCase, writeFileWithData }, framework);
     });
   }
-};
+}
 
 module.exports = generateRoute;

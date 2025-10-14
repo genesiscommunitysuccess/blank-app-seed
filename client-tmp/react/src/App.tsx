@@ -10,23 +10,16 @@ import {
 import { customEventFactory, registerStylesTarget } from './pbc/utils';
 import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
-import { storeService } from './services/store.service';
 import AppRoutes from './components/routes/AppRoutes';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage.tsx';
-
+import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage.tsx";
+import { reduxStore } from './store/store';
+import { Provider } from 'react-redux';
 
 interface AppProps {
   rootElement: HTMLElement;
 }
 
-const App: React.FC<AppProps> = ({ rootElement }) => {
-  const [isStoreConnected, setIsStoreConnected] = useState(false);
-  const dispatchCustomEvent = (type: string, detail?: any) => {
-    rootElement.dispatchEvent(customEventFactory(type, detail));
-  };
-  const handleStoreConnected = (event: CustomEvent) => {
-    storeService.onConnected(event);
-  };
+const App: React.FC<AppProps> = ({}) => {
   {{#if FDC3.channels.length~}}
   const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
@@ -47,30 +40,20 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
-    if (!isStoreConnected) {
-      rootElement.addEventListener('store-connected', handleStoreConnected);
-      dispatchCustomEvent('store-connected', rootElement);
-      dispatchCustomEvent('store-ready', true);
-      setIsStoreConnected(true);
-    }
 
-    return () => {
-      if (isStoreConnected) {
-        rootElement.removeEventListener('store-connected', handleStoreConnected);
-        dispatchCustomEvent('store-disconnected');
-      }
-    };
-  }, [isStoreConnected]);
+  }, []);
 
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
 
   return (
-    <RoutesProvider>
-        <Router basename={basePath}>
-          <AppRoutes />
-        </Router>
-    </RoutesProvider>
+    <Provider store={reduxStore}>
+      <RoutesProvider>
+          <Router basename={basePath}>
+            <AppRoutes />
+          </Router>
+      </RoutesProvider>
+    </Provider>
   );
 };
 

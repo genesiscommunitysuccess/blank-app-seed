@@ -8,6 +8,7 @@ const {
   registerPartials,
   validateRoute,
   deleteGradleWrappers,
+  generateStore,
 } = require('./utils');
 
 /**
@@ -39,6 +40,8 @@ module.exports = async (data, utils) => {
     channels: data.ui?.fdc3?.channels || [],
   };
   excludeFrameworks(data.framework);
+
+  generateStore(data.routes, utils, data.framework);
 
   data.routes.forEach((route) => {
     generateRoute(route, utils, data.framework);

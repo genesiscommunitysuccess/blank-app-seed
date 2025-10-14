@@ -14,9 +14,12 @@
         polling-interval="5000"
         request-auto-setup="false"
         {{/if}}
-        {{#if config.gridOptions}}
-        [deferredGridOptions]="{ onRowClicked: gridOptions.onRowClicked }"
+        {{#if config.eventing.listener}}
+        [criteria]="criteria()"
         {{/if}}
+        {{#ifAny config.gridOptions config.eventing.publishEventName}}
+        [deferredGridOptions]="gridOptionsModel"
+        {{/ifAny}}
       ></grid-pro-genesis-datasource>
       {{#if config.gridOptions}}
       <grid-pro-column *ngFor="let columnDef of gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>

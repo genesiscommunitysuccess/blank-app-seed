@@ -4,6 +4,7 @@ const formatRouteData = require('./formatRouteData');
 const generateRoute = require('./generateRoute');
 const generateCsv = require('./generateCsv');
 const getCombinedCsvData = require('./getCombinedCsvData');
+const generateStore = require('./generateStore');
 const makeDirectory = require('./makeDirectory');
 const normalizeFrameworkAlias = require('./normalizeFrameworkAlias');
 const parseJSONArgument = require('./parseJSONArgument');
@@ -18,6 +19,7 @@ module.exports = {
   generateRoute,
   generateCsv,
   getCombinedCsvData,
+  generateStore,
   makeDirectory,
   normalizeFrameworkAlias,
   parseJSONArgument,

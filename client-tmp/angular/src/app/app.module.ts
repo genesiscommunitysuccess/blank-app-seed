@@ -9,6 +9,8 @@ import { DefaultLayoutComponent } from './layouts/default/default.layout';
 import { BlankLayoutComponent } from './layouts/blank/blank.layout';
 import { LayoutLazyLoadDirective } from './directive/app-lazy-load.directive';
 import { RouteService } from './services/route.service';
+import { provideRedux } from '@reduxjs/angular-redux';
+import { reduxStore } from './store/store';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { RouteService } from './services/route.service';
   ],
   providers: [
     RouteService,
+    provideRedux({ store: reduxStore as any }),
     {
       provide: APP_INITIALIZER,
       useFactory: (service: RouteService, router: Router) => () => router.resetConfig(service.allRoutes()),

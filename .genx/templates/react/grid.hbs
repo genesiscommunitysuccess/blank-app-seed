@@ -3,7 +3,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
 {{/if}}
 <rapid-grid-pro
   header-case-type="capitalCase"
-  {{#if config.useOnlyTemplateCols~}}
+  {{#if config.useOnlyTemplateCols}}
   only-template-col-defs
   {{/if}}
   enable-row-flashing
@@ -11,16 +11,12 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
   >
   <grid-pro-genesis-datasource
     resource-name="{{config.resourceName}}"
-    {{#if config.snapshot~}}
+    {{#if config.snapshot}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
-    {{#if config.reqrep~}}
-    polling-interval="5000"
-    request-auto-setup="false"
-    {{/if}}
-    {{#if config.gridOptions~}}
-    deferredGridOptions={deferredGridOptions}
-    {{/if}}
+    {{#ifAny config.gridOptions config.eventing.publishEventName}}
+    deferredGridOptions={gridOptions}
+    {{/ifAny}}
   ></grid-pro-genesis-datasource>
   {{#if config.gridOptions}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
