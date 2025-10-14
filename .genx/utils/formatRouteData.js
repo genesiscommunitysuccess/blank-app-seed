@@ -70,6 +70,7 @@ const formatRouteData = (framework, route) => {
 
   return {
     ...route,
+    icon: route.icon || 'cog',
     layoutType,
     layoutKey,
     tiles,

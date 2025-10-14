@@ -99,7 +99,7 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
           {
             title: '{{sentenceCase this.name}}',
             icon: {
-              name: 'cog',
+              name: '{{this.icon}}',
               variant: 'solid',
             },
             permission: '{{this.permissions.viewRight}}',
