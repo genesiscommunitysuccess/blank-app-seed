@@ -24,15 +24,29 @@
       {{#if config.deleteEvent}}
       [deleteEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined"
       {{/if}}
-      {{#if config.gridOptions}}
-      [gridOptions]="{{ config.gridOptions }}"
-      {{/if}}
-      {{#if config.snapshot}}
-      [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
-      {{/if}}
-      {{#if config.reqrep}}
-      [datasourceConfig]="reqrep"
-      {{/if}}
+      {{#ifAny config.gridOptions config.eventing.publishEventName}}
+      [gridOptions]="{
+        {{#if config.gridOptions}}
+        ...{{ config.gridOptions }},
+        {{/if}}
+        {{#if config.eventing.publishEventName}}
+        onSelectionChanged: handleRowSelection
+        {{/if}}
+      }"
+      {{/ifAny}}
+      {{#ifAny config.snapshot config.reqrep config.eventing.listener}}
+      [datasourceConfig]="{
+        {{#if config.snapshot}}
+        isSnapshot: {{ config.snapshot }},
+        {{/if}}
+        {{#if config.reqrep}}
+        ...reqrep,
+        {{/if}}
+        {{#if config.eventing.listener}}
+        criteria: criteria
+        {{/if}}
+      }"
+      {{/ifAny}}
       {{#if config.entityName}}
       entityLabel="{{ config.entityName }}"
       {{/if}}

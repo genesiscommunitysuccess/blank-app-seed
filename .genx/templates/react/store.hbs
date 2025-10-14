@@ -1,0 +1,26 @@
+import { createStore } from '@genesislcap/foundation-redux';
+import { eventingSlice } from './slices/eventing.slice';
+
+export const layoutComponentsMap: Map<string, any> = new Map();
+
+export const LayoutComponentNames = {
+  {{#each layoutComponents}}
+  {{constantCase componentName}}: '{{componentName}}',
+  {{/each}}
+} as const;
+
+export const reduxStore = createStore([eventingSlice], {
+  eventing: {
+    {{#each events}}
+    {{this}}: null{{#unless @last}},{{/unless}}
+    {{/each}}
+  },
+});
+
+export const { store, actions, selectors } = reduxStore;
+
+export type Store = typeof store;
+export type Actions = typeof actions;
+export type Selectors = typeof selectors;
+
+

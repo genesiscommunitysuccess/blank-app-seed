@@ -74,12 +74,78 @@ const generateRoute = (route, { changeCase, writeFileWithData }, framework) => {
     );
   });
 
+
+  const events = Array.from(
+    new Set(
+      (route.tiles || [])
+        .map((t) => t.config?.eventing?.publishEventName)
+        .filter(Boolean)
+        .concat(
+          (route.tiles || [])
+            .map((t) => t.config?.eventing?.listener?.eventName)
+            .filter(Boolean),
+        ),
+    ),
+  );
+
+  const listeners = (route.tiles || [])
+    .filter((t) => t.config?.eventing?.listener)
+    .map((t) => ({
+      tileName: t.title,
+      eventName: t.config.eventing.listener.eventName,
+      mappings: t.config.eventing.listener.mappings || [],
+    }));
+
+  const layoutComponents = (route.tiles || [])
+    .map((t) => ({
+      componentName: `${route.name}-${t.title.replace(/[^0-9a-z]/gi, '')}-${t.componentType}`,
+    }));
+
+  const storeTemplate = `${sourceTemplateDir}/store.hbs`;
+  const sliceTemplate = `${sourceTemplateDir}/slices/eventing.slice.hbs`;
+
+  let storeTarget;
+  if (framework === FRAMEWORK_WEB_COMPONENTS_ALIAS) {
+    storeTarget = resolve(
+      __dirname,
+      `../../client/src/store/store.ts`,
+    );
+  } else if (framework === FRAMEWORK_REACT_ALIAS) {
+    storeTarget = resolve(
+      __dirname,
+      `../../client/src/store/store.ts`,
+    );
+  } else if (framework === FRAMEWORK_ANGULAR_ALIAS) {
+    storeTarget = resolve(
+      __dirname,
+      `../../client/src/app/store/store.ts`,
+    );
+  }
+
+  if (storeTarget) {
+    // Write store.ts
+    writeFileWithData(
+      storeTarget,
+      { events, listeners, layoutComponents },
+      resolve(__dirname, storeTemplate),
+    );
+    // Write slices/eventing.slice.ts next to store
+    const sliceTarget = storeTarget.replace(/store\.ts$/, 'slices/eventing.slice.ts');
+    makeDirectory(resolve(__dirname, sliceTarget.replace(/\/slices\/eventing\.slice\.ts$/, '/slices')));
+    writeFileWithData(
+      sliceTarget,
+      { events, listeners },
+      resolve(__dirname, sliceTemplate),
+    );
+  }
+
+
   if (route?.tiles?.length) {
     route.tiles.forEach((tile) => {
       tile.metadata = tile.metadata || {};
       generateTile(tile, route, { changeCase, writeFileWithData }, framework);
     });
   }
-};
+}
 
 module.exports = generateRoute;

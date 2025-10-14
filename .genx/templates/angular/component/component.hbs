@@ -24,6 +24,9 @@ import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
+{{#ifAny tile.config.eventing.publishEventName tile.config.eventing.listener}}
+import { Store } from '../../../store/store';
+{{/if}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
@@ -62,5 +65,14 @@ export class {{pascalCase tile.componentName}} {
       "xField": "groupBy",
       "yField": "value",{{/ifEquals}}
   };{{/if}}{{#if tile.config.customEvents}}
-  customActions = emCustomActions;{{/if}}
+  customActions = emCustomActions;{{/if}}{{#ifAny tile.config.eventing.publishEventName tile.config.eventing.listener}}
+  constructor(private store: Store) {};{{/if}}{{#if tile.config.eventing.publishEventName}}
+  handleRowSelection = (e: any) => {
+    const selectedRows = e.api.getSelectedRows();
+    if (!selectedRows || !selectedRows.length) return;
+    this.store.publish{{pascalCase tile.config.eventing.publishEventName}}(selectedRows[0]);
+  };{{/if}}{{#if tile.config.eventing.listener}}
+  get criteria() {
+    return this.store.getCriteriaFor{{pascalCase tile.title}}();
+  }{{/if}}
 }

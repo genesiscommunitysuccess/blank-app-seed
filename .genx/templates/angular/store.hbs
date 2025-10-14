@@ -1,0 +1,73 @@
+import { CriteriaBuilder, ExpressionBuilder, Serialisers } from '@genesislcap/foundation-criteria';
+import { CustomEventMap } from '@genesislcap/foundation-events';
+import { getApp } from '@genesislcap/foundation-shell/app';
+import {
+  AbstractStoreRoot,
+  registerStore,
+  StoreRoot,
+  StoreRootEventDetailMap,
+} from '@genesislcap/foundation-store';
+import { observable } from '@genesislcap/web-core';
+
+export enum EVENTING_EVENTS {
+{{#each events}}
+  {{this}} = '{{this}}'{{#unless @last}},{{/unless}}
+{{/each}}
+}
+
+export interface Store extends StoreRoot {
+{{#each events}}
+  readonly {{this}}: any | null;
+{{/each}}
+{{#each listeners}}
+  getCriteriaFor{{pascalCase tileName}}(): string;
+{{/each}}
+}
+
+export type StoreEventDetailMap = StoreRootEventDetailMap & {
+{{#each events}}
+  [EVENTING_EVENTS.{{this}}]: any;
+{{/each}}
+};
+
+declare global {
+  interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}
+}
+
+class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
+{{#each events}}
+  @observable {{this}}: any | null = null;
+{{/each}}
+
+  constructor() {
+    super();
+    getApp().registerStoreRoot(this);
+
+{{#each events}}
+    this.createListener<any>(EVENTING_EVENTS.{{this}}, (data: any) => {
+      this.{{this}} = data;
+    });
+{{/each}}
+  }
+
+{{#each listeners}}
+  getCriteriaFor{{pascalCase tileName}}(): string {
+    if (!this.{{eventName}}) return '';
+    const criteriaBuilder = new CriteriaBuilder();
+{{#each mappings}}
+    if (this.{{../eventName}}.{{sourceField}}) {
+      criteriaBuilder.And(new ExpressionBuilder()
+        .withField('{{targetField}}')
+        .withValue(this.{{../eventName}}.{{sourceField}})
+        .withSerialiser(Serialisers.EQ)
+        .build());
+    }
+{{/each}}
+    return criteriaBuilder.build();
+  }
+{{/each}}
+}
+
+export const Store = registerStore(DefaultStore, 'Store');
+
+

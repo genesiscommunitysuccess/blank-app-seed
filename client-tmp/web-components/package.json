@@ -91,6 +91,7 @@
   "dependencies": {
     "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
+    "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
     {{#if FDC3.includeDependencies}}
@@ -103,6 +104,7 @@
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
+    "@genesislcap/foundation-redux": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
@@ -122,6 +124,7 @@
     "@analytics/core": "0.12.17",
     "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
+    "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
     {{#if FDC3.includeDependencies}}
@@ -134,6 +137,7 @@
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
+    "@genesislcap/foundation-redux": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
