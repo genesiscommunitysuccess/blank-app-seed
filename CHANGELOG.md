@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.6.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.6.0-prerelease.3...v5.6.0-prerelease.4) (2025-10-14)
+
+
+### Features
+
+* allow configuration of route button icons GENC-1220 4f0680e
+* allow configuration of route button icons GENC-1220 (#522) e8167d3
+* update pr template with icons to test with GENC-1220 356eee0
+
 ## [5.6.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.6.0-prerelease.2...v5.6.0-prerelease.3) (2025-10-07)
 
 
