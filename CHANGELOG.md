@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.1...v5.7.0-prerelease.2) (2025-10-16)
+
+
+### Bug Fixes
+
+* update GSF and Auth versions in versions.json GENC-1220 (#525) ca996c8
+
 ## [5.7.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.6.0...v5.7.0-prerelease.1) (2025-10-16)
 
 
