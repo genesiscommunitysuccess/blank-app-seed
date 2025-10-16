@@ -1,5 +1,25 @@
 # Changelog
 
+## [5.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.6.0...v5.7.0) (2025-10-16)
+
+
+### Features
+
+* allow configuration of route button icons GENC-1220 4f0680e
+* allow configuration of route button icons GENC-1220 (#522) e8167d3
+* allow configuration of route button icons GENC-1220 (#524) f2d4590
+* backport main (#523) f3583d3
+* update pr template with icons to test with GENC-1220 356eee0
+
+
+### Bug Fixes
+
+* update GSF and Auth versions in versions.json GENC-1220 (#525) ca996c8
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 218eeb2
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 33007d7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d8a2da5
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d6dfc69
+
 ## [5.7.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.1...v5.7.0-prerelease.2) (2025-10-16)
 
 
