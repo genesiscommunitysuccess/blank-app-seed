@@ -37,6 +37,33 @@
 
 * updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d6dfc69
 
+## [5.6.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.5.0...v5.6.0) (2025-10-07)
+
+
+### Features
+
+* add position + customEvents in angular GENC-1213 38ddcf4
+* handle custom actions by entity-management GENC-1213 b78bf5d
+* handle custom actions by entity-management GENC-1213 (#519) e96b445
+* handle custom actions with entity-management + update genesisStart GENC-1213 (#521) 4fb11c4
+
+
+### Bug Fixes
+
+* backport main to prerelease GENC-0 (#520) 59c1ac5
+* remove index-federated.ts file 769b154
+* remove index-federated.ts file (#515) 7f4b431
+* update genesisStart version GENC-0 f483e15
+* update genesisStart version GENC-0 (#517) cb37824
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0a1f905
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3a3fc53
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f2cf4ba
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ae21109
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 56405a7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 96831c7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7b6670e
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0d5e2bc
+
 ## [5.6.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.5.0...v5.6.0-prerelease.1) (2025-10-07)
 
 
