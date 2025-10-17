@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.4...v5.7.0-prerelease.5) (2025-10-17)
+
+
+### Bug Fixes
+
+* add proxy for vite with react ff07e8f
+* add proxy for vite with react adb23b4
+* add proxy for vite with react (#518) 65bab7f
+
 ## [5.7.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.3...v5.7.0-prerelease.4) (2025-10-17)
 
 
