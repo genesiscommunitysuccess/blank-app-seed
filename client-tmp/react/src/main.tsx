@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 
-import { registerPBCs } from '@/pbc/utils';
+import { registerPBCs } from './pbc/utils';
 import { createLogger } from '@genesislcap/foundation-logger';
 
 import './styles/styles.css'

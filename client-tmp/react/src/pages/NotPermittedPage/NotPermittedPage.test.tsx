@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import NotPermittedPage from './NotPermittedPage';
 
-jest.mock('@/components/ErrorMessage/ErrorMessage', () => {
+jest.mock('../../components/ErrorMessage/ErrorMessage', () => {
   return jest.fn((props: { message: string }) => <h1 data-testid="error-message">{props.message}</h1>);
 });
 

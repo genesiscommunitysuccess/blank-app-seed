@@ -1,14 +1,14 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { RouteObject, Navigate } from 'react-router-dom';
 import { getApp } from '@genesislcap/foundation-shell/app';
-import AuthPage from '@/pages/AuthPage/AuthPage';
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
-import NotPermittedPage from '@/pages/NotPermittedPage/NotPermittedPage';
+import AuthPage from '../pages/AuthPage/AuthPage';
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
+import NotPermittedPage from '../pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
-import {{pascalCase this.name}} from '@/pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
+import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
-import PBCContainer from '@/pbc/container';
-import { AUTH_PATH, NOT_PERMITTED_PATH } from '@/config';
+import PBCContainer from '../pbc/container';
+import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
 
 const routes = [
   {

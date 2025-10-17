@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import './NotPermittedPage.css';
 
 const NotPermittedPage: React.FC = () => {

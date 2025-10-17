@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from '../../pages/AuthPage/AuthPage';
-import {{pascalCase routes.[0].name}} from '@/pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';
+import {{pascalCase routes.[0].name}} from '../../pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';
 import DefaultLayout from '../../layouts/default/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
-import { useRoutesContext } from '@/store/RoutesContext';
-import PBCContainer from '@/pbc/container';
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage.tsx';
+import { useRoutesContext } from '../../store/RoutesContext';
+import PBCContainer from '../../pbc/container';
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.tsx';
 
 const AppRoutes = () => {
   const routes = useRoutesContext();

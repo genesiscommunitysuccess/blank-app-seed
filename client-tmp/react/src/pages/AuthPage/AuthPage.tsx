@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import './AuthPage.css';
-import { configureFoundationLogin } from "@/share/foundation-login.ts";
+import { configureFoundationLogin } from '../../share/foundation-login.ts';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const AuthPage: React.FC = () => {
