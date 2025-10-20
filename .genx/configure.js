@@ -1,7 +1,12 @@
 const versions = require('./versions.json');
 const fs = require('fs');
 const path = require('path');
-const { DIRS_MAP, DIR_CLIENT_MAIN_ALIAS } = require('./static');
+const {
+  DIRS_MAP,
+  DIR_CLIENT_MAIN_ALIAS,
+  DIR_CLIENT_TEMP_ALIAS,
+  FRAMEWORKS_DIR_MAP,
+} = require('./static');
 const {
   excludeFrameworks,
   formatRouteData,
@@ -53,16 +58,26 @@ module.exports = async (data, utils) => {
       generateCsv(entity, utils);
     });
 
-  // If designTokens provided as JSON, write it to the target project's design-tokens.json
+  // If designTokens provided as JSON, write it into the template prior to copy
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
-      const clientDir = DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS);
-      const targetFile = path.join(clientDir, 'src', 'styles', 'design-tokens.json');
-      const targetDir = path.dirname(targetFile);
-      if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir, { recursive: true });
+      const clientTmpDir = DIRS_MAP.get(DIR_CLIENT_TEMP_ALIAS);
+      const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+      const templateTargetFile = path.join(
+        clientTmpDir,
+        frameworkDir,
+        'src',
+        'styles',
+        'design-tokens.json',
+      );
+      const templateTargetDir = path.dirname(templateTargetFile);
+      if (!fs.existsSync(templateTargetDir)) {
+        fs.mkdirSync(templateTargetDir, { recursive: true });
       }
-      fs.writeFileSync(targetFile, JSON.stringify(data.designTokens, null, 2));
+      fs.writeFileSync(
+        templateTargetFile,
+        JSON.stringify(data.designTokens, null, 2),
+      );
     } catch (err) {
       // Leave default file if any error occurs
       console.warn('Failed to apply custom designTokens. Using default file. Error:', err?.message || err);
