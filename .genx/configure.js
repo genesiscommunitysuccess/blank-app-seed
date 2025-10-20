@@ -46,18 +46,6 @@ module.exports = async (data, utils) => {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || [],
   };
-  excludeFrameworks(data.framework);
-
-  data.routes.forEach((route) => {
-    generateRoute(route, utils, data.framework);
-  });
-
-  data.csv
-    .map((entity) => getCombinedCsvData(entity))
-    .forEach((entity) => {
-      generateCsv(entity, utils);
-    });
-
   // If designTokens provided as JSON, write it into the template prior to copy
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
@@ -79,8 +67,44 @@ module.exports = async (data, utils) => {
         JSON.stringify(data.designTokens, null, 2),
       );
     } catch (err) {
-      // Leave default file if any error occurs
-      console.warn('Failed to apply custom designTokens. Using default file. Error:', err?.message || err);
+      // Leave default file if any error occurs (fallback will run later)
+      console.warn('Failed to pre-apply custom designTokens. Error:', err?.message || err);
+    }
+  }
+  excludeFrameworks(data.framework);
+
+  data.routes.forEach((route) => {
+    generateRoute(route, utils, data.framework);
+  });
+
+  data.csv
+    .map((entity) => getCombinedCsvData(entity))
+    .forEach((entity) => {
+      generateCsv(entity, utils);
+    });
+
+  // Fallback: ensure final client file is set if pre-rename write failed
+  if (data.designTokens && Object.keys(data.designTokens).length > 0) {
+    try {
+      const clientDir = DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS);
+      const finalTargetFile = path.join(
+        clientDir,
+        'src',
+        'styles',
+        'design-tokens.json',
+      );
+      if (!fs.existsSync(finalTargetFile)) {
+        const finalTargetDir = path.dirname(finalTargetFile);
+        if (!fs.existsSync(finalTargetDir)) {
+          fs.mkdirSync(finalTargetDir, { recursive: true });
+        }
+        fs.writeFileSync(
+          finalTargetFile,
+          JSON.stringify(data.designTokens, null, 2),
+        );
+      }
+    } catch (err) {
+      console.warn('Fallback designTokens write failed. Error:', err?.message || err);
     }
   }
 
