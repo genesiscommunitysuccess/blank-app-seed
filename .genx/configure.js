@@ -56,7 +56,7 @@ module.exports = async (data, utils) => {
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
       const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
-      const templateFile = `${DIR_CLIENT_TEMP_ALIAS}/${frameworkDir}/src/styles/design-tokens.json`;
+      const templateFile = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/styles/design-tokens.json');
       
       console.log('DEBUG: Writing designTokens to template before processing:', {
         templateFile,
