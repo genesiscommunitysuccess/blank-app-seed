@@ -46,20 +46,20 @@ module.exports = async (data, utils) => {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || [],
   };
-  // If designTokens provided as JSON, we'll write it after interpolation
+  // If designTokens provided as JSON, write it to the template before processing
   console.log('DEBUG: designTokens check:', {
     hasDesignTokens: !!data.designTokens,
     designTokensKeys: data.designTokens ? Object.keys(data.designTokens) : [],
     designTokensLength: data.designTokens ? Object.keys(data.designTokens).length : 0
   });
-  excludeFrameworks(data.framework);
   
-  // Write custom design tokens to final client directory if provided
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
-      const finalClientFile = `${DIR_CLIENT_MAIN_ALIAS}/src/styles/design-tokens.json`;
-      console.log('DEBUG: Writing designTokens to final client directory:', {
-        finalClientFile,
+      const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+      const templateFile = `${DIR_CLIENT_TEMP_ALIAS}/${frameworkDir}/src/styles/design-tokens.json`;
+      
+      console.log('DEBUG: Writing designTokens to template before processing:', {
+        templateFile,
         cwd: process.cwd()
       });
       
@@ -67,47 +67,29 @@ module.exports = async (data, utils) => {
       console.log('DEBUG: Writing designTokens JSON (first 200 chars):', jsonContent.substring(0, 200));
       
       // Ensure directory exists
-      const finalClientDir = path.dirname(finalClientFile);
-      if (!fs.existsSync(finalClientDir)) {
-        console.log('DEBUG: Creating final client directory:', finalClientDir);
-        fs.mkdirSync(finalClientDir, { recursive: true });
+      const templateDir = path.dirname(templateFile);
+      if (!fs.existsSync(templateDir)) {
+        console.log('DEBUG: Creating template directory:', templateDir);
+        fs.mkdirSync(templateDir, { recursive: true });
       }
       
-      fs.writeFileSync(finalClientFile, jsonContent);
-      console.log('DEBUG: Successfully wrote designTokens to final client file');
+      fs.writeFileSync(templateFile, jsonContent);
+      console.log('DEBUG: Successfully wrote designTokens to template');
       
       // Verify the write
-      if (fs.existsSync(finalClientFile)) {
-        const writtenContent = fs.readFileSync(finalClientFile, 'utf8');
+      if (fs.existsSync(templateFile)) {
+        const writtenContent = fs.readFileSync(templateFile, 'utf8');
         const parsed = JSON.parse(writtenContent);
         const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
-        console.log('DEBUG: Final luminance value after write:', luminance);
-      }
-      
-      // Try writing to a different filename first, then rename
-      const tempFile = `${finalClientFile}.custom`;
-      console.log('DEBUG: Writing to temp file first:', tempFile);
-      fs.writeFileSync(tempFile, jsonContent);
-      
-      // Rename the temp file to overwrite the original
-      if (fs.existsSync(finalClientFile)) {
-        fs.unlinkSync(finalClientFile);
-      }
-      fs.renameSync(tempFile, finalClientFile);
-      console.log('DEBUG: Renamed temp file to final location');
-      
-      // Final verification
-      if (fs.existsSync(finalClientFile)) {
-        const writtenContent = fs.readFileSync(finalClientFile, 'utf8');
-        const parsed = JSON.parse(writtenContent);
-        const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
-        console.log('DEBUG: Final luminance value after rename:', luminance);
+        console.log('DEBUG: Template luminance value after write:', luminance);
       }
       
     } catch (err) {
-      console.warn('Failed to write designTokens to final client:', err?.message || err);
+      console.warn('Failed to write designTokens to template:', err?.message || err);
     }
   }
+  
+  excludeFrameworks(data.framework);
 
   data.routes.forEach((route) => {
     generateRoute(route, utils, data.framework);
