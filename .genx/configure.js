@@ -76,6 +76,14 @@ module.exports = async (data, utils) => {
       
       fs.writeFileSync(templateTargetFile, jsonContent);
       console.log('DEBUG: Successfully wrote designTokens to template');
+      
+      // Verify the file was written and show its contents
+      if (fs.existsSync(templateTargetFile)) {
+        const writtenContent = fs.readFileSync(templateTargetFile, 'utf8');
+        console.log('DEBUG: Written file exists, content preview:', writtenContent.substring(0, 300));
+      } else {
+        console.log('DEBUG: ERROR - Written file does not exist after write!');
+      }
     } catch (err) {
       console.warn('Failed to write designTokens:', err?.message || err);
     }
@@ -83,6 +91,29 @@ module.exports = async (data, utils) => {
     console.log('DEBUG: No designTokens provided or empty object, skipping write');
   }
   excludeFrameworks(data.framework);
+  
+  // Debug: Check if our design tokens made it to the final client directory
+  if (data.designTokens && Object.keys(data.designTokens).length > 0) {
+    try {
+      const finalClientFile = `${DIR_CLIENT_MAIN_ALIAS}/src/styles/design-tokens.json`;
+      console.log('DEBUG: Checking final client file after excludeFrameworks:', {
+        finalClientFile,
+        exists: fs.existsSync(finalClientFile)
+      });
+      
+      if (fs.existsSync(finalClientFile)) {
+        const finalContent = fs.readFileSync(finalClientFile, 'utf8');
+        console.log('DEBUG: Final client file content preview:', finalContent.substring(0, 300));
+        
+        // Check if luminance is what we expect
+        const parsed = JSON.parse(finalContent);
+        const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
+        console.log('DEBUG: Final luminance value:', luminance);
+      }
+    } catch (err) {
+      console.log('DEBUG: Error checking final client file:', err?.message || err);
+    }
+  }
 
   data.routes.forEach((route) => {
     generateRoute(route, utils, data.framework);
