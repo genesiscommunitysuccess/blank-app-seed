@@ -83,6 +83,27 @@ module.exports = async (data, utils) => {
         const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
         console.log('DEBUG: Final luminance value after write:', luminance);
       }
+      
+      // Try writing to a different filename first, then rename
+      const tempFile = `${finalClientFile}.custom`;
+      console.log('DEBUG: Writing to temp file first:', tempFile);
+      fs.writeFileSync(tempFile, jsonContent);
+      
+      // Rename the temp file to overwrite the original
+      if (fs.existsSync(finalClientFile)) {
+        fs.unlinkSync(finalClientFile);
+      }
+      fs.renameSync(tempFile, finalClientFile);
+      console.log('DEBUG: Renamed temp file to final location');
+      
+      // Final verification
+      if (fs.existsSync(finalClientFile)) {
+        const writtenContent = fs.readFileSync(finalClientFile, 'utf8');
+        const parsed = JSON.parse(writtenContent);
+        const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
+        console.log('DEBUG: Final luminance value after rename:', luminance);
+      }
+      
     } catch (err) {
       console.warn('Failed to write designTokens to final client:', err?.message || err);
     }
