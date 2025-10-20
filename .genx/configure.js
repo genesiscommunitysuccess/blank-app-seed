@@ -47,6 +47,12 @@ module.exports = async (data, utils) => {
     channels: data.ui?.fdc3?.channels || [],
   };
   // If designTokens provided as JSON, write it into the template prior to copy
+  console.log('DEBUG: designTokens check:', {
+    hasDesignTokens: !!data.designTokens,
+    designTokensKeys: data.designTokens ? Object.keys(data.designTokens) : [],
+    designTokensLength: data.designTokens ? Object.keys(data.designTokens).length : 0
+  });
+  
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
       const clientTmpDir = DIRS_MAP.get(DIR_CLIENT_TEMP_ALIAS);
@@ -58,18 +64,31 @@ module.exports = async (data, utils) => {
         'styles',
         'design-tokens.json',
       );
+      
+      console.log('DEBUG: Pre-rename designTokens write:', {
+        clientTmpDir,
+        frameworkDir,
+        templateTargetFile,
+        fileExists: fs.existsSync(templateTargetFile)
+      });
+      
       const templateTargetDir = path.dirname(templateTargetFile);
       if (!fs.existsSync(templateTargetDir)) {
+        console.log('DEBUG: Creating template target directory:', templateTargetDir);
         fs.mkdirSync(templateTargetDir, { recursive: true });
       }
-      fs.writeFileSync(
-        templateTargetFile,
-        JSON.stringify(data.designTokens, null, 2),
-      );
+      
+      const jsonContent = JSON.stringify(data.designTokens, null, 2);
+      console.log('DEBUG: Writing designTokens JSON (first 200 chars):', jsonContent.substring(0, 200));
+      
+      fs.writeFileSync(templateTargetFile, jsonContent);
+      console.log('DEBUG: Successfully wrote designTokens to template file');
     } catch (err) {
       // Leave default file if any error occurs (fallback will run later)
       console.warn('Failed to pre-apply custom designTokens. Error:', err?.message || err);
     }
+  } else {
+    console.log('DEBUG: No designTokens provided or empty object, skipping pre-rename write');
   }
   excludeFrameworks(data.framework);
 
@@ -93,19 +112,33 @@ module.exports = async (data, utils) => {
         'styles',
         'design-tokens.json',
       );
+      
+      console.log('DEBUG: Fallback designTokens write:', {
+        clientDir,
+        finalTargetFile,
+        fileExists: fs.existsSync(finalTargetFile)
+      });
+      
       if (!fs.existsSync(finalTargetFile)) {
+        console.log('DEBUG: Final target file does not exist, creating it');
         const finalTargetDir = path.dirname(finalTargetFile);
         if (!fs.existsSync(finalTargetDir)) {
+          console.log('DEBUG: Creating final target directory:', finalTargetDir);
           fs.mkdirSync(finalTargetDir, { recursive: true });
         }
         fs.writeFileSync(
           finalTargetFile,
           JSON.stringify(data.designTokens, null, 2),
         );
+        console.log('DEBUG: Successfully wrote designTokens to final client file');
+      } else {
+        console.log('DEBUG: Final target file already exists, skipping fallback write');
       }
     } catch (err) {
       console.warn('Fallback designTokens write failed. Error:', err?.message || err);
     }
+  } else {
+    console.log('DEBUG: No designTokens for fallback write, skipping');
   }
 
   if (data.excludeGradleWrapper) {
