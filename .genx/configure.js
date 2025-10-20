@@ -1,4 +1,7 @@
 const versions = require('./versions.json');
+const fs = require('fs');
+const path = require('path');
+const { DIRS_MAP, DIR_CLIENT_MAIN_ALIAS } = require('./static');
 const {
   excludeFrameworks,
   formatRouteData,
@@ -49,6 +52,22 @@ module.exports = async (data, utils) => {
     .forEach((entity) => {
       generateCsv(entity, utils);
     });
+
+  // If designTokens provided as JSON, write it to the target project's design-tokens.json
+  if (data.designTokens && Object.keys(data.designTokens).length > 0) {
+    try {
+      const clientDir = DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS);
+      const targetFile = path.join(clientDir, 'src', 'styles', 'design-tokens.json');
+      const targetDir = path.dirname(targetFile);
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+      fs.writeFileSync(targetFile, JSON.stringify(data.designTokens, null, 2));
+    } catch (err) {
+      // Leave default file if any error occurs
+      console.warn('Failed to apply custom designTokens. Using default file. Error:', err?.message || err);
+    }
+  }
 
   if (data.excludeGradleWrapper) {
     deleteGradleWrappers();
