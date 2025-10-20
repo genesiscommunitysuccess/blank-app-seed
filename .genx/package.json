@@ -19,7 +19,10 @@
       ".github",
       ".genx/tests",
       ".genx/scripts",
-      ".genx/.releaserc"
+      ".genx/.releaserc",
+      "client-tmp/web-components/src/styles/design-tokens.json",
+      "client-tmp/angular/src/styles/design-tokens.json",
+      "client-tmp/react/src/styles/design-tokens.json"
     ],
     "persistAnswers": true,
     "processFiles": {
