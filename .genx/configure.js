@@ -46,72 +46,45 @@ module.exports = async (data, utils) => {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || [],
   };
-  // If designTokens provided as JSON, write it into the template prior to copy
+  // If designTokens provided as JSON, we'll write it after interpolation
   console.log('DEBUG: designTokens check:', {
     hasDesignTokens: !!data.designTokens,
     designTokensKeys: data.designTokens ? Object.keys(data.designTokens) : [],
     designTokensLength: data.designTokens ? Object.keys(data.designTokens).length : 0
   });
+  excludeFrameworks(data.framework);
   
+  // Write custom design tokens to final client directory if provided
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
-      const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
-      // Write relative to CWD (extracted seed directory)
-      const templateTargetFile = `${DIR_CLIENT_TEMP_ALIAS}/${frameworkDir}/src/styles/design-tokens.json`;
-      
-      console.log('DEBUG: Writing designTokens:', {
-        cwd: process.cwd(),
-        templateTargetFile,
-        frameworkDir
+      const finalClientFile = `${DIR_CLIENT_MAIN_ALIAS}/src/styles/design-tokens.json`;
+      console.log('DEBUG: Writing designTokens to final client directory:', {
+        finalClientFile,
+        cwd: process.cwd()
       });
-      
-      const templateTargetDir = path.dirname(templateTargetFile);
-      if (!fs.existsSync(templateTargetDir)) {
-        console.log('DEBUG: Creating template target directory:', templateTargetDir);
-        fs.mkdirSync(templateTargetDir, { recursive: true });
-      }
       
       const jsonContent = JSON.stringify(data.designTokens, null, 2);
       console.log('DEBUG: Writing designTokens JSON (first 200 chars):', jsonContent.substring(0, 200));
       
-      fs.writeFileSync(templateTargetFile, jsonContent);
-      console.log('DEBUG: Successfully wrote designTokens to template');
-      
-      // Verify the file was written and show its contents
-      if (fs.existsSync(templateTargetFile)) {
-        const writtenContent = fs.readFileSync(templateTargetFile, 'utf8');
-        console.log('DEBUG: Written file exists, content preview:', writtenContent.substring(0, 300));
-      } else {
-        console.log('DEBUG: ERROR - Written file does not exist after write!');
+      // Ensure directory exists
+      const finalClientDir = path.dirname(finalClientFile);
+      if (!fs.existsSync(finalClientDir)) {
+        console.log('DEBUG: Creating final client directory:', finalClientDir);
+        fs.mkdirSync(finalClientDir, { recursive: true });
       }
-    } catch (err) {
-      console.warn('Failed to write designTokens:', err?.message || err);
-    }
-  } else {
-    console.log('DEBUG: No designTokens provided or empty object, skipping write');
-  }
-  excludeFrameworks(data.framework);
-  
-  // Debug: Check if our design tokens made it to the final client directory
-  if (data.designTokens && Object.keys(data.designTokens).length > 0) {
-    try {
-      const finalClientFile = `${DIR_CLIENT_MAIN_ALIAS}/src/styles/design-tokens.json`;
-      console.log('DEBUG: Checking final client file after excludeFrameworks:', {
-        finalClientFile,
-        exists: fs.existsSync(finalClientFile)
-      });
       
+      fs.writeFileSync(finalClientFile, jsonContent);
+      console.log('DEBUG: Successfully wrote designTokens to final client file');
+      
+      // Verify the write
       if (fs.existsSync(finalClientFile)) {
-        const finalContent = fs.readFileSync(finalClientFile, 'utf8');
-        console.log('DEBUG: Final client file content preview:', finalContent.substring(0, 300));
-        
-        // Check if luminance is what we expect
-        const parsed = JSON.parse(finalContent);
+        const writtenContent = fs.readFileSync(finalClientFile, 'utf8');
+        const parsed = JSON.parse(writtenContent);
         const luminance = parsed?.design_tokens?.mode?.luminance?.$value;
-        console.log('DEBUG: Final luminance value:', luminance);
+        console.log('DEBUG: Final luminance value after write:', luminance);
       }
     } catch (err) {
-      console.log('DEBUG: Error checking final client file:', err?.message || err);
+      console.warn('Failed to write designTokens to final client:', err?.message || err);
     }
   }
 
