@@ -38,7 +38,6 @@
           "product-info",
           ".yml",
           ".sh",
-          ".json",
           ".js",
           ".kt",
           ".kts",
@@ -49,6 +48,9 @@
           ".gitignore",
           ".xml",
           ".iml"
+        ],
+        "exclude": [
+          "design-tokens.json"
         ]
       }
     }
