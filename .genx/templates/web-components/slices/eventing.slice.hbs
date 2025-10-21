@@ -3,11 +3,11 @@ import { createSlice } from '@genesislcap/foundation-redux';
 
 export const eventingSlice = createSlice({
   name: 'eventing',
-  initialState: {
+  {{#if events}}
+  initialState: { 
 {{#each events}}
     {{this}}: null{{#unless @last}},{{/unless}}
-{{/each}}
-  },
+{{/each}} },
   reducers: {
 {{#each events}}
     publish{{pascalCase this}}: (state, action) => {
@@ -36,4 +36,9 @@ export const eventingSlice = createSlice({
     }{{#unless @last}},{{/unless}}
 {{/each}}
   },
+  {{else}}
+  initialState: {},
+  reducers: {},
+  selectors: {},
+  {{/if}}
 });
