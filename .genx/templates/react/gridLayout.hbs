@@ -2,12 +2,12 @@
   <rapid-layout-region type="vertical">
   {{#each route.tiles}}
     {{#ifEquals @index 0}}
-    <rapid-layout-item title="{{this.title}}">
+    <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
       <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
     </rapid-layout-item>
     {{/ifEquals}}
     {{#ifEquals @index 1}}
-    <rapid-layout-item title="{{this.title}}">
+    <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
       <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
     </rapid-layout-item>
     {{/ifEquals}}
@@ -16,12 +16,12 @@
   <rapid-layout-region type="vertical">
   {{#each route.tiles}}
     {{#ifEquals @index 2}}
-    <rapid-layout-item title="{{this.title}}">
+    <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
       <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
     </rapid-layout-item>
     {{/ifEquals}}
     {{#ifEquals @index 3}}
-    <rapid-layout-item title="{{this.title}}">
+    <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
       <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
     </rapid-layout-item>
     {{/ifEquals}}

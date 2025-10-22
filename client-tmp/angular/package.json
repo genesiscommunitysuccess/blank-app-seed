@@ -78,6 +78,7 @@
     "@angular/platform-browser-dynamic": "^18.0.4",
     "@angular/router": "^18.0.4",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
+    "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
     {{#if FDC3.includeDependencies}}
@@ -102,6 +103,8 @@
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
     "@genesislcap/web-core": "{{versions.UI}}",
+    "@genesislcap/foundation-redux": "{{versions.UI}}",
+    "@reduxjs/angular-redux": "^1.0.1",
     "numeral": "2.0.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -117,6 +120,7 @@
     "@angular/platform-browser-dynamic": "^18.0.4",
     "@angular/router": "^18.0.4",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
+    "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
     {{#if FDC3.includeDependencies}}
@@ -139,6 +143,7 @@
     "@genesislcap/grid-tabulator": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
+    "@genesislcap/foundation-redux": "{{versions.UI}}",
     "@genesislcap/web-core": "{{versions.UI}}",
     "numeral": "2.0.6",
     "tslib": "^2.3.0",

@@ -1,6 +1,6 @@
 <rapid-layout-region type="tabs">
   {{#each route.tiles}}
-  <rapid-layout-item title="{{this.title}}">
+  <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
     {{> (lookup . 'type') }}
   </rapid-layout-item>
   {{/each}}

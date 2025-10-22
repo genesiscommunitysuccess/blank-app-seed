@@ -11,54 +11,48 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{/if}}
     resourceName="{{ config.resourceName }}"
     {{#if config.createEvent~}}
-    {{#if config.permissions.updateRight~}}
+    {{#if config.permissions.updateRight}}
     createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
     {{else~}}
     createEvent="{{ config.createEvent }}"
     {{/if}}
-    {{#if config.createFormUiSchema~}}
+    {{#if config.createFormUiSchema}}
     createFormUiSchema={createFormSchema}
     {{/if}}
     {{/if}}
     {{#if config.updateEvent~}}
-    {{#if config.permissions.updateRight~}}
+    {{#if config.permissions.updateRight}}
     updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
     {{else~}}
     updateEvent="{{ config.updateEvent }}"
     {{/if}}
-    {{#if config.updateFormUiSchema~}}
+    {{#if config.updateFormUiSchema}}
     updateFormUiSchema={updateFormSchema}
     {{/if}}
     {{/if}}
     {{#if config.deleteEvent~}}
-    {{#if config.permissions.updateRight~}}
+    {{#if config.permissions.updateRight}}
     deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
     {{else~}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}
     {{/if}}
-    {{#if config.gridOptions~}}
+    {{#ifAny config.gridOptions config.eventing.publishEventName}}
     gridOptions={gridOptions}
-    {{/if}}
-    {{#if config.snapshot~}}
-    datasourceConfig={ isSnapshot: {{ config.snapshot }} }
-    {{/if}}
-    {{#if config.reqrep~}}
-    datasourceConfig={reqrep}
-    {{/if}}
-    {{#if config.columns~}}
+    {{/ifAny}}
+    {{#if config.columns}}
     columns={columnDefs}
     {{/if}}
     {{#if config.entityName}}
     entityLabel="{{ config.entityName }}"
     {{/if}}
-    {{#if config.modalPosition~}}
+    {{#if config.modalPosition}}
     modal-position="{{ config.modalPosition }}"
     {{/if}}
-    {{#if config.sizeColumnsToFit~}}
+    {{#if config.sizeColumnsToFit}}
     size-columns-to-fit
     {{/if}}
-    {{#if config.enableSearchBar~}}
+    {{#if config.enableSearchBar}}
     enable-search-bar
     {{/if}}
     {{#if config.customEvents}}

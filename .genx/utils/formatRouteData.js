@@ -43,6 +43,7 @@ const formatRouteData = (framework, route) => {
       uischema,
       columns,
       customEvents,
+      eventing,
     } = config;
 
     return {
@@ -59,6 +60,10 @@ const formatRouteData = (framework, route) => {
         uischema: formatJSONValue(uischema),
         columns: gridColumnsSerializer(columns),
         customEvents: formatCustomEvents(customEvents),
+        eventing: {
+          publishEventName: eventing?.publishEventName || null,
+          listener: eventing?.listener || null,
+        },
       },
       metadata: {
         ...metadata,
