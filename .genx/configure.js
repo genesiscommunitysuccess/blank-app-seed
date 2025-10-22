@@ -1,4 +1,12 @@
 const versions = require('./versions.json');
+const fs = require('fs');
+const path = require('path');
+const {
+  DIRS_MAP,
+  DIR_CLIENT_MAIN_ALIAS,
+  DIR_CLIENT_TEMP_ALIAS,
+  FRAMEWORKS_DIR_MAP,
+} = require('./static');
 const {
   excludeFrameworks,
   formatRouteData,
@@ -39,6 +47,22 @@ module.exports = async (data, utils) => {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || [],
   };
+
+  if (data.designTokens && Object.keys(data.designTokens).length > 0) {
+    try {
+      const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+      const templateFile = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/styles/design-tokens.json');
+      const jsonContent = JSON.stringify(data.designTokens, null, 2);
+      const templateDir = path.dirname(templateFile);
+      if (!fs.existsSync(templateDir)) {
+        fs.mkdirSync(templateDir, { recursive: true });
+      }
+      fs.writeFileSync(templateFile, jsonContent);
+    } catch (err) {
+      console.warn('Failed to write designTokens to template:', err?.message || err);
+    }
+  }
+  
   excludeFrameworks(data.framework);
 
   generateStore(data.routes, utils, data.framework);
@@ -52,6 +76,7 @@ module.exports = async (data, utils) => {
     .forEach((entity) => {
       generateCsv(entity, utils);
     });
+
 
   if (data.excludeGradleWrapper) {
     deleteGradleWrappers();

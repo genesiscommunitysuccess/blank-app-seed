@@ -25,7 +25,10 @@ module.exports = async (inquirer, prevAns = {}) => {
     csv,
     excludeGradleWrapper,
   } = await genesisServerPrompts(inquirer, prevAns);
-  const { routes, ui, framework } = await uiPrompts(inquirer, prevAns);
+  const { routes, ui, framework, designTokens } = await uiPrompts(
+    inquirer,
+    prevAns,
+  );
 
   return {
     apiHost,
@@ -39,5 +42,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     ui,
     framework,
     excludeGradleWrapper,
+    designTokens,
   };
 };
