@@ -62,6 +62,42 @@ module.exports = async (data, utils) => {
       console.warn('Failed to write designTokens to template:', err?.message || err);
     }
   }
+
+  // Handle header logo copy
+  if (data.headerLogo && data.headerLogo.trim() !== '') {
+    try {
+      const sourcePath = path.resolve(data.headerLogo);
+      if (!fs.existsSync(sourcePath)) {
+        console.warn(`Header logo file not found: ${sourcePath}`);
+      } else {
+        const ext = path.extname(sourcePath);
+        const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+        let targetDir;
+        
+        // Angular uses src/assets, others use public
+        if (data.framework === 'angular') {
+          targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/assets');
+        } else {
+          targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'public');
+        }
+        
+        // Ensure target directory exists
+        if (!fs.existsSync(targetDir)) {
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
+        
+        const targetPath = path.join(targetDir, `header-logo${ext}`);
+        fs.copyFileSync(sourcePath, targetPath);
+        
+        // Store the logo source path for templates
+        data.headerLogoSrc = `/header-logo${ext}`;
+        
+        console.log(`Header logo copied to: ${targetPath}`);
+      }
+    } catch (err) {
+      console.warn('Failed to copy header logo:', err?.message || err);
+    }
+  }
   
   excludeFrameworks(data.framework);
 
