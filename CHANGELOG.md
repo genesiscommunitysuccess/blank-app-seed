@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.11...v5.7.0-prerelease.12) (2025-10-22)
+
+
+### Features
+
+* grid interactions web-components/react/angular GENC-1211 ddcf44c
+* grid interactions web-components/react/angular GENC-1211 (#527) a9a112b
+
 ## [5.7.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.10...v5.7.0-prerelease.11) (2025-10-21)
 
 
