@@ -1,5 +1,28 @@
 # Changelog
 
+## [5.7.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.12...v5.7.0-prerelease.13) (2025-10-22)
+
+
+### Features
+
+* add ability to set design tokens for generated application GENC-1232 bfcf676
+* add ability to set design tokens for generated application GENC-1232 (#526) c01a7f3
+
+
+### Bug Fixes
+
+* logic applying design token option GENC-1232 a42f6b6
+* logic applying design token option GENC-1232 760e6c1
+* logic applying design token option GENC-1232 7e25e01
+* logic applying design token option GENC-1232 f11fd09
+* logic applying design token option GENC-1232 54b2e75
+* logic applying design token option GENC-1232 63faf22
+* logic applying design token option GENC-1232 6de63aa
+* logic applying design token option GENC-1232 d721477
+* logic applying design token option GENC-1232 a66eada
+* logic applying design token option GENC-1232 3c72211
+* template example shoudl be using light mode value GENC-1232 b87024f
+
 ## [5.7.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.11...v5.7.0-prerelease.12) (2025-10-22)
 
 
