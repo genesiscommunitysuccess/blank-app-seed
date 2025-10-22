@@ -1,5 +1,47 @@
 # Changelog
 
+## [5.7.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.10...v5.7.0-prerelease.11) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a597461
+
+## [5.7.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.9...v5.7.0-prerelease.10) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f1c7a32
+
+## [5.7.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.8...v5.7.0-prerelease.9) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b666a8b
+
+## [5.7.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.7...v5.7.0-prerelease.8) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bc1fc15
+
+## [5.7.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.6...v5.7.0-prerelease.7) (2025-10-20)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) db1cff2
+
+## [5.7.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.5...v5.7.0-prerelease.6) (2025-10-20)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24510a4
+
 ## [5.7.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.4...v5.7.0-prerelease.5) (2025-10-17)
 
 
