@@ -92,5 +92,15 @@ export const defaultLayout = new GenesisElementLayout(
     rapid-flyout::part(content) {
       height: 100%;
     }
+
+    {{#if headerLogoSrc}}
+    foundation-header::part(logo) {
+      max-width: 50px;
+      max-height: 24px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    {{/if}}
   `.withBehaviors(app.registerStylesTarget('layout')),
 );
