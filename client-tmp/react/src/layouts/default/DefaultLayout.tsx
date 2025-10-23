@@ -57,7 +57,9 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
       <PBCElementsRenderer target={['layout-start']} />
       <foundation-header
-        {{#if headerLogoSrc}}logo-src="{{headerLogoSrc}}"{{/if}}
+{{#if headerLogoSrc}}
+        logo-src="{{headerLogoSrc}}"
+{{/if}}
         onluminance-icon-clicked={onLuminanceToggle}
         logout={async () => {
           await fetch(LOGOUT_URL);
