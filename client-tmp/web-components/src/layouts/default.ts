@@ -93,7 +93,6 @@ export const defaultLayout = new GenesisElementLayout(
       height: 100%;
     }
 
-    {{#if headerLogoSrc}}
     foundation-header::part(logo) {
       max-width: 50px;
       max-height: 24px;
@@ -101,6 +100,5 @@ export const defaultLayout = new GenesisElementLayout(
       height: auto;
       object-fit: contain;
     }
-    {{/if}}
   `.withBehaviors(app.registerStylesTarget('layout')),
 );

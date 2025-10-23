@@ -17,7 +17,6 @@
   border: none;
 }
 
-{{#if headerLogoSrc}}
 .default-layout foundation-header::part(logo) {
   max-width: 50px;
   max-height: 24px;
@@ -25,7 +24,6 @@
   height: auto;
   object-fit: contain;
 }
-{{/if}}
 
 .routes-wrapper {
   display: flex;

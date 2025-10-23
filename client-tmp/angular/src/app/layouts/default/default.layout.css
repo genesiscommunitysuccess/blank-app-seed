@@ -33,7 +33,6 @@ foundation-header::part(background) {
   box-sizing: border-box;
 }
 
-{{#if headerLogoSrc}}
 foundation-header::part(logo) {
   max-width: 50px;
   max-height: 24px;
@@ -41,7 +40,6 @@ foundation-header::part(logo) {
   height: auto;
   object-fit: contain;
 }
-{{/if}}
 
 .routes-wrapper {
   display: flex;
