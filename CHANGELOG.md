@@ -1,5 +1,23 @@
 # Changelog
 
+## [5.7.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.15...v5.7.0-prerelease.16) (2025-10-23)
+
+
+### Features
+
+* configure foundation header logo during init GENC-1232 fa452b4
+* optionally set header logo during genx init GENC-1232 (#528) 86c8950
+* set logo styles GENC-1232 950a6b6
+
+
+### Bug Fixes
+
+* apply logo styles by default GENC-1232 00814d8
+* erronous ifAny check in react for datasourceConfig GENC-1232 c109583
+* linting error in generated app GENC-1232 4c176cc
+* linting error in generated app react and angular GENC-1232 a95c6a5
+* logo configuration in angular GENC-1232 14445fc
+
 ## [5.7.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.14...v5.7.0-prerelease.15) (2025-10-22)
 
 
