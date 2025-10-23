@@ -39,7 +39,9 @@ export const defaultLayout = new GenesisElementLayout(
     <div class="container">
       ${app.registerElementsTarget('layout-start')}
       <foundation-header
-        {{#if headerLogoSrc}}logo-src="{{headerLogoSrc}}"{{/if}}
+{{#if headerLogoSrc}}
+        logo-src="{{headerLogoSrc}}"
+{{/if}}
         show-luminance-toggle-button
         show-misc-toggle-button
         :routeNavItems=${(x) => x.config.getNavItems()}
