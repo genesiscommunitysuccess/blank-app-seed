@@ -37,9 +37,20 @@ module.exports = async (inquirer, prevAns = {}) => {
     },
   ]);
   
+  const { customFonts = prevAns.customFonts } = await inquirer.prompt([
+    {
+      name: 'customFonts',
+      type: 'input',
+      message: 'Custom fonts JSON (optional, e.g. {"files":["./Font-Regular.ttf","./Font-Bold.ttf"]})',
+      default: prevAns.customFonts || '',
+      when: prevAns.customFonts === undefined,
+    },
+  ]);
+  
   return {
     apiHost,
     enableSSO,
     headerLogo,
+    customFonts,
   };
 };

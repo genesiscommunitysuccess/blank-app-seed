@@ -11,6 +11,7 @@ const parseJSONArgument = require('./parseJSONArgument');
 const registerPartials = require('./registerPartials');
 const validateRoute = require('./validateRoute');
 const validateFrameworkAlias = require('./validateFrameworkAlias');
+const fontUtils = require('./fontUtils');
 
 module.exports = {
   deleteGradleWrappers,
@@ -26,4 +27,5 @@ module.exports = {
   registerPartials,
   validateFrameworkAlias,
   validateRoute,
+  fontUtils,
 };
