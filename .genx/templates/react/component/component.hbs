@@ -80,7 +80,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];
   {{/if}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
-  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig.onRowClicked, {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = { 
+  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig.onRowClicked, {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {
     {{#if tile.config.gridOptions}}
     onRowClicked: gridOptionsTile?.onRowClicked,
     {{/if}}
@@ -90,7 +90,6 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     {{/if}}
   }
   {{/ifAny}}
-  {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
   const datasourceConfig: { isSnapshot?: boolean, pollingInterval?: string, requestAutoSetup?: string, criteria?: string } = {
     {{#if tile.config.snapshot}}
     isSnapshot: {{ tile.config.snapshot }},
@@ -103,7 +102,6 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
     {{/if}}
   }
-  {{/ifAny}}
   {{#if tile.componentType}}
   {{#ifEquals tile.componentType 'grid'}}
   useEffect(() => {
