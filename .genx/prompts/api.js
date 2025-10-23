@@ -26,8 +26,20 @@ module.exports = async (inquirer, prevAns = {}) => {
       when: prevAns.enableSSO === undefined,
     },
   ]);
+  
+  const { headerLogo = prevAns.headerLogo } = await inquirer.prompt([
+    {
+      name: 'headerLogo',
+      type: 'input',
+      message: 'Header logo file path (optional)',
+      default: prevAns.headerLogo || '',
+      when: prevAns.headerLogo === undefined,
+    },
+  ]);
+  
   return {
     apiHost,
     enableSSO,
+    headerLogo,
   };
 };

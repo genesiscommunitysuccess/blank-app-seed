@@ -39,6 +39,9 @@ export const defaultLayout = new GenesisElementLayout(
     <div class="container">
       ${app.registerElementsTarget('layout-start')}
       <foundation-header
+{{#if headerLogoSrc}}
+        logo-src="{{headerLogoSrc}}"
+{{/if}}
         show-luminance-toggle-button
         show-misc-toggle-button
         :routeNavItems=${(x) => x.config.getNavItems()}
@@ -90,6 +93,14 @@ export const defaultLayout = new GenesisElementLayout(
 
     rapid-flyout::part(content) {
       height: 100%;
+    }
+
+    foundation-header::part(logo) {
+      max-width: 50px;
+      max-height: 24px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
     }
   `.withBehaviors(app.registerStylesTarget('layout')),
 );
