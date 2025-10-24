@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.16...v5.7.0-prerelease.17) (2025-10-24)
+
+
+### Bug Fixes
+
+* handling of optional headerlogo GENC-1232 ece95a3
+* handling of optional headerlogo GENC-1232 (#529) 88ed8d6
+
 ## [5.7.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.15...v5.7.0-prerelease.16) (2025-10-23)
 
 
