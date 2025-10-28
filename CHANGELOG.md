@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.18...v5.7.0-prerelease.19) (2025-10-28)
+
+
+### Features
+
+* bump fui versions to receive light mode fixes 6f244c5
+* bump fui versions to receive light mode fixes (#530) 3df2a30
+
 ## [5.7.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.17...v5.7.0-prerelease.18) (2025-10-28)
 
 
