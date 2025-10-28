@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.17...v5.7.0-prerelease.18) (2025-10-28)
+
+
+### Features
+
+* fix setting fonts and set css used for handlers GENC-1232 de493e3
+* optionally set fonts in generated app via genx GENC-1232 (#531) 596f933
+
 ## [5.7.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.16...v5.7.0-prerelease.17) (2025-10-24)
 
 
