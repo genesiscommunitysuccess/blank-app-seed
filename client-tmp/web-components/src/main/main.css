@@ -15,3 +15,15 @@ foundation-router {
 :not(:defined) {
   visibility: hidden;
 }
+
+{{#if fontData}}
+{{#each fontData}}
+@font-face {
+  font-family: "{{../fontFamily}}";
+  src: url("../../public/fonts/{{filename}}") format("{{format}}");
+  font-weight: {{weight}};
+  font-style: normal;
+  font-display: swap;
+}
+{{/each}}
+{{/if}}

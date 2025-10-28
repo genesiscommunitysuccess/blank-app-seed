@@ -16,7 +16,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   Version: ${version}
   License: ${license}`);
 
-  const { apiHost, enableSSO, headerLogo } = await apiPrompts(inquirer, prevAns);
+  const { apiHost, enableSSO, headerLogo, customFonts } = await apiPrompts(inquirer, prevAns);
   const {
     description,
     groupId,
@@ -35,6 +35,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     routes,
     enableSSO,
     headerLogo,
+    customFonts,
     description,
     groupId,
     applicationVersion,

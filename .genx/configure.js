@@ -17,6 +17,7 @@ const {
   validateRoute,
   deleteGradleWrappers,
   generateStore,
+  fontUtils,
 } = require('./utils');
 
 /**
@@ -96,6 +97,55 @@ module.exports = async (data, utils) => {
       }
     } catch (err) {
       console.warn('Failed to copy header logo:', err?.message || err);
+    }
+  }
+
+  // Handle custom fonts
+  if (data.customFonts && data.customFonts.trim() !== '') {
+    try {
+      const customFontsObj = typeof data.customFonts === 'string' 
+        ? JSON.parse(data.customFonts) 
+        : data.customFonts;
+      
+      const processedFonts = fontUtils.processFontFiles(customFontsObj);
+      
+      if (processedFonts) {
+        const { fontFamily, fontData } = processedFonts;
+        const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+        
+        // Set data immediately so templates can use it even if file copy fails
+        data.fontFamily = fontFamily;
+        data.fontData = fontData;
+        
+        // Determine target directory
+        let targetDir;
+        if (data.framework === 'angular') {
+          targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/assets/fonts');
+        } else {
+          targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'public/fonts');
+        }
+        
+        // Create directory
+        if (!fs.existsSync(targetDir)) {
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
+        
+        // Copy font files
+        customFontsObj.files.forEach((fontPath, index) => {
+          const sourcePath = path.resolve(fontPath.trim());
+          
+          if (fs.existsSync(sourcePath)) {
+            const fileName = path.basename(sourcePath);
+            const targetPath = path.join(targetDir, fileName);
+            fs.copyFileSync(sourcePath, targetPath);
+            console.log(`Font copied: ${fileName}`);
+          } else {
+            console.warn(`Font file not found: ${sourcePath}`);
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to process custom fonts:', err?.message || err);
     }
   }
   
