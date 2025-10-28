@@ -1,6 +1,8 @@
 const { websocketValidator } = require('./validators');
 const { TEXTS } = require('../static');
 
+const defaultHeaderLogo = '';
+
 const apiHostIntro = () => console.log(TEXTS.INTRO_API_HOST);
 const ssoIntro = () => console.log(TEXTS.INTRO_API_SSO);
 
@@ -32,7 +34,7 @@ module.exports = async (inquirer, prevAns = {}) => {
       name: 'headerLogo',
       type: 'input',
       message: 'Header logo file path (optional)',
-      default: prevAns.headerLogo || '',
+      default: defaultHeaderLogo,
       when: prevAns.headerLogo === undefined,
     },
   ]);
