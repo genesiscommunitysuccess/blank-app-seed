@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.19...v5.7.0-prerelease.20) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump fui version to fix modal regression 4594a2d
+* bump fui version to fix modal regression (#532) ad41045
+
 ## [5.7.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.18...v5.7.0-prerelease.19) (2025-10-28)
 
 
