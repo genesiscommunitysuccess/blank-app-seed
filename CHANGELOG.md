@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.21](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.20...v5.7.0-prerelease.21) (2025-10-31)
+
+
+### Bug Fixes
+
+* use relative logo source instead of absolute GENC-1232 1002762
+* use relative logo source instead of absolute GENC-1232 (#533) 71a9b23
+
 ## [5.7.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.19...v5.7.0-prerelease.20) (2025-10-29)
 
 
