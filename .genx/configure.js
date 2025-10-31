@@ -74,25 +74,25 @@ module.exports = async (data, utils) => {
         const ext = path.extname(sourcePath);
         const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
         let targetDir;
-        
+
         // Angular uses src/assets, others use public
         if (data.framework === 'angular') {
           targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/assets');
         } else {
           targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'public');
         }
-        
+
         // Ensure target directory exists
         if (!fs.existsSync(targetDir)) {
           fs.mkdirSync(targetDir, { recursive: true });
         }
-        
+
         const targetPath = path.join(targetDir, `header-logo${ext}`);
         fs.copyFileSync(sourcePath, targetPath);
-        
+
         // Store the logo source path for templates
-        data.headerLogoSrc = `/header-logo${ext}`;
-        
+        data.headerLogoSrc = `./header-logo${ext}`;
+
         console.log(`Header logo copied to: ${targetPath}`);
       }
     } catch (err) {
@@ -103,20 +103,20 @@ module.exports = async (data, utils) => {
   // Handle custom fonts
   if (data.customFonts && data.customFonts.trim() !== '') {
     try {
-      const customFontsObj = typeof data.customFonts === 'string' 
-        ? JSON.parse(data.customFonts) 
+      const customFontsObj = typeof data.customFonts === 'string'
+        ? JSON.parse(data.customFonts)
         : data.customFonts;
-      
+
       const processedFonts = fontUtils.processFontFiles(customFontsObj);
-      
+
       if (processedFonts) {
         const { fontFamily, fontData } = processedFonts;
         const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
-        
+
         // Set data immediately so templates can use it even if file copy fails
         data.fontFamily = fontFamily;
         data.fontData = fontData;
-        
+
         // Determine target directory
         let targetDir;
         if (data.framework === 'angular') {
@@ -124,16 +124,16 @@ module.exports = async (data, utils) => {
         } else {
           targetDir = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'public/fonts');
         }
-        
+
         // Create directory
         if (!fs.existsSync(targetDir)) {
           fs.mkdirSync(targetDir, { recursive: true });
         }
-        
+
         // Copy font files
         customFontsObj.files.forEach((fontPath, index) => {
           const sourcePath = path.resolve(fontPath.trim());
-          
+
           if (fs.existsSync(sourcePath)) {
             const fileName = path.basename(sourcePath);
             const targetPath = path.join(targetDir, fileName);
@@ -148,7 +148,7 @@ module.exports = async (data, utils) => {
       console.warn('Failed to process custom fonts:', err?.message || err);
     }
   }
-  
+
   excludeFrameworks(data.framework);
 
   generateStore(data.routes, utils, data.framework);
