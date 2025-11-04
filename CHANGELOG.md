@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.22](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.21...v5.7.0-prerelease.22) (2025-11-04)
+
+
+### Features
+
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1e45d1e
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#534) f7cf87a
+
 ## [5.7.0-prerelease.21](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.20...v5.7.0-prerelease.21) (2025-10-31)
 
 
