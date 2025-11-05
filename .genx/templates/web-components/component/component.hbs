@@ -13,7 +13,7 @@ import { selectors } from '../../../store/store';
 import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
 import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 {{#if tile.config.columns}}
-import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
+import { columnDefs{{#if tile.config.eventing.publishEventName}}, publishEventColumnDef{{/if}} } from './{{kebabCase tile.title}}.column.defs';
 import { ColDef } from '@ag-grid-community/core';
 {{/if}}
 
@@ -37,6 +37,9 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
 
   {{#if tile.config.columns}}
   @observable columns: ColDef[] = [
+  {{#if tile.config.eventing.publishEventName}}
+    publishEventColumnDef,
+  {{/if}}
     ...columnDefs,
   ];
   {{/if}}
