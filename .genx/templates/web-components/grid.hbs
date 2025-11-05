@@ -30,7 +30,7 @@ ${whenElse(
         ></grid-pro-genesis-datasource>
         {{#if config.gridOptions}}
         ${repeat(
-          (x) => gridOptions?.columnDefs,
+          (x) => [{{#if config.eventing.publishEventName}}publishEventColumnDef, {{/if}}...gridOptions?.columnDefs],
           html`
             <grid-pro-column :definition=${(x) => x}></grid-pro-column>
           `,

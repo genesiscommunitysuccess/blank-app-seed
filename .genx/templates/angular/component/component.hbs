@@ -22,7 +22,7 @@ import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema'
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.gridOptions}}
-import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
+import { gridOptions{{#if tile.config.eventing.publishEventName}}, publishEventColumnDef{{/if}} } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
 {{#ifAny tile.config.eventing.publishEventName tile.config.eventing.listener}}
 import { actions, selectors } from '../../../store/store';
@@ -54,8 +54,20 @@ export class {{pascalCase tile.componentName}} {
   createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
   uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
   updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.gridOptions}}
-  gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.columns}}
+  gridOptions = gridOptions as GridOptionsConfig;{{#if tile.config.eventing.publishEventName}}
+  publishEventColumnDef = publishEventColumnDef;{{/if}}{{/if}}{{#if tile.config.columns}}
   columnDefs = [
+    {{#if tile.config.eventing.publishEventName}}
+    {
+      headerName: '',
+      minWidth: 60,
+      maxWidth: 60,
+      pinned: 'left',
+      checkboxSelection: true,
+      suppressMenu: true,
+      suppressMovable: true,
+    },
+    {{/if}}
     ...columnDefs,
   ];{{/if}}{{#if tile.config.type}}
   chartConfig = { {{#ifEquals tile.config.type 'pie'}}

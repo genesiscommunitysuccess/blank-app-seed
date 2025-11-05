@@ -28,7 +28,7 @@ import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnD
 {{/if}}
 {{#if tile.config.gridOptions~}}
 import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
-import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
+import { gridOptions as gridOptionsTile{{#if tile.config.eventing.publishEventName}}, publishEventColumnDef{{/if}} } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
 {{#if tile.config.eventing.publishEventName}}
 import { actions } from '../../../store/store';
@@ -77,7 +77,20 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
   {{#if tile.config.columns}}
-  const columnDefs: typeof columnDefsTile = [...columnDefsTile];
+  const columnDefs: typeof columnDefsTile = [
+    {{#if tile.config.eventing.publishEventName}}
+    {
+      headerName: '',
+      minWidth: 60,
+      maxWidth: 60,
+      pinned: 'left',
+      checkboxSelection: true,
+      suppressMenu: true,
+      suppressMovable: true,
+    },
+    {{/if}}
+    ...columnDefsTile,
+  ];
   {{/if}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
   const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig.onRowClicked, {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {

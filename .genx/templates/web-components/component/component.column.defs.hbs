@@ -7,3 +7,15 @@ import { sendEventOnChannel } from '../../../utils';
 {{#if tile.config.columns}}
 export const columnDefs: ColDef[] = {{{ tile.config.columns }}}
 {{/if}}
+
+{{#if tile.config.eventing.publishEventName}}
+export const publishEventColumnDef: ColDef = {
+  headerName: '',
+  minWidth: 60,
+  maxWidth: 60,
+  pinned: 'left',
+  checkboxSelection: true,
+  suppressMenu: true,
+  suppressMovable: true,
+};
+{{/if}}
