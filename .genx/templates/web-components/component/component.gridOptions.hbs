@@ -1,6 +1,3 @@
-{{#if tile.config.eventing.publishEventName~}}
-import { ColDef } from '@ag-grid-community/core';
-{{/if}}
 import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
 import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
 {{#if route.FDC3EventHandlersEnabled}}
@@ -8,15 +5,4 @@ import { sendEventOnChannel } from '../../../utils';
 {{/if}}
 {{#if tile.config.gridOptions}}
 export const gridOptions: GridOptionsConfig = {{{ tile.config.gridOptions }}}
-{{/if}}
-{{#if tile.config.eventing.publishEventName}}
-export const publishEventColumnDef: ColDef = {
-  headerName: '',
-  minWidth: 60,
-  maxWidth: 60,
-  pinned: 'left',
-  checkboxSelection: true,
-  suppressMenu: true,
-  suppressMovable: true,
-};
 {{/if}}
