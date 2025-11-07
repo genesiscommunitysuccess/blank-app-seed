@@ -19,9 +19,6 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{/ifAny}}
   ></grid-pro-genesis-datasource>
   {{#if config.gridOptions}}
-  {{#if config.eventing.publishEventName}}
-  <grid-pro-column definition={publishEventColumnDef}></grid-pro-column>
-  {{/if}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
     <grid-pro-column key={index} definition={columnDef}></grid-pro-column>
   ))}

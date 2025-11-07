@@ -22,9 +22,6 @@
         {{/ifAny}}
       ></grid-pro-genesis-datasource>
       {{#if config.gridOptions}}
-      {{#if config.eventing.publishEventName}}
-      <grid-pro-column [definition]="publishEventColumnDef"></grid-pro-column>
-      {{/if}}
       <grid-pro-column *ngFor="let columnDef of gridOptions?.columnDefs" [definition]="columnDef"></grid-pro-column>
       {{/if}}
     </rapid-grid-pro>{{#if config.permissions.viewRight}}
