@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.23...v5.7.0-prerelease.24) (2025-11-07)
+
+
+### Bug Fixes
+
+* revert add checkbox selection for publishers GENC-1211 2bfba25
+* revert add checkbox selection for publishers GENC-1211 (#536) c2a362a
+
 ## [5.7.0-prerelease.23](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.22...v5.7.0-prerelease.23) (2025-11-05)
 
 
