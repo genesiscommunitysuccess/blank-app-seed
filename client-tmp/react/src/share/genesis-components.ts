@@ -4,8 +4,9 @@ import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
-import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+import { rapidGridComponents, rapidGridPro, rapidGridProStyles } from '@genesislcap/rapid-grid-pro';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
+import { css } from "@genesislcap/web-core";
 
 /**
  * Ensure tree shaking doesn't remove these.
@@ -32,6 +33,16 @@ export async function registerComponents() {
     .provideDesignSystem()
     .register(
       rapidDesignSystem.baseComponents,
+      rapidGridPro({
+        styles: css`
+          ${rapidGridProStyles}
+          .ag-theme-genesis-rapid,
+          .ag-theme-genesis-rapid-dark,
+          .ag-theme-genesis-rapid-light {
+            --ag-selected-row-background-color: var(--accent-fill-rest);
+          }
+        `,
+      }),
       rapidGridComponents,
       g2plotChartsComponents,
       foundationLayoutComponents,
