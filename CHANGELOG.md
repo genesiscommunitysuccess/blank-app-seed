@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.24...v5.7.0-prerelease.25) (2025-11-11)
+
+
+### Bug Fixes
+
+* change selected row background GENC-1211 72eb6ae
+* change selected row background GENC-1211 (#537) e00b3d1
+
 ## [5.7.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.23...v5.7.0-prerelease.24) (2025-11-07)
 
 
