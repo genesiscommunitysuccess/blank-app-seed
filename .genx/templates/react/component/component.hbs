@@ -23,6 +23,9 @@ import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.ti
 {{#if tile.config.updateFormUiSchema~}}
 import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
 {{/if}}
+{{#if tile.config.filterFormUiSchema~}}
+import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
+{{/if}}
 {{#if tile.config.columns~}}
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
@@ -75,6 +78,9 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
   {{#if tile.config.updateFormUiSchema}}
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
+  {{/if}}
+  {{#if tile.config.filterFormUiSchema}}
+  const filterFormSchema: typeof filterFormSchemaTile = filterFormSchemaTile;
   {{/if}}
   {{#if tile.config.columns}}
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];

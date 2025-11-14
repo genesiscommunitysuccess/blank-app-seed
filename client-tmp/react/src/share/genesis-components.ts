@@ -1,5 +1,5 @@
 import { EntityManagement, SmartFormModal } from '@genesislcap/foundation-entity-management';
-import { Form } from '@genesislcap/foundation-forms';
+import { Filters, Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
@@ -13,6 +13,7 @@ import { css } from "@genesislcap/web-core";
  */
 FoundationRouter;
 EntityManagement;
+Filters;
 Form;
 SmartFormModal;
 

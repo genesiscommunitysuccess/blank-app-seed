@@ -13,6 +13,8 @@ const defaultPathGetters = {
     `${componentPath}/${tile.name}.create.form.schema.ts`,
   updateForm: (componentPath, tile) =>
     `${componentPath}/${tile.name}.update.form.schema.ts`,
+  filterForm: (componentPath, tile) =>
+    `${componentPath}/${tile.name}.filter.form.schema.ts`,
   columnDefs: (componentPath, tile) =>
     `${componentPath}/${tile.name}.column.defs.ts`,
   gridOptions: (componentPath, tile) =>
@@ -58,6 +60,8 @@ const getPathByFramework = {
       `${componentPath}/${changeCase.pascalCase(tile.name)}CreateFormSchema.ts`,
     updateForm: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}UpdateFormSchema.ts`,
+    filterForm: (componentPath, tile) =>
+      `${componentPath}/${changeCase.pascalCase(tile.name)}FilterFormSchema.ts`,
     columnDefs: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}ColumnDefs.ts`,
     gridOptions: (componentPath, tile, changeCase) =>
@@ -83,6 +87,7 @@ const getFilesToWrite = (
     style: getStyleTarget,
     addForm: getAddFormTarget,
     updateForm: getUpdateFormTarget,
+    filterForm: getFilterFormTarget,
     columnDefs: getColumnDefsTarget,
     gridOptions: getGridOptionsTarget,
     customEventForm: getCustomEventFormTarget,
@@ -113,6 +118,11 @@ const getFilesToWrite = (
   const componentUpdateFormFile = {
     source: `${sourceTemplateDir}/component/component.update.form.hbs`,
     target: getUpdateFormTarget(routeDir, tileData, changeCase),
+  };
+
+  const componentFilterFormFile = {
+    source: `${sourceTemplateDir}/component/component.filter.form.hbs`,
+    target: getFilterFormTarget(routeDir, tileData, changeCase),
   };
 
   const componentColumnsFile = {
@@ -152,6 +162,9 @@ const getFilesToWrite = (
       }
       if (tileData.config?.updateFormUiSchema) {
         filesToWrite.push(componentUpdateFormFile);
+      }
+      if (tileData.config?.filterFormUiSchema) {
+        filesToWrite.push(componentFilterFormFile);
       }
       if (tileData.config?.customEvents) {
         filesToWrite.push(componentCustomEventFormFile);
