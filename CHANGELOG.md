@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.25...v5.7.0-prerelease.26) (2025-11-14)
+
+
+### Bug Fixes
+
+* use component in tabsLayout GENC-0 41a53ac
+* use component in tabsLayout GENC-0 (#539) e4f164e
+
 ## [5.7.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.24...v5.7.0-prerelease.25) (2025-11-11)
 
 
