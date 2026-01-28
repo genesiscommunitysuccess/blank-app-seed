@@ -9,6 +9,7 @@ import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascal
 {{/each}}
 import PBCContainer from '../pbc/container';
 import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
+import * as changeCase from 'change-case';
 
 const routes = [
   {
@@ -52,7 +53,7 @@ const RoutesContext = createContext<RouteObject[]>([]);
 
 export const RoutesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const pbcRoutes = getApp().routes.map((route) => ({
-    title: route.title,
+    title: changeCase.capitalCase(route.path),
     path: `/${route.path}`,
     element: <PBCContainer />,
     data: {
