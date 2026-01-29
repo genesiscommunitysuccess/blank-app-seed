@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.30...v5.7.0-prerelease.31) (2026-01-29)
+
+
+### Bug Fixes
+
+* Trigger release f3cea2d
+* Trigger release (#545) ddbc132
+
 ## [5.7.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.29...v5.7.0-prerelease.30) (2026-01-27)
 
 
