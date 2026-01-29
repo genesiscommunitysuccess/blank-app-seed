@@ -37,6 +37,10 @@
         "$value": 0,
         "$type": "number"
       },
+      "baseHeightMultiplier": {
+        "$value": 10,
+        "$type": "number"
+      },
       "borderRadius": {
         "$value": 4,
         "$type": "number"
