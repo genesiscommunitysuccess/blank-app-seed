@@ -77,6 +77,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         routeNavItems={navItems}
         navigateTo={(path: string) => navigate(path)}
       >
+        <PBCElementsRenderer target={['header', 'nav-start', 'nav-end']} />
       </foundation-header>
       <section className={styles['content']}>
         <PBCElementsRenderer target={['content-start']} />
