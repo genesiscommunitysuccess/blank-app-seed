@@ -7,8 +7,10 @@ import {
 } from '@microsoft/fast-components';
 import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '../../pbc/elementsRenderer';
+import { registerStylesTarget } from '../../pbc/utils';
 import * as designTokens from '../../styles/design-tokens.json';
 import { useRoutesContext } from '../../store/RoutesContext';
+import { useDocumentTitle } from '../../utils/useDocumentTitle';
 import { AUTH_PATH } from '../../config';
 import { LOGOUT_URL } from '@genesislcap/foundation-utils';
 
@@ -30,6 +32,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
     navItems: route.data?.navItems,
   })));
 
+  useDocumentTitle();
+
   const onLuminanceToggle = (): void => {
     if (designSystemProviderRef.current) {
       baseLayerLuminance.setValueFor(
@@ -45,6 +49,9 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   useEffect(() => {
     if (designSystemProviderRef.current) {
       configureDesignSystem(designSystemProviderRef.current, designTokens);
+      registerStylesTarget(document.body, 'layout');
+      registerStylesTarget(document.body, 'header');
+      registerStylesTarget(document.body, 'content');
     }
 
     return () => {
@@ -70,6 +77,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         routeNavItems={navItems}
         navigateTo={(path: string) => navigate(path)}
       >
+        <PBCElementsRenderer target={['header', 'nav-start', 'nav-end']} />
       </foundation-header>
       <section className={styles['content']}>
         <PBCElementsRenderer target={['content-start']} />

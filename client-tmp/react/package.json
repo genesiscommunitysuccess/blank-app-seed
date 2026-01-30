@@ -65,6 +65,7 @@
     "@genesislcap/grid-tabulator": "{{versions.UI}}",
     "@genesislcap/web-core": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "change-case": "^4.1.2",
     "tabulator-tables": "6.3.1",
     "history": "^5.3.0",
     "react": "^19.0.0",
