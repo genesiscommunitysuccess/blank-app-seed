@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.7.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.31...v5.7.0-prerelease.32) (2026-01-30)
+
+
+### Bug Fixes
+
+* build issues after FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4bb8376
+* lint error [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 742ac0f
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d27a1d6
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3de0f0a
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#543) 261fa8d
+
 ## [5.7.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.30...v5.7.0-prerelease.31) (2026-01-29)
 
 
