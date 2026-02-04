@@ -33,6 +33,7 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   };
   {{/if}}
   const [isStoreConnected, setIsStoreConnected] = useState(false);
+  const [componentsReady, setComponentsReady] = useState(false);
   const dispatchCustomEvent = (type: string, detail?: any) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
   };
@@ -40,8 +41,19 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   const handleStoreConnected = (event: CustomEvent) => {
     storeService.onConnected(event);
   };
-  setApiHost();
-  genesisRegisterComponents();
+  useEffect(() => {
+    let mounted = true;
+    setApiHost();
+    (async () => {
+      await genesisRegisterComponents();
+      if (mounted) {
+        setComponentsReady(true);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     registerStylesTarget(document.body, 'main');
@@ -66,6 +78,10 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
 
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
+
+  if (!componentsReady) {
+    return null;
+  }
 
   return (
     <Provider store={reduxStore}>
