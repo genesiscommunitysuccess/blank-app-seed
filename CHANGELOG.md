@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.35](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.34...v5.7.0-prerelease.35) (2026-02-04)
+
+
+### Bug Fixes
+
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ea48597
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#546) a69ed2a
+
 ## [5.7.0-prerelease.34](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.33...v5.7.0-prerelease.34) (2026-01-30)
 
 
