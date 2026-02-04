@@ -3,6 +3,7 @@ const {
   gridColumnsSerializer,
 } = require('./gridSerializers');
 const formatJSONValue = require('./formatJSONValue');
+
 const { getFormattedComment, getFormattedTodo } = require('./getTodosAndComments')
 const getLayoutType = require('./getLayoutType');
 const { COMPONENT_TYPE, FRAMEWORK_ANGULAR_ALIAS } = require('../static');
@@ -75,6 +76,7 @@ const formatRouteData = (framework, route) => {
     layoutKey,
     tiles,
     FDC3EventHandlersEnabled,
+    dynamicLayout: formatJSONValue(route.dynamicLayout, false),
   };
 };
 
