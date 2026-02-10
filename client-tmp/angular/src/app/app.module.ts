@@ -28,7 +28,7 @@ import { reduxStore } from './store/store';
   ],
   providers: [
     RouteService,
-    provideRedux({ store: reduxStore as any }),
+    provideRedux({ store: reduxStore }),
     {
       provide: APP_INITIALIZER,
       useFactory: (service: RouteService, router: Router) => () => router.resetConfig(service.allRoutes()),
