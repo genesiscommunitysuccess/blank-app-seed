@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.37...v5.7.0-prerelease.38) (2026-02-10)
+
+
+### Bug Fixes
+
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) 76788ea
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) (#547) f1bb8b7
+
 ## [5.7.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.36...v5.7.0-prerelease.37) (2026-02-05)
 
 
