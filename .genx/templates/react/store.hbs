@@ -9,15 +9,13 @@ export const LayoutComponentNames = {
   {{/each}}
 } as const;
 
-export const reduxStore = createStore([eventingSlice], {
+export const { reduxStore, store, actions, selectors } = createStore([eventingSlice], {
   eventing: {
     {{#each events}}
     {{this}}: null{{#unless @last}},{{/unless}}
     {{/each}}
   },
 });
-
-export const { store, actions, selectors } = reduxStore;
 
 export type Store = typeof store;
 export type Actions = typeof actions;

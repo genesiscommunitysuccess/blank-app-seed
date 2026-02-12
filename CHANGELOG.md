@@ -1,5 +1,118 @@
 # Changelog
 
+## [5.7.0-prerelease.40](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.39...v5.7.0-prerelease.40) (2026-02-11)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 73e9d9c
+
+## [5.7.0-prerelease.39](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.38...v5.7.0-prerelease.39) (2026-02-11)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 63dc737
+
+## [5.7.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.37...v5.7.0-prerelease.38) (2026-02-10)
+
+
+### Bug Fixes
+
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) 76788ea
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) (#547) f1bb8b7
+
+## [5.7.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.36...v5.7.0-prerelease.37) (2026-02-05)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) affe2d8
+
+## [5.7.0-prerelease.36](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.35...v5.7.0-prerelease.36) (2026-02-05)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6dc9f8f
+
+## [5.7.0-prerelease.35](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.34...v5.7.0-prerelease.35) (2026-02-04)
+
+
+### Bug Fixes
+
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ea48597
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#546) a69ed2a
+
+## [5.7.0-prerelease.34](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.33...v5.7.0-prerelease.34) (2026-01-30)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 307d126
+
+## [5.7.0-prerelease.33](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.32...v5.7.0-prerelease.33) (2026-01-30)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 353a334
+
+## [5.7.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.31...v5.7.0-prerelease.32) (2026-01-30)
+
+
+### Bug Fixes
+
+* build issues after FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4bb8376
+* lint error [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 742ac0f
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d27a1d6
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3de0f0a
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#543) 261fa8d
+
+## [5.7.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.30...v5.7.0-prerelease.31) (2026-01-29)
+
+
+### Bug Fixes
+
+* Trigger release f3cea2d
+* Trigger release (#545) ddbc132
+
+## [5.7.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.29...v5.7.0-prerelease.30) (2026-01-27)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6b27022
+
+## [5.7.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.28...v5.7.0-prerelease.29) (2026-01-27)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8d05c98
+
+## [5.7.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.27...v5.7.0-prerelease.28) (2025-11-26)
+
+
+### Bug Fixes
+
+* Revert GSF version changes in versions.json [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#540) f174314
+
+## [5.7.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.26...v5.7.0-prerelease.27) (2025-11-25)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e4d994
+
+## [5.7.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.25...v5.7.0-prerelease.26) (2025-11-14)
+
+
+### Bug Fixes
+
+* use component in tabsLayout GENC-0 41a53ac
+* use component in tabsLayout GENC-0 (#539) e4f164e
+
 ## [5.7.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.24...v5.7.0-prerelease.25) (2025-11-11)
 
 

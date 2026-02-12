@@ -48,10 +48,7 @@ genesis {
     plugins {
         genesisDeploy.enabled = true
     }
-
 }
-
 
 include("{{appName}}-app")
 includeBuild("../client")
-

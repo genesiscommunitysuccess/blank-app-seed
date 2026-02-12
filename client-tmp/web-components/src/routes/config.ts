@@ -3,12 +3,12 @@ import { Auth, Connect } from '@genesislcap/foundation-comms';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
 import { GENESIS_SOCKET_URL, PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { defaultLayout, loginLayout } from '../layouts';
-import { NotFound } from './not-found/not-found';
-import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
-import { LoginSettings } from './types';
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
+import { NotFound } from './not-found/not-found';
+import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
+import { LoginSettings } from './types';
 
 // eslint-disable-next-line
 declare var ENABLE_SSO: string;
@@ -46,9 +46,8 @@ export class MainRouterConfig extends FoundationRouterConfiguration<LoginSetting
         name: 'login',
         title: 'Login',
         element: async () => {
-          const { configure, defaultAuthConfig } = await import(
-            '@genesislcap/foundation-auth/config'
-          );
+          const { configure, defaultAuthConfig } =
+            await import('@genesislcap/foundation-auth/config');
           return configure({
             omitRoutes: ['request-account', 'forgot-password'],
             fields: {
