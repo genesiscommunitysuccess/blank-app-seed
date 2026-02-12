@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.0-prerelease.41](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.40...v5.7.0-prerelease.41) (2026-02-12)
+
+
+### Bug Fixes
+
+* correct cleanup for foundation-store [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 89bd39b
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f0c8786
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#548) bbdeff9
+
 ## [5.7.0-prerelease.40](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.39...v5.7.0-prerelease.40) (2026-02-11)
 
 
