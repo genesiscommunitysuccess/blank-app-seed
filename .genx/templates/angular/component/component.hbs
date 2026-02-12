@@ -18,6 +18,9 @@ import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema'
 {{#if tile.config.updateFormUiSchema}}
 import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
 {{/if}}
+{{#if tile.config.filterFormUiSchema}}
+import { filterFormSchema } from './{{kebabCase tile.title}}.filter.form.schema';
+{{/if}}
 {{#if tile.config.columns}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
@@ -53,7 +56,8 @@ export class {{pascalCase tile.componentName}} {
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);{{#if tile.config.createFormUiSchema}}
   createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
   uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
-  updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.gridOptions}}
+  updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.filterFormUiSchema}}
+  filterFormSchema = filterFormSchema;{{/if}}{{#if tile.config.gridOptions}}
   gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.columns}}
   columnDefs = [
     ...columnDefs,

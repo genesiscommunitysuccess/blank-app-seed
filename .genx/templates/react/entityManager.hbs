@@ -55,6 +55,12 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.enableSearchBar}}
     enable-search-bar
     {{/if}}
+    {{#if config.enableFilters}}
+    enable-filters
+    {{#if config.filterFormUiSchema}}
+    filtersUiSchema={filterFormSchema}
+    {{/if}}
+    {{/if}}
     {{#if config.customEvents}}
     customActions={customActions}
     {{/if}}

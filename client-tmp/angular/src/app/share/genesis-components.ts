@@ -1,5 +1,5 @@
 import { EntityManagement } from '@genesislcap/foundation-entity-management';
-import { Form } from '@genesislcap/foundation-forms';
+import { Filters, Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import * as zeroDesignSystem from '@genesislcap/foundation-zero';
@@ -12,6 +12,7 @@ import { css } from "@genesislcap/web-core";
  * Ensure tree shaking doesn't remove these.
  */
 EntityManagement;
+Filters;
 Form;
 
 /**
