@@ -1,4 +1,5 @@
 import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/foundation-comms';
+import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
 import { configureDesignSystem } from '@genesislcap/foundation-ui';
@@ -16,6 +17,7 @@ import {
 } from '@genesislcap/web-core';
 import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
+import { Store, StoreEventDetailMap } from '../store/foundation-store';
 import designTokens from '../styles/design-tokens.json';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from '../utils';
@@ -25,15 +27,20 @@ import { DynamicTemplate as template, LoadingTemplate, MainTemplate } from './ma
 
 const name = '{{rootElement}}';
 
+/**
+ * @fires store-connected - Fired when the store is connected.
+ * @fires store-ready - Fired when the store is ready.
+ */
 @customElement({
   name,
   template,
   styles,
 })
-export class MainApplication extends GenesisElement {
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
   @App app: App;
   @Connect connect!: Connect;
   @Container container!: Container;
+  @Store store: Store;
 
   @inject(MainRouterConfig) config!: MainRouterConfig;
 
@@ -44,6 +51,8 @@ export class MainApplication extends GenesisElement {
   async connectedCallback() {
     this.registerDIDependencies();
     super.connectedCallback();
+    this.addEventListeners();
+    this.readyStore();
     await this.loadPBCs();
     await this.loadRemotes();
     {{#if FDC3.channels.length}}
@@ -52,6 +61,12 @@ export class MainApplication extends GenesisElement {
     DOM.queueUpdate(() => {
       configureDesignSystem(this.provider, designTokens);
     });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListeners();
+    this.disconnectStore();
   }
 
   onDarkModeToggle() {
@@ -129,5 +144,23 @@ export class MainApplication extends GenesisElement {
        * }),
        */
     );
+  }
+
+  protected addEventListeners() {
+    this.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected removeEventListeners() {
+    this.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected readyStore() {
+    // @ts-ignore
+    this.$emit('store-connected', this);
+    this.$emit('store-ready', true);
+  }
+
+  protected disconnectStore() {
+    this.$emit('store-disconnected');
   }
 }
