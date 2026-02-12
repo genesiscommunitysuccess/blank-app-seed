@@ -1,7 +1,7 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
 import type { FoundationRouter } from '@genesislcap/foundation-ui';
 import { css, GenesisElementLayout, html } from '@genesislcap/web-core';
-import type { Store } from '../store';
+import type { Store } from '../store/foundation-store';
 
 type ClientAppRouter = FoundationRouter & { store: Store };
 
@@ -40,6 +40,9 @@ export const defaultLayout = new GenesisElementLayout(
     <div class="container">
       ${app.registerElementsTarget('layout-start')}
       <foundation-header
+{{#if headerLogoSrc}}
+        logo-src="{{headerLogoSrc}}"
+{{/if}}
         show-luminance-toggle-button
         show-misc-toggle-button
         :routeNavItems=${(x) => x.config.getNavItems()}
@@ -91,6 +94,14 @@ export const defaultLayout = new GenesisElementLayout(
 
     rapid-flyout::part(content) {
       height: 100%;
+    }
+
+    foundation-header::part(logo) {
+      max-width: 50px;
+      max-height: 24px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
     }
   `.withBehaviors(app.registerStylesTarget('layout')),
 );

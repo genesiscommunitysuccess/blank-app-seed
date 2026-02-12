@@ -33,6 +33,12 @@ Add file / directory pointers.
 rm -rf blankappseedtest && npx -y @genesislcap/genx@latest init blankappseedtest -x --ref %YOUR-BRANCH-NAME% --no-npm
 ```
 
+### Design tokens and header logo parameter handling test
+
+```
+rm -rf blankappseedtest && npx -y @genesislcap/genx@latest init blankappseedtest -x --ref %YOUR-BRANCH-NAME% --no-npm --designTokens '{"design_tokens":{"color":{"accent":{"$value":"#0EAFE2","$type":"color"},"neutral":{"$value":"#7C909B","$type":"color"}},"fontFamily":{"bodyFont":{"$value":"Roboto, \"Segoe UI\", Arial, Helvetica, sans-serif","$type":"fontFamily"}},"typography":{"baseFontSize":{"$value":"14px","$type":"dimension"},"baseLineHeight":{"$value":"20px","$type":"dimension"}},"mode":{"luminance":{"$value":1,"$type":"number"}},"style":{"density":{"$value":1,"$type":"number"},"borderRadius":{"$value":4,"$type":"number"},"strokeWidth":{"$value":1,"$type":"number"}},"space":{"designUnit":{"$value":4,"$type":"number"}}}}' --headerLogo ./logo.png
+```
+
 ### Route and CSV parameter handling test
 
 ```

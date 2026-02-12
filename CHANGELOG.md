@@ -1,24 +1,427 @@
 # Changelog
 
-## [5.7.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.6.0...v5.7.0) (2025-10-16)
+## [5.8.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0...v5.8.0-prerelease.1) (2026-02-12)
 
 
 ### Features
 
-* allow configuration of route button icons GENC-1220 4f0680e
-* allow configuration of route button icons GENC-1220 (#522) e8167d3
-* allow configuration of route button icons GENC-1220 (#524) f2d4590
-* backport main (#523) f3583d3
-* update pr template with icons to test with GENC-1220 356eee0
+* add ability to set design tokens for generated application GENC-1232 bfcf676
+* add ability to set design tokens for generated application GENC-1232 (#526) c01a7f3
+* bump fui versions to receive light mode fixes 6f244c5
+* bump fui versions to receive light mode fixes (#530) 3df2a30
+* configure foundation header logo during init GENC-1232 fa452b4
+* fix setting fonts and set css used for handlers GENC-1232 de493e3
+* grid interactions web-components/react/angular GENC-1211 ddcf44c
+* grid interactions web-components/react/angular GENC-1211 (#527) a9a112b
+* handle foundation-filters in entity-management GENC-1241 d124c7f
+* handle foundation-filters in entity-management GENC-1241 (#538) 76bf4b8
+* optionally set fonts in generated app via genx GENC-1232 (#531) 596f933
+* optionally set header logo during genx init GENC-1232 (#528) 86c8950
+* set logo styles GENC-1232 950a6b6
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1e45d1e
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#534) f7cf87a
 
 
 ### Bug Fixes
 
-* update GSF and Auth versions in versions.json GENC-1220 (#525) ca996c8
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 218eeb2
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 33007d7
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d8a2da5
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d6dfc69
+* add checkbox selection for publishers GENC-1211 187915f
+* add checkbox selection for publishers GENC-1211 (#535) afde343
+* add proxy for vite with react ff07e8f
+* add proxy for vite with react adb23b4
+* add proxy for vite with react (#518) 65bab7f
+* apply logo styles by default GENC-1232 00814d8
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#549) d807320
+* build issues after FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4bb8376
+* bump fui version to fix modal regression 4594a2d
+* bump fui version to fix modal regression (#532) ad41045
+* change selected row background GENC-1211 72eb6ae
+* change selected row background GENC-1211 (#537) e00b3d1
+* correct cleanup for foundation-store [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 89bd39b
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ea48597
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#546) a69ed2a
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) 76788ea
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) (#547) f1bb8b7
+* erronous ifAny check in react for datasourceConfig GENC-1232 c109583
+* handling of optional headerlogo GENC-1232 ece95a3
+* handling of optional headerlogo GENC-1232 (#529) 88ed8d6
+* lint error [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 742ac0f
+* linting error in generated app GENC-1232 4c176cc
+* linting error in generated app react and angular GENC-1232 a95c6a5
+* logic applying design token option GENC-1232 a42f6b6
+* logic applying design token option GENC-1232 760e6c1
+* logic applying design token option GENC-1232 7e25e01
+* logic applying design token option GENC-1232 f11fd09
+* logic applying design token option GENC-1232 54b2e75
+* logic applying design token option GENC-1232 63faf22
+* logic applying design token option GENC-1232 6de63aa
+* logic applying design token option GENC-1232 d721477
+* logic applying design token option GENC-1232 a66eada
+* logic applying design token option GENC-1232 3c72211
+* logo configuration in angular GENC-1232 14445fc
+* revert add checkbox selection for publishers GENC-1211 2bfba25
+* revert add checkbox selection for publishers GENC-1211 (#536) c2a362a
+* Revert GSF version changes in versions.json [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#540) f174314
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f0c8786
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#548) bbdeff9
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d27a1d6
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3de0f0a
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#543) 261fa8d
+* template example shoudl be using light mode value GENC-1232 b87024f
+* Trigger release f3cea2d
+* Trigger release (#545) ddbc132
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 73e9d9c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) affe2d8
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 307d126
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6b27022
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9b0d2cf
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a597461
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b666a8b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) db1cff2
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) de06d08
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 63dc737
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6dc9f8f
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 353a334
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8d05c98
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e4d994
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 80b9ac5
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f1c7a32
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bc1fc15
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24510a4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3ebdac7
+* use component in tabsLayout GENC-0 41a53ac
+* use component in tabsLayout GENC-0 (#539) e4f164e
+* use relative logo source instead of absolute GENC-1232 1002762
+* use relative logo source instead of absolute GENC-1232 (#533) 71a9b23
+
+## [5.7.0-prerelease.42](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.41...v5.7.0-prerelease.42) (2026-02-12)
+
+
+### Features
+
+* handle foundation-filters in entity-management GENC-1241 d124c7f
+* handle foundation-filters in entity-management GENC-1241 (#538) 76bf4b8
+
+## [5.7.0-prerelease.41](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.40...v5.7.0-prerelease.41) (2026-02-12)
+
+
+### Bug Fixes
+
+* correct cleanup for foundation-store [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 89bd39b
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f0c8786
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#548) bbdeff9
+
+## [5.7.0-prerelease.40](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.39...v5.7.0-prerelease.40) (2026-02-11)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 73e9d9c
+
+## [5.7.0-prerelease.39](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.38...v5.7.0-prerelease.39) (2026-02-11)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 63dc737
+
+## [5.7.0-prerelease.38](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.37...v5.7.0-prerelease.38) (2026-02-10)
+
+
+### Bug Fixes
+
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) 76788ea
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) (#547) f1bb8b7
+
+## [5.7.0-prerelease.37](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.36...v5.7.0-prerelease.37) (2026-02-05)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) affe2d8
+
+## [5.7.0-prerelease.36](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.35...v5.7.0-prerelease.36) (2026-02-05)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6dc9f8f
+
+## [5.7.0-prerelease.35](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.34...v5.7.0-prerelease.35) (2026-02-04)
+
+
+### Bug Fixes
+
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ea48597
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#546) a69ed2a
+
+## [5.7.0-prerelease.34](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.33...v5.7.0-prerelease.34) (2026-01-30)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 307d126
+
+## [5.7.0-prerelease.33](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.32...v5.7.0-prerelease.33) (2026-01-30)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 353a334
+
+## [5.7.0-prerelease.32](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.31...v5.7.0-prerelease.32) (2026-01-30)
+
+
+### Bug Fixes
+
+* build issues after FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4bb8376
+* lint error [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 742ac0f
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d27a1d6
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3de0f0a
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#543) 261fa8d
+
+## [5.7.0-prerelease.31](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.30...v5.7.0-prerelease.31) (2026-01-29)
+
+
+### Bug Fixes
+
+* Trigger release f3cea2d
+* Trigger release (#545) ddbc132
+
+## [5.7.0-prerelease.30](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.29...v5.7.0-prerelease.30) (2026-01-27)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6b27022
+
+## [5.7.0-prerelease.29](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.28...v5.7.0-prerelease.29) (2026-01-27)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8d05c98
+
+## [5.7.0-prerelease.28](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.27...v5.7.0-prerelease.28) (2025-11-26)
+
+
+### Bug Fixes
+
+* Revert GSF version changes in versions.json [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#540) f174314
+
+## [5.7.0-prerelease.27](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.26...v5.7.0-prerelease.27) (2025-11-25)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e4d994
+
+## [5.7.0-prerelease.26](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.25...v5.7.0-prerelease.26) (2025-11-14)
+
+
+### Bug Fixes
+
+* use component in tabsLayout GENC-0 41a53ac
+* use component in tabsLayout GENC-0 (#539) e4f164e
+
+## [5.7.0-prerelease.25](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.24...v5.7.0-prerelease.25) (2025-11-11)
+
+
+### Bug Fixes
+
+* change selected row background GENC-1211 72eb6ae
+* change selected row background GENC-1211 (#537) e00b3d1
+
+## [5.7.0-prerelease.24](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.23...v5.7.0-prerelease.24) (2025-11-07)
+
+
+### Bug Fixes
+
+* revert add checkbox selection for publishers GENC-1211 2bfba25
+* revert add checkbox selection for publishers GENC-1211 (#536) c2a362a
+
+## [5.7.0-prerelease.23](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.22...v5.7.0-prerelease.23) (2025-11-05)
+
+
+### Bug Fixes
+
+* add checkbox selection for publishers GENC-1211 187915f
+* add checkbox selection for publishers GENC-1211 (#535) afde343
+
+## [5.7.0-prerelease.22](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.21...v5.7.0-prerelease.22) (2025-11-04)
+
+
+### Features
+
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1e45d1e
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#534) f7cf87a
+
+## [5.7.0-prerelease.21](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.20...v5.7.0-prerelease.21) (2025-10-31)
+
+
+### Bug Fixes
+
+* use relative logo source instead of absolute GENC-1232 1002762
+* use relative logo source instead of absolute GENC-1232 (#533) 71a9b23
+
+## [5.7.0-prerelease.20](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.19...v5.7.0-prerelease.20) (2025-10-29)
+
+
+### Bug Fixes
+
+* bump fui version to fix modal regression 4594a2d
+* bump fui version to fix modal regression (#532) ad41045
+
+## [5.7.0-prerelease.19](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.18...v5.7.0-prerelease.19) (2025-10-28)
+
+
+### Features
+
+* bump fui versions to receive light mode fixes 6f244c5
+* bump fui versions to receive light mode fixes (#530) 3df2a30
+
+## [5.7.0-prerelease.18](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.17...v5.7.0-prerelease.18) (2025-10-28)
+
+
+### Features
+
+* fix setting fonts and set css used for handlers GENC-1232 de493e3
+* optionally set fonts in generated app via genx GENC-1232 (#531) 596f933
+
+## [5.7.0-prerelease.17](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.16...v5.7.0-prerelease.17) (2025-10-24)
+
+
+### Bug Fixes
+
+* handling of optional headerlogo GENC-1232 ece95a3
+* handling of optional headerlogo GENC-1232 (#529) 88ed8d6
+
+## [5.7.0-prerelease.16](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.15...v5.7.0-prerelease.16) (2025-10-23)
+
+
+### Features
+
+* configure foundation header logo during init GENC-1232 fa452b4
+* optionally set header logo during genx init GENC-1232 (#528) 86c8950
+* set logo styles GENC-1232 950a6b6
+
+
+### Bug Fixes
+
+* apply logo styles by default GENC-1232 00814d8
+* erronous ifAny check in react for datasourceConfig GENC-1232 c109583
+* linting error in generated app GENC-1232 4c176cc
+* linting error in generated app react and angular GENC-1232 a95c6a5
+* logo configuration in angular GENC-1232 14445fc
+
+## [5.7.0-prerelease.15](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.14...v5.7.0-prerelease.15) (2025-10-22)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9b0d2cf
+
+## [5.7.0-prerelease.14](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.13...v5.7.0-prerelease.14) (2025-10-22)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 80b9ac5
+
+## [5.7.0-prerelease.13](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.12...v5.7.0-prerelease.13) (2025-10-22)
+
+
+### Features
+
+* add ability to set design tokens for generated application GENC-1232 bfcf676
+* add ability to set design tokens for generated application GENC-1232 (#526) c01a7f3
+
+
+### Bug Fixes
+
+* logic applying design token option GENC-1232 a42f6b6
+* logic applying design token option GENC-1232 760e6c1
+* logic applying design token option GENC-1232 7e25e01
+* logic applying design token option GENC-1232 f11fd09
+* logic applying design token option GENC-1232 54b2e75
+* logic applying design token option GENC-1232 63faf22
+* logic applying design token option GENC-1232 6de63aa
+* logic applying design token option GENC-1232 d721477
+* logic applying design token option GENC-1232 a66eada
+* logic applying design token option GENC-1232 3c72211
+* template example shoudl be using light mode value GENC-1232 b87024f
+
+## [5.7.0-prerelease.12](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.11...v5.7.0-prerelease.12) (2025-10-22)
+
+
+### Features
+
+* grid interactions web-components/react/angular GENC-1211 ddcf44c
+* grid interactions web-components/react/angular GENC-1211 (#527) a9a112b
+
+## [5.7.0-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.10...v5.7.0-prerelease.11) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a597461
+
+## [5.7.0-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.9...v5.7.0-prerelease.10) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f1c7a32
+
+## [5.7.0-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.8...v5.7.0-prerelease.9) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b666a8b
+
+## [5.7.0-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.7...v5.7.0-prerelease.8) (2025-10-21)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bc1fc15
+
+## [5.7.0-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.6...v5.7.0-prerelease.7) (2025-10-20)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) db1cff2
+
+## [5.7.0-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.5...v5.7.0-prerelease.6) (2025-10-20)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24510a4
+
+## [5.7.0-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.4...v5.7.0-prerelease.5) (2025-10-17)
+
+
+### Bug Fixes
+
+* add proxy for vite with react ff07e8f
+* add proxy for vite with react adb23b4
+* add proxy for vite with react (#518) 65bab7f
+
+## [5.7.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.3...v5.7.0-prerelease.4) (2025-10-17)
+
+
+### Bug Fixes
+
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) de06d08
+
+## [5.7.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.2...v5.7.0-prerelease.3) (2025-10-17)
+
+
+### Bug Fixes
+
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3ebdac7
 
 ## [5.7.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.1...v5.7.0-prerelease.2) (2025-10-16)
 

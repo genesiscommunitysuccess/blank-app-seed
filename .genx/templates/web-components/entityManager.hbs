@@ -25,15 +25,23 @@ ${whenElse(
             {{#if config.deleteEvent}}
             deleteEvent="${(x) => getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.deleteEvent }}')}"
             {{/if}}
-            {{#if config.gridOptions}}
-            :gridOptions=${() => gridOptions }
-            {{/if}}
-            {{#if config.snapshot}}
-            :datasourceConfig=${() => ({isSnapshot: {{ config.snapshot }} })}
-            {{/if}}
-            {{#if config.reqrep}}
-            :datasourceConfig=${() => ({pollingInterval: 5000, requestAutoSetup: false})}
-            {{/if}}
+            {{#ifAny config.gridOptions config.eventing.publishEventName}}
+            :gridOptions=${(x) => ({
+              {{#if config.gridOptions}}
+              ...gridOptions,{{/if}}{{#if config.eventing.publishEventName}}
+              onSelectionChanged: x.handleRowSelection,
+              {{/if}}
+            })}
+            {{/ifAny}}
+            {{#ifAny config.reqrep config.eventing.listener}}
+            :datasourceConfig=${(x) => ({
+              {{#if config.reqrep}}
+              pollingInterval: 5000, 
+              requestAutoSetup: false,{{/if}}{{#if config.eventing.listener}}
+              criteria: x.getCriteria(),
+              {{/if}}
+            })}
+            {{/ifAny}}
             {{#if config.entityName}}
             entityLabel="{{ config.entityName }}"
             {{/if}}
@@ -48,6 +56,12 @@ ${whenElse(
             {{/if}}
             {{#if config.enableSearchBar}}
             enable-search-bar
+            {{/if}}
+            {{#if config.enableFilters}}
+            enable-filters
+            {{#if config.filterFormUiSchema}}
+            :filtersUiSchema=${() => filterFormSchema}
+            {{/if}}
             {{/if}}
             {{#if config.customEvents}}
             :customActions=${() => customActions}

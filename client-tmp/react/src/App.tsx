@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
   setApiHost,
@@ -7,26 +7,19 @@ import {
   onFDC3Ready,
   {{/if}}
 } from './utils';
-import { customEventFactory, registerStylesTarget } from '@/pbc/utils';
+import { customEventFactory, registerStylesTarget } from './pbc/utils';
 import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
-import { storeService } from '@/services/store.service';
+import { storeService } from './services/store.service';
 import AppRoutes from './components/routes/AppRoutes';
-import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage.tsx";
-
+import { reduxStore } from './store/store';
+import { Provider } from 'react-redux';
 
 interface AppProps {
   rootElement: HTMLElement;
 }
 
 const App: React.FC<AppProps> = ({ rootElement }) => {
-  const [isStoreConnected, setIsStoreConnected] = useState(false);
-  const dispatchCustomEvent = (type: string, detail?: any) => {
-    rootElement.dispatchEvent(customEventFactory(type, detail));
-  };
-  const handleStoreConnected = (event: CustomEvent) => {
-    storeService.onConnected(event);
-  };
   {{#if FDC3.channels.length~}}
   const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
@@ -38,39 +31,61 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     {{/each}}
   };
   {{/if}}
+  const [componentsReady, setComponentsReady] = useState(false);
+  const dispatchCustomEvent = useCallback((type: string, detail?: unknown) => {
+    rootElement.dispatchEvent(customEventFactory(type, detail));
+  }, [rootElement]);
 
-  setApiHost();
-  genesisRegisterComponents();
+  const handleStoreConnected = useCallback((event: CustomEvent) => {
+    storeService.onConnected(event);
+  }, []);
+  useEffect(() => {
+    let mounted = true;
+    setApiHost();
+    (async () => {
+      await genesisRegisterComponents();
+      if (mounted) {
+        setComponentsReady(true);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     registerStylesTarget(document.body, 'main');
+    rootElement.addEventListener('store-connected', handleStoreConnected as EventListener);
+    dispatchCustomEvent('store-connected', rootElement);
+    dispatchCustomEvent('store-ready', true);
+
+    return () => {
+      rootElement.removeEventListener(
+        'store-connected',
+        handleStoreConnected as EventListener,
+      );
+    };
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
-    if (!isStoreConnected) {
-      rootElement.addEventListener('store-connected', handleStoreConnected);
-      dispatchCustomEvent('store-connected', rootElement);
-      dispatchCustomEvent('store-ready', true);
-      setIsStoreConnected(true);
-    }
 
-    return () => {
-      if (isStoreConnected) {
-        rootElement.removeEventListener('store-connected', handleStoreConnected);
-        dispatchCustomEvent('store-disconnected');
-      }
-    };
-  }, [isStoreConnected]);
+  }, [rootElement, handleStoreConnected, dispatchCustomEvent]);
 
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
 
+  if (!componentsReady) {
+    return null;
+  }
+
   return (
-    <RoutesProvider>
-        <Router basename={basePath}>
-          <AppRoutes />
-        </Router>
-    </RoutesProvider>
+    <Provider store={reduxStore}>
+      <RoutesProvider>
+          <Router basename={basePath}>
+            <AppRoutes />
+          </Router>
+      </RoutesProvider>
+    </Provider>
   );
 };
 

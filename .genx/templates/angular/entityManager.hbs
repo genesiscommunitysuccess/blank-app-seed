@@ -25,14 +25,25 @@
       [deleteEvent]="hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined"
       {{/if}}
       {{#if config.gridOptions}}
-      [gridOptions]="{{ config.gridOptions }}"
+      [gridOptions]="gridOptionsModel"
       {{/if}}
-      {{#if config.snapshot}}
-      [datasourceConfig]="{ isSnapshot: {{ config.snapshot }} }"
+      {{#if config.eventing.publishEventName}}
+      (selectionChanged)="handleRowSelection($event)"
       {{/if}}
-      {{#if config.reqrep}}
-      [datasourceConfig]="reqrep"
-      {{/if}}
+      {{#ifAny config.snapshot config.reqrep config.eventing.listener}}
+      [datasourceConfig]="{
+        {{#if config.snapshot}}
+        isSnapshot: {{ config.snapshot }},
+        {{/if}}
+        {{#if config.reqrep}}
+        pollingInterval: 5000,
+        requestAutoSetup: false,
+        {{/if}}
+        {{#if config.eventing.listener}}
+        criteria: criteria()
+        {{/if}}
+      }"
+      {{/ifAny}}
       {{#if config.entityName}}
       entityLabel="{{ config.entityName }}"
       {{/if}}
@@ -47,6 +58,12 @@
       {{/if}}
       {{#if config.enableSearchBar}}
       enable-search-bar
+      {{/if}}
+      {{#if config.enableFilters}}
+      enable-filters
+      {{#if config.filterFormUiSchema}}
+      [filtersUiSchema]="filterFormSchema"
+      {{/if}}
       {{/if}}
       {{#if config.customEvents}}
       [customActions]="customActions"

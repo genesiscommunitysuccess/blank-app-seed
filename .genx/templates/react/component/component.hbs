@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 {{#if tile.config.permissions.viewRight~}}
 import { getUser } from '@genesislcap/foundation-user';
 import { getViewUpdateRightComponent } from '../../../utils';
@@ -22,6 +23,9 @@ import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.ti
 {{#if tile.config.updateFormUiSchema~}}
 import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
 {{/if}}
+{{#if tile.config.filterFormUiSchema~}}
+import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
+{{/if}}
 {{#if tile.config.columns~}}
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
@@ -29,6 +33,15 @@ import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnD
 import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
+{{#if tile.config.eventing.publishEventName}}
+import { actions } from '../../../store/store';
+{{/if}}
+{{#if tile.config.eventing.listener}}
+import { useSelector } from 'react-redux';
+import { selectors } from '../../../store/store';
+{{/if}}
+import { layoutComponentsMap, LayoutComponentNames } from '../../../store/store';
+import { getElementByTagFromComponent } from '../../../utils/goldenLayout.helper';
 import './{{pascalCase tile.title}}Component.css';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
@@ -41,32 +54,94 @@ import './{{pascalCase tile.title}}Component.css';
 {{/ifAny}}
 
 export const {{pascalCase tile.componentName}}: React.FC = () => {
-  {{#if tile.config.permissions.viewRight~}}
-  const hasUserPermission = (permissionCode: string): boolean => getViewUpdateRightComponent(getUser(), permissionCode);
-  {{else if tile.config.permissions.updateRight~}}
-  const hasUserPermission = (permissionCode: string): boolean => getViewUpdateRightComponent(getUser(), permissionCode);
+  {{#if tile.config.permissions.viewRight}}
+  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
+  {{else if tile.config.permissions.updateRight}}
+  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
   {{/if}}
-  {{#if tile.config.createFormUiSchema~}}
+  {{#if tile.config.eventing.publishEventName}}
+  const handleRowSelection = (e: any) => {
+    const selectedRows = e.api.getSelectedRows();
+    if (!selectedRows || !selectedRows.length) {
+      actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(null);
+      return;
+    }
+    const { TIMESTAMP, RECORD_ID, ROW_REF, ...data } = selectedRows[0];
+    actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
+  };
+  {{/if}}
+  {{#if tile.config.createFormUiSchema}}
   const createFormSchema: typeof createFormSchemaTile = createFormSchemaTile;
   {{/if}}
-  {{#if tile.config.uischema~}}
+  {{#if tile.config.uischema}}
   const uischema: typeof createFormSchemaTile = createFormSchemaTile;
   {{/if}}
-  {{#if tile.config.updateFormUiSchema~}}
+  {{#if tile.config.updateFormUiSchema}}
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
-  {{#if tile.config.columns~}}
+  {{#if tile.config.filterFormUiSchema}}
+  const filterFormSchema: typeof filterFormSchemaTile = filterFormSchemaTile;
+  {{/if}}
+  {{#if tile.config.columns}}
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];
   {{/if}}
-  {{#if tile.config.gridOptions~}}
-  const deferredGridOptions: { onRowClicked: GridOptionsConfig.onRowClicked } = { onRowClicked: gridOptionsTile?.onRowClicked  }
+  {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
+  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig.onRowClicked, {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {
+    {{#if tile.config.gridOptions}}
+    onRowClicked: gridOptionsTile?.onRowClicked,
+    {{/if}}
+    {{#if tile.config.eventing.publishEventName}}
+    onSelectionChanged: handleRowSelection,
+    rowSelection: 'single',
+    {{/if}}
+  }
+  {{/ifAny}}
+  const datasourceConfig: { isSnapshot?: boolean, pollingInterval?: string, requestAutoSetup?: string, criteria?: string } = {
+    {{#if tile.config.snapshot}}
+    isSnapshot: {{ tile.config.snapshot }},
+    {{/if}}
+    {{#if tile.config.reqrep}}
+    pollingInterval: '5000',
+    requestAutoSetup: 'false',
+    {{/if}}
+    {{#if tile.config.eventing.listener}}
+    criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
+    {{/if}}
+  }
+  {{#if tile.componentType}}
+  {{#ifEquals tile.componentType 'grid'}}
+  useEffect(() => {
+    const componentElement = layoutComponentsMap.get(LayoutComponentNames.{{constantCase tile.componentName}});
+    const componentDatasource = componentElement ? getElementByTagFromComponent(componentElement, 'grid-pro-genesis-datasource') : undefined;
+
+    if (componentDatasource) {
+      {{#if tile.config.eventing.listener}}
+      componentDatasource.criteria = datasourceConfig.criteria;
+      {{/if}}
+      {{#if tile.config.reqrep}}
+      componentDatasource.requestAutoSetup = datasourceConfig.requestAutoSetup;
+      componentDatasource.pollingInterval = datasourceConfig.pollingInterval;
+      {{/if}}
+    }
+  }, [datasourceConfig]);
+  {{/ifEquals}}
   {{/if}}
-  {{#if tile.config.reqrep~}}
-  const reqrep: { pollingInterval: number } = { pollingInterval: 5000, requestAutoSetup: false };
+  {{#if tile.componentType}}
+  {{#ifEquals tile.componentType 'manager'}}
+  useEffect(() => {
+    const componentElement = layoutComponentsMap.get(LayoutComponentNames.{{constantCase tile.componentName}});
+    const componentDatasource = componentElement ? getElementByTagFromComponent(componentElement, 'entity-management') : undefined;
+
+    if (componentDatasource) {
+      componentDatasource.datasourceConfig = datasourceConfig;
+    }
+  }, [datasourceConfig]);
+  {{/ifEquals}}
   {{/if}}
-  {{#if tile.config.type~}}
+
+  {{#if tile.config.type}}
   const chartConfig: {
-    {{#ifEquals tile.config.type 'pie'~}}
+    {{#ifEquals tile.config.type 'pie'}}
     radius: number;
     angleField: string;
     colorField: string;
@@ -75,7 +150,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     yField: string;
     {{/ifEquals}}
   } = {
-    {{#ifEquals tile.config.type 'pie'~}}
+    {{#ifEquals tile.config.type 'pie'}}
     radius: 0.75,
     angleField: 'value',
     colorField: 'groupBy',

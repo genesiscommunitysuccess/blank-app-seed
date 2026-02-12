@@ -13,6 +13,9 @@ const parseRoutes = parseJSONArgument('routes', defaultRoutes);
 const defaultUI = {};
 const parseUI = parseJSONArgument('ui', defaultUI);
 
+const defaultDesignTokens = {};
+const parseDesignTokens = parseJSONArgument('designTokens', defaultDesignTokens);
+
 const selectedFrameworkInfo = (framework) => {
   if (framework && frameworkValidator(framework) === true) {
     console.log(
@@ -28,6 +31,7 @@ module.exports = async (inquirer, prevAns = {}) => {
     framework = prevAns.framework,
     ui = prevAns.ui,
     routes = prevAns.routes,
+    designTokens = prevAns.designTokens,
   } = await inquirer.prompt([
     {
       name: 'framework',
@@ -55,11 +59,19 @@ module.exports = async (inquirer, prevAns = {}) => {
       when: !prevAns.routes,
       default: JSON.stringify(defaultRoutes),
     },
+    {
+      name: 'designTokens',
+      type: 'input',
+      message: TEXTS.MESSAGE_UI_DESIGN_TOKENS,
+      when: !prevAns.designTokens,
+      default: JSON.stringify(defaultDesignTokens),
+    },
   ]);
 
   return {
     routes: parseRoutes(routes),
     ui: parseUI(ui),
+    designTokens: parseDesignTokens(designTokens),
     framework: normalizeFrameworkAlias(framework),
   };
 };

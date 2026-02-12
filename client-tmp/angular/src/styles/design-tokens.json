@@ -12,7 +12,7 @@
     },
     "fontFamily": {
       "bodyFont": {
-        "$value": "Roboto, \"Segoe UI\", Arial, Helvetica, sans-serif",
+        "$value": "{{#if fontFamily}}{{fontFamily}}, {{/if}}Roboto, \"Segoe UI\", Arial, Helvetica, sans-serif",
         "$type": "fontFamily"
       }
     },
@@ -35,6 +35,10 @@
     "style": {
       "density": {
         "$value": 0,
+        "$type": "number"
+      },
+      "baseHeightMultiplier": {
+        "$value": 10,
         "$type": "number"
       },
       "borderRadius": {

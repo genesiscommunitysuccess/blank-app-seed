@@ -1,6 +1,8 @@
 const { websocketValidator } = require('./validators');
 const { TEXTS } = require('../static');
 
+const defaultHeaderLogo = '';
+
 const apiHostIntro = () => console.log(TEXTS.INTRO_API_HOST);
 const ssoIntro = () => console.log(TEXTS.INTRO_API_SSO);
 
@@ -26,8 +28,31 @@ module.exports = async (inquirer, prevAns = {}) => {
       when: prevAns.enableSSO === undefined,
     },
   ]);
+  
+  const { headerLogo = prevAns.headerLogo } = await inquirer.prompt([
+    {
+      name: 'headerLogo',
+      type: 'input',
+      message: 'Header logo file path (optional)',
+      default: defaultHeaderLogo,
+      when: prevAns.headerLogo === undefined,
+    },
+  ]);
+  
+  const { customFonts = prevAns.customFonts } = await inquirer.prompt([
+    {
+      name: 'customFonts',
+      type: 'input',
+      message: 'Custom fonts JSON (optional, e.g. {"files":["./Font-Regular.ttf","./Font-Bold.ttf"]})',
+      default: prevAns.customFonts || '',
+      when: prevAns.customFonts === undefined,
+    },
+  ]);
+  
   return {
     apiHost,
     enableSSO,
+    headerLogo,
+    customFonts,
   };
 };

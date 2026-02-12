@@ -17,7 +17,7 @@ import {
 } from '@genesislcap/web-core';
 import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
-import { Store, StoreEventDetailMap } from '../store';
+import { Store, StoreEventDetailMap } from '../store/foundation-store';
 import designTokens from '../styles/design-tokens.json';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from '../utils';

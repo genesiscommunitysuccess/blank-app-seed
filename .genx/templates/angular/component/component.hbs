@@ -18,12 +18,19 @@ import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema'
 {{#if tile.config.updateFormUiSchema}}
 import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
 {{/if}}
+{{#if tile.config.filterFormUiSchema}}
+import { filterFormSchema } from './{{kebabCase tile.title}}.filter.form.schema';
+{{/if}}
 {{#if tile.config.columns}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
+{{#ifAny tile.config.eventing.publishEventName tile.config.eventing.listener}}
+import { actions, selectors } from '../../../store/store';
+import { injectSelector } from '@reduxjs/angular-redux';
+{{/ifAny}}
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
@@ -49,9 +56,9 @@ export class {{pascalCase tile.componentName}} {
   hasUserPermission = (permissionCode: string) => getViewUpdateRightComponent(getUser(), permissionCode);{{#if tile.config.createFormUiSchema}}
   createFormSchema = createFormSchema;{{/if}}{{#if tile.config.uischema}}
   uischema = createFormSchema;{{/if}}{{#if tile.config.updateFormUiSchema}}
-  updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.gridOptions}}
-  gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.reqrep}}
-  reqrep = { pollingInterval: 5000, requestAutoSetup: false };{{/if}}{{#if tile.config.columns}}
+  updateFormSchema = updateFormSchema;{{/if}}{{#if tile.config.filterFormUiSchema}}
+  filterFormSchema = filterFormSchema;{{/if}}{{#if tile.config.gridOptions}}
+  gridOptions = gridOptions as GridOptionsConfig;{{/if}}{{#if tile.config.columns}}
   columnDefs = [
     ...columnDefs,
   ];{{/if}}{{#if tile.config.type}}
@@ -62,5 +69,30 @@ export class {{pascalCase tile.componentName}} {
       "xField": "groupBy",
       "yField": "value",{{/ifEquals}}
   };{{/if}}{{#if tile.config.customEvents}}
-  customActions = emCustomActions;{{/if}}
+  customActions = emCustomActions;{{/if}}{{#ifAny tile.config.eventing.publishEventName tile.config.eventing.listener}}
+  {{#if tile.config.eventing.listener}}
+  criteria = injectSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}});
+  {{/if}}
+  {{/ifAny}}{{#if tile.config.eventing.publishEventName}}
+  handleRowSelection = (e: any) => {
+    {{#ifEquals tile.componentType 'grid'}}
+    const selectedRows = e.api.getSelectedRows();
+    {{else}}
+    const selectedRows = e.detail.api.getSelectedRows();
+    {{/ifEquals}}
+    if (!selectedRows || !selectedRows.length) {
+        actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(null);
+        return;
+    };
+    const { TIMESTAMP, RECORD_ID, ROW_REF, ...data } = selectedRows[0];
+    actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
+  };{{/if}}
+  {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
+  gridOptionsModel = {
+    {{#if tile.config.gridOptions}}
+    onRowClicked: gridOptions?.onRowClicked,{{/if}}{{#if tile.config.eventing.publishEventName}}{{#ifEquals tile.componentType 'grid'}}
+    onSelectionChanged: this.handleRowSelection,
+    rowSelection: 'single'{{/ifEquals}}{{/if}}
+  };
+  {{/ifAny}}
 }

@@ -1,4 +1,3 @@
-
 import { CustomEventMap } from '@genesislcap/foundation-events';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import {
@@ -9,28 +8,38 @@ import {
 } from '@genesislcap/foundation-store';
 import { DI } from '@genesislcap/web-core';
 
-interface Store extends StoreRoot {}
-type StoreEventDetailMap = StoreRootEventDetailMap & Record<string, never>;
+interface Store extends StoreRoot {
+  connected: boolean;
+}
+
+type StoreEventDetailMap = StoreRootEventDetailMap & {
+  'connected-changed': { connected: boolean };
+};
 
 declare global {
   interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}
 }
 
 class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
+  connected: boolean = false;
+
   constructor() {
     super();
-
-    /**
-     * Register the store root
-     */
     getApp().registerStoreRoot(this);
+  }
+
+  setConnected(connected: boolean) {
+    this.connected = connected;
+    document.dispatchEvent(new CustomEvent('connected-changed', {
+      detail: { connected }
+    }));
   }
 }
 
 const Store = registerStore(DefaultStore, 'Store');
 
 class StoreService {
-  private store: any;
+  private store: Store;
 
   constructor() {
     this.store = DI.getOrCreateDOMContainer().get(Store) as Store;
@@ -41,7 +50,9 @@ class StoreService {
   }
 
   onConnected(event?: CustomEvent) {
-    this.store.onConnected(event);
+    if (event) {
+      this.store.onConnected(event as any);
+    }
   }
 }
 

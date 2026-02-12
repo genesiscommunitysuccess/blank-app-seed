@@ -1,0 +1,44 @@
+import { CriteriaBuilder, ExpressionBuilder, Serialisers } from '@genesislcap/foundation-criteria';
+import { createSlice } from '@genesislcap/foundation-redux';
+
+export const eventingSlice = createSlice({
+  name: 'eventing',
+  {{#if events}}
+  initialState: { 
+{{#each events}}
+    {{this}}: null{{#unless @last}},{{/unless}}
+{{/each}} },
+  reducers: {
+{{#each events}}
+    publish{{pascalCase this}}: (state, action) => {
+      state.{{this}} = action.payload;
+    }{{#unless @last}},{{/unless}}
+{{/each}}
+  },
+  selectors: {
+{{#each listeners}}
+    getCriteriaFor{{pascalCase tileName}}: (state) => {
+      const criteriaBuilder = new CriteriaBuilder();
+      const data = state.{{eventName}};
+      if (!data) return '';
+
+{{#each mappings}}
+      if (data.{{sourceField}}) {
+        criteriaBuilder.And(new ExpressionBuilder()
+          .withField('{{targetField}}')
+          .withValue(data.{{sourceField}})
+          .withSerialiser(Serialisers.EQ)
+          .build());
+      }
+{{/each}}
+
+      return criteriaBuilder.build();
+    }{{#unless @last}},{{/unless}}
+{{/each}}
+  },
+  {{else}}
+  initialState: {},
+  reducers: {},
+  selectors: {},
+  {{/if}}
+});

@@ -9,16 +9,24 @@ ${whenElse(
         >
         <grid-pro-genesis-datasource
           resource-name="{{config.resourceName}}"
-          {{#if config.snapshot}}
-          isSnapshot="{{config.snapshot}}"
-          {{/if}}
           {{#if config.reqrep}}
           request-auto-setup="false"
           polling-interval="5000"
           {{/if}}
-          {{#if config.gridOptions}}
-          :deferredGridOptions=${() => ({ onRowClicked: gridOptions?.onRowClicked })}
+          {{#if config.eventing.listener}}
+          criteria=${(x) => x.getCriteria()}
           {{/if}}
+          {{#ifAny config.gridOptions config.eventing.publishEventName}}
+          :deferredGridOptions=${(x) => ({
+            {{#if config.gridOptions}}
+            onRowClicked: gridOptions?.onRowClicked,
+            {{/if}}
+            {{#if config.eventing.publishEventName}}
+            onSelectionChanged: x.handleRowSelection,
+            rowSelection: 'single',
+            {{/if}}
+          })}
+          {{/ifAny}}
         ></grid-pro-genesis-datasource>
         {{#if config.gridOptions}}
         ${repeat(

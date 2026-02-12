@@ -5,7 +5,7 @@ import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 import type { LayoutComponentName } from './types/layout';
 import { configureFoundationAuth } from './share/foundation-auth';
 import { registerComponents } from './share/genesis-components';
-import { getStore } from './store';
+import { getStore } from './store/foundation-store';
 import { customEventFactory, registerStylesTarget } from '../pbc/utils';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from './utils';
@@ -75,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   dispatchCustomEvent(type: string, detail?: any) {
     this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
   }
+
 
   ngAfterViewInit() {
     {{#if FDC3.channels.length}}

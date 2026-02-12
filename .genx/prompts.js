@@ -16,7 +16,7 @@ module.exports = async (inquirer, prevAns = {}) => {
   Version: ${version}
   License: ${license}`);
 
-  const { apiHost, enableSSO } = await apiPrompts(inquirer, prevAns);
+  const { apiHost, enableSSO, headerLogo, customFonts } = await apiPrompts(inquirer, prevAns);
   const {
     description,
     groupId,
@@ -25,12 +25,17 @@ module.exports = async (inquirer, prevAns = {}) => {
     csv,
     excludeGradleWrapper,
   } = await genesisServerPrompts(inquirer, prevAns);
-  const { routes, ui, framework } = await uiPrompts(inquirer, prevAns);
+  const { routes, ui, framework, designTokens } = await uiPrompts(
+    inquirer,
+    prevAns,
+  );
 
   return {
     apiHost,
     routes,
     enableSSO,
+    headerLogo,
+    customFonts,
     description,
     groupId,
     applicationVersion,
@@ -39,5 +44,6 @@ module.exports = async (inquirer, prevAns = {}) => {
     ui,
     framework,
     excludeGradleWrapper,
+    designTokens,
   };
 };

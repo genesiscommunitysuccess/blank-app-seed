@@ -78,6 +78,7 @@ const TEXTS = {
     'Generate empty CSV for entities? (config in JSON format)',
   MESSAGE_UI_ROTUES: 'Pages config in JSON format',
   MESSAGE_UI_CONFIG: 'UI configuration in JSON format',
+  MESSAGE_UI_DESIGN_TOKENS: 'Design tokens JSON (leave empty to use defaults)',
   MESSAGE_UI_FRAMEWORK: 'Framework',
   ERROR_VALIDATOR_FRAMEWORK: 'Selected framework is not supported',
   ERROR_VALIDATOR_WEBSOCKET: 'Not a valid websocket',

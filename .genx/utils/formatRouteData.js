@@ -40,9 +40,11 @@ const formatRouteData = (framework, route) => {
       gridOptions,
       createFormUiSchema,
       updateFormUiSchema,
+      filterFormUiSchema,
       uischema,
       columns,
       customEvents,
+      eventing,
     } = config;
 
     return {
@@ -56,9 +58,14 @@ const formatRouteData = (framework, route) => {
         useOnlyTemplateCols: !!gridOptions?.columns,
         createFormUiSchema: formatJSONValue(createFormUiSchema),
         updateFormUiSchema: formatJSONValue(updateFormUiSchema),
+        filterFormUiSchema: formatJSONValue(filterFormUiSchema),
         uischema: formatJSONValue(uischema),
         columns: gridColumnsSerializer(columns),
         customEvents: formatCustomEvents(customEvents),
+        eventing: {
+          publishEventName: eventing?.publishEventName || null,
+          listener: eventing?.listener || null,
+        },
       },
       metadata: {
         ...metadata,

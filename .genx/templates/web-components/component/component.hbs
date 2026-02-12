@@ -1,6 +1,15 @@
 import { Connect } from '@genesislcap/foundation-comms';
 import { User } from '@genesislcap/foundation-user';
 import { customElement, GenesisElement, observable } from '@genesislcap/web-core';
+{{#if tile.config.gridOptions}}
+import { gridOptions as baseGridOptions } from './{{kebabCase tile.title}}.gridOptions';
+{{/if}}
+{{#if tile.config.eventing.publishEventName}}
+import { actions } from '../../../store/store';
+{{/if}}
+{{#if tile.config.eventing.listener}}
+import { selectors } from '../../../store/store';
+{{/if}}
 import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
 import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 {{#if tile.config.columns}}
@@ -30,5 +39,22 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
   @observable columns: ColDef[] = [
     ...columnDefs,
   ];
+  {{/if}}
+  {{#if tile.config.eventing.publishEventName}}
+  public handleRowSelection = (e: any) => {
+    const selectedRows = e.api.getSelectedRows();
+    if (!selectedRows || !selectedRows.length) {
+      actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(null);
+      return;
+    }
+    const { TIMESTAMP, RECORD_ID, ROW_REF, ...data } = selectedRows[0];
+    actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
+  };
+  {{/if}}
+  {{#if tile.config.eventing.listener}}
+  getCriteria() {
+    const c = selectors.eventing.getCriteriaFor{{pascalCase tile.title}}();
+    return c || '';
+  }
   {{/if}}
 }
