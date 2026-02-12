@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.0-prerelease.42](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.41...v5.7.0-prerelease.42) (2026-02-12)
+
+
+### Features
+
+* handle foundation-filters in entity-management GENC-1241 d124c7f
+* handle foundation-filters in entity-management GENC-1241 (#538) 76bf4b8
+
 ## [5.7.0-prerelease.41](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.40...v5.7.0-prerelease.41) (2026-02-12)
 
 
