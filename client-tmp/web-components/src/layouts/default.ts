@@ -1,8 +1,9 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
 import type { FoundationRouter } from '@genesislcap/foundation-ui';
 import { css, GenesisElementLayout, html } from '@genesislcap/web-core';
+import type { Store } from '../store/foundation-store';
 
-type ClientAppRouter = FoundationRouter;
+type ClientAppRouter = FoundationRouter & { store: Store };
 
 const app = getApp();
 

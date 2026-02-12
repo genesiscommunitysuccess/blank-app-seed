@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {
   setApiHost,
@@ -12,7 +12,6 @@ import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
 import { storeService } from './services/store.service';
 import AppRoutes from './components/routes/AppRoutes';
-import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage.tsx";
 import { reduxStore } from './store/store';
 import { Provider } from 'react-redux';
 
@@ -32,15 +31,14 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     {{/each}}
   };
   {{/if}}
-  const [isStoreConnected, setIsStoreConnected] = useState(false);
   const [componentsReady, setComponentsReady] = useState(false);
-  const dispatchCustomEvent = (type: string, detail?: any) => {
+  const dispatchCustomEvent = useCallback((type: string, detail?: unknown) => {
     rootElement.dispatchEvent(customEventFactory(type, detail));
-  };
+  }, [rootElement]);
 
-  const handleStoreConnected = (event: CustomEvent) => {
+  const handleStoreConnected = useCallback((event: CustomEvent) => {
     storeService.onConnected(event);
-  };
+  }, []);
   useEffect(() => {
     let mounted = true;
     setApiHost();
@@ -57,24 +55,21 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
 
   useEffect(() => {
     registerStylesTarget(document.body, 'main');
-    if (!isStoreConnected) {
-      rootElement.addEventListener('store-connected', handleStoreConnected);
-      dispatchCustomEvent('store-connected', rootElement);
-      dispatchCustomEvent('store-ready', true);
-      setIsStoreConnected(true);
-    }
+    rootElement.addEventListener('store-connected', handleStoreConnected as EventListener);
+    dispatchCustomEvent('store-connected', rootElement);
+    dispatchCustomEvent('store-ready', true);
 
     return () => {
-      if (isStoreConnected) {
-        rootElement.removeEventListener('store-connected', handleStoreConnected);
-        dispatchCustomEvent('store-disconnected');
-      }
+      rootElement.removeEventListener(
+        'store-connected',
+        handleStoreConnected as EventListener,
+      );
     };
     {{#if FDC3.channels.length~}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
 
-  }, [isStoreConnected]);
+  }, [rootElement, handleStoreConnected, dispatchCustomEvent]);
 
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';

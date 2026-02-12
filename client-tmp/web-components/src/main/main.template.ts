@@ -18,5 +18,6 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
   <foundation-router
     @luminance-icon-clicked=${(x) => x.onDarkModeToggle()}
     :config=${(x) => x.config}
+    :store=${(x) => x.store}
   ></foundation-router>
 `;

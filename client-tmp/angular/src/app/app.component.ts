@@ -5,7 +5,8 @@ import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 import type { LayoutComponentName } from './types/layout';
 import { configureFoundationAuth } from './share/foundation-auth';
 import { registerComponents } from './share/genesis-components';
-import { registerStylesTarget } from '../pbc/utils';
+import { getStore } from './store/foundation-store';
+import { customEventFactory, registerStylesTarget } from '../pbc/utils';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}
@@ -15,9 +16,10 @@ import { listenToChannel, onFDC3Ready } from './utils';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutName?: LayoutComponentName;
   title = '{{capitalCase appName}}';
+  store = getStore();
 
   // @ts-ignore
   @Connect connect: Connect;
@@ -38,14 +40,42 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.addEventListeners();
+    this.readyStore();
     registerStylesTarget(this.el.nativeElement, 'main');
     this.loadRemotes();
   }
 
+  ngOnDestroy() {
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
 
   async loadRemotes() {
     await registerComponents();
   }
+
+  addEventListeners() {
+    this.el.nativeElement.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  removeEventListeners() {
+    this.el.nativeElement.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  readyStore() {
+    this.dispatchCustomEvent('store-connected', this.el.nativeElement);
+    this.dispatchCustomEvent('store-ready', true);
+  }
+
+  disconnectStore() {
+    this.dispatchCustomEvent('store-disconnected');
+  }
+
+  dispatchCustomEvent(type: string, detail?: any) {
+    this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
+  }
+
 
   ngAfterViewInit() {
     {{#if FDC3.channels.length}}
