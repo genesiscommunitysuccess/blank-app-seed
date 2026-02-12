@@ -1,5 +1,98 @@
 # Changelog
 
+## [5.8.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0...v5.8.0-prerelease.1) (2026-02-12)
+
+
+### Features
+
+* add ability to set design tokens for generated application GENC-1232 bfcf676
+* add ability to set design tokens for generated application GENC-1232 (#526) c01a7f3
+* bump fui versions to receive light mode fixes 6f244c5
+* bump fui versions to receive light mode fixes (#530) 3df2a30
+* configure foundation header logo during init GENC-1232 fa452b4
+* fix setting fonts and set css used for handlers GENC-1232 de493e3
+* grid interactions web-components/react/angular GENC-1211 ddcf44c
+* grid interactions web-components/react/angular GENC-1211 (#527) a9a112b
+* handle foundation-filters in entity-management GENC-1241 d124c7f
+* handle foundation-filters in entity-management GENC-1241 (#538) 76bf4b8
+* optionally set fonts in generated app via genx GENC-1232 (#531) 596f933
+* optionally set header logo during genx init GENC-1232 (#528) 86c8950
+* set logo styles GENC-1232 950a6b6
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 1e45d1e
+* update GSF and Auth versions to 8.14.0 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#534) f7cf87a
+
+
+### Bug Fixes
+
+* add checkbox selection for publishers GENC-1211 187915f
+* add checkbox selection for publishers GENC-1211 (#535) afde343
+* add proxy for vite with react ff07e8f
+* add proxy for vite with react adb23b4
+* add proxy for vite with react (#518) 65bab7f
+* apply logo styles by default GENC-1232 00814d8
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#549) d807320
+* build issues after FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4bb8376
+* bump fui version to fix modal regression 4594a2d
+* bump fui version to fix modal regression (#532) ad41045
+* change selected row background GENC-1211 72eb6ae
+* change selected row background GENC-1211 (#537) e00b3d1
+* correct cleanup for foundation-store [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 89bd39b
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ea48597
+* correct mounting of FUI components in react [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#546) a69ed2a
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) 76788ea
+* correct reduxStore provider [FUI-2470](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2470) (#547) f1bb8b7
+* erronous ifAny check in react for datasourceConfig GENC-1232 c109583
+* handling of optional headerlogo GENC-1232 ece95a3
+* handling of optional headerlogo GENC-1232 (#529) 88ed8d6
+* lint error [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 742ac0f
+* linting error in generated app GENC-1232 4c176cc
+* linting error in generated app react and angular GENC-1232 a95c6a5
+* logic applying design token option GENC-1232 a42f6b6
+* logic applying design token option GENC-1232 760e6c1
+* logic applying design token option GENC-1232 7e25e01
+* logic applying design token option GENC-1232 f11fd09
+* logic applying design token option GENC-1232 54b2e75
+* logic applying design token option GENC-1232 63faf22
+* logic applying design token option GENC-1232 6de63aa
+* logic applying design token option GENC-1232 d721477
+* logic applying design token option GENC-1232 a66eada
+* logic applying design token option GENC-1232 3c72211
+* logo configuration in angular GENC-1232 14445fc
+* revert add checkbox selection for publishers GENC-1211 2bfba25
+* revert add checkbox selection for publishers GENC-1211 (#536) c2a362a
+* Revert GSF version changes in versions.json [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#540) f174314
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f0c8786
+* simple store configuration for notify [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#548) bbdeff9
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d27a1d6
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3de0f0a
+* simple store configuration for notify + useDocumentTitle hook [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#543) 261fa8d
+* template example shoudl be using light mode value GENC-1232 b87024f
+* Trigger release f3cea2d
+* Trigger release (#545) ddbc132
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 73e9d9c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) affe2d8
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 307d126
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6b27022
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9b0d2cf
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a597461
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b666a8b
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) db1cff2
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) de06d08
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 63dc737
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 6dc9f8f
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 353a334
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8d05c98
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e4d994
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 80b9ac5
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f1c7a32
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) bc1fc15
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 24510a4
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3ebdac7
+* use component in tabsLayout GENC-0 41a53ac
+* use component in tabsLayout GENC-0 (#539) e4f164e
+* use relative logo source instead of absolute GENC-1232 1002762
+* use relative logo source instead of absolute GENC-1232 (#533) 71a9b23
+
 ## [5.7.0-prerelease.42](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0-prerelease.41...v5.7.0-prerelease.42) (2026-02-12)
 
 
