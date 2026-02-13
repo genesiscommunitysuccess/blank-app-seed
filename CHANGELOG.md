@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.8.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.8.0...v5.8.1) (2026-02-13)
+
+
+### Bug Fixes
+
+* add missing changeCase for filterFormSchema [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 30621d4
+* add missing changeCase for filterFormSchema [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#551) c47aded
+
 ## [5.8.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.7.0...v5.8.0) (2026-02-12)
 
 
