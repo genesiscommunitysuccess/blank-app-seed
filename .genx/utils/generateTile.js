@@ -60,7 +60,7 @@ const getPathByFramework = {
       `${componentPath}/${changeCase.pascalCase(tile.name)}CreateFormSchema.ts`,
     updateForm: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}UpdateFormSchema.ts`,
-    filterForm: (componentPath, tile) =>
+    filterForm: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}FilterFormSchema.ts`,
     columnDefs: (componentPath, tile, changeCase) =>
       `${componentPath}/${changeCase.pascalCase(tile.name)}ColumnDefs.ts`,
