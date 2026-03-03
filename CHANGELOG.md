@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.9.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.8.1...v5.9.0) (2026-03-03)
+
+
+### Features
+
+* PBC version consistency and render timing + 8.15 update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#552) 93db030
+
+
+### Bug Fixes
+
+* PBC render timing [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 413bd3f
+
 ## [5.8.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.8.0...v5.8.1) (2026-02-13)
 
 
