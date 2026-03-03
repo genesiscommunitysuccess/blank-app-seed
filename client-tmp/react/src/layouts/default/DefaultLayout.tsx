@@ -13,6 +13,14 @@ import { useRoutesContext } from '../../store/RoutesContext';
 import { useDocumentTitle } from '../../utils/useDocumentTitle';
 import { AUTH_PATH } from '../../config';
 import { LOGOUT_URL } from '@genesislcap/foundation-utils';
+import type { AppTargetId } from '@genesislcap/foundation-shell/app';
+
+// Stable target arrays so PBCElementsRenderer effect doesn't re-run on every parent re-render
+const TARGET_LAYOUT_START: AppTargetId = ['layout-start'];
+const TARGET_HEADER_NAV: AppTargetId = ['header', 'nav-start', 'nav-end'];
+const TARGET_CONTENT_START: AppTargetId = ['content-start'];
+const TARGET_CONTENT: AppTargetId = ['content', 'content-end'];
+const TARGET_LAYOUT_END: AppTargetId = ['layout', 'layout-end'];
 
 interface DefaultLayoutProps {}
 
@@ -62,7 +70,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   return (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
-      <PBCElementsRenderer target={['layout-start']} />
+      <PBCElementsRenderer target={TARGET_LAYOUT_START} />
       <foundation-header
 {{#if headerLogoSrc}}
         logo-src="{{headerLogoSrc}}"
@@ -77,14 +85,14 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         routeNavItems={navItems}
         navigateTo={(path: string) => navigate(path)}
       >
-        <PBCElementsRenderer target={['header', 'nav-start', 'nav-end']} />
+        <PBCElementsRenderer target={TARGET_HEADER_NAV} />
       </foundation-header>
       <section className={styles['content']}>
-        <PBCElementsRenderer target={['content-start']} />
+        <PBCElementsRenderer target={TARGET_CONTENT_START} />
         <Outlet />
-        <PBCElementsRenderer target={['content', 'content-end']} />
+        <PBCElementsRenderer target={TARGET_CONTENT} />
       </section>
-      <PBCElementsRenderer target={['layout', 'layout-end']} />
+      <PBCElementsRenderer target={TARGET_LAYOUT_END} />
     </rapid-design-system-provider>
   );
 };
