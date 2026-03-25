@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
-    kotlin("jvm") version "2.1.21"
+    kotlin("jvm") version "2.3.0"
     java
     id("global.genesis.bdd_automation")
 }
@@ -27,8 +30,11 @@ repositories {
     }
 }
 kotlin {
-    jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+    jvmToolchain(17)
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all", "-Xlambdas=indy")
+        jvmTarget.set(JvmTarget.JVM_17)
+        apiVersion.set(KotlinVersion.KOTLIN_2_3)
     }
 }
 
