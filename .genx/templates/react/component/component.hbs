@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 {{/ifEquals}}
 {{#ifEquals tile.type 'grid-pro'}}
-import { RapidGridPro, GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/rapid-grid-pro/react';
+import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
+import { GridProCaseType } from '@genesislcap/grid-pro';
 {{/ifEquals}}
 {{#ifEquals tile.type 'smart-form'}}
 import { FoundationForm } from '@genesislcap/foundation-forms/react';
@@ -98,7 +100,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];
   {{/if}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
-  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig.onRowClicked, {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {
+  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig['onRowClicked'], {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {
     {{#if tile.config.gridOptions}}
     onRowClicked: gridOptionsTile?.onRowClicked,
     {{/if}}
