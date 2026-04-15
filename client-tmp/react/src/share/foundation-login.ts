@@ -1,6 +1,5 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
 import { AUTH_PATH } from '../config';
-import { environment } from '../environments/environment.ts';
 import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
 import type { NavigateFunction, Location as RouterLocation } from 'react-router-dom';
@@ -31,8 +30,7 @@ export const configureFoundationLogin = ({navigate, location}: { navigate: Navig
     },
     hostPath: basePath + AUTH_PATH,
     postLoginRedirect: async () => {
-      const url = environment.API_HOST;
-      await connect.connect(url);
+      await connect.connect();
       const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
     },

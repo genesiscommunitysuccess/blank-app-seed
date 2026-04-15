@@ -2,10 +2,10 @@
 hasUserPermission('{{config.permissions.viewRight}}') ? (
 {{/if}}
 <>
-  <entity-management
-    design-system-prefix="rapid"
-    enable-row-flashing
-    enable-cell-flashing
+  <EntityManagement
+    prefix="rapid"
+    enableRowFlashing
+    enableCellFlashing
     {{#if config.title~}}
     title="{{ config.title }}"
     {{/if}}
@@ -47,16 +47,16 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     entityLabel="{{ config.entityName }}"
     {{/if}}
     {{#if config.modalPosition}}
-    modal-position="{{ config.modalPosition }}"
+    modalPosition="{{ config.modalPosition }}"
     {{/if}}
     {{#if config.sizeColumnsToFit}}
-    size-columns-to-fit
+    sizeColumnsToFit
     {{/if}}
     {{#if config.enableSearchBar}}
-    enable-search-bar
+    enableSearchBar
     {{/if}}
     {{#if config.enableFilters}}
-    enable-filters
+    enableFilters
     {{#if config.filterFormUiSchema}}
     filtersUiSchema={filterFormSchema}
     {{/if}}
@@ -64,7 +64,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.customEvents}}
     customActions={customActions}
     {{/if}}
-  ></entity-management>
+  />
 </>
 {{#if config.permissions.viewRight~}}
 ) : (
