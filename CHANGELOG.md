@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.0...v5.10.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* correct import of grid component [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 38170d1
+* correct import of grid component [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#557) 527d1fe
+
 ## [5.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.9.0...v5.10.0) (2026-04-15)
 
 
