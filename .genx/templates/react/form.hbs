@@ -1,15 +1,14 @@
 {{#if config.permissions.updateRight~}}
 hasUserPermission('{{config.permissions.updateRight}}') ? (
 {{/if}}
-<foundation-form
-  design-system-prefix="rapid"
+<FoundationForm
+  prefix="rapid"
   resourceName="{{config.resourceName}}"
   {{#if config.uischema}}
   uischema={uischema}
   {{/if}}
->
-</foundation-form>
-{{#if config.permissions.updateRight~}} 
+/>
+{{#if config.permissions.updateRight~}}
 ) : (
 <ErrorMessage elementType="h3" message="You do not have access to view this component." />
 )

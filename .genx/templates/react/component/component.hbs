@@ -1,4 +1,16 @@
 import { useEffect } from 'react';
+{{#ifEquals tile.type 'entity-manager'}}
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'grid-pro'}}
+import { RapidGridPro, GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/rapid-grid-pro/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'smart-form'}}
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'chart'}}
+import { RapidG2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
+{{/ifEquals}}
 {{#if tile.config.permissions.viewRight~}}
 import { getUser } from '@genesislcap/foundation-user';
 import { getViewUpdateRightComponent } from '../../../utils';

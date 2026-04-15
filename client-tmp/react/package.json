@@ -34,6 +34,7 @@
     "test:e2e:ui": "genx test --e2e --interactive"
   },
   "dependencies": {
+    "@microsoft/fast-react-wrapper": ">=0.3.25",
     "@ag-grid-community/client-side-row-model": "29.2.0",
     "@ag-grid-community/core": "29.2.0",
     "@ag-grid-community/csv-export": "29.2.0",

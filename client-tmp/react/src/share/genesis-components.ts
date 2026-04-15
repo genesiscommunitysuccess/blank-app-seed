@@ -1,21 +1,16 @@
-import { EntityManagement, SmartFormModal } from '@genesislcap/foundation-entity-management';
-import { Filters, Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents, rapidGridPro, rapidGridProStyles } from '@genesislcap/rapid-grid-pro';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
+import { avoidTreeShaking } from '@genesislcap/foundation-utils';
 import { css } from "@genesislcap/web-core";
 
 /**
  * Ensure tree shaking doesn't remove these.
  */
-FoundationRouter;
-EntityManagement;
-Filters;
-Form;
-SmartFormModal;
+avoidTreeShaking(FoundationRouter);
 
 /**
  * registerComponents.

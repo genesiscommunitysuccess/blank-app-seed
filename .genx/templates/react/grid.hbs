@@ -1,30 +1,30 @@
 {{#if config.permissions.viewRight~}}
 hasUserPermission('{{config.permissions.viewRight}}') ? (
 {{/if}}
-<rapid-grid-pro
-  header-case-type="capitalCase"
+<RapidGridPro
+  headerCaseType="capitalCase"
   {{#if config.useOnlyTemplateCols}}
-  only-template-col-defs
+  onlyTemplateColDefs
   {{/if}}
-  enable-row-flashing
-  enable-cell-flashing
+  enableRowFlashing
+  enableCellFlashing
   >
-  <grid-pro-genesis-datasource
-    resource-name="{{config.resourceName}}"
+  <GridProGenesisDatasource
+    resourceName="{{config.resourceName}}"
     {{#if config.snapshot}}
     isSnapshot="{{config.snapshot}}"
     {{/if}}
     {{#ifAny config.gridOptions config.eventing.publishEventName}}
     deferredGridOptions={gridOptions}
     {{/ifAny}}
-  ></grid-pro-genesis-datasource>
+  />
   {{#if config.gridOptions}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
-    <grid-pro-column key={index} definition={columnDef}></grid-pro-column>
+    <GridProColumn key={index} definition={columnDef} />
   ))}
   {{/if}}
-</rapid-grid-pro>
-{{#if config.permissions.viewRight~}} 
+</RapidGridPro>
+{{#if config.permissions.viewRight~}}
 ) : (
 <ErrorMessage elementType="h3" message="You do not have access to view this component." />
 )
