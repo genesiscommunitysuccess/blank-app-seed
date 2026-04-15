@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.10.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.9.1-prerelease.1...v5.10.0-prerelease.1) (2026-04-15)
+
+
+### Features
+
+* update react components and FUI version [FUI-2483](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2483) 304c654
+* update react components and FUI version [FUI-2483](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2483) (#555) 12aa503
+
+
+### Bug Fixes
+
+* remove hardcoded API_HOST env [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d6be00e
+* update version.json [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7f6d858
+
 ## [5.9.1-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.9.0...v5.9.1-prerelease.1) (2026-03-03)
 
 
