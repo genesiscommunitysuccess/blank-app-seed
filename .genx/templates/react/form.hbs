@@ -1,7 +1,7 @@
 {{#if config.permissions.updateRight~}}
 hasUserPermission('{{config.permissions.updateRight}}') ? (
 {{/if}}
-<FoundationForm
+<Form
   prefix="rapid"
   resourceName="{{config.resourceName}}"
   {{#if config.uischema}}
