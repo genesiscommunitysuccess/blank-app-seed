@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.1...v5.10.2) (2026-04-16)
+
+
+### Bug Fixes
+
+* correct import of chart components + strong typings [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 18d331b
+* correct import of chart components + strong typings [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#558) 6d19b3e
+* correct import of forms [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 390bfa4
+
 ## [5.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.0...v5.10.1) (2026-04-15)
 
 
