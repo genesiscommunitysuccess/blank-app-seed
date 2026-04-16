@@ -1,7 +1,7 @@
 {{#if config.permissions.viewRight~}}
 hasUserPermission('{{config.permissions.viewRight}}') ? (
 {{/if}}
-<RapidG2PlotChart
+<G2PlotChart
   type="{{ config.type }}"
   config={chartConfig}
 >
@@ -9,7 +9,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     resourceName="{{ config.resourceName }}"
     serverFields="{{ config.xField }} {{ config.yField }}"
   />
-</RapidG2PlotChart>
+</G2PlotChart>
 {{#if config.permissions.viewRight~}}
 ) : (
 <ErrorMessage elementType="h3" message="You do not have access to view this component." />
