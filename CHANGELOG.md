@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.2...v5.10.3) (2026-04-21)
+
+
+### Bug Fixes
+
+* add correct typescript dependency [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) da22334
+* add correct typescript dependency for React [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#559) 08a19f1
+
 ## [5.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.1...v5.10.2) (2026-04-16)
 
 
