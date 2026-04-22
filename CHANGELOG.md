@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.10.4-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.3...v5.10.4-prerelease.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#560) f956a18
+
 ## [5.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.2...v5.10.3) (2026-04-21)
 
 
