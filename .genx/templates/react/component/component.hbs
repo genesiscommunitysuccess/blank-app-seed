@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 {{#ifEquals tile.type 'entity-manager'}}
 import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 {{/ifEquals}}
@@ -55,8 +54,9 @@ import { actions } from '../../../store/store';
 import { useSelector } from 'react-redux';
 import { selectors } from '../../../store/store';
 {{/if}}
-import { layoutComponentsMap, LayoutComponentNames } from '../../../store/store';
-import { getElementByTagFromComponent } from '../../../utils/goldenLayout.helper';
+{{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
+import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
+{{/ifAny}}
 import './{{pascalCase tile.title}}Component.css';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
@@ -76,7 +76,11 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
   {{#if tile.config.eventing.publishEventName}}
   const handleRowSelection = (e: any) => {
+    {{#ifEquals tile.type 'entity-manager'}}
+    const selectedRows = e.detail.api.getSelectedRows();
+    {{else}}
     const selectedRows = e.api.getSelectedRows();
+    {{/ifEquals}}
     if (!selectedRows || !selectedRows.length) {
       actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(null);
       return;
@@ -100,8 +104,9 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{#if tile.config.columns}}
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];
   {{/if}}
+  {{#ifEquals tile.type 'grid-pro'}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
-  const gridOptions: { {{#if tile.config.gridOptions}}onRowClicked: GridOptionsConfig['onRowClicked'], {{/if}}{{#if tile.config.eventing.publishEventName}}onSelectionChanged: any, rowSelection: 'multiple' | 'single'{{/if}} } = {
+  const gridOptions: GridOptionsConfig = {
     {{#if tile.config.gridOptions}}
     onRowClicked: gridOptionsTile?.onRowClicked,
     {{/if}}
@@ -111,56 +116,28 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     {{/if}}
   }
   {{/ifAny}}
-  const datasourceConfig: { isSnapshot?: boolean, pollingInterval?: string, requestAutoSetup?: string, criteria?: string } = {
+  {{/ifEquals}}
+  {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
+  const datasourceConfig: DatasourceConfiguration = {
     {{#if tile.config.snapshot}}
     isSnapshot: {{ tile.config.snapshot }},
     {{/if}}
     {{#if tile.config.reqrep}}
-    pollingInterval: '5000',
-    requestAutoSetup: 'false',
+    pollingInterval: 5000,
+    requestAutoSetup: false,
     {{/if}}
     {{#if tile.config.eventing.listener}}
     criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
     {{/if}}
   }
-  {{#if tile.componentType}}
-  {{#ifEquals tile.componentType 'grid'}}
-  useEffect(() => {
-    const componentElement = layoutComponentsMap.get(LayoutComponentNames.{{constantCase tile.componentName}});
-    const componentDatasource = componentElement ? getElementByTagFromComponent(componentElement, 'grid-pro-genesis-datasource') : undefined;
-
-    if (componentDatasource) {
-      {{#if tile.config.eventing.listener}}
-      componentDatasource.criteria = datasourceConfig.criteria;
-      {{/if}}
-      {{#if tile.config.reqrep}}
-      componentDatasource.requestAutoSetup = datasourceConfig.requestAutoSetup;
-      componentDatasource.pollingInterval = datasourceConfig.pollingInterval;
-      {{/if}}
-    }
-  }, [datasourceConfig]);
-  {{/ifEquals}}
-  {{/if}}
-  {{#if tile.componentType}}
-  {{#ifEquals tile.componentType 'manager'}}
-  useEffect(() => {
-    const componentElement = layoutComponentsMap.get(LayoutComponentNames.{{constantCase tile.componentName}});
-    const componentDatasource = componentElement ? getElementByTagFromComponent(componentElement, 'entity-management') : undefined;
-
-    if (componentDatasource) {
-      componentDatasource.datasourceConfig = datasourceConfig;
-    }
-  }, [datasourceConfig]);
-  {{/ifEquals}}
-  {{/if}}
-
+  {{/ifAny}}
   {{#if tile.config.type}}
   const chartConfig: ChartConfig = {
     {{#ifEquals tile.config.type 'pie'}}
     radius: 0.75,
     angleField: 'value',
     colorField: 'groupBy',
-    {{else~}}
+    {{else}}
     xField: 'groupBy',
     yField: 'value',
     {{/ifEquals}}

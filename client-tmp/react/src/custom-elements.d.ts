@@ -8,9 +8,6 @@ declare module "react/jsx-runtime" {
       'rapid-design-system-provider': CustomElement;
       'client-app-login': CustomElement;
       'rapid-modal': CustomElement;
-      'rapid-layout': CustomElement;
-      'rapid-layout-region': CustomElement;
-      'rapid-layout-item': CustomElement;
       'foundation-header': CustomElement;
     }
   }

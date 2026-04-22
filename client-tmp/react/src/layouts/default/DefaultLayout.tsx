@@ -57,10 +57,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    return () => {};
-  }, []);
-
-  useEffect(() => {
     if (designSystemProviderRef.current) {
       configureDesignSystem(designSystemProviderRef.current, designTokens);
       registerStylesTarget(document.body, 'layout');
@@ -81,34 +77,36 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   const className = `${styles['default-layout']}`;
 
-  return connected ? (
+  return (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
-      <PBCElementsRenderer target={TARGET_LAYOUT_START} />
-      <foundation-header
+      {connected && (
+        <>
+          <PBCElementsRenderer target={TARGET_LAYOUT_START} />
+          <foundation-header
 {{#if headerLogoSrc}}
-        logo-src="{{headerLogoSrc}}"
+            logo-src="{{headerLogoSrc}}"
 {{/if}}
-        onluminance-icon-clicked={onLuminanceToggle}
-        logout={async () => {
-          await fetch(LOGOUT_URL);
-          window.location.reload();
-        }}
-        show-luminance-toggle-button
-        show-misc-toggle-button
-        routeNavItems={navItems}
-        navigateTo={(path: string) => navigate(path)}
-      >
-        <PBCElementsRenderer target={TARGET_HEADER_NAV} />
-      </foundation-header>
+            onluminance-icon-clicked={onLuminanceToggle}
+            logout={async () => {
+              await fetch(LOGOUT_URL);
+              window.location.reload();
+            }}
+            show-luminance-toggle-button
+            show-misc-toggle-button
+            routeNavItems={navItems}
+            navigateTo={(path: string) => navigate(path)}
+          >
+            <PBCElementsRenderer target={TARGET_HEADER_NAV} />
+          </foundation-header>
+        </>
+      )}
       <section className={styles['content']}>
-        <PBCElementsRenderer target={TARGET_CONTENT_START} />
+        {connected && <PBCElementsRenderer target={TARGET_CONTENT_START} />}
         <Outlet />
-        <PBCElementsRenderer target={TARGET_CONTENT} />
+        {connected && <PBCElementsRenderer target={TARGET_CONTENT} />}
       </section>
-      <PBCElementsRenderer target={TARGET_LAYOUT_END} />
+      {connected && <PBCElementsRenderer target={TARGET_LAYOUT_END} />}
     </rapid-design-system-provider>
-  ) : (
-    <div>Loading...</div>
   );
 };
 

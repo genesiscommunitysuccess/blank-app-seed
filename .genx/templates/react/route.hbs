@@ -1,27 +1,49 @@
-import './{{pascalCase route.name}}.css';
-import { persistLayout } from '../../utils';
-import { setComponentItemsMap } from '../../utils/goldenLayout.helper';
-import { LayoutComponentNames, layoutComponentsMap } from '../../store/store';
-import { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
+import { Layout, Model, TabNode } from 'flexlayout-react';
+import { getFlexLayoutStorageKey } from '../../utils/layout';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
+import './{{pascalCase route.name}}.css';
+
+const STORAGE_KEY = getFlexLayoutStorageKey('{{route.layoutKey}}');
+
+{{> (lookup ./route 'layoutType') }}
+
+const componentMap: Record<string, React.FC> = {
+  {{#each route.tiles}}
+  '{{camelCase this.componentName}}': {{pascalCase this.componentName}},
+  {{/each}}
+};
+
+function loadModel(): Model {
+  if (STORAGE_KEY) {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { return Model.fromJson(JSON.parse(saved)); } catch {}
+    }
+  }
+  return Model.fromJson(defaultLayout);
+}
 
 const {{pascalCase route.name}} = () => {
-  const layoutRef = useRef<any>(null);
+  const modelRef = useRef<Model>(loadModel());
 
-  useEffect(() => {
-    if (layoutRef.current) {
-      setComponentItemsMap(layoutRef.current, layoutComponentsMap);
+  const factory = (node: TabNode) => {
+    const Component = componentMap[node.getComponent() ?? ''];
+    return Component ? <Component /> : null;
+  };
+
+  const onModelChange = (model: Model) => {
+    if (STORAGE_KEY) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(model.toJson()));
     }
-  }, []);
+  };
 
   return (
     <section className="{{kebabCase route.name}}-page">
       {{#if route.tiles}}
-      <rapid-layout ref={layoutRef} auto-save-key={persistLayout('{{route.layoutKey}}')}>
-        {{> (lookup ./route 'layoutType') }}
-      </rapid-layout>
+      <Layout model={modelRef.current} factory={factory} onModelChange={onModelChange} />
       {{else}}
       Welcome to {{sentenceCase route.name}}
       {{/if}}
