@@ -63,6 +63,7 @@
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
     "@genesislcap/rapid-grid-tabulator": "{{versions.UI}}",
+    "@genesislcap/grid-pro": "{{versions.UI}}",
     "@genesislcap/grid-tabulator": "{{versions.UI}}",
     "@genesislcap/web-core": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
@@ -98,6 +99,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "5.9.2"
   }
 }

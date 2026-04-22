@@ -1,5 +1,54 @@
 # Changelog
 
+## [5.10.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.2...v5.10.3) (2026-04-21)
+
+
+### Bug Fixes
+
+* add correct typescript dependency [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) da22334
+* add correct typescript dependency for React [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#559) 08a19f1
+
+## [5.10.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.1...v5.10.2) (2026-04-16)
+
+
+### Bug Fixes
+
+* correct import of chart components + strong typings [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 18d331b
+* correct import of chart components + strong typings [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#558) 6d19b3e
+* correct import of forms [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 390bfa4
+
+## [5.10.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.0...v5.10.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* correct import of grid component [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 38170d1
+* correct import of grid component [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#557) 527d1fe
+
+## [5.10.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.9.0...v5.10.0) (2026-04-15)
+
+
+### Features
+
+* FUI update + react wrappers for components + API_HOST fix [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#556) 6277e5d
+* update react components and FUI version [FUI-2483](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2483) 304c654
+* update react components and FUI version [FUI-2483](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2483) (#555) 12aa503
+
+
+### Bug Fixes
+
+* remove hardcoded API_HOST env [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d6be00e
+* update version.json [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7f6d858
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a7768e9
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 35ef0e3
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c209644
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ffdb64
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 06349a7
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ab81158
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 5d23e91
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c2f38cb
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 968e0a3
+
 ## [5.10.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.9.1-prerelease.1...v5.10.0-prerelease.1) (2026-04-15)
 
 
