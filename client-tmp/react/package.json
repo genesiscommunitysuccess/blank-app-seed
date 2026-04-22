@@ -33,6 +33,7 @@
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive"
   },
+  "prettier": "@genesislcap/prettier-config",
   "dependencies": {
     "@microsoft/fast-react-wrapper": ">=0.3.25",
     "@ag-grid-community/client-side-row-model": "29.2.0",

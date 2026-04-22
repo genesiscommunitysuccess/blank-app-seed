@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
-import {
-  baseLayerLuminance,
-  StandardLuminance,
-} from '@microsoft/fast-components';
+import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
 import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '../../pbc/elementsRenderer';
 import { registerStylesTarget } from '../../pbc/utils';
 import * as designTokens from '../../styles/design-tokens.json';
 import { useRoutesContext } from '../../store/RoutesContext';
 import { useDocumentTitle } from '../../utils/useDocumentTitle';
-import { AUTH_PATH } from '../../config';
 import { LOGOUT_URL } from '@genesislcap/foundation-utils';
+import { DI } from '@genesislcap/web-core';
+import { Connect } from '@genesislcap/foundation-comms';
 import type { AppTargetId } from '@genesislcap/foundation-shell/app';
 
 // Stable target arrays so PBCElementsRenderer effect doesn't re-run on every parent re-render
@@ -29,16 +27,18 @@ type ExtendedRouteObject = RouteObject & {
     navItems?: any;
   };
   path: string;
-}
+};
 
 const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
   const routes = useRoutesContext() as ExtendedRouteObject[];
-  const navItems = getNavItems(routes.flatMap((route) => ({
-    path: route.path || '',
-    navItems: route.data?.navItems,
-  })));
+  const navItems = getNavItems(
+    routes.flatMap((route) => ({
+      path: route.path || '',
+      navItems: route.data?.navItems,
+    })),
+  );
 
   useDocumentTitle();
 
@@ -54,6 +54,12 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
     }
   };
 
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    return () => {};
+  }, []);
+
   useEffect(() => {
     if (designSystemProviderRef.current) {
       configureDesignSystem(designSystemProviderRef.current, designTokens);
@@ -62,13 +68,20 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
       registerStylesTarget(document.body, 'content');
     }
 
+    const connect = DI.getOrCreateDOMContainer().get(Connect);
+    setConnected(connect.isConnected);
+    const subscription = connect.isConnected$?.subscribe((isConnected: boolean) => {
+      setConnected(isConnected);
+    });
+
     return () => {
+      subscription?.unsubscribe();
     };
   }, []);
 
   const className = `${styles['default-layout']}`;
 
-  return (
+  return connected ? (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
       <PBCElementsRenderer target={TARGET_LAYOUT_START} />
       <foundation-header
@@ -78,7 +91,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         onluminance-icon-clicked={onLuminanceToggle}
         logout={async () => {
           await fetch(LOGOUT_URL);
-          window.location.reload()
+          window.location.reload();
         }}
         show-luminance-toggle-button
         show-misc-toggle-button
@@ -94,6 +107,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
       </section>
       <PBCElementsRenderer target={TARGET_LAYOUT_END} />
     </rapid-design-system-provider>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
