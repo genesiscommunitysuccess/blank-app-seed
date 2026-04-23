@@ -26,9 +26,7 @@ pids
 *.sln
 *.sw?
 .DS_Store
-.idea/gradle.xml
-.idea/misc.xml
-.idea/vcs.xml
+.idea
 
 # Development
 target/
