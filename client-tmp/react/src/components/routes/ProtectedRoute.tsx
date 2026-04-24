@@ -6,9 +6,11 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const location = useLocation();
+
   if (!getUser().isAuthenticated) {
-    const location = useLocation();
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    const loginState = { from: location };
+    return <Navigate to="/login" state={loginState} replace />;
   }
 
   return <>{children}</>;

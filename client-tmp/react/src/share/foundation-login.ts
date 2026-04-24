@@ -13,11 +13,16 @@ interface LocationState {
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = ({navigate, location}: { navigate: NavigateFunction, location: RouterLocation<LocationState>}) => {
+export const configureFoundationLogin = ({
+  navigate,
+  location,
+}: {
+  navigate: NavigateFunction;
+  location: RouterLocation<LocationState>;
+}) => {
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
   const connect = DI.getOrCreateDOMContainer().get(Connect);
-
 
   configure({
     name: 'client-app-login',
@@ -34,6 +39,5 @@ export const configureFoundationLogin = ({navigate, location}: { navigate: Navig
       const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
     },
-  })
-}
-
+  });
+};

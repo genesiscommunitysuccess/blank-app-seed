@@ -44,24 +44,18 @@ const aggregateFromRoutes = (routes = []) => {
           mappings: t.config.eventing.listener.mappings || [],
         }));
 
-      const routeLayoutComponents = (route.tiles || [])
-        .map((t) => ({
-          componentName: `${route.name}-${t.title.replace(/[^0-9a-z]/gi, '')}-${t.componentType}`,
-        }));
-
       acc.events = Array.from(new Set(acc.events.concat(routeEvents)));
       acc.listeners = acc.listeners.concat(routeListeners);
-      acc.layoutComponents = acc.layoutComponents.concat(routeLayoutComponents);
       return acc;
     },
-    { events: [], listeners: [], layoutComponents: [] },
+    { events: [], listeners: [] },
   );
 
   return aggregation;
 };
 
 const generateStore = (routesOrAggregation, { writeFileWithData }, framework) => {
-  const { events = [], listeners = [], layoutComponents = [] } = Array.isArray(routesOrAggregation)
+  const { events = [], listeners = [] } = Array.isArray(routesOrAggregation)
     ? aggregateFromRoutes(routesOrAggregation)
     : (routesOrAggregation || {});
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
@@ -79,7 +73,7 @@ const generateStore = (routesOrAggregation, { writeFileWithData }, framework) =>
   // Write store.ts
   writeFileWithData(
     storeTarget,
-    { events, listeners, layoutComponents },
+    { events, listeners },
     resolve(__dirname, storeTemplate),
   );
 

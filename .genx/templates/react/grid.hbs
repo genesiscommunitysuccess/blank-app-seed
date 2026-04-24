@@ -17,6 +17,13 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#ifAny config.gridOptions config.eventing.publishEventName}}
     deferredGridOptions={gridOptions}
     {{/ifAny}}
+    {{#if config.eventing.listener}}
+    criteria={datasourceConfig.criteria}
+    {{/if}}
+    {{#if config.reqrep}}
+    requestAutoSetup={datasourceConfig.requestAutoSetup}
+    pollingInterval={datasourceConfig.pollingInterval}
+    {{/if}}
   />
   {{#if config.gridOptions}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (

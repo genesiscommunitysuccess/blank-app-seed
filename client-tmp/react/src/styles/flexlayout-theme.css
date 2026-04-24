@@ -1,0 +1,102 @@
+/* Genesis design token overrides for flexlayout dark theme */
+.flexlayout__layout {
+  --color-text: var(--neutral-foreground-rest, #eeeeee);
+  --color-background: var(--neutral-layer-1, #141414);
+
+  /* Layered grays mapped to Genesis neutral layers */
+  --color-1: var(--neutral-layer-4, #1e1e1e);
+  --color-2: #252525;
+  --color-3: #2d2d2d;
+  --color-4: var(--neutral-stroke-rest, #3a3a3a);
+  --color-5: #484848;
+  --color-6: #555555;
+
+  /* Drag indicators use accent colour */
+  --color-drag1: var(--accent-fill-rest, #00bcd4);
+  --color-drag2: var(--accent-fill-rest, #00bcd4);
+  --color-drag1-background: rgba(0, 188, 212, 0.12);
+  --color-drag2-background: rgba(0, 188, 212, 0.08);
+
+  --font-size: 13px;
+
+  /* Tab bar / tabset */
+  --color-tabset-background: var(--neutral-layer-1, #141414);
+  --color-tabset-background-selected: var(--neutral-layer-1, #141414);
+  --color-tabset-background-maximized: var(--neutral-layer-4, #1e1e1e);
+  --color-tabset-divider-line: var(--neutral-stroke-rest, #3a3a3a);
+  --color-tabset-header-background: var(--neutral-layer-4, #1e1e1e);
+  --color-tabset-header: var(--neutral-foreground-rest, #eeeeee);
+
+  /* Active / inactive tabs */
+  --color-tab-content: var(--neutral-layer-1, #141414);
+  --color-tab-selected: var(--neutral-foreground-rest, #ffffff);
+  --color-tab-selected-background: var(--neutral-layer-1, #141414);
+  --color-tab-unselected: var(--neutral-foreground-rest, #a0a0a0);
+  --color-tab-unselected-background: transparent;
+
+  /* Splitters */
+  --color-splitter: var(--neutral-stroke-rest, #3a3a3a);
+  --color-splitter-hover: var(--accent-fill-rest, #00bcd4);
+  --color-splitter-drag: var(--accent-fill-rest, #00bcd4);
+
+  /* Drag-drop rectangle */
+  --color-drag-rect-border: var(--accent-fill-rest, rgba(0, 188, 212, 0.6));
+  --color-drag-rect-background: rgba(0, 0, 0, 0.45);
+  --color-drag-rect: var(--neutral-foreground-rest, #eeeeee);
+
+  /* Overflow / icon */
+  --color-overflow: var(--neutral-foreground-rest, #a0a0a0);
+  --color-icon: var(--neutral-foreground-rest, #a0a0a0);
+
+  /* Popup menu */
+  --color-popup-border: var(--neutral-stroke-rest, #3a3a3a);
+  --color-popup-unselected: var(--neutral-foreground-rest, #eeeeee);
+  --color-popup-unselected-background: var(--neutral-layer-4, #1e1e1e);
+  --color-popup-selected: var(--neutral-foreground-rest, #ffffff);
+  --color-popup-selected-background: var(--neutral-stroke-rest, #3a3a3a);
+
+  --color-toolbar-button-hover: var(--neutral-fill-stealth-active, rgba(255, 255, 255, 0.08));
+
+  --color-edge-marker: var(--accent-fill-rest, #00bcd4);
+  --color-edge-icon: var(--neutral-foreground-rest, #eeeeee);
+}
+
+/* Remove dark theme gradients — use flat Genesis layer colours */
+.flexlayout__tabset-selected {
+  background-image: none !important;
+}
+
+.flexlayout__tabset-maximized {
+  background-image: none !important;
+}
+
+/* Active tab: accent underline matching Genesis style */
+.flexlayout__tab_button--selected {
+  position: relative;
+  color: var(--neutral-foreground-rest, #ffffff) !important;
+  background-color: var(--neutral-layer-1, #141414) !important;
+}
+
+.flexlayout__tab_button--selected::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent-fill-rest, #00bcd4);
+  z-index: 10;
+}
+
+/* Inactive tab hover */
+.flexlayout__tab_button--unselected:hover {
+  color: var(--neutral-foreground-rest, #e0e0e0) !important;
+  background-color: var(--neutral-fill-stealth-active, rgba(255, 255, 255, 0.06)) !important;
+}
+
+/* Remove border-radius from dark theme tab overrides */
+.flexlayout__tab_top,
+.flexlayout__tab_bottom {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
