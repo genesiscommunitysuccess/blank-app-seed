@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
 import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
 import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
@@ -29,6 +29,15 @@ type ExtendedRouteObject = RouteObject & {
   path: string;
 };
 
+const connect = DI.getOrCreateDOMContainer().get(Connect);
+
+const subscribe = (onChange: () => void) => {
+  const sub = connect.isConnected$?.subscribe(() => onChange());
+  return () => sub?.unsubscribe();
+};
+
+const getSnapshot = () => connect.isConnected;
+
 const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
@@ -54,7 +63,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
     }
   };
 
-  const [connected, setConnected] = useState(false);
+  const connected = useSyncExternalStore(subscribe, getSnapshot);
 
   useEffect(() => {
     if (designSystemProviderRef.current) {
@@ -63,16 +72,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
       registerStylesTarget(document.body, 'header');
       registerStylesTarget(document.body, 'content');
     }
-
-    const connect = DI.getOrCreateDOMContainer().get(Connect);
-    setConnected(connect.isConnected);
-    const subscription = connect.isConnected$?.subscribe((isConnected: boolean) => {
-      setConnected(isConnected);
-    });
-
-    return () => {
-      subscription?.unsubscribe();
-    };
   }, []);
 
   const className = `${styles['default-layout']}`;
