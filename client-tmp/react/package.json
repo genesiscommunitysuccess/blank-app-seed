@@ -33,6 +33,7 @@
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive"
   },
+  "prettier": "@genesislcap/prettier-config",
   "dependencies": {
     "@microsoft/fast-react-wrapper": ">=0.3.25",
     "@ag-grid-community/client-side-row-model": "29.2.0",
@@ -67,6 +68,7 @@
     "@genesislcap/grid-tabulator": "{{versions.UI}}",
     "@genesislcap/web-core": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
+    "flexlayout-react": "^0.8.19",
     "change-case": "^4.1.2",
     "tabulator-tables": "6.3.1",
     "history": "^5.3.0",

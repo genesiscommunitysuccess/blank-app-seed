@@ -1,11 +1,10 @@
 import { isDev } from '@genesislcap/foundation-utils';
 import pkg from '../../package.json';
 
-// returning null disables caching
-// returning an id (as long as it's not null) enables caching
-export const persistLayout = (id: string) => {
+// Returns null to disable persistence in dev unless PERSIST_LAYOUT_IN_DEV=true
+export const getFlexLayoutStorageKey = (id: string): string | null => {
   if (isDev() && (pkg as any)?.config.PERSIST_LAYOUT_IN_DEV !== true) {
     return null;
   }
-  return id;
+  return `flexlayout_${id}`;
 };

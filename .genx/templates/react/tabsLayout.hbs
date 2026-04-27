@@ -1,7 +1,17 @@
-<rapid-layout-region type="tabs">
-  {{#each route.tiles}}
-  <rapid-layout-item title="{{this.title}}" registration={LayoutComponentNames["{{constantCase this.componentName}}"]}>
-    <{{pascalCase this.componentName}}></{{pascalCase this.componentName}}>
-  </rapid-layout-item>
-  {{/each}}
-</rapid-layout-region>
+const defaultLayout = {
+  global: { tabEnableClose: false },
+  layout: {
+    type: 'row',
+    children: [
+      {
+        type: 'tabset',
+        weight: 100,
+        children: [
+          {{#each route.tiles}}
+          { type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' },
+          {{/each}}
+        ],
+      },
+    ],
+  },
+};

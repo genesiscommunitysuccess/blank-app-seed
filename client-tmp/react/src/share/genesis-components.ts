@@ -1,4 +1,3 @@
-import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
@@ -41,7 +40,6 @@ export async function registerComponents() {
       }),
       rapidGridComponents,
       g2plotChartsComponents,
-      foundationLayoutComponents,
     );
 
   configureHeader({
