@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.11.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.4-prerelease.1...v5.11.0-prerelease.1) (2026-04-27)
+
+
+### Features
+
+* replace foundation-layout with flex-layout in React [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#561) 13a521f
+* replace foundation-layout with flex-layout in React templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9c13246
+* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 11096f0
+
+
+### Bug Fixes
+
+* hide close button in layout items [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 58dd5ec
+
 ## [5.10.4-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.3...v5.10.4-prerelease.1) (2026-04-22)
 
 
