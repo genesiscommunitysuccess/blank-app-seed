@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.11.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0-prerelease.1...v5.11.0-prerelease.2) (2026-04-28)
+
+
+### Features
+
+* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 13373e5
+* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#562) 9aa31ba
+
+
+### Bug Fixes
+
+* update slack notifications [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 19dd19a
+* update slack notifications [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#563) 8f51a0b
+
 ## [5.11.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.4-prerelease.1...v5.11.0-prerelease.1) (2026-04-27)
 
 
