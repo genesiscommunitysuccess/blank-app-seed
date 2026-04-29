@@ -6,6 +6,8 @@ import { registerPBCs } from './pbc/utils';
 import { createLogger } from '@genesislcap/foundation-logger';
 
 import './styles/styles.css'
+import 'flexlayout-react/style/dark.css'
+import './styles/flexlayout-theme.css'
 
 const logger = createLogger('main');
 

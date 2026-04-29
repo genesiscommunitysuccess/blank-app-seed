@@ -6,6 +6,9 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     prefix="rapid"
     enableRowFlashing
     enableCellFlashing
+    {{#ifAny config.snapshot config.reqrep config.eventing.listener}}
+    datasourceConfig={datasourceConfig}
+    {{/ifAny}}
     {{#if config.title~}}
     title="{{ config.title }}"
     {{/if}}
@@ -13,7 +16,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.createEvent~}}
     {{#if config.permissions.updateRight}}
     createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
-    {{else~}}
+    {{else}}
     createEvent="{{ config.createEvent }}"
     {{/if}}
     {{#if config.createFormUiSchema}}
@@ -23,7 +26,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.updateEvent~}}
     {{#if config.permissions.updateRight}}
     updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
-    {{else~}}
+    {{else}}
     updateEvent="{{ config.updateEvent }}"
     {{/if}}
     {{#if config.updateFormUiSchema}}
@@ -33,13 +36,16 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#if config.deleteEvent~}}
     {{#if config.permissions.updateRight}}
     deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
-    {{else~}}
+    {{else}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}
     {{/if}}
-    {{#ifAny config.gridOptions config.eventing.publishEventName}}
+    {{#if config.gridOptions}}
     gridOptions={gridOptions}
-    {{/ifAny}}
+    {{/if}}
+    {{#if config.eventing.publishEventName}}
+    onSelectionChanged={handleRowSelection}
+    {{/if}}
     {{#if config.columns}}
     columns={columnDefs}
     {{/if}}
