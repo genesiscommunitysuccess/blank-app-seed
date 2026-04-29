@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.11.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0-prerelease.2...v5.11.0-prerelease.3) (2026-04-29)
+
+
+### Bug Fixes
+
+* FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8a984be
+* GSF update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4ffdbe6
+* update GSF versions [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c771f3f
+* update GSF versions [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#564) def3ad3
+
 ## [5.11.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0-prerelease.1...v5.11.0-prerelease.2) (2026-04-28)
 
 
