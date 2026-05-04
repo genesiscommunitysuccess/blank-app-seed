@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
+import { AppErrorBoundary } from './components/error-boundary/ErrorBoundary'
 
 import { registerPBCs } from './pbc/utils';
 import { createLogger } from '@genesislcap/foundation-logger';
@@ -16,7 +17,9 @@ function bootstrapApp() {
   if (rootEelement) {
     ReactDOM.createRoot(rootEelement!).render(
       <React.StrictMode>
-        <App rootElement={rootEelement} />
+        <AppErrorBoundary>
+          <App rootElement={rootEelement} />
+        </AppErrorBoundary>
       </React.StrictMode>,
     )
   }
