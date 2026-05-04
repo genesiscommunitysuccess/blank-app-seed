@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Layout, Model, TabNode } from 'flexlayout-react';
 import { getFlexLayoutStorageKey } from '../../utils/layout';
+import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
@@ -31,7 +32,14 @@ const {{pascalCase route.name}} = () => {
 
   const factory = (node: TabNode) => {
     const Component = componentMap[node.getComponent() ?? ''];
-    return Component ? <Component /> : null;
+    return Component ? (
+      <TileErrorBoundary
+        title={node.getName() ?? node.getComponent() ?? ''}
+        tileRegistration={node.getComponent() ?? ''}
+      >
+        <Component />
+      </TileErrorBoundary>
+    ) : null;
   };
 
   const onModelChange = (model: Model) => {
