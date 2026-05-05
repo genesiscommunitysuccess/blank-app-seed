@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.12.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0...v5.12.0) (2026-05-05)
+
+
+### Features
+
+* add default error boundary for components [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0353f8d
+* add default error boundary for react apps [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#569) de91d5f
+* add default error boundary for React generated apps (#567) fd39752
+
+
+### Bug Fixes
+
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#568) 2ef601d
+
 ## [5.12.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0...v5.12.0-prerelease.1) (2026-05-05)
 
 
