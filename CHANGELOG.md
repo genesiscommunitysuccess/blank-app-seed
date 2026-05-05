@@ -1,28 +1,25 @@
 # Changelog
 
-## [5.11.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.10.3...v5.11.0) (2026-04-29)
+## [5.12.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0...v5.12.0-prerelease.1) (2026-05-05)
 
 
 ### Features
 
-* flexlayout + react wrappers + GSF/FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#566) ed36d1f
-* replace foundation-layout with flex-layout in React [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#561) 13a521f
-* replace foundation-layout with flex-layout in React templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 9c13246
-* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 13373e5
-* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 11096f0
-* update FUI version [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#562) 9aa31ba
+* add default error boundary for components [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0353f8d
+* add default error boundary for React generated apps (#567) fd39752
 
 
 ### Bug Fixes
 
-* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#560) f956a18
-* FUI update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 8a984be
-* GSF update [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4ffdbe6
-* hide close button in layout items [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 58dd5ec
-* update GSF versions [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) c771f3f
-* update GSF versions [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#564) def3ad3
-* update slack notifications [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 19dd19a
-* update slack notifications [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#563) 8f51a0b
+* backport main [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#568) 2ef601d
+
+## [5.11.0-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0-prerelease.3...v5.11.0-prerelease.4) (2026-05-04)
+
+
+### Features
+
+* add default error boundary for components [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0353f8d
+* add default error boundary for React generated apps (#567) fd39752
 
 ## [5.11.0-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0-prerelease.2...v5.11.0-prerelease.3) (2026-04-29)
 
