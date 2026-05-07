@@ -1,5 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { RouteObject, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import type { AppRoute } from '../types/AppRoute';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
@@ -49,7 +50,7 @@ const routes = [
   {{/each}}
 ];
 
-const RoutesContext = createContext<RouteObject[]>([]);
+const RoutesContext = createContext<AppRoute[]>([]);
 
 export const RoutesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const pbcRoutes = getApp().routes.map((route) => ({
