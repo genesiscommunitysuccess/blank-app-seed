@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.12.0-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.0-prerelease.1...v5.12.0-prerelease.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* **react:** resolve TypeScript errors in generated React app templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ab0903c
+* resolve TypeScript errors in generated React app templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#570) 5e3a583
+
 ## [5.12.0-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.11.0...v5.12.0-prerelease.1) (2026-05-05)
 
 
