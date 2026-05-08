@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from '../../pages/AuthPage/AuthPage';
+{{#if routes.[0]}}
 import {{pascalCase routes.[0].name}} from '../../pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';
+{{/if}}
 import DefaultLayout from '../../layouts/default/DefaultLayout';
 import ProtectedRoute from './ProtectedRoute';
 import { useRoutesContext } from '../../store/RoutesContext';

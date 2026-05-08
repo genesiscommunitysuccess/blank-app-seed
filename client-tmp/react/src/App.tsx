@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+{{#if FDC3.channels.length~}}
 import {
-  setApiHost,
-  {{#if FDC3.channels.length~}}
   listenToChannel,
   onFDC3Ready,
-  {{/if}}
 } from './utils';
+{{/if}}
 import { customEventFactory, registerStylesTarget } from './pbc/utils';
 import { RoutesProvider } from './store/RoutesContext';
 import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
@@ -41,7 +40,6 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   }, []);
   useEffect(() => {
     let mounted = true;
-    setApiHost();
     (async () => {
       await genesisRegisterComponents();
       if (mounted) {
