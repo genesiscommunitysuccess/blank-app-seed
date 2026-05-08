@@ -47,10 +47,10 @@ const formatRouteData = (framework, route) => {
       eventing,
     } = config;
 
-    const hasFormatter = (name, cols) =>
-      cols?.some((col) => col.valueFormatter?.name === name);
-    const hasFormatterInGridOpts = (name, opts) =>
-      hasFormatter(name, opts?.columns);
+    const hasFormatter = (name, colsOrOpts) => {
+      const cols = Array.isArray(colsOrOpts) ? colsOrOpts : colsOrOpts?.columns;
+      return cols?.some((col) => col.valueFormatter?.name === name);
+    };
 
     return {
       ...tile,
@@ -68,10 +68,10 @@ const formatRouteData = (framework, route) => {
         columns: gridColumnsSerializer(columns),
         hasNumberFormatter:
           hasFormatter('getNumberFormatter', columns) ||
-          hasFormatterInGridOpts('getNumberFormatter', gridOptions),
+          hasFormatter('getNumberFormatter', gridOptions),
         hasDateFormatter:
           hasFormatter('getDateFormatter', columns) ||
-          hasFormatterInGridOpts('getDateFormatter', gridOptions),
+          hasFormatter('getDateFormatter', gridOptions),
         customEvents: formatCustomEvents(customEvents),
         eventing: {
           publishEventName: eventing?.publishEventName || null,
