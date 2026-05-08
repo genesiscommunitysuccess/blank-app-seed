@@ -47,6 +47,11 @@ const formatRouteData = (framework, route) => {
       eventing,
     } = config;
 
+    const hasFormatter = (name, colsOrOpts) => {
+      const cols = Array.isArray(colsOrOpts) ? colsOrOpts : colsOrOpts?.columns;
+      return cols?.some((col) => col.valueFormatter?.name === name);
+    };
+
     return {
       ...tile,
       componentName,
@@ -61,6 +66,12 @@ const formatRouteData = (framework, route) => {
         filterFormUiSchema: formatJSONValue(filterFormUiSchema),
         uischema: formatJSONValue(uischema),
         columns: gridColumnsSerializer(columns),
+        hasNumberFormatter:
+          hasFormatter('getNumberFormatter', columns) ||
+          hasFormatter('getNumberFormatter', gridOptions),
+        hasDateFormatter:
+          hasFormatter('getDateFormatter', columns) ||
+          hasFormatter('getDateFormatter', gridOptions),
         customEvents: formatCustomEvents(customEvents),
         eventing: {
           publishEventName: eventing?.publishEventName || null,

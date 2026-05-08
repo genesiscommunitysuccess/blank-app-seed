@@ -1,4 +1,6 @@
+{{#if listeners.length}}
 import { CriteriaBuilder, ExpressionBuilder, Serialisers } from '@genesislcap/foundation-criteria';
+{{/if}}
 import { createSlice } from '@genesislcap/foundation-redux';
 
 export const eventingSlice = createSlice({
