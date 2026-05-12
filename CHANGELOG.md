@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.0...v5.13.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* apply datasource config only for entity-manager and grid-pro [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 67021b5
+* apply datasource config only for entity-manager and grid-pro [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#573) 5c541c5
+
 ## [5.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.0...v5.13.0) (2026-05-08)
 
 
