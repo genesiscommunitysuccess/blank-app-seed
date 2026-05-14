@@ -1,27 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 ext.set("localDaogenVersion", "{{localGenId}}")
 
 plugins {
     `maven-publish`
     id("global.genesis.genesis-start-gui")
+    kotlin("jvm")
 }
 
 subprojects {
     apply(plugin = "org.gradle.maven-publish")
     apply(plugin = "global.genesis.test")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
 
     dependencies {
         implementation("com.h2database:h2")
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    }
-    tasks {
-        withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            compilerOptions {
-                freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all", "-Xlambdas=indy")
-                jvmTarget = JvmTarget.JVM_17
-            }
-        }
+        testImplementation(kotlin("test-junit5"))
     }
 }
 
@@ -55,8 +51,12 @@ allprojects {
 
 
     kotlin {
-        jvmToolchain {
-            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        jvmToolchain(17)
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict")
+            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
+            jvmTarget.set(JvmTarget.JVM_17)
+            apiVersion.set(KotlinVersion.KOTLIN_2_3)
         }
     }
     tasks.withType<Jar> {
