@@ -37,9 +37,8 @@
     "dev:webpack": "genx dev -e API_HOST,ENABLE_SSO -b webpack",
     "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "git:setup": "cd .. && npx --yes husky install",
-    "lint": "genx lint --profile",
-    "lint:fix": "genx lint --fix",
-    "lint:eslint": "genx lint -l eslint --profile",
+    "lint": "genx lint -l ox",
+    "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "genx lint -l stylelint",
     "serve": "genx serve",
     "test": "genx test",
@@ -55,38 +54,41 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js}": [
-      "eslint"
+    "*.{ts,js,tsx,jsx}": [
+      "oxlint --fix",
+      "oxfmt --write"
+    ],
+    "*.{mjs,cjs}": [
+      "oxfmt --write"
     ],
     "*.styles.ts": [
-      "stylelint"
+      "stylelint --allow-empty-input"
     ]
-  },
-  "eslintConfig": {
-    "extends": "@genesislcap/eslint-config",
-    "ignorePatterns": ["**/dist/**", "**/public/**", "**/coverage/**", "**/test/**", "playwright.config.ts"]
   },
   "stylelint": {
     "extends": "@genesislcap/stylelint-config"
   },
-  "prettier": "@genesislcap/prettier-config",
   "devDependencies": {
     "@genesiscommunitysuccess/cep-fast-plugin": "5.0.3",
     "@genesiscommunitysuccess/custom-elements-lsp": "5.0.3",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
-    "@genesislcap/eslint-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
-    "@genesislcap/eslint-stylelint-builder": "{{versions.UI}}",
+    "@genesislcap/oxlint-config": "{{versions.UI}}",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import-x": "^4.16.0",
+    "eslint-plugin-perfectionist": "^5.0.0",
+    "eslint-plugin-unused-imports": "^4.0.0",
+    "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@genesislcap/uvu-playwright-builder": "{{versions.UI}}",
     "@genesislcap/vite-builder": "{{versions.UI}}",
     "@genesislcap/webpack-builder": "{{versions.UI}}",
-    "@genesislcap/prettier-config": "{{versions.UI}}",
-    "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@types/node": "20.11.5",
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
-    "lint-staged": "^12.4.1"
+    "lint-staged": "^12.4.1",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0"
   },
   "dependencies": {
     "@genesislcap/foundation-auth": "{{versions.UI}}",

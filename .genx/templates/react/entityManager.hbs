@@ -1,6 +1,3 @@
-{{#if config.permissions.viewRight~}}
-hasUserPermission('{{config.permissions.viewRight}}') ? (
-{{/if}}
 <>
   <EntityManagement
     prefix="rapid"
@@ -9,11 +6,11 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{#ifAny config.snapshot config.reqrep config.eventing.listener}}
     datasourceConfig={datasourceConfig}
     {{/ifAny}}
-    {{#if config.title~}}
+    {{#if config.title}}
     title="{{ config.title }}"
     {{/if}}
     resourceName="{{ config.resourceName }}"
-    {{#if config.createEvent~}}
+    {{#if config.createEvent}}
     {{#if config.permissions.updateRight}}
     createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
     {{else}}
@@ -23,7 +20,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     createFormUiSchema={createFormSchema}
     {{/if}}
     {{/if}}
-    {{#if config.updateEvent~}}
+    {{#if config.updateEvent}}
     {{#if config.permissions.updateRight}}
     updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
     {{else}}
@@ -33,7 +30,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     updateFormUiSchema={updateFormSchema}
     {{/if}}
     {{/if}}
-    {{#if config.deleteEvent~}}
+    {{#if config.deleteEvent}}
     {{#if config.permissions.updateRight}}
     deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
     {{else}}
@@ -41,7 +38,7 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{/if}}
     {{/if}}
     {{#if config.gridOptions}}
-    gridOptions={gridOptions}
+    gridOptions={gridOptionsTile}
     {{/if}}
     {{#if config.eventing.publishEventName}}
     onSelectionChanged={handleRowSelection}
@@ -72,8 +69,3 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     {{/if}}
   />
 </>
-{{#if config.permissions.viewRight~}}
-) : (
-<ErrorMessage elementType="h3" message="You do not have access to view this component." />
-)
-{{/if}}

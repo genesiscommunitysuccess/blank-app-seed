@@ -31,8 +31,7 @@ export const useDocumentTitle = () => {
     if (currentRoute) {
       if (currentRoute.title) {
         pageTitle = currentRoute.title;
-      }
-      else if (currentRoute.data?.navItems && currentRoute.data.navItems.length > 0) {
+      } else if (currentRoute.data?.navItems && currentRoute.data.navItems.length > 0) {
         pageTitle = currentRoute.data.navItems[0].title || 'React App';
       }
     }

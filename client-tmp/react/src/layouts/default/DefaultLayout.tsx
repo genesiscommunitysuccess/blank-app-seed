@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useSyncExternalStore } from 'react';
-import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
-import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
-import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
-import styles from './DefaultLayout.module.css';
-import PBCElementsRenderer from '../../pbc/elementsRenderer';
-import { registerStylesTarget } from '../../pbc/utils';
-import * as designTokens from '../../styles/design-tokens.json';
-import { useRoutesContext } from '../../store/RoutesContext';
-import { useDocumentTitle } from '../../utils/useDocumentTitle';
-import { LOGOUT_URL } from '@genesislcap/foundation-utils';
-import { DI } from '@genesislcap/web-core';
 import { Connect } from '@genesislcap/foundation-comms';
 import type { AppTargetId } from '@genesislcap/foundation-shell/app';
+import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
+import { LOGOUT_URL } from '@genesislcap/foundation-utils';
+import { DI } from '@genesislcap/web-core';
+import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
+import React, { useEffect, useRef, useSyncExternalStore } from 'react';
+import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
+import PBCElementsRenderer from '../../pbc/elementsRenderer';
+import { registerStylesTarget } from '../../pbc/utils';
+import { useRoutesContext } from '../../store/RoutesContext';
+import * as designTokens from '../../styles/design-tokens.json';
+import { useDocumentTitle } from '../../utils/useDocumentTitle';
+import styles from './DefaultLayout.module.css';
 
 // Stable target arrays so PBCElementsRenderer effect doesn't re-run on every parent re-render
 const TARGET_LAYOUT_START: AppTargetId = ['layout-start'];

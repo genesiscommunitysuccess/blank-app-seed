@@ -1,21 +1,20 @@
+{{#if tile.config.columns}}
+import { ColDef } from '@ag-grid-community/core';
+{{/if}}
 import { Connect } from '@genesislcap/foundation-comms';
 import { User } from '@genesislcap/foundation-user';
-import { customElement, GenesisElement, observable } from '@genesislcap/web-core';
-{{#if tile.config.gridOptions}}
-import { gridOptions as baseGridOptions } from './{{kebabCase tile.title}}.gridOptions';
-{{/if}}
+import { customElement, GenesisElement{{#if tile.config.columns}}, observable{{/if}} } from '@genesislcap/web-core';
 {{#if tile.config.eventing.publishEventName}}
 import { actions } from '../../../store/store';
 {{/if}}
 {{#if tile.config.eventing.listener}}
 import { selectors } from '../../../store/store';
 {{/if}}
-import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
-import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 {{#if tile.config.columns}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
-import { ColDef } from '@ag-grid-community/core';
 {{/if}}
+import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
+import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
@@ -36,9 +35,7 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
   @Connect connect!: Connect;
 
   {{#if tile.config.columns}}
-  @observable columns: ColDef[] = [
-    ...columnDefs,
-  ];
+  @observable columns: ColDef[] = [...columnDefs];
   {{/if}}
   {{#if tile.config.eventing.publishEventName}}
   public handleRowSelection = (e: any) => {

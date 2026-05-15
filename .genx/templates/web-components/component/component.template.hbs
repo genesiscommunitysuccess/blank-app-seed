@@ -1,4 +1,4 @@
-import { html, whenElse, repeat } from '@genesislcap/web-core';
+import { html, whenElse{{#if tile.config.columns}}, repeat{{/if}} } from '@genesislcap/web-core';
 import { getViewUpdateRightComponent } from '../../../utils';
 import type { {{pascalCase tile.componentName}} } from './{{kebabCase tile.title}}';
 {{#if tile.config.createFormUiSchema}}
@@ -7,20 +7,19 @@ import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema'
 {{#if tile.config.uischema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
-{{#if tile.config.updateFormUiSchema}}
-import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
+{{#if tile.config.customEvents}}
+import { customActions } from './{{kebabCase tile.title}}.events.config';
 {{/if}}
 {{#if tile.config.filterFormUiSchema}}
 import { filterFormSchema } from './{{kebabCase tile.title}}.filter.form.schema';
 {{/if}}
-{{#if tile.config.customEvents}}
-import { customActions } from './{{kebabCase tile.title}}.events.config';
-{{/if}}
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
-
+{{#if tile.config.updateFormUiSchema}}
+import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
+{{/if}}
 
 export const {{pascalCase tile.title}}Template = html<{{pascalCase tile.componentName}}>`
-    {{> (lookup tile 'type') tile}}
+  {{> (lookup tile 'type') tile}}
 `;

@@ -2,10 +2,10 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { configureDesignSystem, FoundationRouteNavItem } from '@genesislcap/foundation-ui';
 import { baseLayerLuminance, StandardLuminance } from '@genesislcap/web-core';
+import { registerStylesTarget } from '../../../pbc/utils';
 import * as designTokens from '../../../styles/design-tokens.json';
 import { RouteService } from '../../services/route.service';
 import BaseLayout from '../base.layout';
-import { registerStylesTarget } from '../../../pbc/utils';
 
 @Component({
   selector: 'app-default-layout',
@@ -29,7 +29,7 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
     configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
     registerStylesTarget(this.el.nativeElement, 'layout');
   }
-  
+
   navigateAngular = (path: string) => {
     this.router.navigate([path]);
   };
@@ -37,7 +37,7 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
   onLogout = () => {
     this.router.navigate(['/login']);
   };
-  
+
   onLuminanceToogle = (): void => {
     baseLayerLuminance.setValueFor(
       this.designSystemProviderElement.nativeElement,
