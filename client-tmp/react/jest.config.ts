@@ -8,8 +8,8 @@ const config: Config.InitialOptions = {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.app.json' }],
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testMatch: ["**/?(*.)+(test).[jt]s?(x)"],
-  watchPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/dist/"],
+  testMatch: ['**/?(*.)+(test).[jt]s?(x)'],
+  watchPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
 };
 
 export default config;

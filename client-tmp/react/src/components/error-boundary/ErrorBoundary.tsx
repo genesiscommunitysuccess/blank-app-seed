@@ -53,6 +53,7 @@ const toError = (value: unknown): Error => {
 
 const createReferenceId = (): string => {
   const timestamp = new Date().toISOString().split(':').join('-');
+  // oxlint-disable-next-line no-magic-numbers -- base-36 encoding with 6-char slice is a well-known ID generation pattern
   const random = Math.random().toString(36).slice(2, 8).toUpperCase();
   return `APP-${timestamp}-${random}`;
 };
@@ -68,6 +69,8 @@ const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
   const [copied, setCopied] = useState(false);
   const [copyHelpVisible, setCopyHelpVisible] = useState(false);
 
+  const COPY_RESET_DELAY_MS = 2_000;
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(details);
@@ -75,7 +78,7 @@ const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
       setCopyHelpVisible(false);
       window.setTimeout(() => {
         setCopied(false);
-      }, 2_000);
+      }, COPY_RESET_DELAY_MS);
     } catch {
       setCopyHelpVisible(true);
     }
@@ -181,9 +184,7 @@ class BaseErrorBoundary extends React.Component<BaseErrorBoundaryProps, BaseErro
     ].join('\n');
 
     const fallbackTitle =
-      scope === 'application'
-        ? 'Something went wrong'
-        : `Something went wrong in "${title}"`;
+      scope === 'application' ? 'Something went wrong' : `Something went wrong in "${title}"`;
     const fallbackSubtitle =
       scope === 'application'
         ? 'The app hit an unexpected error. You can retry or copy diagnostics for a fast fix.'

@@ -1,32 +1,57 @@
+{{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
+{{#ifContains 'entity-manager|grid-pro' tile.type}}
+import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+{{/ifAny}}
 {{#ifEquals tile.type 'entity-manager'}}
 import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 {{/ifEquals}}
-{{#ifEquals tile.type 'grid-pro'}}
-import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
-import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
-import { GridProCaseType } from '@genesislcap/grid-pro';
-{{/ifEquals}}
-{{#ifEquals tile.type 'smart-form'}}
-import { Form } from '@genesislcap/foundation-forms/react';
-{{/ifEquals}}
-{{#ifEquals tile.type 'chart'}}
-import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
-import { ChartConfig } from '@genesislcap/g2plot-chart';
-{{/ifEquals}}
-{{#if tile.config.permissions.viewRight~}}
-import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
-{{else if tile.config.permissions.updateRight~}}
-import { getUser } from '@genesislcap/foundation-user';
+{{#if tile.config.permissions.updateRight~}}
 {{#if tile.config.customEvents}}
 import { customEvent } from '@genesislcap/foundation-events';
 {{/if}}
-import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
+{{/if}}
+{{#ifEquals tile.type 'smart-form'}}
+import { Form } from '@genesislcap/foundation-forms/react';
+{{/ifEquals}}
+{{#if tile.config.permissions.viewRight~}}
+import { getUser } from '@genesislcap/foundation-user';
+{{else if tile.config.permissions.updateRight~}}
+import { getUser } from '@genesislcap/foundation-user';
+{{/if}}
+{{#ifEquals tile.type 'chart'}}
+import { ChartConfig } from '@genesislcap/g2plot-chart';
+import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'grid-pro'}}
+import { GridProCaseType } from '@genesislcap/grid-pro';
+import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
+{{#if tile.config.gridOptions~}}
+import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
+{{/if}}
+import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
+{{/ifEquals}}
+{{#if tile.config.eventing.listener}}
+import { useSelector } from 'react-redux';
+{{/if}}
+{{#if tile.config.permissions.viewRight~}}
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{else if tile.config.permissions.updateRight~}}
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 {{/if}}
-{{#if tile.config.customEvents}}
-import { customActions } from './{{pascalCase tile.title}}EventsConfig';
+{{#if tile.config.eventing.publishEventName}}
+import { actions } from '../../../store/store';
+{{/if}}
+{{#if tile.config.eventing.listener}}
+import { selectors } from '../../../store/store';
+{{/if}}
+{{#if tile.config.permissions.viewRight~}}
+import { getViewUpdateRightComponent } from '../../../utils';
+{{else if tile.config.permissions.updateRight~}}
+import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
+{{/if}}
+{{#if tile.config.columns~}}
+import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -34,31 +59,18 @@ import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.ti
 {{#if tile.config.uischema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
 {{/if}}
-{{#if tile.config.updateFormUiSchema~}}
-import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
+{{#if tile.config.customEvents}}
+import { customActions } from './{{pascalCase tile.title}}EventsConfig';
 {{/if}}
 {{#if tile.config.filterFormUiSchema~}}
 import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
 {{/if}}
-{{#if tile.config.columns~}}
-import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
-{{/if}}
 {{#if tile.config.gridOptions~}}
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
-{{#if tile.config.eventing.publishEventName}}
-import { actions } from '../../../store/store';
+{{#if tile.config.updateFormUiSchema~}}
+import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
 {{/if}}
-{{#if tile.config.eventing.listener}}
-import { useSelector } from 'react-redux';
-import { selectors } from '../../../store/store';
-{{/if}}
-{{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
-{{#ifContains 'entity-manager|grid-pro' tile.type}}
-import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
-{{/ifContains}}
-{{/ifAny}}
 import './{{pascalCase tile.title}}Component.css';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
@@ -69,12 +81,15 @@ import './{{pascalCase tile.title}}Component.css';
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
 {{/ifAny}}
-
 export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{#if tile.config.permissions.viewRight}}
-  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
-  {{else if tile.config.permissions.updateRight}}
-  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
+  const hasUserPermission = (permissionCode: string): string | boolean =>
+    getViewUpdateRightComponent(getUser(), permissionCode);
+  {{else}}
+  {{#if tile.config.permissions.updateRight}}
+  const hasUserPermission = (permissionCode: string): string | boolean =>
+    getViewUpdateRightComponent(getUser(), permissionCode);
+  {{/if}}
   {{/if}}
   {{#if tile.config.eventing.publishEventName}}
   const handleRowSelection = (e: any) => {
@@ -116,7 +131,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     onSelectionChanged: handleRowSelection,
     rowSelection: 'single',
     {{/if}}
-  }
+  };
   {{/ifAny}}
   {{/ifEquals}}
   {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
@@ -132,7 +147,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     {{#if tile.config.eventing.listener}}
     criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
     {{/if}}
-  }
+  };
   {{/ifContains}}
   {{/ifAny}}
   {{#if tile.config.type}}
@@ -147,8 +162,23 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     {{/ifEquals}}
   };
   {{/if}}
-
+  {{#if tile.config.permissions.viewRight}}
+  return hasUserPermission('{{tile.config.permissions.viewRight}}') ? (
+    {{> (lookup tile 'type') tile}}
+  ) : (
+    <ErrorMessage elementType="h3" message="You do not have access to view this component." />
+  );
+{{else}}
+{{#if tile.config.permissions.updateRight}}
+  return hasUserPermission('{{tile.config.permissions.updateRight}}') ? (
+    {{> (lookup tile 'type') tile}}
+  ) : (
+    <ErrorMessage elementType="h3" message="You do not have access to view this component." />
+  );
+{{else}}
   return (
     {{> (lookup tile 'type') tile}}
   );
+{{/if}}
+{{/if}}
 };
