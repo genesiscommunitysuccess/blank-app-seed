@@ -26,9 +26,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": [
-    "src" ,
-    "src/**/*.d.ts", 
-    "src/pbc/**/*.ts",
-  ],
+  "include": ["src", "src/**/*.d.ts", "src/pbc/**/*.ts"]
 }

@@ -1,7 +1,7 @@
+import { ElementRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { DefaultLayoutComponent } from './default.layout';
-import { ElementRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 class MockRouter {
   navigate = jest.fn();
@@ -22,9 +22,9 @@ describe('DefaultLayoutComponent', () => {
       declarations: [DefaultLayoutComponent],
       providers: [
         { provide: Router, useClass: MockRouter },
-        { provide: ElementRef, useClass: MockElementRef }
+        { provide: ElementRef, useClass: MockElementRef },
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 

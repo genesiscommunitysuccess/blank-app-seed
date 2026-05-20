@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotPermittedComponent } from './not-permitted.component';
 
-const MESSAGE_NOT_PERMITTED = 'You do not have permission to access this part of the application, please contact your administrator.';
+const MESSAGE_NOT_PERMITTED =
+  'You do not have permission to access this part of the application, please contact your administrator.';
 
 describe('NotPermittedComponent', () => {
   let component: NotPermittedComponent;
@@ -9,9 +10,8 @@ describe('NotPermittedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ NotPermittedComponent ]
-    })
-    .compileComponents();
+      imports: [NotPermittedComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
-import { Navigate, useLocation } from 'react-router-dom';
 import { getUser } from '@genesislcap/foundation-user';
+import { Navigate, useLocation } from 'react-router-dom';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

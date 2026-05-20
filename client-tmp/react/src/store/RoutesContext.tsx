@@ -1,7 +1,8 @@
+import { getApp } from '@genesislcap/foundation-shell/app';
+import * as changeCase from 'change-case';
 import React, { createContext, useContext, ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import type { AppRoute } from '../types/AppRoute';
-import { getApp } from '@genesislcap/foundation-shell/app';
+import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import NotPermittedPage from '../pages/NotPermittedPage/NotPermittedPage';
@@ -9,8 +10,7 @@ import NotPermittedPage from '../pages/NotPermittedPage/NotPermittedPage';
 import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
 import PBCContainer from '../pbc/container';
-import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
-import * as changeCase from 'change-case';
+import type { AppRoute } from '../types/AppRoute';
 
 const routes = [
   {

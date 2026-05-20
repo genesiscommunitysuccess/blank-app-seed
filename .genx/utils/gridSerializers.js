@@ -1,46 +1,52 @@
 const formatJSONValue = require('./formatJSONValue');
 
-function gridColumnsSerializer(columns, pad) {
-  if (!columns) {
-    return undefined;
-  }
+function gridColumnsSerializer(columns, indent = 0) {
+  if (!columns) return undefined;
 
   try {
-    const columnsSerialized = columns.map((column) => {
-      return gridOptionsSerializer(column, pad);
+    const pad = ' '.repeat(indent);
+    const itemPad = ' '.repeat(indent + 2);
+    const items = columns.map((column) => {
+      const fields = Object.entries(column)
+        .map(([k, v]) => {
+          if (v?.type === 'function' || v?.type === 'valueFormatter') {
+            const args = v.arguments?.map(JSON.stringify).join(', ');
+            return `${itemPad}  ${k}: ${v.name}(${args}),`;
+          }
+          if (k === 'hide') return `${itemPad}  ${k}: ${v},`;
+          return `${itemPad}  ${k}: ${formatJSONValue(v, indent + 4)},`;
+        })
+        .join('\n');
+      return `${itemPad}{\n${fields}\n${itemPad}}`;
     });
-    return `[${columnsSerialized}\n]`;
+    return `[\n${items.join(',\n')},\n${pad}]`;
   } catch (e) {
     console.error('Error serializing grid columns:', e.message);
     throw e;
   }
 }
 
-function gridOptionsSerializer(options, pad = '  ') {
-  if (!options) {
-    return undefined;
-  }
+function gridOptionsSerializer(options, indent = 0) {
+  if (!options) return undefined;
 
   try {
-    let output = `\n${pad}{\n`;
+    const pad = ' '.repeat(indent);
+    const itemPad = ' '.repeat(indent + 2);
+    let fields = '';
     Object.keys(options).forEach((key) => {
       const value = options[key];
       if (key === 'columns') {
-        output += `${pad}${pad}${'columnDefs'}: ${gridColumnsSerializer(value, '     ')},\n`;
-      } else if (
-        value?.type === 'function' ||
-        value?.type === 'valueFormatter'
-      ) {
+        fields += `${itemPad}columnDefs: ${gridColumnsSerializer(value, indent + 2)},\n`;
+      } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
         const args = value.arguments?.map(JSON.stringify).join(', ');
-        output += `${pad}${pad}${key}: ${value.name}(${args}),\n`;
+        fields += `${itemPad}${key}: ${value.name}(${args}),\n`;
       } else if (key === 'hide') {
-        output += `${pad}${pad}${key}: ${value},\n`;
+        fields += `${itemPad}${key}: ${value},\n`;
       } else {
-        output += `${pad}${pad}${key}: ${formatJSONValue(value)},\n`;
+        fields += `${itemPad}${key}: ${formatJSONValue(value, indent + 2)},\n`;
       }
     });
-    output += `${pad}}`;
-    return output;
+    return `{\n${fields}${pad}}`;
   } catch (e) {
     console.error('Error serializing grid options:', e.message);
     throw e;

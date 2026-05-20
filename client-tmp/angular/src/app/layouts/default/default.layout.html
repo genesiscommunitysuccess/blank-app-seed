@@ -1,9 +1,9 @@
 <rapid-design-system-provider #designSystemProvider>
   <pbc-elements-renderer [target]="['layout-start']"></pbc-elements-renderer>
   <foundation-header
-{{#if headerLogoSrc}}
+    {{#if headerLogoSrc~}}
     logo-src="assets/{{headerLogoSrc}}"
-{{/if}}
+    {{~/if}}
     #foundationHeader
     show-luminance-toggle-button
     show-misc-toggle-button
@@ -11,8 +11,7 @@
     (logout-clicked)="onLogout()"
     [navigateTo]="navigateAngular"
     [routeNavItems]="navItems"
-  >
-  </foundation-header>
+  ></foundation-header>
   <section class="content">
     <pbc-elements-renderer [target]="['content-start']"></pbc-elements-renderer>
     <router-outlet></router-outlet>

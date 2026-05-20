@@ -12,84 +12,84 @@ import { {{pascalCase this.name}}Component } from '../pages/{{kebabCase this.nam
 {{/each}}
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class RouteService {
-    static routes: Routes = [
-        {
-            path: '',
-            redirectTo: `${AUTH_PATH}`,
-            pathMatch: 'full',
-        },
-        {
-            path: `${AUTH_PATH}`,
-            component: AuthLoginComponent,
-        },
-        {
-            path: `${NOT_PERMITTED_PATH}`,
-            component: NotPermittedComponent,
-        },
-        {{#each routes}}
-        {
-            path: '{{kebabCase this.name}}',
-            canActivate: [ChainedGuard],
-            component: {{pascalCase this.name}}Component,
-            data: {
-                permissionCode: '{{this.permissions.viewRight}}',
-                navItems: [
-                    {
-                        navId: 'header',
-                        title: '{{#if this.title}}{{sentenceCase this.title}}{{else}}{{sentenceCase this.name}}{{/if}}',
-                        icon: {
-                            name: '{{this.icon}}',
-                            variant: 'solid',
-                        },
-                    },
-                ],
+  static routes: Routes = [
+    {
+      path: '',
+      redirectTo: `${AUTH_PATH}`,
+      pathMatch: 'full',
+    },
+    {
+      path: `${AUTH_PATH}`,
+      component: AuthLoginComponent,
+    },
+    {
+      path: `${NOT_PERMITTED_PATH}`,
+      component: NotPermittedComponent,
+    },
+    {{#each routes}}
+    {
+      path: '{{kebabCase this.name}}',
+      canActivate: [ChainedGuard],
+      component: {{pascalCase this.name}}Component,
+      data: {
+        permissionCode: '{{this.permissions.viewRight}}',
+        navItems: [
+          {
+            navId: 'header',
+            title: '{{#if this.title}}{{sentenceCase this.title}}{{else}}{{sentenceCase this.name}}{{/if}}',
+            icon: {
+              name: '{{this.icon}}',
+              variant: 'solid',
             },
+          },
+        ],
+      },
+    },
+    {{/each}}
+  ];
+
+  /**
+   * @privateRemarks
+   * The shell has access to context, so it's possible for it to return a pre-mapped framework variant of routes.
+   * In this iteration we're doing it inline, given the angular version may move and here we know the shape we need.
+   */
+  pbcRoutes(): Routes {
+    return getApp().routes.map((route) => {
+      return <Route>{
+        title: route.title,
+        path: route.path,
+        /**
+         * Ask about permissions.viewRight in PBC context, as we may need to apply a data.permissionCode here.
+         * Not sure if they are added to the filesystem prior to handlebars template processing across the files.
+         */
+        canActivate: [ChainedGuard],
+        component: PBCContainer,
+        data: {
+          ...route.settings,
+          pbcElement: route.element,
+          // @ts-ignore
+          pbcElementTag: route.elementTag,
+          navItems: route.navItems,
         },
-        {{/each}}
-    ];
+      };
+    });
+  }
 
-    /**
-     * @privateRemarks
-     * The shell has access to context, so it's possible for it to return a pre-mapped framework variant of routes. 
-     * In this iteration we're doing it inline, given the angular version may move and here we know the shape we need.
-     */
-    pbcRoutes(): Routes {
-        return getApp().routes.map((route) => {
-            return <Route>{
-                title: route.title,
-                path: route.path,
-                /**
-                 * Ask about permissions.viewRight in PBC context, as we may need to apply a data.permissionCode here.
-                 * Not sure if they are added to the filesystem prior to handlebars template processing across the files.
-                 */
-                canActivate: [ChainedGuard],
-                component: PBCContainer,
-                data: {
-                    ...route.settings,
-                    pbcElement: route.element,
-                    // @ts-ignore
-                    pbcElementTag: route.elementTag,
-                    navItems: route.navItems
-                },
-            };
-        })
-    }
+  allRoutes(): Routes {
+    return [...RouteService.routes, ...this.pbcRoutes()];
+  }
 
-    allRoutes(): Routes {
-        return [
-            ...RouteService.routes,
-            ...this.pbcRoutes(),
-        ];
-    }
-
-    getNavItems(): FoundationRouteNavItem[] {
-        const allNavItems = this.allRoutes().flatMap(route => (<FoundationRoute>{
-            path: route.path as string,
-            navItems: route.data?.['navItems'],
-        }));
-        return getNavItems(allNavItems);
-    }
+  getNavItems(): FoundationRouteNavItem[] {
+    const allNavItems = this.allRoutes().flatMap(
+      (route) =>
+        <FoundationRoute>{
+          path: route.path as string,
+          navItems: route.data?.['navItems'],
+        },
+    );
+    return getNavItems(allNavItems);
+  }
 }
