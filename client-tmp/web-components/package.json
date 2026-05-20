@@ -75,10 +75,6 @@
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
     "@genesislcap/oxlint-config": "{{versions.UI}}",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-import-x": "^4.16.0",
-    "eslint-plugin-perfectionist": "^5.0.0",
-    "eslint-plugin-unused-imports": "^4.0.0",
     "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@genesislcap/uvu-playwright-builder": "{{versions.UI}}",
     "@genesislcap/vite-builder": "{{versions.UI}}",
@@ -87,8 +83,6 @@
     "husky": "^7.0.4",
     "lint-prepush": "^2.2.1",
     "lint-staged": "^12.4.1",
-    "oxfmt": "^0.44.0",
-    "oxlint": "^1.59.0"
   },
   "dependencies": {
     "@genesislcap/foundation-auth": "{{versions.UI}}",
