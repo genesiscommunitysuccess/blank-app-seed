@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.13.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.1...v5.13.2) (2026-05-25)
+
+
+### Bug Fixes
+
+* intelligently pick the best mode based on available space [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#576) efe51d3
+* intelligently picks the best mode based on available space [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b08f84
+
 ## [5.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.0...v5.13.1) (2026-05-12)
 
 
