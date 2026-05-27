@@ -1,0 +1,180 @@
+[
+  {
+    "name": "Dashboard",
+    "icon": "chart-bar",
+    "tiles": [
+      {
+        "title": "Positions",
+        "type": "entity-manager",
+        "config": {
+          "resourceName": "ALL_POSITIONS",
+          "title": "Positions",
+          "entityName": "Position",
+          "createEvent": "EVENT_POSITION_INSERT",
+          "updateEvent": "EVENT_POSITION_MODIFY",
+          "deleteEvent": "EVENT_POSITION_DELETE",
+          "enableSearchBar": true,
+          "enableFilters": true,
+          "sizeColumnsToFit": true,
+          "modalPosition": "right",
+          "permissions": { "viewRight": "ViewPosition", "updateRight": "TradePosition" },
+          "eventing": { "publishEventName": "selectedPosition" },
+          "columns": [
+            { "field": "INSTRUMENT_ID", "headerName": "Instrument", "type": "string" },
+            { "field": "VALUE", "headerName": "Value", "type": "number" },
+            { "field": "LAST_UPDATED", "headerName": "Updated", "type": "date" }
+          ],
+          "createFormUiSchema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/INSTRUMENT_ID" }] },
+          "updateFormUiSchema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/INSTRUMENT_ID" }] },
+          "filterFormUiSchema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/INSTRUMENT_ID" }] },
+          "customEvents": [
+            {
+              "name": "EVENT_POSITION_CLOSE",
+              "baseEvent": "POSITION_CLOSE",
+              "icon": "times",
+              "tooltip": "Close Position",
+              "position": "after-update",
+              "confirmSubmit": true,
+              "hasForm": true,
+              "uischema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/REASON" }] }
+            }
+          ],
+          "gridOptions": {
+            "onRowClicked": { "category": "fdc3", "channelName": "positions", "type": "position" }
+          }
+        }
+      },
+      {
+        "title": "Trades",
+        "type": "grid-pro",
+        "config": {
+          "resourceName": "ALL_TRADES",
+          "permissions": { "viewRight": "ViewTrade" },
+          "eventing": {
+            "listener": {
+              "eventName": "selectedPosition",
+              "mappings": [
+                { "sourceField": "INSTRUMENT_ID", "targetField": "INSTRUMENT_ID" }
+              ]
+            }
+          },
+          "gridOptions": {
+            "columns": [
+              { "field": "TRADE_ID", "headerName": "Trade ID" },
+              { "field": "QUANTITY", "headerName": "Qty", "type": "number" }
+            ],
+            "rowSelection": "single"
+          }
+        }
+      },
+      {
+        "title": "P&L Chart",
+        "type": "chart",
+        "config": {
+          "resourceName": "ALL_POSITIONS",
+          "type": "line",
+          "xField": "INSTRUMENT_ID",
+          "yField": "VALUE",
+          "permissions": { "viewRight": "ViewPosition" }
+        }
+      },
+      {
+        "title": "Allocation",
+        "type": "chart",
+        "config": {
+          "resourceName": "ALL_POSITIONS",
+          "type": "pie",
+          "xField": "INSTRUMENT_ID",
+          "yField": "VALUE"
+        }
+      },
+      {
+        "title": "New Trade",
+        "type": "smart-form",
+        "config": {
+          "resourceName": "ALL_TRADES",
+          "createEvent": "EVENT_TRADE_INSERT",
+          "permissions": { "updateRight": "TradePosition" },
+          "uischema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/INSTRUMENT_ID" }, { "type": "Control", "scope": "#/properties/QUANTITY" }] }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Analytics",
+    "icon": "chart-pie",
+    "tiles": [
+      {
+        "title": "Historical Positions",
+        "type": "entity-manager",
+        "config": {
+          "resourceName": "HISTORICAL_POSITIONS",
+          "title": "Historical Positions",
+          "reqrep": true,
+          "snapshot": true,
+          "columns": [
+            { "field": "INSTRUMENT_ID", "headerName": "Instrument" },
+            { "field": "VALUE", "headerName": "Value", "type": "number" }
+          ]
+        }
+      },
+      {
+        "title": "Risk Grid",
+        "type": "grid-pro",
+        "config": {
+          "resourceName": "ALL_RISK",
+          "reqrep": true,
+          "gridOptions": {
+            "useOnlyTemplateCols": true,
+            "columns": [{ "field": "RISK_VALUE", "headerName": "Risk" }]
+          }
+        }
+      },
+      {
+        "title": "Instrument Chart",
+        "type": "chart",
+        "config": {
+          "resourceName": "ALL_INSTRUMENTS",
+          "type": "bar",
+          "xField": "INSTRUMENT_ID",
+          "yField": "QUANTITY"
+        }
+      },
+      {
+        "title": "Instrument Form",
+        "type": "smart-form",
+        "config": {
+          "resourceName": "ALL_INSTRUMENTS",
+          "createEvent": "EVENT_INSTRUMENT_INSERT",
+          "uischema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/INSTRUMENT_ID" }, { "type": "Control", "scope": "#/properties/QUANTITY" }] }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Settings",
+    "icon": "cog",
+    "tiles": [
+      {
+        "title": "Users",
+        "type": "entity-manager",
+        "config": {
+          "resourceName": "ALL_USERS",
+          "title": "Users",
+          "createEvent": "EVENT_USER_INSERT",
+          "updateEvent": "EVENT_USER_MODIFY",
+          "deleteEvent": "EVENT_USER_DELETE"
+        }
+      },
+      {
+        "title": "User Form",
+        "type": "smart-form",
+        "config": {
+          "resourceName": "ALL_USERS",
+          "createEvent": "EVENT_USER_INSERT",
+          "uischema": { "type": "VerticalLayout", "elements": [{ "type": "Control", "scope": "#/properties/USER_NAME" }, { "type": "Control", "scope": "#/properties/EMAIL" }] }
+        }
+      }
+    ]
+  }
+]
