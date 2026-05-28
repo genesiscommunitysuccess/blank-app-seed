@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": false,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -27,8 +25,8 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src" ,
-    "src/**/*.d.ts", 
+    "src/**/*",
+    "src/**/*.d.ts",
     "src/pbc/**/*.ts",
   ],
 }
