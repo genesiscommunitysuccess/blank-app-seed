@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route{{#if routes.[0]}}, Navigate{{/if}} } from 'react-router-dom';
 import AuthPage from '../../pages/AuthPage/AuthPage';
 {{#if routes.[0]}}
 import {{pascalCase routes.[0].name}} from '../../pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';

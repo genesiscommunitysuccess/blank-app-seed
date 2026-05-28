@@ -1,3 +1,4 @@
+{{#if route.tiles}}
 import React, { useRef } from 'react';
 import { Layout, Model, TabNode } from 'flexlayout-react';
 import { getFlexLayoutStorageKey } from '../../utils/layout';
@@ -5,8 +6,10 @@ import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
+{{/if}}
 import './{{pascalCase route.name}}.css';
 
+{{#if route.tiles}}
 const STORAGE_KEY = getFlexLayoutStorageKey('{{route.layoutKey}}');
 
 {{> (lookup ./route 'layoutType') }}
@@ -26,8 +29,10 @@ function loadModel(): Model {
   }
   return Model.fromJson(defaultLayout);
 }
+{{/if}}
 
 const {{pascalCase route.name}} = () => {
+  {{#if route.tiles}}
   const modelRef = useRef<Model>(loadModel());
 
   const factory = (node: TabNode) => {
@@ -47,6 +52,7 @@ const {{pascalCase route.name}} = () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(model.toJson()));
     }
   };
+  {{/if}}
 
   return (
     <section className="{{kebabCase route.name}}-page">
