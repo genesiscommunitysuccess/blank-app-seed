@@ -14,9 +14,13 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<AuthPage />} />
+      {{#if routes.[0]}}
       <Route path="/" element={<Navigate to="/{{kebabCase routes.[0].name}}" replace />} />
+      {{/if}}
       <Route element={<DefaultLayout />}>
+        {{#if routes.[0]}}
         <Route path="/" element={<{{pascalCase routes.[0].name}} />} />
+        {{/if}}
         {routes.map(route => (<Route
             key={route.path}
             path={route.path}
