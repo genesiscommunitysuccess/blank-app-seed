@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.13.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.2...v5.13.3) (2026-05-28)
+
+
+### Bug Fixes
+
+* drop composite/tsBuildInfoFile + explicit src glob in react tsconfig bced9bc
+* gracefully handle no routes in react template GENC-0 c961415
+* small tweaks for react setup GENC-0 (#578) 03c9272
+
 ## [5.13.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.1...v5.13.2) (2026-05-25)
 
 
