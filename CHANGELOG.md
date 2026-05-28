@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.13.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.3...v5.13.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* guard Navigate import in AppRoutes when no routes are defined GENC-0 84d5b33
+* guard tile-only declarations in route template GENC-0 de6efd9
+* more react template guards for empty routes/tiles GENC-0 (#579) c88d1a5
+
 ## [5.13.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.2...v5.13.3) (2026-05-28)
 
 
