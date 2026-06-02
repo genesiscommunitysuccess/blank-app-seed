@@ -1,4 +1,4 @@
-const { rmSync, renameSync } = require('node:fs');
+const { existsSync, rmSync, renameSync } = require('node:fs');
 const path = require('path');
 const {
   FRAMEWORKS_DIR_MAP,
@@ -13,7 +13,7 @@ const dirClientTemp = path.join(
 );
 
 const getDirClientTemp = (frameworkName) => {
-  return `${dirClientTemp}/${FRAMEWORKS_DIR_MAP.get(frameworkName)}`;
+  return path.join(dirClientTemp, FRAMEWORKS_DIR_MAP.get(frameworkName));
 };
 
 const excludeFrameworks = (selectedFramework) => {
@@ -21,7 +21,13 @@ const excludeFrameworks = (selectedFramework) => {
     __dirname,
     `../../${DIRS_MAP.get(DIR_CLIENT_MAIN_ALIAS)}`,
   );
-  renameSync(getDirClientTemp(selectedFramework), mainClientDirPath);
+  const selectedFrameworkPath = getDirClientTemp(selectedFramework);
+
+  if (existsSync(mainClientDirPath)) {
+    rmSync(mainClientDirPath, { recursive: true, force: true });
+  }
+
+  renameSync(selectedFrameworkPath, mainClientDirPath);
 
   rmSync(dirClientTemp, { recursive: true, force: true });
 };
