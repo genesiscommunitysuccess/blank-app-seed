@@ -152,6 +152,11 @@ class BaseErrorBoundary extends React.Component<BaseErrorBoundaryProps, BaseErro
       error: normalized,
       componentStack: errorInfo.componentStack,
     });
+
+    // Expose to genesis-telemetry.js so the UI Builder agent can read it via get_preview_diagnostics
+    const reports: unknown[] = ((window as any).__GENESIS_ERROR_BOUNDARY_REPORTS__ ??= []);
+    reports.push({ message: normalized.message, stack: normalized.stack ?? null, componentStack: errorInfo.componentStack ?? null, ts: Date.now() });
+    if (reports.length > 20) reports.shift();
   }
 
   private readonly handleRetry = (): void => {
