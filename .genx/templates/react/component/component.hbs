@@ -44,7 +44,7 @@ import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.ti
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
 {{#if tile.config.gridOptions~}}
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
+import { GridOptions } from '@ag-grid-community/core';
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
 {{#if tile.config.eventing.publishEventName}}
@@ -108,7 +108,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
   {{#ifEquals tile.type 'grid-pro'}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
-  const gridOptions: GridOptionsConfig = {
+  const gridOptions: GridOptions = {
     {{#if tile.config.gridOptions}}
     onRowClicked: gridOptionsTile?.onRowClicked,
     {{/if}}

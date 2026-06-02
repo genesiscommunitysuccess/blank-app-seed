@@ -6,8 +6,7 @@ import { FoundationRouter } from '@genesislcap/foundation-ui';
 import * as zeroDesignSystem from '@genesislcap/foundation-zero';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
-import { rapidGridComponents, rapidGridPro, rapidGridProStyles } from '@genesislcap/rapid-grid-pro';
-import { css } from '@genesislcap/web-core';
+import { rapidGridComponents, rapidGridProBeta } from '@genesislcap/rapid-grid-pro';
 import { NotPermittedComponent } from './not-permitted-component';
 
 /**
@@ -35,16 +34,7 @@ export async function registerComponents() {
 
   rapidDesignSystem.provideDesignSystem().register(
     rapidDesignSystem.baseComponents,
-    rapidGridPro({
-      styles: css`
-        ${rapidGridProStyles}
-        .ag-theme-genesis-rapid,
-        .ag-theme-genesis-rapid-dark,
-        .ag-theme-genesis-rapid-light {
-          --ag-selected-row-background-color: var(--accent-fill-rest);
-        }
-      `,
-    }),
+    rapidGridProBeta(),
     rapidGridComponents,
     g2plotChartsComponents,
     foundationLayoutComponents,
