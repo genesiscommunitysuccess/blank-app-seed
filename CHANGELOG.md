@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.14.0...v5.15.0) (2026-06-03)
+
+
+### Features
+
+* report error boundary failures to genesis-telemetry GENC-1272 b7f2ded
+* report error boundary failures to genesis-telemetry GENC-1272 (#582) 3eb3588
+
 ## [5.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.5...v5.14.0) (2026-06-03)
 
 
