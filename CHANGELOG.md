@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.15.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.0...v5.15.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* fix Windows compatibility issues during genx init [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 565690c
+* Windows compatibility and path handling during init [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#584) 9068086
+
 ## [5.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.14.0...v5.15.0) (2026-06-03)
 
 
