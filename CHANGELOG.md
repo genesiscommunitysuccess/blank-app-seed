@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.5...v5.14.0) (2026-06-03)
+
+
+### Features
+
+* bump UI to use ag grid 35 GENC-1288 e10d73b
+* bump UI to use ag grid 35 GENC-1288 (#583) 375a74f
+
 ## [5.13.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.4...v5.13.5) (2026-06-02)
 
 
