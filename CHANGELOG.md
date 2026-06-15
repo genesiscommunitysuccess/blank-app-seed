@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.2...v5.16.0) (2026-06-15)
+
+
+### Features
+
+* include PBC UI packages in the React seed GENC-0 777ea97
+* include PBC UI packages in the React seed GENC-0 (#586) aa5eb38
+
 ## [5.15.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.1...v5.15.2) (2026-06-09)
 
 
