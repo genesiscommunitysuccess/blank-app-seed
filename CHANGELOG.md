@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.0...v5.16.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* disable flexlayout render-on-demand to prevent duplicate tile mounts GENC-0 e7454dd
+* disable flexlayout render-on-demand to prevent duplicate tile mounts GENC-0 (#587) 74c5357
+
 ## [5.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.2...v5.16.0) (2026-06-15)
 
 
