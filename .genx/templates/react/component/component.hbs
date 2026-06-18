@@ -44,7 +44,7 @@ import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.ti
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
 {{#if tile.config.gridOptions~}}
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
+import { GridOptions } from '@ag-grid-community/core';
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
 {{#if tile.config.eventing.publishEventName}}
@@ -55,7 +55,9 @@ import { useSelector } from 'react-redux';
 import { selectors } from '../../../store/store';
 {{/if}}
 {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
+{{#ifContains 'entity-manager|grid-pro' tile.type}}
 import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
 {{/ifAny}}
 import './{{pascalCase tile.title}}Component.css';
 
@@ -106,7 +108,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/if}}
   {{#ifEquals tile.type 'grid-pro'}}
   {{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
-  const gridOptions: GridOptionsConfig = {
+  const gridOptions: GridOptions = {
     {{#if tile.config.gridOptions}}
     onRowClicked: gridOptionsTile?.onRowClicked,
     {{/if}}
@@ -118,6 +120,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/ifAny}}
   {{/ifEquals}}
   {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
+  {{#ifContains 'entity-manager|grid-pro' tile.type}}
   const datasourceConfig: DatasourceConfiguration = {
     {{#if tile.config.snapshot}}
     isSnapshot: {{ tile.config.snapshot }},
@@ -130,6 +133,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
     {{/if}}
   }
+  {{/ifContains}}
   {{/ifAny}}
   {{#if tile.config.type}}
   const chartConfig: ChartConfig = {

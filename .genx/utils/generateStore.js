@@ -1,4 +1,4 @@
-const { resolve } = require('node:path');
+const { dirname, join, resolve } = require('node:path');
 const makeDirectory = require('./makeDirectory');
 const {
   FRAMEWORK_WEB_COMPONENTS_ALIAS,
@@ -68,7 +68,7 @@ const generateStore = (routesOrAggregation, { writeFileWithData }, framework) =>
   const storeTarget = resolve(__dirname, storeTargetRelative);
 
   // Ensure target directories exist
-  makeDirectory(resolve(__dirname, storeTarget.replace(/\/store\.ts$/, '')));
+  makeDirectory(dirname(storeTarget));
 
   // Write store.ts
   writeFileWithData(
@@ -78,8 +78,8 @@ const generateStore = (routesOrAggregation, { writeFileWithData }, framework) =>
   );
 
   // Write slices/eventing.slice.ts next to store for all frameworks
-  const sliceTarget = storeTarget.replace(/store\.ts$/, 'slices/eventing.slice.ts');
-  makeDirectory(resolve(__dirname, sliceTarget.replace(/\/slices\/eventing\.slice\.ts$/, '/slices')));
+  const sliceTarget = join(dirname(storeTarget), 'slices', 'eventing.slice.ts');
+  makeDirectory(dirname(sliceTarget));
   writeFileWithData(
     sliceTarget,
     { events, listeners },
