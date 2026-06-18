@@ -5,6 +5,7 @@ dependencies {
     testImplementation(genesis("dbtest"))
     testImplementation(genesis("testsupport"))
     testImplementation(genesis("pal-eventhandler"))
+    testImplementation(genesis("pal-consolidator"))
 }
 
 description = "{{appName}}-app"
