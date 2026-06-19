@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.16.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.1...v5.16.2-prerelease.1) (2026-06-19)
+
+
+### Bug Fixes
+
+* merge main into prerelease GENC-1362 (#589) c7eed71
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+
 ## [5.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.0...v5.16.1) (2026-06-17)
 
 
