@@ -1,18 +1,108 @@
 # Changelog
 
-## [5.12.1-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.1-prerelease.2...v5.12.1-prerelease.3) (2026-05-19)
+## [5.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.0...v5.16.1) (2026-06-17)
 
 
 ### Bug Fixes
 
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
+* disable flexlayout render-on-demand to prevent duplicate tile mounts GENC-0 e7454dd
+* disable flexlayout render-on-demand to prevent duplicate tile mounts GENC-0 (#587) 74c5357
 
-## [5.12.1-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.1-prerelease.1...v5.12.1-prerelease.2) (2026-05-19)
+## [5.16.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.2...v5.16.0) (2026-06-15)
+
+
+### Features
+
+* include PBC UI packages in the React seed GENC-0 777ea97
+* include PBC UI packages in the React seed GENC-0 (#586) aa5eb38
+
+## [5.15.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.1...v5.15.2) (2026-06-09)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* update FUI version GENC-0 65d62a6
+* update FUI version GENC-0 (#585) 396c2fd
+
+## [5.15.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.15.0...v5.15.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* fix Windows compatibility issues during genx init [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 565690c
+* Windows compatibility and path handling during init [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#584) 9068086
+
+## [5.15.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.14.0...v5.15.0) (2026-06-03)
+
+
+### Features
+
+* report error boundary failures to genesis-telemetry GENC-1272 b7f2ded
+* report error boundary failures to genesis-telemetry GENC-1272 (#582) 3eb3588
+
+## [5.14.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.5...v5.14.0) (2026-06-03)
+
+
+### Features
+
+* bump UI to use ag grid 35 GENC-1288 e10d73b
+* bump UI to use ag grid 35 GENC-1288 (#583) 375a74f
+
+## [5.13.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.4...v5.13.5) (2026-06-02)
+
+
+### Bug Fixes
+
+* update FUI version to 14.450.0 [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) a7fe57f
+* update FUI version to 14.450.0 [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#580) febc6f1
+
+## [5.13.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.3...v5.13.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* guard Navigate import in AppRoutes when no routes are defined GENC-0 84d5b33
+* guard tile-only declarations in route template GENC-0 de6efd9
+* more react template guards for empty routes/tiles GENC-0 (#579) c88d1a5
+
+## [5.13.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.2...v5.13.3) (2026-05-28)
+
+
+### Bug Fixes
+
+* drop composite/tsBuildInfoFile + explicit src glob in react tsconfig bced9bc
+* gracefully handle no routes in react template GENC-0 c961415
+* small tweaks for react setup GENC-0 (#578) 03c9272
+
+## [5.13.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.1...v5.13.2) (2026-05-25)
+
+
+### Bug Fixes
+
+* intelligently pick the best mode based on available space [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#576) efe51d3
+* intelligently picks the best mode based on available space [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b08f84
+
+## [5.13.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.13.0...v5.13.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* apply datasource config only for entity-manager and grid-pro [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 67021b5
+* apply datasource config only for entity-manager and grid-pro [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#573) 5c541c5
+
+## [5.13.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.0...v5.13.0) (2026-05-08)
+
+
+### Features
+
+* update FUI/GSF version + resolve TS errors [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#572) 46b94b7
+
+
+### Bug Fixes
+
+* backport main to prerelease GENC-0 (#571) 3674a0f
+* **react:** resolve TypeScript errors in generated React app templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) ab0903c
+* resolve TypeScript errors in generated React app templates [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#570) 5e3a583
 
 ## [5.12.1-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.12.0...v5.12.1-prerelease.1) (2026-05-08)
 

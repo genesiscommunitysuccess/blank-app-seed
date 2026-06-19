@@ -1,5 +1,5 @@
 {{#if tile.config.gridOptions~}}
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
+import { GridOptions } from '@ag-grid-community/core';
 {{/if}}
 {{#if tile.config.hasNumberFormatter~}}
 import { getNumberFormatter } from '@genesislcap/foundation-utils';
@@ -12,5 +12,5 @@ import { sendEventOnChannel } from '../../../utils';
 {{/if}}
 
 {{#if tile.config.gridOptions~}}
-export const gridOptions: GridOptionsConfig = {{{ tile.config.gridOptions }}}
+export const gridOptions: GridOptions = {{{ tile.config.gridOptions }}}
 {{/if}}
