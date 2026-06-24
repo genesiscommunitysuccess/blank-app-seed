@@ -56,7 +56,7 @@ allprojects {
             freeCompilerArgs.addAll("-Xjsr305=strict")
             jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
             jvmTarget.set(JvmTarget.JVM_17)
-            apiVersion.set(KotlinVersion.KOTLIN_2_3)
+            apiVersion.set(KotlinVersion.KOTLIN_2_4)
         }
     }
     tasks.withType<Jar> {
