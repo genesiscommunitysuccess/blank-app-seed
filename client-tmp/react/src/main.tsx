@@ -5,10 +5,12 @@ import { AppErrorBoundary } from './components/error-boundary/ErrorBoundary'
 
 import { registerPBCs } from './pbc/utils';
 import { createLogger } from '@genesislcap/foundation-logger';
+import { installRapidFlexLayoutReactStyles } from '@genesislcap/rapid-design-system';
 
 import './styles/styles.css'
-import 'flexlayout-react/style/dark.css'
-import './styles/flexlayout-theme.css'
+
+// Single source of truth for the flexlayout-react theme lives in the platform (@genesislcap/rapid-design-system).
+installRapidFlexLayoutReactStyles();
 
 const logger = createLogger('main');
 
