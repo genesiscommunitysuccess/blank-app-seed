@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.17.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.1...v5.17.0) (2026-06-25)
+
+
+### Features
+
+* theme flexlayout-react via platform single source of truth GENC-0 e5b3319
+* theme flexlayout-react via platform single source of truth GENC-0 (#593) 06e349e
+
 ## [5.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.0...v5.16.1) (2026-06-17)
 
 
