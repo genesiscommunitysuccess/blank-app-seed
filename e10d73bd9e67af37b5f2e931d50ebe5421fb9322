@@ -1,0 +1,34 @@
+client-tmp/react/package.json
+  s_14f6e1649a4eb6::t_250cd7d19e977e 39-40
+client-tmp/web-components/src/components/components.ts
+  s_14f6e1649a4eb6::t_7f218b27bf8d78 9
+  s_14f6e1649a4eb6::t_a9147501a9bdb3 37
+client-tmp/react/src/share/genesis-components.ts
+  s_14f6e1649a4eb6::t_3f25e58150e89a 30
+  s_14f6e1649a4eb6::t_3aa3666041ee47 4
+.genx/templates/react/component/component.hbs
+  s_14f6e1649a4eb6::t_c41dfa64068821 111
+  s_14f6e1649a4eb6::t_be1e9a92bf0627 47
+.genx/templates/react/component/component.gridOptions.hbs
+  s_14f6e1649a4eb6::t_a8e9d81bea2e4d 2
+  s_14f6e1649a4eb6::t_89501859e7d1bf 15
+.genx/templates/web-components/component/component.gridOptions.hbs
+  s_14f6e1649a4eb6::t_41df21096476a6 7
+  s_14f6e1649a4eb6::t_1134dca376e3d5 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "e10d73bd9e67af37b5f2e931d50ebe5421fb9322",
+  "prompts": {},
+  "sessions": {
+    "s_14f6e1649a4eb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c4a7aee4-a554-4aa1-8133-a083649e85bf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Matt Walker <matt.walker@genesis.global>"
+    }
+  }
+}

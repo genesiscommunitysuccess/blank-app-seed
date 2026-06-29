@@ -1,0 +1,21 @@
+client-tmp/react/tsconfig.app.json
+  s_3c2a3ecafbc012::t_ed9c20b0f4257b 3
+client-tmp/react/tsconfig.json
+  s_3c2a3ecafbc012::t_75becb7b92434c 28-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "bced9bc0c849befa005a611466120916c461a396",
+  "prompts": {},
+  "sessions": {
+    "s_3c2a3ecafbc012": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1bb824b7-854b-4e6f-9045-71704707cf5c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Matt Walker <matt.walker@genesis.global>"
+    }
+  }
+}
