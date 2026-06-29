@@ -1,0 +1,19 @@
+gradle.properties
+  s_56db96a11784a8::t_74637b627bc807 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "0cbd1d4e8a5874ca82f22a57c110d1833906ca33",
+  "prompts": {},
+  "sessions": {
+    "s_56db96a11784a8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05610756-49ba-4bbb-8031-9eaebfb1eb4e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
