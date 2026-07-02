@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.17.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.0...v5.17.1) (2026-07-02)
+
+
+### Bug Fixes
+
+* support BIGDECIMAL in charts GENC-1412 ba5801b
+* support BIGDECIMAL in charts GENC-1412 (#597) e047eba
+
 ## [5.17.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.1...v5.17.0) (2026-06-25)
 
 
