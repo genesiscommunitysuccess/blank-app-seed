@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.17.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.1...v5.17.2) (2026-07-03)
+
+
+### Bug Fixes
+
+* correct colors for bar charts GENC-1412 a66dc07
+* correct colors for bar charts GENC-1412 (#598) 7100dd4
+
 ## [5.17.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.0...v5.17.1) (2026-07-02)
 
 
