@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.17.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3) (2026-07-07)
+
+
+### Bug Fixes
+
+* update FUI version GENC-0 80c1350
+* update FUI version GENC-0 (#600) 746b025
+
 ## [5.17.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.1...v5.17.2) (2026-07-03)
 
 
