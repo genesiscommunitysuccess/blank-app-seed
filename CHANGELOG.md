@@ -1,13 +1,28 @@
 # Changelog
 
-## [5.16.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.1...v5.16.2-prerelease.1) (2026-06-19)
+## [5.17.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.1...v5.17.2) (2026-07-03)
 
 
 ### Bug Fixes
 
-* merge main into prerelease GENC-1362 (#589) c7eed71
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* correct colors for bar charts GENC-1412 a66dc07
+* correct colors for bar charts GENC-1412 (#598) 7100dd4
+
+## [5.17.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.0...v5.17.1) (2026-07-02)
+
+
+### Bug Fixes
+
+* support BIGDECIMAL in charts GENC-1412 ba5801b
+* support BIGDECIMAL in charts GENC-1412 (#597) e047eba
+
+## [5.17.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.1...v5.17.0) (2026-06-25)
+
+
+### Features
+
+* theme flexlayout-react via platform single source of truth GENC-0 e5b3319
+* theme flexlayout-react via platform single source of truth GENC-0 (#593) 06e349e
 
 ## [5.16.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.16.0...v5.16.1) (2026-06-17)
 
