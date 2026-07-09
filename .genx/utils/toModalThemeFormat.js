@@ -21,15 +21,19 @@ const flattenCustomTokens = (customTokens, prefix = '') => {
 };
 
 /**
- * Converts a designTokens payload to the modal theme format.
+ * Converts a designTokens payload to the modal theme FORMAT.
  * - Already modal (has `modes`): returned verbatim.
  * - Legacy (`design_tokens` at the top level): converted to an adaptive modal theme —
  *   everything except the `mode` group becomes shared, both light and dark modes are
  *   defined, nested customTokens are flattened, and `header_logo`/`custom_fonts` are
  *   preserved as top-level keys.
  * - Anything else: returned verbatim.
+ *
+ * Not to be confused with `toModalTheme` from `@genesislcap/rapid-design-system`, which
+ * VALIDATES an already-modal theme at app startup (and throws on legacy shapes); this
+ * utility is the generation-time converter that produces that modal shape from legacy input.
  */
-const toModalTheme = (designTokens) => {
+const toModalThemeFormat = (designTokens) => {
   if (designTokens.modes || !designTokens.design_tokens) {
     return designTokens;
   }
@@ -67,4 +71,4 @@ const toModalTheme = (designTokens) => {
   return theme;
 };
 
-module.exports = toModalTheme;
+module.exports = toModalThemeFormat;
