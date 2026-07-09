@@ -18,6 +18,7 @@ const {
   deleteGradleWrappers,
   generateStore,
   fontUtils,
+  toModalTheme,
 } = require('./utils');
 
 /**
@@ -52,8 +53,9 @@ module.exports = async (data, utils) => {
   if (data.designTokens && Object.keys(data.designTokens).length > 0) {
     try {
       const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
-      const templateFile = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/styles/design-tokens.json');
-      const jsonContent = JSON.stringify(data.designTokens, null, 2);
+      const templateFile = path.join(__dirname, '..', DIR_CLIENT_TEMP_ALIAS, frameworkDir, 'src/styles/default.theme.json');
+      // Legacy designTokens payloads are converted to the modal theme format; modal payloads pass through verbatim
+      const jsonContent = JSON.stringify(toModalTheme(data.designTokens), null, 2);
       const templateDir = path.dirname(templateFile);
       if (!fs.existsSync(templateDir)) {
         fs.mkdirSync(templateDir, { recursive: true });

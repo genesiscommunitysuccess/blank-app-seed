@@ -44,3 +44,23 @@ Object.defineProperty(window, 'BroadcastChannel', {
   writable: true,
   value: MockBroadcastChannel,
 });
+
+// jsdom lacks the constructable-stylesheet API used by the modal-theme runtime
+// (CSSStyleSheet.replaceSync + Document.adoptedStyleSheets)
+if (typeof CSSStyleSheet === 'undefined') {
+  Object.defineProperty(window, 'CSSStyleSheet', {
+    writable: true,
+    value: class {
+      replaceSync() {}
+    },
+  });
+} else if (!CSSStyleSheet.prototype.replaceSync) {
+  CSSStyleSheet.prototype.replaceSync = () => {};
+}
+
+if (!('adoptedStyleSheets' in document)) {
+  Object.defineProperty(document, 'adoptedStyleSheets', {
+    writable: true,
+    value: [],
+  });
+}
