@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.18.0...v5.19.0) (2026-07-10)
+
+
+### Features
+
+* adopt FUI modal theme API for theme selection GENC-0 (#602) 8ee122a
+* apply UX default theme to the seed default GENC-0 e6e68de
+* migrate theming to the FUI modal theme API ([FUI-2575](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2575)) GENC-0 60fd54a
+
+
+### Bug Fixes
+
+* align modal theming with FUI review-fixes PR 2384 GENC-0 f326bca
+
 ## [5.18.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3...v5.18.0) (2026-07-08)
 
 
