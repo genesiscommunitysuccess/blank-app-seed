@@ -22,7 +22,6 @@
     "dev:intellij": "npm run dev",
     "dev:https": "npm run dev -- --https",
     "dev:webpack": "npm run dev",
-    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "lint": "genx lint --profile",
     "lint:fix": "genx lint --fix",
     "lint:eslint": "genx lint -l eslint --profile",

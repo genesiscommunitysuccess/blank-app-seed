@@ -2,6 +2,7 @@ import { getApp } from '@genesislcap/foundation-shell/app';
 import type { FoundationRouter } from '@genesislcap/foundation-ui';
 import { css, GenesisElementLayout, html } from '@genesislcap/web-core';
 import type { Store } from '../store/foundation-store';
+import { modeToggleEnabled } from '../styles/active-theme';
 
 type ClientAppRouter = FoundationRouter & { store: Store };
 
@@ -43,7 +44,7 @@ export const defaultLayout = new GenesisElementLayout(
 {{#if headerLogoSrc}}
         logo-src="{{headerLogoSrc}}"
 {{/if}}
-        show-luminance-toggle-button
+        ?show-luminance-toggle-button=${() => modeToggleEnabled}
         show-misc-toggle-button
         :routeNavItems=${(x) => x.config.getNavItems()}
       ></foundation-header>

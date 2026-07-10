@@ -47,15 +47,16 @@ npm run baseline
 ## Styling
 
 Genesis components are registered with a Design System,
-and the default system is named `rapid`. Design systems are highly configurable. You can configure them by importing and
-modifying the tokens directly, or by using our [Design System Configuration](https://learn.genesis.global/docs/develop/client-capabilities/styling/direct-customization-genesis-components/styling-direct-dsc/)
-tool in the context of your application.
+and the default system is named `rapid`. The design system is driven by the theme file `src/styles/default.theme.json`:
+tokens under `shared` (colours, typography, sizing) apply to every mode, while the `modes` section declares the
+available modes (`light` and `dark` by default) with their per-mode tokens.
 
-Simply run the application, configure the design system, select Save Changes, and hit Save on popup, then restart your application.
+`src/styles/active-theme.ts` loads the theme file and exposes it as the app's active theme. It is the single source of
+truth used to inject the theme styles and apply the initial mode at startup (`src/main/main.ts`), and to decide whether
+the header shows the light/dark toggle (`src/layouts/default.ts`).
 
-```shell
-npm run dsconfig
-```
+The toggle appears automatically when the theme declares more than one mode (set `showModeToggle` in the theme file to
+override this). Clicking it cycles through the declared modes, and the selected mode is remembered across reloads.
 
 ## Custom Elements IntelliSense
 

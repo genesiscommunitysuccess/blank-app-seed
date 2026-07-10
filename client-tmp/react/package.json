@@ -20,7 +20,6 @@
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",
     "dev:https": "HTTPS=true npm run dev",
-    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "lint": "genx lint --profile",
     "lint:fix": "genx lint --fix",
     "lint:eslint": "genx lint -l eslint --profile",

@@ -1,0 +1,37 @@
+{
+  "id": "default",
+  "colorStrategy": "adaptive",
+  "defaultMode": "dark",
+  "shared": {
+    "design_tokens": {
+      "fontFamily": {
+        "bodyFont": {
+          "$value": "{{#if fontFamily}}{{fontFamily}}, {{/if}}Roboto, \"Segoe UI\", Arial, Helvetica, sans-serif",
+          "$type": "fontFamily"
+        }
+      }
+    }
+  },
+  "modes": {
+    "light": {
+      "design_tokens": {
+        "mode": {
+          "luminance": {
+            "$value": 1,
+            "$type": "number"
+          }
+        }
+      }
+    },
+    "dark": {
+      "design_tokens": {
+        "mode": {
+          "luminance": {
+            "$value": 0.23,
+            "$type": "number"
+          }
+        }
+      }
+    }
+  }
+}
