@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.19.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.1...v5.19.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* replace foundation-login with foundation-auth dependency GENC-0 fd4d102
+* replace foundation-login with foundation-auth dependency GENC-0 (#604) 4964197
+
 ## [5.19.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.0...v5.19.1) (2026-07-21)
 
 
