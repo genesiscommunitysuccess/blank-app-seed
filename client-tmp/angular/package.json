@@ -7,6 +7,12 @@
   "genx": {
     "app": {
       "rootElement": "{{rootElement}}"
+    },
+    "eventTypes": {
+      "enabled": true,
+      "serverModule": "../server/{{appName}}-app",
+      "output": "src/generated/genesis-event-types.ts",
+      "runOnBuild": true
     }
   },
   "scripts": {
@@ -51,6 +57,7 @@
     "@genesislcap/prettier-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.13",

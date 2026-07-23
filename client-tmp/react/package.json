@@ -8,6 +8,14 @@
     "ENABLE_SSO": {{enableSSO}},
     "PERSIST_LAYOUT_IN_DEV": false
   },
+  "genx": {
+    "eventTypes": {
+      "enabled": true,
+      "serverModule": "../server/{{appName}}-app",
+      "output": "src/generated/genesis-event-types.ts",
+      "runOnBuild": true
+    }
+  },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
     "bootstrap": "npm i  --no-fund --no-audit",
@@ -87,6 +95,7 @@
     "@genesislcap/prettier-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",

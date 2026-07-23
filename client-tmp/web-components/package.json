@@ -19,6 +19,12 @@
         "@genesislcap/foundation-zero",
         "@genesislcap/rapid-design-system"
       ]
+    },
+    "eventTypes": {
+      "enabled": true,
+      "serverModule": "../server/{{appName}}-app",
+      "output": "src/generated/genesis-event-types.ts",
+      "runOnBuild": true
     }
   },
   "scripts": {
@@ -76,6 +82,7 @@
     "@genesislcap/eslint-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/eslint-stylelint-builder": "{{versions.UI}}",
     "@genesislcap/uvu-playwright-builder": "{{versions.UI}}",
     "@genesislcap/vite-builder": "{{versions.UI}}",
