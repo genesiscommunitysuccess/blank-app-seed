@@ -9,6 +9,10 @@ import { registry } from './registry';
 
 export { SINGLE_COMPONENT_PARAM, initialComponentName } from './initialParams';
 
+// Defined outside JSX so the template stays free of inline `style={{ … }}`,
+// whose double braces collide with the seed's handlebars interpolation.
+const providerStyle = { display: 'block', height: '100%', width: '100%' } as const;
+
 /**
  * Renders a single registered component full-screen based on the
  * `?component=<name>` URL parameter captured at app load. The component is
@@ -31,10 +35,7 @@ const SingleComponent = () => {
   }, []);
 
   return (
-    <rapid-design-system-provider
-      ref={providerRef}
-      style={{ display: 'block', height: '100%', width: '100%' }}
-    >
+    <rapid-design-system-provider ref={providerRef} style={providerStyle}>
       <SingleComponentOutlet
         name={initialComponentName}
         registry={registry}
