@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.2...v5.20.0) (2026-07-23)
+
+
+### Features
+
+* generate typed event DETAILS via event-type-codegen GENC-0 236a8f0
+* generate typed event DETAILS via event-type-codegen GENC-0 (#606) 3a36492
+
 ## [5.19.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.1...v5.19.2) (2026-07-21)
 
 
