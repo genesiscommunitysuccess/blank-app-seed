@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.20.0...v5.21.0) (2026-07-27)
+
+
+### Features
+
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 28bb768
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#607) 1d8f13e
+
+
+### Bug Fixes
+
+* **react:** add foundation-react-utils dep + avoid inline style double-brace [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e5d676
+* **react:** theme single-component via FUI modal-theme (active-theme) not legacy design-tokens [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 020d99e
+
 ## [5.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.2...v5.20.0) (2026-07-23)
 
 
