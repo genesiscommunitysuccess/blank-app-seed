@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.17.3-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.1...v5.17.3-prerelease.2) (2026-07-27)
+
+
+### Bug Fixes
+
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
+
 ## [5.17.3-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3-prerelease.1) (2026-07-07)
 
 
