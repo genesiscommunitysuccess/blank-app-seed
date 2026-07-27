@@ -1,8 +1,8 @@
 import { SingleComponentOutlet } from '@genesislcap/foundation-react-utils/router';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import { applyMode, injectThemeStyles, resolveInitialMode } from '@genesislcap/rapid-design-system';
 import { useEffect, useRef } from 'react';
 import { registerStylesTarget } from '../../pbc/utils';
-import * as designTokens from '../../styles/design-tokens.json';
+import { activeTheme } from '../../styles/active-theme';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { initialComponentName } from './initialParams';
 import { registry } from './registry';
@@ -16,9 +16,10 @@ const providerStyle = { display: 'block', height: '100%', width: '100%' } as con
 /**
  * Renders a single registered component full-screen based on the
  * `?component=<name>` URL parameter captured at app load. The component is
- * wrapped in the same design-system provider / style targets that
- * DefaultLayout sets up, so it is themed identically to how it appears
- * in-app — just without the header and navigation chrome.
+ * wrapped in the same design-system provider / theme that DefaultLayout sets
+ * up (the FUI modal-theme runtime via `activeTheme`), so it is themed
+ * identically to how it appears in-app — just without the header and
+ * navigation chrome (and without a mode toggle).
  *
  * Resolution + fallback are handled by `SingleComponentOutlet` from
  * `@genesislcap/foundation-react-utils/router`; this file only supplies the
@@ -29,7 +30,8 @@ const SingleComponent = () => {
 
   useEffect(() => {
     if (providerRef.current) {
-      configureDesignSystem(providerRef.current, designTokens);
+      injectThemeStyles(providerRef.current, activeTheme);
+      applyMode(providerRef.current, activeTheme, resolveInitialMode(activeTheme));
       registerStylesTarget(document.body, 'content');
     }
   }, []);
