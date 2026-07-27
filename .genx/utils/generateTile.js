@@ -171,6 +171,9 @@ const getFilesToWrite = (
       }
       break;
     case 'grid-pro':
+      if (tileData.config?.columns) {
+        filesToWrite.push(componentColumnsFile);
+      }
       if (tileData.config?.gridOptions) {
         filesToWrite.push(componentGridOptionsFile);
       }

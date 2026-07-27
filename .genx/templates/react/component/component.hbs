@@ -3,7 +3,7 @@ import { EntityManagement } from '@genesislcap/foundation-entity-management/reac
 {{/ifEquals}}
 {{#ifEquals tile.type 'grid-pro'}}
 import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
-import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
+import { GridProGenesisDatasource{{#ifAny tile.config.gridOptions tile.config.columns}}, GridProColumn{{/ifAny}} } from '@genesislcap/grid-pro/react';
 import { GridProCaseType } from '@genesislcap/grid-pro';
 {{/ifEquals}}
 {{#ifEquals tile.type 'smart-form'}}

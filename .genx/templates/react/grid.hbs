@@ -25,7 +25,11 @@ hasUserPermission('{{config.permissions.viewRight}}') ? (
     pollingInterval={datasourceConfig.pollingInterval}
     {{/if}}
   />
-  {{#if config.gridOptions}}
+  {{#if config.columns}}
+  {columnDefs.map((columnDef, index) => (
+    <GridProColumn key={index} definition={columnDef} />
+  ))}
+  {{else if config.gridOptions}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
     <GridProColumn key={index} definition={columnDef} />
   ))}

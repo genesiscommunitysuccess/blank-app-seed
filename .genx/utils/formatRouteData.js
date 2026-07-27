@@ -60,7 +60,7 @@ const formatRouteData = (framework, route) => {
         ...config,
         index,
         gridOptions: gridOptionsSerializer(gridOptions),
-        useOnlyTemplateCols: !!gridOptions?.columns,
+        useOnlyTemplateCols: !!gridOptions?.columns || !!columns,
         createFormUiSchema: formatJSONValue(createFormUiSchema),
         updateFormUiSchema: formatJSONValue(updateFormUiSchema),
         filterFormUiSchema: formatJSONValue(filterFormUiSchema),
