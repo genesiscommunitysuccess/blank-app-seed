@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.1...v5.22.0) (2026-08-04)
+
+
+### Features
+
+* bump versions.UI to 15.4.1 for the Button appearance type fix GENC-1473 (#611) 001f51d
+
 ## [5.21.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.0...v5.21.1) (2026-07-27)
 
 
