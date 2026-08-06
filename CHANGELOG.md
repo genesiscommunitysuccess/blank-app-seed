@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.22.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.0...v5.22.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f02e9d3
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#613) 94ac8e2
+
 ## [5.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.1...v5.22.0) (2026-08-04)
 
 
