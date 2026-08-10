@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, prerelease]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: deploy
+    concurrency:
+      group: publish-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{secrets.GH_USER_TOKEN}}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{secrets.GH_USER_TOKEN}}
+        run: |
+          touch /tmp/dist-tag # create a blank file, so it's always there even if we don't do a release
+          npm install
+          npm run release
+
+      - name: Set dist tag
+        id: dist-tag
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+
+          TAG=$(cat /tmp/dist-tag)
+          if [ -z "$TAG" ]; then
+            # No release happened this run. Derive the tag the current
+            # package.json version would have released under, so a
+            # previous run's failed publish can still be retried below.
+            case "$VERSION" in
+              *-*) TAG="${VERSION#*-}"; TAG="${TAG%%.*}" ;;
+              *) TAG="latest" ;;
+            esac
+          fi
+
+          # Key the publish decision off the registry rather than off
+          # whether *this* run produced a release, so a flaky publish
+          # after semantic-release has already committed/tagged is
+          # retried on the next run instead of silently skipped.
+          if OUT=$(npm view "$NAME@$VERSION" version 2>&1); then
+            [ -n "$OUT" ] && NEEDS_PUBLISH=false || NEEDS_PUBLISH=true
+          else
+            case "$OUT" in
+              *E404*) NEEDS_PUBLISH=true ;;
+              *)
+                echo "::error::npm view failed unexpectedly: $OUT"
+                exit 1
+                ;;
+            esac
+          fi
+
+          echo "TAG=$TAG" >> "$GITHUB_OUTPUT"
+          echo "NEEDS_PUBLISH=$NEEDS_PUBLISH" >> "$GITHUB_OUTPUT"
+
+      - name: Generate .npmignore
+        run: cp .gitignore .npmignore && echo '!.gitignore' >> .npmignore && cat .npmignore
+
+      - name: NPM pack dry-run
+        run: npm pack --dry-run
+
+      - name: Publish
+        if: steps.dist-tag.outputs.NEEDS_PUBLISH == 'true'
+        run: npm publish --tag "${{ steps.dist-tag.outputs.TAG }}"
