@@ -59,7 +59,7 @@
     [
       "@semantic-release/exec",
       {
-        "publishCmd": "echo \"${nextRelease.channel}\" > /tmp/dist-tag"
+        "publishCmd": "echo \"${nextRelease.channel || 'latest'}\" > /tmp/dist-tag"
       }
     ],
     [
