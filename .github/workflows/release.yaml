@@ -27,7 +27,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Upgrade npm for trusted publishing
-        run: npm install -g npm@latest
+        run: npm install -g npm@^11.5.1
 
       - name: Release
         env:
@@ -48,6 +48,15 @@ jobs:
             # No release happened this run. Derive the tag the current
             # package.json version would have released under, so a
             # previous run's failed publish can still be retried below.
+            #
+            # NOTE: this assumes the version's prerelease identifier and the
+            # semantic-release channel are the same string. That only holds
+            # because .releaserc's "prerelease" branch has no explicit
+            # "channel", so semantic-release defaults both the preid and the
+            # channel to the branch name. If that branch config ever sets an
+            # explicit "channel" or a differing "prerelease" identifier, this
+            # derivation will diverge from the real channel and this retry
+            # path will publish under the wrong dist-tag.
             case "$VERSION" in
               *-*) TAG="${VERSION#*-}"; TAG="${TAG%%.*}" ;;
               *) TAG="latest" ;;
@@ -58,13 +67,16 @@ jobs:
           # whether *this* run produced a release, so a flaky publish
           # after semantic-release has already committed/tagged is
           # retried on the next run instead of silently skipped.
-          if OUT=$(npm view "$NAME@$VERSION" version 2>&1); then
+          # (stderr is captured separately so a stray npm notice on stderr
+          # can't masquerade as a real version and suppress the E404 check.)
+          if OUT=$(npm view "$NAME@$VERSION" version 2>/tmp/npm-view-err); then
             [ -n "$OUT" ] && NEEDS_PUBLISH=false || NEEDS_PUBLISH=true
           else
-            case "$OUT" in
+            ERR=$(cat /tmp/npm-view-err)
+            case "$ERR" in
               *E404*) NEEDS_PUBLISH=true ;;
               *)
-                echo "::error::npm view failed unexpectedly: $OUT"
+                echo "::error::npm view failed unexpectedly: $ERR"
                 exit 1
                 ;;
             esac
