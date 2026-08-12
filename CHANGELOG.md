@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.17.3-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.2...v5.17.3-prerelease.3) (2026-08-12)
+
+
+### Bug Fixes
+
+* address release workflow review comments 67ce8c3
+* address second round of release workflow review comments 4a1c5f5
+* default dist-tag to latest when semantic-release channel is null ce5a216
+
 ## [5.17.3-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.1...v5.17.3-prerelease.2) (2026-07-27)
 
 
