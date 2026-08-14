@@ -51,7 +51,7 @@
           ".iml"
         ],
         "exclude": [
-          "design-tokens.json"
+          "default.theme.json"
         ]
       }
     }
