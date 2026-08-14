@@ -24,6 +24,13 @@ export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/each}}
 
 {{/ifContains}}
+{{#each tile.config.customEvents}}
+{{#if this.defaultValues}}
+{{! Hoisted so the serialised literal keeps its own indentation; `as const` keeps the record-type discriminators literal so they still satisfy `DefaultValues`. }}
+const {{camelCase this.name}}DefaultValues = {{{this.defaultValues}}} as const;
+
+{{/if}}
+{{/each}}
 export const customActions: CustomAction[] = [
   {{#each tile.config.customEvents}}
   {
@@ -36,7 +43,7 @@ export const customActions: CustomAction[] = [
       uiSchema: {{camelCase this.name}}FormSchema,
       {{/if}}
       {{#if this.defaultValues}}
-      defaultValues: {{{this.defaultValues}}},
+      defaultValues: {{camelCase this.name}}DefaultValues,
       {{/if}}
     },
     {{#if this.position}}

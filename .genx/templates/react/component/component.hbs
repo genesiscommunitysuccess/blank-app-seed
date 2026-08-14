@@ -1,3 +1,8 @@
+{{#ifEquals tile.type 'grid-pro'}}
+{{#if tile.config.gridOptions}}
+import type { GridOptions } from '@ag-grid-community/core';
+{{/if}}
+{{/ifEquals}}
 {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
 {{#ifContains 'entity-manager|grid-pro' tile.type}}
 import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
@@ -22,11 +27,6 @@ import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
 import { GridProCaseType } from '@genesislcap/grid-pro';
 import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
 import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
-{{/ifEquals}}
-{{#ifEquals tile.type 'grid-pro'}}
-{{#if tile.config.gridOptions}}
-import { GridOptions } from 'ag-grid-community';
-{{/if}}
 {{/ifEquals}}
 {{#if tile.config.eventing.listener}}
 import { useSelector } from 'react-redux';
@@ -93,6 +93,14 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     getViewUpdateRightComponent(getUser(), permissionCode);
   {{/if}}
   {{/if}}
+  {{#ifEquals tile.type 'entity-manager'}}
+  {{#if tile.config.permissions.updateRight}}
+  {{#ifAny tile.config.createEvent tile.config.updateEvent tile.config.deleteEvent}}
+  {{! Hoisted so the CRUD event props stay inside the print width whatever the event names are. }}
+  const canUpdate = hasUserPermission('{{tile.config.permissions.updateRight}}');
+  {{/ifAny}}
+  {{/if}}
+  {{/ifEquals}}
   {{#if tile.config.eventing.publishEventName}}
   const handleRowSelection = (e: any) => {
     {{#ifEquals tile.type 'entity-manager'}}

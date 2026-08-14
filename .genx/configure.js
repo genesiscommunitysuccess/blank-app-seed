@@ -60,7 +60,7 @@ module.exports = async (data, utils) => {
       if (!fs.existsSync(templateDir)) {
         fs.mkdirSync(templateDir, { recursive: true });
       }
-      fs.writeFileSync(templateFile, jsonContent);
+      fs.writeFileSync(templateFile, `${jsonContent}\n`);
     } catch (err) {
       console.warn('Failed to write designTokens to template:', err?.message || err);
     }

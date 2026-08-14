@@ -47,6 +47,13 @@ function gridOptionsSerializer(options, indent = 0) {
       } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
         const args = value.arguments?.map(serialiseFunctionArg).join(', ');
         fields += `${itemPad}${key}: ${value.name}(${args}),\n`;
+      } else if (value?.category === 'fdc3') {
+        // FDC3 click markers are authored as { category: 'fdc3', channelName, type } and are
+        // detected by formatRouteData (FDC3EventHandlersEnabled). AG Grid handlers such as
+        // onRowClicked must be functions, so emit the sendEventOnChannel factory call that the
+        // generated src/utils/fdc3.ts provides instead of leaking the raw marker object.
+        const args = [value.channelName, value.type].map(serialiseFunctionArg).join(', ');
+        fields += `${itemPad}${key}: sendEventOnChannel(${args}),\n`;
       } else if (key === 'hide') {
         fields += `${itemPad}${key}: ${value},\n`;
       } else {

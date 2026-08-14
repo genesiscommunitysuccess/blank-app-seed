@@ -23,6 +23,7 @@
     "**/*.md",
     "**/*.hbs",
     "**/.genx/**",
+    "**/src/generated/**",
     "**/index.html"
   ]
 }

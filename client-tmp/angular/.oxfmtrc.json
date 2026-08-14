@@ -17,12 +17,15 @@
     "**/bootstrap",
     "**/coverage",
     "**/dist",
+    "**/.angular",
+    "**/out-tsc",
     "**/temp",
     "**/storybook-static",
     "**/*.d.ts",
     "**/*.md",
     "**/*.hbs",
     "**/.genx/**",
+    "**/src/generated/**",
     "**/*.html"
   ]
 }

@@ -16,9 +16,10 @@ const STORAGE_KEY = getFlexLayoutStorageKey(LAYOUT_KEY);
 
 {{> (lookup ./route 'layoutType') }}
 
+{{! Map keys match the imported component names so the entries stay shorthand and never wrap. }}
 const componentMap: Record<string, React.FC> = {
   {{#each route.tiles}}
-  {{camelCase this.componentName}}: {{pascalCase this.componentName}},
+  {{pascalCase this.componentName}},
   {{/each}}
 };
 

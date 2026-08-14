@@ -9,6 +9,8 @@
 <RapidGridPro headerCaseType={GridProCaseType.capitalCase} enableRowFlashing enableCellFlashing>
 {{/if}}
 {{#ifAny config.snapshot config.gridOptions config.eventing.publishEventName config.eventing.listener config.reqrep}}
+  {{! prettier-ignore must be bare: attribute widths are user data, keep one attribute per line }}
+  {/* prettier-ignore */}
   <GridProGenesisDatasource
     resourceName="{{config.resourceName}}"
     {{#if config.snapshot}}

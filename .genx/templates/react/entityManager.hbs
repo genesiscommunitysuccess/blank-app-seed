@@ -12,7 +12,7 @@
     resourceName="{{ config.resourceName }}"
     {{#if config.createEvent}}
     {{#if config.permissions.updateRight}}
-    createEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.createEvent }}' : undefined}
+    createEvent={canUpdate ? '{{ config.createEvent }}' : undefined}
     {{else}}
     createEvent="{{ config.createEvent }}"
     {{/if}}
@@ -22,7 +22,7 @@
     {{/if}}
     {{#if config.updateEvent}}
     {{#if config.permissions.updateRight}}
-    updateEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.updateEvent }}' : undefined}
+    updateEvent={canUpdate ? '{{ config.updateEvent }}' : undefined}
     {{else}}
     updateEvent="{{ config.updateEvent }}"
     {{/if}}
@@ -32,7 +32,7 @@
     {{/if}}
     {{#if config.deleteEvent}}
     {{#if config.permissions.updateRight}}
-    deleteEvent={hasUserPermission('{{config.permissions.updateRight}}') ? '{{ config.deleteEvent }}' : undefined}
+    deleteEvent={canUpdate ? '{{ config.deleteEvent }}' : undefined}
     {{else}}
     deleteEvent="{{ config.deleteEvent }}"
     {{/if}}

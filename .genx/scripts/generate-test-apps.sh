@@ -20,6 +20,10 @@
 # Env:
 #   WORK_DIR   scratch dir for generated apps (default: a fresh mktemp dir)
 #   KEEP=1     keep generated apps instead of deleting the scratch dir
+#   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app
+#
+# Installs use the app's own bootstrap semantics (plain `npm install`) — NOT
+# --legacy-peer-deps, which would skip the ag-grid peer deps and break builds.
 
 set -uo pipefail
 
@@ -38,13 +42,19 @@ run_lint_checks() {
   (
     cd "$app_dir/client" || exit 1
     echo "--- [$label] npm install"
-    npm install --legacy-peer-deps --no-fund --no-audit || exit 1
+    npm install --no-fund --no-audit || exit 1
     echo "--- [$label] oxlint . --deny-warnings"
     ./node_modules/.bin/oxlint . --deny-warnings || exit 1
     echo "--- [$label] oxfmt --check ."
     ./node_modules/.bin/oxfmt --check . || exit 1
     echo "--- [$label] npm run lint"
     npm run lint || exit 1
+    if [ "${BUILD:-0}" = "1" ]; then
+      echo "--- [$label] tsc --noEmit"
+      npx tsc --noEmit || exit 1
+      echo "--- [$label] npm run build"
+      npm run build || exit 1
+    fi
   )
 }
 

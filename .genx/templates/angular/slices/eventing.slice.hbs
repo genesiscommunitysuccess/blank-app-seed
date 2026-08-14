@@ -8,7 +8,7 @@ export const eventingSlice = createSlice({
 {{#if events.length}}
   initialState: {
 {{#each events}}
-    {{this}}: null,
+    {{this}}: null as Record<string, any> | null,
 {{/each}}
   },
   reducers: {
