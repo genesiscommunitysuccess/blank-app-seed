@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.22.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.22.2-prerelease.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* address release workflow review comments 67ce8c3
+* address second round of release workflow review comments 4a1c5f5
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#616) 545eb21
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
+* default dist-tag to latest when semantic-release channel is null ce5a216
+* merge main into prerelease GENC-1362 (#589) c7eed71
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+
 ## [5.17.3-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.2...v5.17.3-prerelease.3) (2026-08-12)
 
 
