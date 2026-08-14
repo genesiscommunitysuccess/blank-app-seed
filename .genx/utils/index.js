@@ -9,6 +9,7 @@ const makeDirectory = require('./makeDirectory');
 const normalizeFrameworkAlias = require('./normalizeFrameworkAlias');
 const parseJSONArgument = require('./parseJSONArgument');
 const registerPartials = require('./registerPartials');
+const toModalThemeFormat = require('./toModalThemeFormat');
 const validateRoute = require('./validateRoute');
 const validateFrameworkAlias = require('./validateFrameworkAlias');
 const fontUtils = require('./fontUtils');
@@ -25,6 +26,7 @@ module.exports = {
   normalizeFrameworkAlias,
   parseJSONArgument,
   registerPartials,
+  toModalThemeFormat,
   validateFrameworkAlias,
   validateRoute,
   fontUtils,

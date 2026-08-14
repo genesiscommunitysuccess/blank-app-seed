@@ -2,9 +2,13 @@ import { Connect, ConnectConfig, defaultConnectConfig } from '@genesislcap/found
 import { EventEmitter } from '@genesislcap/foundation-events';
 import { App } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
 import {
-  baseLayerLuminance,
+  applyMode,
+  injectThemeStyles,
+  nextMode,
+  resolveInitialMode,
+} from '@genesislcap/rapid-design-system';
+import {
   customElement,
   Container,
   DefaultRouteRecognizer,
@@ -13,12 +17,11 @@ import {
   inject,
   observable,
   Registration,
-  StandardLuminance,
 } from '@genesislcap/web-core';
 import * as Components from '../components';
 import { MainRouterConfig } from '../routes';
 import { Store, StoreEventDetailMap } from '../store/foundation-store';
-import designTokens from '../styles/design-tokens.json';
+import { activeTheme } from '../styles/active-theme';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from '../utils';
 {{/if}}
@@ -48,6 +51,8 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
   @observable ready: boolean = false;
   @observable data: any = null;
 
+  private themeMode: string = resolveInitialMode(activeTheme);
+
   async connectedCallback() {
     this.registerDIDependencies();
     super.connectedCallback();
@@ -59,7 +64,9 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
     onFDC3Ready(this.FDC3ReadyHandler);
     {{/if}}
     DOM.queueUpdate(() => {
-      configureDesignSystem(this.provider, designTokens);
+      injectThemeStyles(this.provider, activeTheme);
+      this.themeMode = resolveInitialMode(activeTheme);
+      applyMode(this.provider, activeTheme, this.themeMode);
     });
   }
 
@@ -70,12 +77,8 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
   }
 
   onDarkModeToggle() {
-    baseLayerLuminance.setValueFor(
-      this.provider,
-      baseLayerLuminance.getValueFor(this.provider) === StandardLuminance.DarkMode
-        ? StandardLuminance.LightMode
-        : StandardLuminance.DarkMode,
-    );
+    this.themeMode = nextMode(activeTheme, this.themeMode);
+    applyMode(this.provider, activeTheme, this.themeMode);
   }
 
   async loadPBCs() {

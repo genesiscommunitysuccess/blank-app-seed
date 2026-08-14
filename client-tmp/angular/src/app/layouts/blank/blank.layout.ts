@@ -1,6 +1,10 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
-import * as designTokens from '../../../styles/design-tokens.json';
+import {
+  applyMode,
+  injectThemeStyles,
+  resolveInitialMode,
+} from '@genesislcap/rapid-design-system';
+import { activeTheme } from '../../../styles/active-theme';
 
 @Component({
   selector: 'app-blank-layout',
@@ -11,6 +15,11 @@ export class BlankLayoutComponent implements AfterViewInit {
   @ViewChild('designSystemProvider') designSystemProviderElement!: ElementRef;
 
   ngAfterViewInit() {
-    configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
+    injectThemeStyles(this.designSystemProviderElement.nativeElement, activeTheme);
+    applyMode(
+      this.designSystemProviderElement.nativeElement,
+      activeTheme,
+      resolveInitialMode(activeTheme),
+    );
   }
 }

@@ -8,6 +8,14 @@
     "ENABLE_SSO": {{enableSSO}},
     "PERSIST_LAYOUT_IN_DEV": false
   },
+  "genx": {
+    "eventTypes": {
+      "enabled": true,
+      "serverModule": "../server/{{appName}}-app",
+      "output": "src/generated/genesis-event-types.ts",
+      "runOnBuild": true
+    }
+  },
   "scripts": {
     "baseline": "npm run clean && npm run bootstrap",
     "bootstrap": "npm i  --no-fund --no-audit",
@@ -20,7 +28,6 @@
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",
     "dev:https": "HTTPS=true npm run dev",
-    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "lint": "genx lint --profile",
     "lint:fix": "genx lint --fix",
     "lint:eslint": "genx lint -l eslint --profile",
@@ -38,6 +45,7 @@
     "@microsoft/fast-react-wrapper": ">=0.3.25",
     "ag-grid-community": "36.0.0",
     "ag-grid-enterprise": "36.0.0",
+    "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
@@ -49,8 +57,8 @@
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
-    "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
+    "@genesislcap/foundation-react-utils": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
@@ -88,6 +96,7 @@
     "@genesislcap/prettier-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",

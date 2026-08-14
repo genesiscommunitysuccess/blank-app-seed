@@ -1,7 +1,11 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { configureDesignSystem } from '@genesislcap/foundation-ui';
+import {
+  applyMode,
+  injectThemeStyles,
+  resolveInitialMode,
+} from '@genesislcap/rapid-design-system';
 import styles from './BlankLayout.module.css';
-import * as designTokens from '../../styles/design-tokens.json';
+import { activeTheme } from '../../styles/active-theme';
 
 interface BlankLayoutProps {
   children: ReactNode;
@@ -12,12 +16,13 @@ const BlankLayout: React.FC<BlankLayoutProps> = ({ children }) =>{
 
   useEffect(() => {
     if (designSystemProviderRef.current) {
-      configureDesignSystem(designSystemProviderRef.current, designTokens);
+      injectThemeStyles(designSystemProviderRef.current, activeTheme);
+      applyMode(designSystemProviderRef.current, activeTheme, resolveInitialMode(activeTheme));
     }
   }, []);
 
   return (
-  <rapid-design-system-provider className={styles['blank-layout']}>
+  <rapid-design-system-provider ref={designSystemProviderRef} className={styles['blank-layout']}>
     <section className={styles.content}>{children}</section>
   </rapid-design-system-provider>
 );

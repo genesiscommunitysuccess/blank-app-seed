@@ -27,6 +27,15 @@ Run `npm run test:e2e` to execute the end-to-end tests via a platform of your ch
 
 Run `npm run lint` to lint the project.
 
+## Styling
+
+The design system is driven by the theme file `src/styles/default.theme.json`: tokens under `shared` (colours,
+typography, sizing) apply to every mode, while the `modes` section declares the available modes (`light` and `dark` by
+default). `src/styles/active-theme.ts` loads the theme and is used by the layout components to inject the theme styles,
+apply the initial mode, and decide whether the header shows the light/dark toggle. The toggle appears when the theme
+declares more than one mode (set `showModeToggle` in the theme file to override this), cycles through the declared
+modes, and the selected mode is remembered across reloads.
+
 ## NPM Scripts
 
 - `npm run baseline`: Cleans the project and installs dependencies.
@@ -41,7 +50,6 @@ Run `npm run lint` to lint the project.
 - `npm run dev:intellij`: Serves the project in development mode (specific for IntelliJ).
 - `npm run dev:https`: Serves the project in development mode with HTTPS.
 - `npm run dev:webpack`: Serves the project in development mode (specific for webpack configuration).
-- `npm run dsconfig`: Configures design system based on `src/styles/design-tokens.json`.
 - `npm run lint`: Lints the project using the specified profile.
 - `npm run lint:fix`: Fixes linting errors in the project.
 - `npm run lint:eslint`: Lints the project using ESLint and the specified profile.

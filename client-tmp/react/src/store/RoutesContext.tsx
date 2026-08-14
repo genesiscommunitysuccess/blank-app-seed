@@ -1,40 +1,33 @@
+import {
+  mergePbcRoutes,
+  type AppRouteConfig,
+  type PbcRouteInput,
+} from '@genesislcap/foundation-react-utils/router';
 import React, { createContext, useContext, ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import type { AppRoute } from '../types/AppRoute';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import AuthPage from '../pages/AuthPage/AuthPage';
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import NotPermittedPage from '../pages/NotPermittedPage/NotPermittedPage';
 {{#each routes}}
 import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
 import PBCContainer from '../pbc/container';
 import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
-import * as changeCase from 'change-case';
 
-const routes = [
-  {
-    path: '',
-    element: <Navigate to={AUTH_PATH} replace />,
-  },
-  {
-    path: '/not-found',
-    element: <NotFoundPage />,
-  },
-  {
-    path: `/${AUTH_PATH}`,
-    element: <AuthPage />,
-  },
-  {
-    path: `/${NOT_PERMITTED_PATH}`,
-    element: <NotPermittedPage />,
-  },
+/**
+ * Static application routes as a declarative table consumed by `renderAppRoutes`
+ * (routing), `DefaultLayout` (nav items), and `PBCContainer` (pbc lookup).
+ * `public` routes render outside the layout without the auth guard;
+ * `permissionCode` gates a route via the shared guard.
+ */
+const staticRoutes: AppRouteConfig[] = [
+  { path: `/${AUTH_PATH}`, element: <AuthPage />, public: true },
+  { path: `/${NOT_PERMITTED_PATH}`, element: <NotPermittedPage />, public: true },
   {{#each routes}}
   {
     path: '/{{kebabCase this.name}}',
     element: <{{pascalCase this.name}} />,
+    permissionCode: '{{this.permissions.viewRight}}',
     data: {
-      permissionCode: '{{this.permissions.viewRight}}',
       navItems: [
         {
           navId: 'header',
@@ -50,25 +43,14 @@ const routes = [
   {{/each}}
 ];
 
-const RoutesContext = createContext<AppRoute[]>([]);
+const RoutesContext = createContext<AppRouteConfig[]>([]);
 
 export const RoutesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const pbcRoutes = getApp().routes.map((route) => ({
-    title: changeCase.capitalCase(route.path),
-    path: `/${route.path}`,
-    element: <PBCContainer />,
-    data: {
-      ...route.settings,
-      pbcElement: route.element,
-      // @ts-expect-error - getApp() is not typed to return the elementTag
-      pbcElementTag: route.elementTag,
-      navItems: route.navItems,
-    },
-  }));
+  const routes = mergePbcRoutes(staticRoutes, getApp().routes as unknown as PbcRouteInput[], {
+    renderPbc: () => <PBCContainer />,
+  });
 
-  const allRoutes = [...routes, ...pbcRoutes];
-
-  return <RoutesContext.Provider value={allRoutes}>{children}</RoutesContext.Provider>;
+  return <RoutesContext.Provider value={routes}>{children}</RoutesContext.Provider>;
 };
 
 export const useRoutesContext = () => {

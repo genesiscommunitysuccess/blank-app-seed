@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
-import { configureDesignSystem, getNavItems } from '@genesislcap/foundation-ui';
-import { baseLayerLuminance, StandardLuminance } from '@microsoft/fast-components';
+import { getNavItems } from '@genesislcap/foundation-ui';
+import {
+  applyMode,
+  injectThemeStyles,
+  nextMode,
+  resolveInitialMode,
+} from '@genesislcap/rapid-design-system';
 import styles from './DefaultLayout.module.css';
 import PBCElementsRenderer from '../../pbc/elementsRenderer';
 import { registerStylesTarget } from '../../pbc/utils';
-import * as designTokens from '../../styles/design-tokens.json';
+import { activeTheme, modeToggleEnabled } from '../../styles/active-theme';
 import { useRoutesContext } from '../../store/RoutesContext';
 import { useDocumentTitle } from '../../utils/useDocumentTitle';
 import { LOGOUT_URL } from '@genesislcap/foundation-utils';
@@ -41,6 +46,7 @@ const getSnapshot = () => connect.isConnected;
 const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   const navigate = useNavigate();
   const designSystemProviderRef = useRef<HTMLElement>(null);
+  const themeModeRef = useRef<string>(resolveInitialMode(activeTheme));
   const routes = useRoutesContext() as ExtendedRouteObject[];
   const navItems = getNavItems(
     routes.flatMap((route) => ({
@@ -53,13 +59,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   const onLuminanceToggle = (): void => {
     if (designSystemProviderRef.current) {
-      baseLayerLuminance.setValueFor(
-        designSystemProviderRef.current,
-        baseLayerLuminance.getValueFor(designSystemProviderRef.current) ===
-          StandardLuminance.DarkMode
-          ? StandardLuminance.LightMode
-          : StandardLuminance.DarkMode,
-      );
+      themeModeRef.current = nextMode(activeTheme, themeModeRef.current);
+      applyMode(designSystemProviderRef.current, activeTheme, themeModeRef.current);
     }
   };
 
@@ -67,7 +68,9 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   useEffect(() => {
     if (designSystemProviderRef.current) {
-      configureDesignSystem(designSystemProviderRef.current, designTokens);
+      injectThemeStyles(designSystemProviderRef.current, activeTheme);
+      themeModeRef.current = resolveInitialMode(activeTheme);
+      applyMode(designSystemProviderRef.current, activeTheme, themeModeRef.current);
       registerStylesTarget(document.body, 'layout');
       registerStylesTarget(document.body, 'header');
       registerStylesTarget(document.body, 'content');
@@ -90,7 +93,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
               await fetch(LOGOUT_URL);
               window.location.reload();
             }}
-            show-luminance-toggle-button
+            show-luminance-toggle-button={modeToggleEnabled}
             show-misc-toggle-button
             routeNavItems={navItems}
             navigateTo={(path: string) => navigate(path)}
