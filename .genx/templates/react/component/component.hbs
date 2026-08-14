@@ -55,8 +55,10 @@ import { getViewUpdateRightComponent } from '../../../utils';
 {{#if tile.config.columns~}}
 import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
 {{/if}}
+{{#if tile.config.createEvent}}
 {{#if tile.config.createFormUiSchema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
+{{/if}}
 {{/if}}
 {{#if tile.config.uischema~}}
 import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
@@ -64,14 +66,18 @@ import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.ti
 {{#if tile.config.customEvents}}
 import { customActions } from './{{pascalCase tile.title}}EventsConfig';
 {{/if}}
+{{#if tile.config.enableFilters}}
 {{#if tile.config.filterFormUiSchema~}}
 import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
+{{/if}}
 {{/if}}
 {{#if tile.config.gridOptions~}}
 import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
 {{/if}}
+{{#if tile.config.updateEvent}}
 {{#if tile.config.updateFormUiSchema~}}
 import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
+{{/if}}
 {{/if}}
 import './{{pascalCase tile.title}}Component.css';
 
@@ -116,17 +122,23 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
   };
   {{/if}}
+  {{#if tile.config.createEvent}}
   {{#if tile.config.createFormUiSchema}}
   const createFormSchema: typeof createFormSchemaTile = createFormSchemaTile;
+  {{/if}}
   {{/if}}
   {{#if tile.config.uischema}}
   const uischema: typeof createFormSchemaTile = createFormSchemaTile;
   {{/if}}
+  {{#if tile.config.updateEvent}}
   {{#if tile.config.updateFormUiSchema}}
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
+  {{/if}}
+  {{#if tile.config.enableFilters}}
   {{#if tile.config.filterFormUiSchema}}
   const filterFormSchema: typeof filterFormSchemaTile = filterFormSchemaTile;
+  {{/if}}
   {{/if}}
   {{#if tile.config.columns}}
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];

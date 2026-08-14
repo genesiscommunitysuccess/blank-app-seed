@@ -53,7 +53,9 @@ function gridOptionsSerializer(options, indent = 0) {
         // onRowClicked must be functions, so emit the sendEventOnChannel factory call that the
         // generated src/utils/fdc3.ts provides instead of leaking the raw marker object.
         const args = [value.channelName, value.type].map(serialiseFunctionArg).join(', ');
-        fields += `${itemPad}${key}: sendEventOnChannel(${args}),\n`;
+        // prettier-ignore pin: channel/type are user data, so the emitted call can exceed the
+        // print width; the pin keeps the single-line form stable either way.
+        fields += `${itemPad}// prettier-ignore\n${itemPad}${key}: sendEventOnChannel(${args}),\n`;
       } else if (key === 'hide') {
         fields += `${itemPad}${key}: ${value},\n`;
       } else {
