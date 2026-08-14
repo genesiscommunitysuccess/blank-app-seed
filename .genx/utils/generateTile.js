@@ -176,7 +176,11 @@ const getFilesToWrite = (
       }
       break;
     case 'smart-form':
-      filesToWrite.push(componentAddFormFile);
+      // Only write the schema module when there is a uischema to export; an
+      // uischema-less smart-form must not emit a file with unused imports.
+      if (tileData.config?.uischema) {
+        filesToWrite.push(componentAddFormFile);
+      }
       break;
     default:
       break;

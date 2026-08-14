@@ -7,9 +7,14 @@ import { AUTH_PATH, NOT_PERMITTED_PATH } from '../app.config';
 import { ChainedGuard } from '../guards/chained.guard';
 import { AuthLoginComponent } from '../pages/auth-login/auth-login.component';
 import { NotPermittedComponent } from '../pages/not-permitted/not-permitted.component';
+{{#if routes.length}}
+// Route page imports are emitted in the order the routes are declared in the app definition.
+/* eslint-disable import-es/order */
 {{#each routes}}
 import { {{pascalCase this.name}}Component } from '../pages/{{kebabCase this.name}}/{{kebabCase this.name}}.component';
 {{/each}}
+/* eslint-enable import-es/order */
+{{/if}}
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,15 @@
-import { GridOptions } from '@ag-grid-community/core';
-import { getNumberFormatter, getDateFormatter } from '@genesislcap/foundation-utils';
+import type { GridOptions } from '@ag-grid-community/core';
+{{#ifContains tile.config.gridOptions "getNumberFormatter"}}
+import { getNumberFormatter{{#ifContains tile.config.gridOptions "getDateFormatter"}}, getDateFormatter{{/ifContains}} } from '@genesislcap/foundation-utils';
+{{else}}
+{{#ifContains tile.config.gridOptions "getDateFormatter"}}
+import { getDateFormatter } from '@genesislcap/foundation-utils';
+{{/ifContains}}
+{{/ifContains}}
 {{#if route.FDC3EventHandlersEnabled}}
+{{#ifContains tile.config.gridOptions "sendEventOnChannel"}}
 import { sendEventOnChannel } from '../../../utils';
+{{/ifContains}}
 {{/if}}
 
 {{#if tile.config.gridOptions}}

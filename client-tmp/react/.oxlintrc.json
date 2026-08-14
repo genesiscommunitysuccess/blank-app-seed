@@ -1,4 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "extends": ["./node_modules/@genesislcap/oxlint-config/.oxlintrc.json"]
+  "extends": ["./node_modules/@genesislcap/oxlint-config/.oxlintrc.json"],
+  "overrides": [
+    {
+      "files": ["webpack.config.js"],
+      "rules": {
+        "import-es/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }

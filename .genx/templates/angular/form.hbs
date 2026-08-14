@@ -1,5 +1,5 @@
 <section style="height: 100%; width: 100%">
-  <ng-container {{#if config.permissions.updateRight}}*ngIf="hasUserPermission('{{config.permissions.updateRight}}'); else notPermitted{{ config.index }}"{{/if}}>
+  <ng-container{{#if config.permissions.updateRight}} *ngIf="hasUserPermission('{{config.permissions.updateRight}}'); else notPermitted{{ config.index }}"{{/if}}>
     {{#if config.uischema}}<foundation-form
       design-system-prefix="rapid"
       resourceName="{{config.resourceName}}"
@@ -13,5 +13,6 @@
       elementType="h3"
       message="You do not have access to view this component."
     ></app-error-message>
-  </ng-template>{{/if}}
+  </ng-template>
+  {{/if}}
 </section>

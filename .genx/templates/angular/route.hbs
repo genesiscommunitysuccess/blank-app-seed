@@ -1,9 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { environment } from '../../../environments/environment';
+{{#if route.tiles}}
+// Tile imports are emitted in the order the tiles are declared in the route definition.
+/* eslint-disable import-es/order */
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
 {{/each}}
+/* eslint-enable import-es/order */
+{{/if}}
 
 @Component({
   selector: 'app-{{kebabCase route.name}}',
@@ -12,6 +17,7 @@ import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{
     {{#each route.tiles}}
     {{pascalCase this.componentName}},
     {{/each}}
+    // CommonModule provides the built-in directives (ngIf/ngFor) used by the template.
     CommonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -11,22 +11,34 @@ ${whenElse(
       {{/if}}
       resourceName="{{ config.resourceName }}"
       {{#if config.createEvent}}
+      {{#if config.permissions.updateRight}}
       createEvent="${(x) =>
         getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.createEvent }}')}"
+      {{else}}
+      createEvent="{{ config.createEvent }}"
+      {{/if}}
       {{#if config.createFormUiSchema}}
       :createFormUiSchema=${() => createFormSchema}
       {{/if}}
       {{/if}}
       {{#if config.updateEvent}}
+      {{#if config.permissions.updateRight}}
       updateEvent="${(x) =>
         getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.updateEvent }}')}"
+      {{else}}
+      updateEvent="{{ config.updateEvent }}"
+      {{/if}}
       {{#if config.updateFormUiSchema}}
       :updateFormUiSchema=${() => updateFormSchema}
       {{/if}}
       {{/if}}
       {{#if config.deleteEvent}}
+      {{#if config.permissions.updateRight}}
       deleteEvent="${(x) =>
         getViewUpdateRightComponent(x.user, '{{config.permissions.updateRight}}', '{{ config.deleteEvent }}')}"
+      {{else}}
+      deleteEvent="{{ config.deleteEvent }}"
+      {{/if}}
       {{/if}}
       {{#ifAny config.gridOptions config.eventing.publishEventName}}
       :gridOptions=${(x) => ({

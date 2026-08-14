@@ -1,12 +1,16 @@
 ${whenElse(
   (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
   html`
+    {{#if config.useOnlyTemplateCols}}
     <rapid-grid-pro
-      header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
-      only-template-col-defs{{/if}}
+      header-case-type="capitalCase"
+      only-template-col-defs
       enable-row-flashing
       enable-cell-flashing
     >
+    {{else}}
+    <rapid-grid-pro header-case-type="capitalCase" enable-row-flashing enable-cell-flashing>
+    {{/if}}
       <grid-pro-genesis-datasource
         resource-name="{{config.resourceName}}"
         {{#if config.reqrep}}

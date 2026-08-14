@@ -8,10 +8,7 @@ ${whenElse(
       :uischema=${() => createFormSchema}
     ></foundation-form>
     {{else}}
-    <foundation-form
-      design-system-prefix="rapid"
-      resourceName="{{config.resourceName}}"
-    ></foundation-form>
+    <foundation-form design-system-prefix="rapid" resourceName="{{config.resourceName}}"></foundation-form>
     {{/if}}
   `,
   html`

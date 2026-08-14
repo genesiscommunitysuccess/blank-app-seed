@@ -13,6 +13,7 @@
     {{/ifEquals}}
   {{/each}}
   </rapid-layout-region>
+  {{#if route.tiles.[2]}}
   <rapid-layout-region type="vertical">
   {{#each route.tiles}}
     {{#ifEquals @index 2}}
@@ -27,4 +28,7 @@
     {{/ifEquals}}
   {{/each}}
   </rapid-layout-region>
+  {{else}}
+  <rapid-layout-region type="vertical"></rapid-layout-region>
+  {{/if}}
 </rapid-layout-region>

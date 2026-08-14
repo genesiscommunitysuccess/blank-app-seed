@@ -1,12 +1,10 @@
 import { html } from '@genesislcap/web-core';
+{{#if route.tiles}}
 import { persistLayout } from '../../utils';
+{{/if}}
 import type { {{pascalCase route.name}} } from './{{kebabCase route.name}}';
 {{#each route.tiles}}
-import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
-{{/each}}
-
-{{#each route.tiles}}
-{{pascalCase this.componentName}};
+import './{{kebabCase this.title}}-{{this.componentType}}';
 {{/each}}
 
 export const {{pascalCase route.name}}Template = html<{{pascalCase route.name}}>`

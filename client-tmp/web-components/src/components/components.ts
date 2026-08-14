@@ -32,13 +32,15 @@ export async function registerComponents() {
     designSystem: rapidDesignSystem,
   });
 
-  rapidDesignSystem.provideDesignSystem().register(
-    rapidDesignSystem.baseComponents,
-    rapidGridProBeta(),
-    rapidGridComponents,
-    g2plotChartsComponents,
-    foundationLayoutComponents,
-  );
+  rapidDesignSystem
+    .provideDesignSystem()
+    .register(
+      rapidDesignSystem.baseComponents,
+      rapidGridProBeta(),
+      rapidGridComponents,
+      g2plotChartsComponents,
+      foundationLayoutComponents,
+    );
 
   configureHeader({
     templateOptions: {

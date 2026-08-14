@@ -27,6 +27,9 @@ type BaseErrorBoundaryState = {
   referenceId: string;
 };
 
+/** Cap on the ring buffer of error reports exposed to genesis-telemetry.js. */
+const MAX_ERROR_BOUNDARY_REPORTS = 20;
+
 const initialBoundaryState: BaseErrorBoundaryState = {
   hasError: false,
   error: null,
@@ -158,8 +161,13 @@ class BaseErrorBoundary extends React.Component<BaseErrorBoundaryProps, BaseErro
 
     // Expose to genesis-telemetry.js so the UI Builder agent can read it via get_preview_diagnostics
     const reports: unknown[] = ((window as any).__GENESIS_ERROR_BOUNDARY_REPORTS__ ??= []);
-    reports.push({ message: normalized.message, stack: normalized.stack ?? null, componentStack: errorInfo.componentStack ?? null, ts: Date.now() });
-    if (reports.length > 20) reports.shift();
+    reports.push({
+      message: normalized.message,
+      stack: normalized.stack ?? null,
+      componentStack: errorInfo.componentStack ?? null,
+      ts: Date.now(),
+    });
+    if (reports.length > MAX_ERROR_BOUNDARY_REPORTS) reports.shift();
   }
 
   private readonly handleRetry = (): void => {

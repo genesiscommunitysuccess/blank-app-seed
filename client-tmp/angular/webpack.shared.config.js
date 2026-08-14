@@ -4,8 +4,8 @@ const path = require('path');
 require('ts-node').register({
   transpileOnly: true,
   compilerOptions: {
-    module: 'commonjs'
-  }
+    module: 'commonjs',
+  },
 });
 
 const apiPrefix = process.env.SOCKET_EXT || 'gwf';
@@ -36,10 +36,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'pbc': path.resolve(
-          __dirname,
-          'src/pbc',
-      )
+      pbc: path.resolve(__dirname, 'src/pbc'),
     },
   },
   /**
@@ -59,19 +56,18 @@ module.exports = {
     proxy: [
       {
         context: apiBasePath,
-        target: "{{apiHost}}",
+        target: '{{apiHost}}',
         pathRewrite: { [`^${apiBasePath}`]: '' },
         secure: false,
         changeOrigin: true,
         cookieDomainRewrite: 'localhost',
         ws: true,
         headers: {
-          origin: "{{apiHost}}",
-        }
-      }
+          origin: '{{apiHost}}',
+        },
+      },
     ],
     compress: true,
     historyApiFallback: true,
   },
 };
-

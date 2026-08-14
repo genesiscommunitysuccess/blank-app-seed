@@ -1,8 +1,13 @@
+{{#ifContains tile.config.customEvents '"hasForm":true'}}
+{{#ifContains tile.config.customEvents '"position":"'}}
 import {
   type CustomAction,
   CrudMenuPosition,
   UiSchema,
 } from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction, UiSchema } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
 
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
@@ -10,6 +15,20 @@ export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/if}}
 {{/each}}
 
+{{else}}
+{{#ifContains tile.config.customEvents '"position":"'}}
+import { type CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+
+{{/ifContains}}
+{{#each tile.config.customEvents}}
+{{#if this.defaultValues}}
+const {{camelCase this.name}}DefaultValues = {{{this.defaultValues}}};
+
+{{/if}}
+{{/each}}
 export const customActions: CustomAction[] = [
   {{#each tile.config.customEvents}}
   {
@@ -22,7 +41,7 @@ export const customActions: CustomAction[] = [
       uiSchema: {{camelCase this.name}}FormSchema,
       {{/if}}
       {{#if this.defaultValues}}
-      defaultValues: {{{this.defaultValues}}},
+      defaultValues: {{camelCase this.name}}DefaultValues,
       {{/if}}
     },
     {{#if this.position}}

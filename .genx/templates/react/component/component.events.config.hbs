@@ -1,15 +1,29 @@
+{{#ifContains tile.config.customEvents '"position":'}}
+{{#ifContains tile.config.customEvents '"uischema":'}}
 import {
   type CustomAction,
   CrudMenuPosition,
   UiSchema,
 } from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+{{else}}
+{{#ifContains tile.config.customEvents '"uischema":'}}
+import { type CustomAction, UiSchema } from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+{{/ifContains}}
 
+{{#ifContains tile.config.customEvents '"uischema":'}}
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
 export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/if}}
 {{/each}}
 
+{{/ifContains}}
 export const customActions: CustomAction[] = [
   {{#each tile.config.customEvents}}
   {

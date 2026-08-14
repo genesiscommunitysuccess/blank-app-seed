@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     // @ts-ignore
     configureFoundationAuth({ router, connectService: this.connect });
-      
+
     // Set layout componet based on route
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -76,14 +76,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
   }
 
-
+  {{#if FDC3.channels.length}}
   ngAfterViewInit() {
-    {{#if FDC3.channels.length}}
     onFDC3Ready(this.FDC3ReadyHandler);
-    {{/if}}
   }
 
-  {{#if FDC3.channels.length}}
   FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
@@ -93,5 +90,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     {{/each}}
   };
+  {{else}}
+  ngAfterViewInit() {}
   {{/if}}
 }

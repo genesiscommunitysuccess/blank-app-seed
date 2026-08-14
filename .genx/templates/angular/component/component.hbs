@@ -1,5 +1,5 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { getUser } from '@genesislcap/foundation-user';
 {{#if tile.config.gridOptions}}
 import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
@@ -20,8 +20,8 @@ import { selectors } from '../../../store/store';
 {{/if}}
 {{/if}}
 import { getViewUpdateRightComponent } from '../../../utils';
-{{#if tile.config.customEvents}}
-import { customActions as emCustomActions } from './{{kebabCase tile.title}}.events.config';
+{{#if tile.config.columns}}
+import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.createFormUiSchema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
@@ -29,14 +29,14 @@ import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema'
 {{#if tile.config.uischema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
 {{/if}}
+{{#if tile.config.customEvents}}
+import { customActions as emCustomActions } from './{{kebabCase tile.title}}.events.config';
+{{/if}}
 {{#if tile.config.filterFormUiSchema}}
 import { filterFormSchema } from './{{kebabCase tile.title}}.filter.form.schema';
 {{/if}}
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
-{{/if}}
-{{#if tile.config.columns}}
-import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
 {{/if}}
 {{#if tile.config.updateFormUiSchema}}
 import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
@@ -50,7 +50,6 @@ import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema'
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
 {{/ifAny}}
-
 @Component({
   selector: 'app-{{kebabCase tile.componentName}}',
   templateUrl: './{{kebabCase tile.title}}.component.html',

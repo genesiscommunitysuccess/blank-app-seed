@@ -3,15 +3,19 @@ import {
   type AppRouteConfig,
   type PbcRouteInput,
 } from '@genesislcap/foundation-react-utils/router';
-import React, { createContext, useContext, ReactNode } from 'react';
 import { getApp } from '@genesislcap/foundation-shell/app';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import NotPermittedPage from '../pages/NotPermittedPage/NotPermittedPage';
+import PBCContainer from '../pbc/container';
+{{#if routes.[0]}}
+/* eslint-disable import-es/order -- generated route pages follow route-table order, not alphabetical */
 {{#each routes}}
 import {{pascalCase this.name}} from '../pages/{{pascalCase this.name}}/{{pascalCase this.name}}';
 {{/each}}
-import PBCContainer from '../pbc/container';
-import { AUTH_PATH, NOT_PERMITTED_PATH } from '../config';
+/* eslint-enable import-es/order */
+{{/if}}
 
 /**
  * Static application routes as a declarative table consumed by `renderAppRoutes`

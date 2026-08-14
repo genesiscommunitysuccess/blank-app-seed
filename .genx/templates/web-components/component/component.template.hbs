@@ -1,12 +1,9 @@
-import { html, whenElse{{#if tile.config.columns}}, repeat{{/if}} } from '@genesislcap/web-core';
+import { html, whenElse{{#ifEquals tile.componentType "grid"}}{{#if tile.config.gridOptions}}, repeat{{/if}}{{/ifEquals}} } from '@genesislcap/web-core';
 import { getViewUpdateRightComponent } from '../../../utils';
 import type { {{pascalCase tile.componentName}} } from './{{kebabCase tile.title}}';
-{{#if tile.config.createFormUiSchema}}
+{{#ifAny tile.config.createFormUiSchema tile.config.uischema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
-{{/if}}
-{{#if tile.config.uischema}}
-import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
-{{/if}}
+{{/ifAny}}
 {{#if tile.config.customEvents}}
 import { customActions } from './{{kebabCase tile.title}}.events.config';
 {{/if}}

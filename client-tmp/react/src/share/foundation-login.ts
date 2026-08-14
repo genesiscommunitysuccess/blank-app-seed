@@ -1,12 +1,12 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
+import { Connect } from '@genesislcap/foundation-comms';
 import {
   buildPostLoginRedirect,
   type RedirectableLocationState,
 } from '@genesislcap/foundation-react-utils/router';
-import { AUTH_PATH } from '../config';
-import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
 import type { NavigateFunction, Location as RouterLocation } from 'react-router-dom';
+import { AUTH_PATH } from '../config';
 
 /**
  * Configure the micro frontend

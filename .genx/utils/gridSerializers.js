@@ -1,5 +1,12 @@
 const formatJSONValue = require('./formatJSONValue');
 
+// Emit single-quoted string literals so generated code matches oxfmt (singleQuote: true);
+// JSON.stringify would emit double quotes and fail `oxfmt --check` out of the box.
+const serialiseFunctionArg = (arg) =>
+  typeof arg === 'string'
+    ? `'${arg.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
+    : JSON.stringify(arg);
+
 function gridColumnsSerializer(columns, indent = 0) {
   if (!columns) return undefined;
 
@@ -10,7 +17,7 @@ function gridColumnsSerializer(columns, indent = 0) {
       const fields = Object.entries(column)
         .map(([k, v]) => {
           if (v?.type === 'function' || v?.type === 'valueFormatter') {
-            const args = v.arguments?.map(JSON.stringify).join(', ');
+            const args = v.arguments?.map(serialiseFunctionArg).join(', ');
             return `${itemPad}  ${k}: ${v.name}(${args}),`;
           }
           if (k === 'hide') return `${itemPad}  ${k}: ${v},`;
@@ -38,7 +45,7 @@ function gridOptionsSerializer(options, indent = 0) {
       if (key === 'columns') {
         fields += `${itemPad}columnDefs: ${gridColumnsSerializer(value, indent + 2)},\n`;
       } else if (value?.type === 'function' || value?.type === 'valueFormatter') {
-        const args = value.arguments?.map(JSON.stringify).join(', ');
+        const args = value.arguments?.map(serialiseFunctionArg).join(', ');
         fields += `${itemPad}${key}: ${value.name}(${args}),\n`;
       } else if (key === 'hide') {
         fields += `${itemPad}${key}: ${value},\n`;

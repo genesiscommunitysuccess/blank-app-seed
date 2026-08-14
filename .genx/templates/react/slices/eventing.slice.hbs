@@ -5,6 +5,7 @@ import { createSlice } from '@genesislcap/foundation-redux';
 
 export const eventingSlice = createSlice({
   name: 'eventing',
+{{#if events.length}}
   initialState: {
 {{#each events}}
     {{this}}: null,
@@ -17,6 +18,11 @@ export const eventingSlice = createSlice({
     },
 {{/each}}
   },
+{{else}}
+  initialState: {},
+  reducers: {},
+{{/if}}
+{{#if listeners.length}}
   selectors: {
 {{#each listeners}}
     getCriteriaFor{{pascalCase tileName}}: (state) => {
@@ -40,4 +46,7 @@ export const eventingSlice = createSlice({
     },
 {{/each}}
   },
+{{else}}
+  selectors: {},
+{{/if}}
 });

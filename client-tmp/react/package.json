@@ -75,6 +75,7 @@
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-react-utils": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
+    "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",

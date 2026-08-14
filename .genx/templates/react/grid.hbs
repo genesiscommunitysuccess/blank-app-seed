@@ -1,11 +1,14 @@
+{{#if config.useOnlyTemplateCols}}
 <RapidGridPro
   headerCaseType={GridProCaseType.capitalCase}
-  {{#if config.useOnlyTemplateCols}}
   onlyTemplateColDefs
-  {{/if}}
   enableRowFlashing
   enableCellFlashing
 >
+{{else}}
+<RapidGridPro headerCaseType={GridProCaseType.capitalCase} enableRowFlashing enableCellFlashing>
+{{/if}}
+{{#ifAny config.snapshot config.gridOptions config.eventing.publishEventName config.eventing.listener config.reqrep}}
   <GridProGenesisDatasource
     resourceName="{{config.resourceName}}"
     {{#if config.snapshot}}
@@ -22,6 +25,9 @@
     pollingInterval={datasourceConfig.pollingInterval}
     {{/if}}
   />
+{{else}}
+  <GridProGenesisDatasource resourceName="{{config.resourceName}}" />
+{{/ifAny}}
   {{#if config.gridOptions}}
   {gridOptionsTile?.columnDefs?.map((columnDef, index) => (
     <GridProColumn key={index} definition={columnDef} />

@@ -8,16 +8,16 @@
   font-display: swap;
 }
 {{/each}}
-{{/if}}
 
+{{/if}}
 {{#unless fontFamily}}
 @font-face {
   font-family: Segoe UI;
   font-weight: 300;
   src: local('Segoe UI Semilight'), local('Segoe UI');
 }
-{{/unless}}
 
+{{/unless}}
 * {
   font-family: {{#if fontFamily}}'{{fontFamily}}', {{/if}}'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   font-style: normal;
