@@ -7,6 +7,12 @@
   "genx": {
     "app": {
       "rootElement": "{{rootElement}}"
+    },
+    "eventTypes": {
+      "enabled": true,
+      "serverModule": "../server/{{appName}}-app",
+      "output": "src/generated/genesis-event-types.ts",
+      "runOnBuild": true
     }
   },
   "scripts": {
@@ -22,7 +28,6 @@
     "dev:intellij": "npm run dev",
     "dev:https": "npm run dev -- --https",
     "dev:webpack": "npm run dev",
-    "dsconfig": "dsconfig --path src/styles/design-tokens.json",
     "lint": "genx lint --profile",
     "lint:fix": "genx lint --fix",
     "lint:eslint": "genx lint -l eslint --profile",
@@ -52,6 +57,7 @@
     "@genesislcap/prettier-config": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
+    "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.13",
@@ -77,6 +83,7 @@
     "@angular/platform-browser": "^18.0.4",
     "@angular/platform-browser-dynamic": "^18.0.4",
     "@angular/router": "^18.0.4",
+    "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
@@ -88,7 +95,6 @@
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
-    "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-notifications": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
@@ -119,6 +125,7 @@
     "@angular/platform-browser": "^18.0.4",
     "@angular/platform-browser-dynamic": "^18.0.4",
     "@angular/router": "^18.0.4",
+    "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
@@ -130,7 +137,6 @@
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
     "@genesislcap/foundation-logger": "{{versions.UI}}",
-    "@genesislcap/foundation-login": "{{versions.UI}}",
     "@genesislcap/foundation-shell": "{{versions.UI}}",
     "@genesislcap/foundation-store": "{{versions.UI}}",
     "@genesislcap/foundation-ui": "{{versions.UI}}",

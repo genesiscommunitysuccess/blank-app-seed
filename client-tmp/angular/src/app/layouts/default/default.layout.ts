@@ -1,8 +1,13 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { configureDesignSystem, FoundationRouteNavItem } from '@genesislcap/foundation-ui';
-import { baseLayerLuminance, StandardLuminance } from '@genesislcap/web-core';
-import * as designTokens from '../../../styles/design-tokens.json';
+import { FoundationRouteNavItem } from '@genesislcap/foundation-ui';
+import {
+  applyMode,
+  injectThemeStyles,
+  nextMode,
+  resolveInitialMode,
+} from '@genesislcap/rapid-design-system';
+import { activeTheme, modeToggleEnabled } from '../../../styles/active-theme';
 import { RouteService } from '../../services/route.service';
 import BaseLayout from '../base.layout';
 import { registerStylesTarget } from '../../../pbc/utils';
@@ -15,6 +20,8 @@ import { registerStylesTarget } from '../../../pbc/utils';
 export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit {
   @ViewChild('designSystemProvider') designSystemProviderElement!: ElementRef;
   navItems: FoundationRouteNavItem[] = [];
+  modeToggleEnabled = modeToggleEnabled;
+  private themeMode = resolveInitialMode(activeTheme);
 
   constructor(
     private el: ElementRef,
@@ -26,10 +33,12 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
   }
 
   ngAfterViewInit() {
-    configureDesignSystem(this.designSystemProviderElement.nativeElement, designTokens);
+    injectThemeStyles(this.designSystemProviderElement.nativeElement, activeTheme);
+    this.themeMode = resolveInitialMode(activeTheme);
+    applyMode(this.designSystemProviderElement.nativeElement, activeTheme, this.themeMode);
     registerStylesTarget(this.el.nativeElement, 'layout');
   }
-  
+
   navigateAngular = (path: string) => {
     this.router.navigate([path]);
   };
@@ -37,14 +46,9 @@ export class DefaultLayoutComponent extends BaseLayout implements AfterViewInit 
   onLogout = () => {
     this.router.navigate(['/login']);
   };
-  
+
   onLuminanceToogle = (): void => {
-    baseLayerLuminance.setValueFor(
-      this.designSystemProviderElement.nativeElement,
-      baseLayerLuminance.getValueFor(this.designSystemProviderElement.nativeElement) ===
-        StandardLuminance.DarkMode
-        ? StandardLuminance.LightMode
-        : StandardLuminance.DarkMode,
-    );
+    this.themeMode = nextMode(activeTheme, this.themeMode);
+    applyMode(this.designSystemProviderElement.nativeElement, activeTheme, this.themeMode);
   };
 }

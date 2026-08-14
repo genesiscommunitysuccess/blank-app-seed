@@ -1,41 +1,31 @@
-import { Routes, Route{{#if routes.[0]}}, Navigate{{/if}} } from 'react-router-dom';
-import AuthPage from '../../pages/AuthPage/AuthPage';
-{{#if routes.[0]}}
-import {{pascalCase routes.[0].name}} from '../../pages/{{pascalCase routes.[0].name}}/{{pascalCase routes.[0].name}}';
-{{/if}}
+import { renderAppRoutes } from '@genesislcap/foundation-react-utils/router';
 import DefaultLayout from '../../layouts/default/DefaultLayout';
-import ProtectedRoute from './ProtectedRoute';
-import { useRoutesContext } from '../../store/RoutesContext';
-import PBCContainer from '../../pbc/container';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.tsx';
+import { useRoutesContext } from '../../store/RoutesContext';
+import ProtectedRoute from './ProtectedRoute';
+{{#if routes.[0]}}
+import SingleComponent, { initialComponentName } from '../single-component/SingleComponent';
+{{/if}}
 
+/**
+ * Builds the app's `<Routes>` from the declarative route table (see RoutesContext)
+ * via `renderAppRoutes`, which applies the auth/permission guard, wraps in-layout
+ * routes in `DefaultLayout`, and handles the `/` redirect, not-found, and the
+ * single-component (`?component=<name>`) short-circuit.
+ */
 const AppRoutes = () => {
   const routes = useRoutesContext();
-  return (
-    <Routes>
-      <Route path="/login" element={<AuthPage />} />
-      {{#if routes.[0]}}
-      <Route path="/" element={<Navigate to="/{{kebabCase routes.[0].name}}" replace />} />
-      {{/if}}
-      <Route element={<DefaultLayout />}>
-        {{#if routes.[0]}}
-        <Route path="/" element={<{{pascalCase routes.[0].name}} />} />
-        {{/if}}
-        {routes.map(route => (<Route
-            key={route.path}
-            path={route.path}
-            element={
-            <ProtectedRoute>
-              {route.data?.pbcElement ? <PBCContainer /> : route.element}
-            </ProtectedRoute>
-            }
-            />))}
-      </Route>
-      
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  );
+
+  return renderAppRoutes({
+    routes,
+    ProtectedRoute,
+    layout: <DefaultLayout />,
+{{#if routes.[0]}}
+    redirects: [{ from: '/', to: '/{{kebabCase routes.[0].name}}' }],
+    singleComponent: { name: initialComponentName, element: <SingleComponent /> },
+{{/if}}
+    notFound: <NotFoundPage />,
+  });
 };
 
-export default AppRoutes; 
-
+export default AppRoutes;

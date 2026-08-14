@@ -5,7 +5,7 @@
     logo-src="assets/{{headerLogoSrc}}"
 {{/if}}
     #foundationHeader
-    show-luminance-toggle-button
+    [attr.show-luminance-toggle-button]="modeToggleEnabled"
     show-misc-toggle-button
     (luminance-icon-clicked)="onLuminanceToogle()"
     (logout-clicked)="onLogout()"

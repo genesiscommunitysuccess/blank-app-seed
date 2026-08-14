@@ -1,14 +1,12 @@
 import { configure, defaultAuthConfig } from '@genesislcap/foundation-auth/config';
+import {
+  buildPostLoginRedirect,
+  type RedirectableLocationState,
+} from '@genesislcap/foundation-react-utils/router';
 import { AUTH_PATH } from '../config';
 import { Connect } from '@genesislcap/foundation-comms';
 import { DI } from '@genesislcap/web-core';
 import type { NavigateFunction, Location as RouterLocation } from 'react-router-dom';
-
-interface LocationState {
-  from?: {
-    pathname: string;
-  };
-}
 
 /**
  * Configure the micro frontend
@@ -18,7 +16,7 @@ export const configureFoundationLogin = ({
   location,
 }: {
   navigate: NavigateFunction;
-  location: RouterLocation<LocationState>;
+  location: RouterLocation<RedirectableLocationState>;
 }) => {
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
@@ -36,8 +34,9 @@ export const configureFoundationLogin = ({
     hostPath: basePath + AUTH_PATH,
     postLoginRedirect: async () => {
       await connect.connect();
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      // Preserve the full original location (query string + hash) so deep-link
+      // params such as `?component=<name>` survive the login bounce.
+      navigate(buildPostLoginRedirect(location), { replace: true });
     },
   });
 };
