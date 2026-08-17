@@ -26,20 +26,20 @@ export const useDocumentTitle = () => {
       return location.pathname === routePath || location.pathname.startsWith(routePath + '/');
     });
 
-    let pageTitle = 'React App';
+    let pageTitle = '{{capitalCase appName}}';
 
     if (currentRoute) {
       if (currentRoute.title) {
         pageTitle = currentRoute.title;
       } else if (currentRoute.data?.navItems && currentRoute.data.navItems.length > 0) {
-        pageTitle = currentRoute.data.navItems[0].title || 'React App';
+        pageTitle = currentRoute.data.navItems[0].title || '{{capitalCase appName}}';
       }
     }
 
     document.title = pageTitle;
 
     return () => {
-      document.title = 'React App';
+      document.title = '{{capitalCase appName}}';
     };
   }, [location.pathname, routes]);
 };
