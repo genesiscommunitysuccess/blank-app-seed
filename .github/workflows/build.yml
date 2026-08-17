@@ -40,7 +40,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x --enableDeployPlugin
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x --framework react --enableDeployPlugin
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
