@@ -1,0 +1,28 @@
+{
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "printWidth": 100,
+  "htmlWhitespaceSensitivity": "ignore",
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/node_modules",
+    "**/__tests__",
+    "**/__test__",
+    "**/.tmp",
+    "**/bootstrap",
+    "**/coverage",
+    "**/dist",
+    "**/temp",
+    "**/storybook-static",
+    "**/*.d.ts",
+    "**/*.md",
+    "**/*.hbs",
+    "**/.genx/**",
+    "**/index.html"
+  ]
+}

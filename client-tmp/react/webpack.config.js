@@ -1,14 +1,12 @@
 const { resolve, join } = require('path');
-const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 module.exports = (env, argv) => {
   const mode = argv.mode || 'development';
   const https = process.env.HTTPS === 'true';
   const open = !(process.env.NO_OPEN === 'true');
-  const environmentFile = mode === 'production'
-    ? 'environment.prod.ts'
-    : 'environment.ts';
+  const environmentFile = mode === 'production' ? 'environment.prod.ts' : 'environment.ts';
   const environmentPath = resolve(__dirname, 'src/environments', environmentFile);
   const apiPrefix = process.env.SOCKET_EXT || 'gwf';
   const publicPath = process.env.PUBLIC_PATH || '/';
@@ -24,10 +22,13 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
       alias: {
-        'foundationZero/ZeroDesignSystem': resolve(__dirname, 'node_modules/@genesislcap/foundation-zero'),
+        'foundationZero/ZeroDesignSystem': resolve(
+          __dirname,
+          'node_modules/@genesislcap/foundation-zero',
+        ),
         '@': resolve(__dirname, 'src'),
         '@environment': environmentPath,
-        'pbc': resolve(__dirname, 'src/pbc'),
+        pbc: resolve(__dirname, 'src/pbc'),
       },
       symlinks: true,
     },
@@ -83,16 +84,16 @@ module.exports = (env, argv) => {
       proxy: [
         {
           context: apiBasePath,
-          target: "{{apiHost}}",
+          target: '{{apiHost}}',
           pathRewrite: { [`^${apiBasePath}`]: '' },
           secure: false,
           changeOrigin: true,
           cookieDomainRewrite: 'localhost',
           ws: true,
           headers: {
-            origin: "{{apiHost}}",
-          }
-        }
+            origin: '{{apiHost}}',
+          },
+        },
       ],
       open,
       static: {

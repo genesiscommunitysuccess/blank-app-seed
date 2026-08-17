@@ -4,10 +4,9 @@ import { ErrorMessageComponent } from '../../components/error-message/error-mess
 @Component({
   selector: 'app-not-permitted',
   standalone: true,
-  imports: [ ErrorMessageComponent ],
+  imports: [ErrorMessageComponent],
   templateUrl: './not-permitted.component.html',
   styleUrls: ['./not-permitted.component.scss'],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class NotPermittedComponent {
-}
+export class NotPermittedComponent {}

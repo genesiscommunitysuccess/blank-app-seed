@@ -1,9 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { environment } from '../../../environments/environment';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{kebabCase this.title}}-{{this.componentType}}';
 {{/each}}
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-{{kebabCase route.name}}',

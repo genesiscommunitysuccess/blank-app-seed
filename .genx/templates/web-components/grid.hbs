@@ -1,44 +1,44 @@
 ${whenElse(
-    (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
-    html`
-      <rapid-grid-pro
-        header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
-        only-template-col-defs{{/if}}
-        enable-row-flashing
-        enable-cell-flashing
-        >
-        <grid-pro-genesis-datasource
-          resource-name="{{config.resourceName}}"
-          {{#if config.reqrep}}
-          request-auto-setup="false"
-          polling-interval="5000"
-          {{/if}}
-          {{#if config.eventing.listener}}
-          criteria=${(x) => x.getCriteria()}
-          {{/if}}
-          {{#ifAny config.gridOptions config.eventing.publishEventName}}
-          :deferredGridOptions=${(x) => ({
-            {{#if config.gridOptions}}
-            onRowClicked: gridOptions?.onRowClicked,
-            {{/if}}
-            {{#if config.eventing.publishEventName}}
-            onSelectionChanged: x.handleRowSelection,
-            rowSelection: 'single',
-            {{/if}}
-          })}
-          {{/ifAny}}
-        ></grid-pro-genesis-datasource>
-        {{#if config.gridOptions}}
-        ${repeat(
-          (x) => gridOptions?.columnDefs,
-          html`
-            <grid-pro-column :definition=${(x) => x}></grid-pro-column>
-          `,
-        )}
+  (x) => getViewUpdateRightComponent(x.user, '{{config.permissions.viewRight}}'),
+  html`
+    <rapid-grid-pro
+      header-case-type="capitalCase"{{#if config.useOnlyTemplateCols}}
+      only-template-col-defs{{/if}}
+      enable-row-flashing
+      enable-cell-flashing
+    >
+      <grid-pro-genesis-datasource
+        resource-name="{{config.resourceName}}"
+        {{#if config.reqrep}}
+        request-auto-setup="false"
+        polling-interval="5000"
         {{/if}}
-      </rapid-grid-pro>
-    `,
-    html`
-        <not-permitted-component></not-permitted-component>
-    `,
+        {{#if config.eventing.listener}}
+        criteria=${(x) => x.getCriteria()}
+        {{/if}}
+        {{#ifAny config.gridOptions config.eventing.publishEventName}}
+        :deferredGridOptions=${(x) => ({
+          {{#if config.gridOptions}}
+          onRowClicked: gridOptions?.onRowClicked,
+          {{/if}}
+          {{#if config.eventing.publishEventName}}
+          onSelectionChanged: x.handleRowSelection,
+          rowSelection: 'single',
+          {{/if}}
+        })}
+        {{/ifAny}}
+      ></grid-pro-genesis-datasource>
+      {{#if config.gridOptions}}
+      ${repeat(
+        (x) => gridOptions?.columnDefs,
+        html`
+          <grid-pro-column :definition=${(x) => x}></grid-pro-column>
+        `,
+      )}
+      {{/if}}
+    </rapid-grid-pro>
+  `,
+  html`
+    <not-permitted-component></not-permitted-component>
+  `,
 )}

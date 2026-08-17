@@ -1,7 +1,7 @@
 {{#if fontData}}
 {{#each fontData}}
 @font-face {
-  font-family: "{{../fontFamily}}";
+  font-family: '{{../fontFamily}}';
   src: url("../assets/fonts/{{filename}}") format("{{format}}");
   font-weight: {{weight}};
   font-style: normal;
@@ -14,12 +14,12 @@
 @font-face {
   font-family: Segoe UI;
   font-weight: 300;
-  src: local("Segoe UI Semilight"), local("Segoe UI");
+  src: local('Segoe UI Semilight'), local('Segoe UI');
 }
 {{/unless}}
 
 * {
-  font-family: {{#if fontFamily}}"{{fontFamily}}", {{/if}}"Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: {{#if fontFamily}}'{{fontFamily}}', {{/if}}'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
 }

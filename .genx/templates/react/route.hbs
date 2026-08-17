@@ -1,8 +1,8 @@
 {{#if route.tiles}}
-import React, { useRef } from 'react';
 import { Layout, Model, TabNode } from 'flexlayout-react';
-import { getFlexLayoutStorageKey } from '../../utils/layout';
+import React, { useRef } from 'react';
 import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
+import { getFlexLayoutStorageKey } from '../../utils/layout';
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
@@ -16,7 +16,7 @@ const STORAGE_KEY = getFlexLayoutStorageKey('{{route.layoutKey}}');
 
 const componentMap: Record<string, React.FC> = {
   {{#each route.tiles}}
-  '{{camelCase this.componentName}}': {{pascalCase this.componentName}},
+  {{camelCase this.componentName}}: {{pascalCase this.componentName}},
   {{/each}}
 };
 
@@ -24,7 +24,9 @@ function loadModel(): Model {
   if (STORAGE_KEY) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      try { return Model.fromJson(JSON.parse(saved)); } catch {}
+      try {
+        return Model.fromJson(JSON.parse(saved));
+      } catch {}
     }
   }
   return Model.fromJson(defaultLayout);

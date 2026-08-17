@@ -1,25 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 {{#if FDC3.channels.length~}}
-import {
-  listenToChannel,
-  onFDC3Ready,
-} from './utils';
+import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}
-import { customEventFactory, registerStylesTarget } from './pbc/utils';
-import { RoutesProvider } from './store/RoutesContext';
-import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
-import { storeService } from './services/store.service';
 import AppRoutes from './components/routes/AppRoutes';
+import { customEventFactory, registerStylesTarget } from './pbc/utils';
+import { storeService } from './services/store.service';
+import { registerComponents as genesisRegisterComponents } from './share/genesis-components';
+import { RoutesProvider } from './store/RoutesContext';
 import { reduxStore } from './store/store';
-import { Provider } from 'react-redux';
 
 interface AppProps {
   rootElement: HTMLElement;
 }
 
 const App: React.FC<AppProps> = ({ rootElement }) => {
-  {{#if FDC3.channels.length~}}
+  {{#if FDC3.channels.length}}
   const FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
@@ -31,9 +28,12 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   };
   {{/if}}
   const [componentsReady, setComponentsReady] = useState(false);
-  const dispatchCustomEvent = useCallback((type: string, detail?: unknown) => {
-    rootElement.dispatchEvent(customEventFactory(type, detail));
-  }, [rootElement]);
+  const dispatchCustomEvent = useCallback(
+    (type: string, detail?: unknown) => {
+      rootElement.dispatchEvent(customEventFactory(type, detail));
+    },
+    [rootElement],
+  );
 
   const handleStoreConnected = useCallback((event: CustomEvent) => {
     storeService.onConnected(event);
@@ -58,15 +58,11 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
     dispatchCustomEvent('store-ready', true);
 
     return () => {
-      rootElement.removeEventListener(
-        'store-connected',
-        handleStoreConnected as EventListener,
-      );
+      rootElement.removeEventListener('store-connected', handleStoreConnected as EventListener);
     };
-    {{#if FDC3.channels.length~}}
+    {{#if FDC3.channels.length}}
     onFDC3Ready(FDC3ReadyHandler);
     {{/if}}
-
   }, [rootElement, handleStoreConnected, dispatchCustomEvent]);
 
   const baseElement = document.querySelector('base');
@@ -79,9 +75,9 @@ const App: React.FC<AppProps> = ({ rootElement }) => {
   return (
     <Provider store={reduxStore}>
       <RoutesProvider>
-          <Router basename={basePath}>
-            <AppRoutes />
-          </Router>
+        <Router basename={basePath}>
+          <AppRoutes />
+        </Router>
       </RoutesProvider>
     </Provider>
   );

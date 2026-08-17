@@ -1,6 +1,7 @@
 const { execSync } = require('child_process');
-const glob = require('glob');
 const path = require('path');
+const glob = require('glob');
+
 const cssFiles = glob.sync(path.join(__dirname, '**/*.css'));
 
 if (cssFiles.length === 0) {

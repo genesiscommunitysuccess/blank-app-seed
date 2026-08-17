@@ -12,6 +12,6 @@ function bootstrapApp() {
 }
 
 registerPBCs()
-  .then(hasAssets => logger.debug(hasAssets ? 'PBCs registered' : 'No PBCs detected'))
+  .then((hasAssets) => logger.debug(hasAssets ? 'PBCs registered' : 'No PBCs detected'))
   .catch((err) => logger.error(err))
-  .finally(bootstrapApp)
+  .finally(bootstrapApp);

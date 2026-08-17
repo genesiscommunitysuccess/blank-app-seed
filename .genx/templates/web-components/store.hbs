@@ -3,9 +3,9 @@ import { eventingSlice } from './slices/eventing.slice';
 
 export const { store, actions, selectors } = createStore([eventingSlice], {
   {{#if events}}
-  eventing: { 
+  eventing: {
   {{#each events}}
-    {{this}}: null{{#unless @last}},{{/unless}} 
+    {{this}}: null,
   {{/each}}
   },
   {{else}}

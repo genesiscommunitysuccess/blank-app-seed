@@ -5,5 +5,5 @@ export const environment = {
   ENABLE_SSO: {{enableSSO}},
   HOST: 'localhost',
   PROTOCOL: 'http',
-  BUILDER: 'webpack'
+  BUILDER: 'webpack',
 };

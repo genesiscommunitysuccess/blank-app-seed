@@ -1,4 +1,8 @@
-import { type CustomAction, CrudMenuPosition, UiSchema } from '@genesislcap/foundation-entity-management';
+import {
+  type CustomAction,
+  CrudMenuPosition,
+  UiSchema,
+} from '@genesislcap/foundation-entity-management';
 
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
@@ -17,7 +21,9 @@ export const customActions: CustomAction[] = [
       {{#if this.hasForm}}
       uiSchema: {{camelCase this.name}}FormSchema,
       {{/if}}
+      {{#if this.defaultValues}}
       defaultValues: {{{this.defaultValues}}},
+      {{/if}}
     },
     {{#if this.position}}
     position: CrudMenuPosition.{{{pascalCase this.position}}},
@@ -31,7 +37,7 @@ export const customActions: CustomAction[] = [
     {{#if this.confirmSubmit}}
     confirmSubmit: {
       state: '{{this.confirmSubmit.state}}',
-      message: '{{this.confirmSubmit.message}}'
+      message: '{{this.confirmSubmit.message}}',
     },
     {{/if}}
     requiresSelection: true,

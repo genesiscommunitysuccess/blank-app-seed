@@ -56,22 +56,22 @@ module.exports = {
     'foundationZero/ZeroDesignSystem': 'foundationZero/ZeroDesignSystem',
   },
   devServer: {
-      proxy: [
-        {
-          context: apiBasePath,
-          target: "{{apiHost}}",
-          pathRewrite: { [`^${apiBasePath}`]: '' },
-          secure: false,
-          changeOrigin: true,
-          cookieDomainRewrite: 'localhost',
-          ws: true,
-          headers: {
-            origin: "{{apiHost}}",
-          }
+    proxy: [
+      {
+        context: apiBasePath,
+        target: "{{apiHost}}",
+        pathRewrite: { [`^${apiBasePath}`]: '' },
+        secure: false,
+        changeOrigin: true,
+        cookieDomainRewrite: 'localhost',
+        ws: true,
+        headers: {
+          origin: "{{apiHost}}",
         }
-      ],
-      compress: true,
-      historyApiFallback: true,
-    },
+      }
+    ],
+    compress: true,
+    historyApiFallback: true,
+  },
 };
 

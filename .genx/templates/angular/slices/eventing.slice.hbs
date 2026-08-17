@@ -1,18 +1,20 @@
+{{#if listeners.length}}
 import { CriteriaBuilder, ExpressionBuilder, Serialisers } from '@genesislcap/foundation-criteria';
+{{/if}}
 import { createSlice } from '@genesislcap/foundation-redux';
 
 export const eventingSlice = createSlice({
   name: 'eventing',
   initialState: {
 {{#each events}}
-    {{this}}: null{{#unless @last}},{{/unless}}
+    {{this}}: null,
 {{/each}}
   },
   reducers: {
 {{#each events}}
     publish{{pascalCase this}}: (state, action) => {
       state.{{this}} = action.payload;
-    }{{#unless @last}},{{/unless}}
+    },
 {{/each}}
   },
   selectors: {
@@ -24,18 +26,18 @@ export const eventingSlice = createSlice({
 
 {{#each mappings}}
       if (data.{{sourceField}}) {
-        criteriaBuilder.And(new ExpressionBuilder()
-          .withField('{{targetField}}')
-          .withValue(data.{{sourceField}})
-          .withSerialiser(Serialisers.EQ)
-          .build());
+        criteriaBuilder.And(
+          new ExpressionBuilder()
+            .withField('{{targetField}}')
+            .withValue(data.{{sourceField}})
+            .withSerialiser(Serialisers.EQ)
+            .build(),
+        );
       }
 {{/each}}
 
       return criteriaBuilder.build();
-    }{{#unless @last}},{{/unless}}
+    },
 {{/each}}
   },
 });
-
-

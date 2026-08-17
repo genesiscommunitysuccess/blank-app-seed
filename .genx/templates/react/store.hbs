@@ -4,7 +4,7 @@ import { eventingSlice } from './slices/eventing.slice';
 export const { reduxStore, store, actions, selectors } = createStore([eventingSlice], {
   eventing: {
     {{#each events}}
-    {{this}}: null{{#unless @last}},{{/unless}}
+    {{this}}: null,
     {{/each}}
   },
 });

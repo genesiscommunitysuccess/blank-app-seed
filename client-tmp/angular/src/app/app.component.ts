@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Connect } from '@genesislcap/foundation-comms';
-import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
-import type { LayoutComponentName } from './types/layout';
+import { customEventFactory, registerStylesTarget } from '../pbc/utils';
 import { configureFoundationAuth } from './share/foundation-auth';
 import { registerComponents } from './share/genesis-components';
 import { getStore } from './store/foundation-store';
-import { customEventFactory, registerStylesTarget } from '../pbc/utils';
+import type { LayoutComponentName } from './types/layout';
+import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}

@@ -1,15 +1,15 @@
 import { createLogger } from '@genesislcap/foundation-logger';
 import {
-    AppContext,
-    AppElement,
-    AppElementPredicate,
-    AppStyle,
-    AppStylePredicate,
-    AppTargetId,
-    assetPredicate,
-    getApp,
-    registrationPredicate,
-    targetIdPredicate
+  AppContext,
+  AppElement,
+  AppElementPredicate,
+  AppStyle,
+  AppStylePredicate,
+  AppTargetId,
+  assetPredicate,
+  getApp,
+  registrationPredicate,
+  targetIdPredicate,
 } from '@genesislcap/foundation-shell/app';
 import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
 import { toElementStyles } from '@genesislcap/foundation-utils';
@@ -26,10 +26,10 @@ const logger = createLogger('pbc-utils');
  * @public
  */
 export async function registerPBCs(): Promise<boolean> {
-    const app = getApp();
-    const pbcAssets = await importPBCAssets();
-    app.registerAssets(pbcAssets);
-    return app.hasAssets();
+  const app = getApp();
+  const pbcAssets = await importPBCAssets();
+  app.registerAssets(pbcAssets);
+  return app.hasAssets();
 }
 
 /**
@@ -37,77 +37,73 @@ export async function registerPBCs(): Promise<boolean> {
  * Shared across elements and styles.
  */
 const assetFilter = (
-    asset: AppElement | AppStyle,
-    targetId: AppTargetId,
-    predicate: AppElementPredicate | AppStylePredicate = () => true,
-    context: AppContext,
-) => targetIdPredicate(asset, targetId) &&
-    assetPredicate(asset, context) &&
-    registrationPredicate(
-        asset,
-        predicate,
-        context,
-    );
+  asset: AppElement | AppStyle,
+  targetId: AppTargetId,
+  predicate: AppElementPredicate | AppStylePredicate = () => true,
+  context: AppContext,
+) =>
+  targetIdPredicate(asset, targetId) &&
+  assetPredicate(asset, context) &&
+  registrationPredicate(asset, predicate, context);
 
 /**
  * @public
  */
-export function getTargetStyles(
-    targetId: AppTargetId,
-    predicate: AppStylePredicate = () => true
-) {
-    const app = getApp();
-    return app.styles
-        .filter(asset => assetFilter(asset, targetId, predicate, app.config.context!))
-        .map((token) => token.styles)
-        .flat();
+export function getTargetStyles(targetId: AppTargetId, predicate: AppStylePredicate = () => true) {
+  const app = getApp();
+  return app.styles
+    .filter((asset) => assetFilter(asset, targetId, predicate, app.config.context!))
+    .map((token) => token.styles)
+    .flat();
 }
-
 
 /**
  * @public
  */
 export function getTargetElements(
-    targetId: AppTargetId,
-    predicate: AppElementPredicate = () => true
+  targetId: AppTargetId,
+  predicate: AppElementPredicate = () => true,
 ) {
-    const app = getApp();
-    return app.elements
-        .filter(asset => assetFilter(asset, targetId, predicate, app.config.context!))
-        .map((token) => token.elements);
+  const app = getApp();
+  return app.elements
+    .filter((asset) => assetFilter(asset, targetId, predicate, app.config.context!))
+    .map((token) => token.elements);
 }
 
 /**
  * @public
  */
 export function registerStylesTarget(nativeElement: HTMLElement, targetId: AppTargetId) {
-    const styles = getTargetStyles(targetId);
-    if (!styles || styles.length === 0) {
-        return;
-    }
-    applyDynamicStyles(nativeElement, styles);
+  const styles = getTargetStyles(targetId);
+  if (!styles || styles.length === 0) {
+    return;
+  }
+  applyDynamicStyles(nativeElement, styles);
 }
 
 /**
  * @public
  */
-export function applyDynamicStyles(nativeElement: HTMLElement, style: ComposableStyles | ComposableStyles[]) {
-    const elementStyles = toElementStyles(style);
-    const styleTarget = nativeElement.shadowRoot ? nativeElement.shadowRoot : document;
-    elementStyles.addStylesTo(styleTarget);
+export function applyDynamicStyles(
+  nativeElement: HTMLElement,
+  style: ComposableStyles | ComposableStyles[],
+) {
+  const elementStyles = toElementStyles(style);
+  const styleTarget = nativeElement.shadowRoot ? nativeElement.shadowRoot : document;
+  elementStyles.addStylesTo(styleTarget);
 }
 
 /**
  * @public
  */
 export function customEventFactory(type: string, detail?: any) {
-    return new CustomEvent(type, {
-        bubbles: true,
-        cancelable: true,
-        composed: true,
-        detail,
-    });
-};
+  return new CustomEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    composed: true,
+    detail,
+  });
+}
 
 /**
  * @privateRemarks
@@ -115,7 +111,12 @@ export function customEventFactory(type: string, detail?: any) {
  * @public
  */
 export function deriveElementTag(name: string): string {
-    const tagName = name.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '');
-    logger.debug(`Guessing pbc element tag is '${tagName}' based on '${name}'. This may be incorrect, please set pbcElementTag in route data.`);
-    return tagName;
+  const tagName = name
+    .replace(/([A-Z])/g, '-$1')
+    .toLowerCase()
+    .replace(/^-/, '');
+  logger.debug(
+    `Guessing pbc element tag is '${tagName}' based on '${name}'. This may be incorrect, please set pbcElementTag in route data.`,
+  );
+  return tagName;
 }

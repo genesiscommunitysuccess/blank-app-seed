@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { AppElementPredicate, AppTargetId } from '@genesislcap/foundation-shell/app';
-import { customEventFactory, getTargetElements } from './utils';
-import { DI } from '@genesislcap/web-core';
 import { Connect } from '@genesislcap/foundation-comms';
+import { AppElementPredicate, AppTargetId } from '@genesislcap/foundation-shell/app';
+import { DI } from '@genesislcap/web-core';
+import { useEffect, useRef, useState } from 'react';
+import { customEventFactory, getTargetElements } from './utils';
 
 const ALWAYS_TRUE_PREDICATE: AppElementPredicate = () => true;
 
@@ -15,15 +15,21 @@ interface PBCContainerElement extends HTMLDivElement {
   $emit: (type: string, detail: any) => void;
 }
 
-const PBCElementsRenderer = ({ target = [], predicate = ALWAYS_TRUE_PREDICATE }: PBCElementsRendererProps) => {
+const PBCElementsRenderer = ({
+  target = [],
+  predicate = ALWAYS_TRUE_PREDICATE,
+}: PBCElementsRendererProps) => {
   const containerRef = useRef<PBCContainerElement>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     const connect = DI.getOrCreateDOMContainer().get(Connect);
     setIsConnected(connect.isConnected);
-    const isConnected$ = (connect as { isConnected$?: { subscribe: (cb: (v: boolean) => void) => { unsubscribe: () => void } } })
-      ?.isConnected$;
+    const isConnected$ = (
+      connect as {
+        isConnected$?: { subscribe: (cb: (v: boolean) => void) => { unsubscribe: () => void } };
+      }
+    )?.isConnected$;
     const sub = isConnected$?.subscribe((connected: boolean) => setIsConnected(connected));
     return () => sub?.unsubscribe?.();
   }, []);
@@ -49,7 +55,7 @@ const PBCElementsRenderer = ({ target = [], predicate = ALWAYS_TRUE_PREDICATE }:
     });
   }, [target, predicate, isConnected]);
 
-  return (<div ref={containerRef} className="container"></div>);
+  return <div ref={containerRef} className="container"></div>;
 };
 
 export default PBCElementsRenderer;

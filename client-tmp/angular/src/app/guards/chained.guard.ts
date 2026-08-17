@@ -6,28 +6,28 @@ import { ConnectionGuard } from './connection.guard';
 import { PermissionsGuard } from './permissions.guard';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class ChainedGuard implements CanActivate {
-    protected user = getUser();
+  protected user = getUser();
 
-    constructor(
-        protected router: Router,
-        protected connectionGuard: ConnectionGuard,
-        protected authGuard: AuthGuard,
-        protected permissionsGuard: PermissionsGuard
-    ) {}
+  constructor(
+    protected router: Router,
+    protected connectionGuard: ConnectionGuard,
+    protected authGuard: AuthGuard,
+    protected permissionsGuard: PermissionsGuard,
+  ) {}
 
-    async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
-        let result = await this.connectionGuard.canActivate();
-        if (!result) {
-            return false;
-        }
-        result = await this.authGuard.canActivate();
-        if (!result) {
-            return false;
-        }
-        result = await this.permissionsGuard.canActivate(route);
-        return result;
+  async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+    let result = await this.connectionGuard.canActivate();
+    if (!result) {
+      return false;
     }
+    result = await this.authGuard.canActivate();
+    if (!result) {
+      return false;
+    }
+    result = await this.permissionsGuard.canActivate(route);
+    return result;
+  }
 }

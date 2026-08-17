@@ -1,6 +1,3 @@
-{{#if config.permissions.updateRight~}}
-hasUserPermission('{{config.permissions.updateRight}}') ? (
-{{/if}}
 <Form
   prefix="rapid"
   resourceName="{{config.resourceName}}"
@@ -8,8 +5,3 @@ hasUserPermission('{{config.permissions.updateRight}}') ? (
   uischema={uischema}
   {{/if}}
 />
-{{#if config.permissions.updateRight~}}
-) : (
-<ErrorMessage elementType="h3" message="You do not have access to view this component." />
-)
-{{/if}}
