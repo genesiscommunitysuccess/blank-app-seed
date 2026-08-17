@@ -2,11 +2,11 @@
 #
 # Generate test apps from this seed and verify they are lint-clean out of the box.
 #
-# For each requested framework this generates two apps — the defaults app (no
-# routes) and a "full" app driven by .genx/tests/fixtures/routes-full.json,
-# which exercises every tile type (entity-manager with permissions/custom
-# events/eventing/FDC3, grid-pro with listener/reqrep, chart, smart-form) —
-# then runs the ox lint pipeline with zero tolerance:
+# For each requested framework this generates three apps — the defaults app (no
+# routes), a "full" app driven by .genx/tests/fixtures/routes-full.json
+# (every tile type: entity-manager with permissions/custom events/eventing/FDC3,
+# grid-pro with listener/reqrep, chart, smart-form), and an "fdc3" app with
+# FDC3 channels enabled — then runs the ox lint pipeline with zero tolerance:
 #
 #   oxlint . --deny-warnings   # zero errors, zero warnings
 #   oxfmt --check .            # formatting is already canonical
@@ -18,8 +18,12 @@
 #   framework: react | webcomponents | angular (default: all three)
 #
 # Env:
-#   WORK_DIR   scratch dir for generated apps (default: a fresh mktemp dir)
-#   KEEP=1     keep generated apps instead of deleting the scratch dir
+#   WORK_DIR   scratch dir for generated apps (default: a fresh mktemp dir).
+#              A caller-supplied WORK_DIR is never deleted by this script.
+#   KEEP=1     keep each generated app (and the scratch dir) for inspection.
+#              By default an app is deleted as soon as it passes, so a run only
+#              ever holds one app's node_modules at a time. Failing apps are
+#              always kept.
 #   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app
 #
 # Installs use the app's own bootstrap semantics (plain `npm install`) — NOT
@@ -29,12 +33,26 @@ set -uo pipefail
 
 SEED_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 FIXTURE="$SEED_DIR/.genx/tests/fixtures/routes-full.json"
-FRAMEWORKS=("${@:-react}")
-if [ $# -eq 0 ]; then
+
+if [ $# -gt 0 ]; then
+  FRAMEWORKS=("$@")
+else
   FRAMEWORKS=(react webcomponents angular)
 fi
 
-WORK_DIR="${WORK_DIR:-$(mktemp -d -t blank-app-seed-lint)}"
+# `mktemp -d -t <name>` is BSD-only; spell the template out so this works on GNU
+# coreutils too. Bail out rather than carry on with an empty WORK_DIR, which would
+# turn the `rm -rf` calls below into absolute paths.
+OWNS_WORK_DIR=0
+if [ -z "${WORK_DIR:-}" ]; then
+  WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/blank-app-seed-lint.XXXXXXXX")" || exit 1
+  OWNS_WORK_DIR=1
+fi
+if [ -z "$WORK_DIR" ] || [ ! -d "$WORK_DIR" ]; then
+  echo "Could not create or resolve WORK_DIR ('${WORK_DIR}')" >&2
+  exit 1
+fi
+
 FAILURES=()
 
 run_lint_checks() {
@@ -59,7 +77,7 @@ run_lint_checks() {
 }
 
 for fw in "${FRAMEWORKS[@]}"; do
-  for variant in default full; do
+  for variant in default full fdc3; do
     label="$fw-$variant"
     app_dir="$WORK_DIR/$label"
     rm -rf "$app_dir"
@@ -68,12 +86,24 @@ for fw in "${FRAMEWORKS[@]}"; do
     if [ "$variant" = "full" ]; then
       extra_args=(--routes "$(cat "$FIXTURE")")
     fi
+    if [ "$variant" = "fdc3" ]; then
+      extra_args=(--ui '{"fdc3":{"channels":[{"name":"positions","type":"position"},{"name":"instrumentChannel","type":"fdc3.instrument"}]}}')
+    fi
     (
       cd "$WORK_DIR" || exit 1
+      # `"${extra_args[@]}"` alone is an unbound-variable error on an empty array
+      # under `set -u` in bash 3.2 (the macOS system bash).
       npx -y @genesislcap/genx@latest init "$label" -s "$SEED_DIR" -x --no-shell \
-        --framework "$fw" --apiHost 'wss://localhost/gwf/' "${extra_args[@]}"
+        --framework "$fw" --apiHost 'wss://localhost/gwf/' \
+        ${extra_args[@]+"${extra_args[@]}"}
     ) || { FAILURES+=("$label: generation failed"); continue; }
-    run_lint_checks "$app_dir" "$label" || FAILURES+=("$label: lint checks failed")
+    if run_lint_checks "$app_dir" "$label"; then
+      # Reclaim the app's node_modules straight away — CI runners are disk-tight and
+      # each generated app installs well over a gigabyte.
+      [ "${KEEP:-0}" = "1" ] || rm -rf "$app_dir"
+    else
+      FAILURES+=("$label: lint checks failed")
+    fi
   done
 done
 
@@ -85,9 +115,10 @@ if [ ${#FAILURES[@]} -gt 0 ]; then
   exit 1
 fi
 
-echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full)"
-if [ "${KEEP:-0}" != "1" ]; then
-  rm -rf "$WORK_DIR"
-else
+echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full + fdc3)"
+if [ "${KEEP:-0}" = "1" ]; then
   echo "Generated apps kept in $WORK_DIR"
+elif [ "$OWNS_WORK_DIR" = "1" ]; then
+  # Only ever remove a scratch dir this script created.
+  rm -rf "$WORK_DIR"
 fi

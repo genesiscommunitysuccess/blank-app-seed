@@ -2,7 +2,16 @@ const { execSync } = require('child_process');
 const { readdirSync } = require('fs');
 const path = require('path');
 
-const IGNORED_DIRS = new Set(['node_modules', 'dist', 'build', 'coverage', '.git']);
+const IGNORED_DIRS = new Set([
+  'node_modules',
+  'dist',
+  'build',
+  'coverage',
+  '.angular',
+  'out-tsc',
+  'test-results',
+  '.git',
+]);
 
 function findCssFiles(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

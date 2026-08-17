@@ -79,7 +79,8 @@ export class {{pascalCase tile.componentName}} {
   {{#if tile.config.columns}}
   columnDefs = [...columnDefs];
   {{/if}}
-  {{#if tile.config.type}}
+  {{#ifEquals tile.type 'chart'}}
+  {{! Declared for every chart tile: the chart template always binds [config]="chartConfig". }}
   chartConfig = {
     {{#ifEquals tile.config.type 'pie'}}
     radius: 0.75,
@@ -90,7 +91,7 @@ export class {{pascalCase tile.componentName}} {
     yField: 'value',
     {{/ifEquals}}
   };
-  {{/if}}
+  {{/ifEquals}}
   {{#if tile.config.customEvents}}
   customActions = emCustomActions;
   {{/if}}

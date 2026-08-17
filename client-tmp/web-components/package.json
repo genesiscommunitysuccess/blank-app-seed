@@ -41,7 +41,7 @@
     "dev:https": "npm run dev -- -- --https",
     "dev:vite": "genx dev -e API_HOST,ENABLE_SSO -b vite",
     "dev:webpack": "genx dev -e API_HOST,ENABLE_SSO -b webpack",
-    "git:setup": "cd .. && npx --yes husky install",
+    "git:setup": "cd .. && node client/node_modules/husky/lib/bin.js install",
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "genx lint -l stylelint",
@@ -52,11 +52,6 @@
     "test:e2e:ui": "genx test --e2e --interactive",
     "test:coverage": "genx test --coverage",
     "test:unit:watch": "genx test --watch"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
@@ -85,7 +80,9 @@
     "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@types/node": "20.11.5",
     "husky": "^7.0.4",
-    "lint-staged": "^12.4.1"
+    "lint-staged": "^12.4.1",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.77.0"
   },
   "dependencies": {
     "@genesislcap/foundation-auth": "{{versions.UI}}",

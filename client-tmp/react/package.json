@@ -28,6 +28,7 @@
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",
     "dev:https": "HTTPS=true npm run dev",
+    "git:setup": "cd .. && node client/node_modules/husky/lib/bin.js install",
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "genx lint -l stylelint",
@@ -38,11 +39,6 @@
     "test:e2e:debug": "genx test --e2e --debug",
     "test:e2e:ui": "genx test --e2e --interactive"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
       "oxlint --fix",
@@ -50,10 +46,10 @@
     ],
     "*.{mjs,cjs}": [
       "oxfmt --write"
-    ],
-    "*.styles.ts": [
-      "stylelint --allow-empty-input"
     ]
+  },
+  "stylelint": {
+    "extends": "@genesislcap/stylelint-config"
   },
   "dependencies": {
     "@microsoft/fast-react-wrapper": ">=0.3.25",
@@ -106,12 +102,15 @@
     "@analytics/core": "0.12.17"
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
     "@genesislcap/design-system-configurator": "{{versions.UI}}",
     "@genesislcap/foundation-testing": "{{versions.UI}}",
     "@genesislcap/genx": "{{versions.UI}}",
     "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@genesislcap/oxlint-config": "{{versions.UI}}",
+    "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.1.0",
@@ -124,6 +123,8 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^12.4.1",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.77.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "5.9.2"

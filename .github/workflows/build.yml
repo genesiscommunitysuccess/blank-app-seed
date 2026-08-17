@@ -10,6 +10,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The `build` job below covers React end to end (gradle build, lint, unit + e2e).
+  # This job keeps the other two frameworks honest: it generates the defaults app and
+  # the full-routes fixture app for each and runs the ox lint gates over both.
+  generated-apps:
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [webcomponents, angular]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate and lint ${{ matrix.framework }} apps (default + full)
+        run: ./.genx/scripts/generate-test-apps.sh ${{ matrix.framework }}
+
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}

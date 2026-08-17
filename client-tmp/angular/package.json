@@ -28,6 +28,7 @@
     "dev:intellij": "npm run dev",
     "dev:https": "npm run dev -- --https",
     "dev:webpack": "npm run dev",
+    "git:setup": "cd .. && node client/node_modules/husky/lib/bin.js install",
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "node lint-css.js",
@@ -38,11 +39,6 @@
     "test:coverage": "ng test --no-watch --code-coverage",
     "test:unit:watch": "ng test --watch"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
       "oxlint --fix",
@@ -50,9 +46,6 @@
     ],
     "*.{mjs,cjs}": [
       "oxfmt --write"
-    ],
-    "*.styles.ts": [
-      "stylelint --allow-empty-input"
     ]
   },
   "stylelint": {
@@ -69,6 +62,7 @@
     "@genesislcap/event-type-codegen": "{{versions.UI}}",
     "@genesislcap/build-kit": "{{versions.UI}}",
     "@genesislcap/oxlint-config": "{{versions.UI}}",
+    "@genesislcap/stylelint-config": "{{versions.UI}}",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.13",
     "@types/numeral": "^2.0.5",
@@ -80,6 +74,8 @@
     "jest-preset-angular": "^14.2.4",
     "jest-transform-stub": "^2.0.0",
     "lint-staged": "^12.4.1",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.77.0",
     "svg-url-loader": "^8.0.0",
     "ts-jest": "^29.2.5",
     "typescript": "~5.4.5",
@@ -89,7 +85,6 @@
     "@types/node": "20.14.11"
   },
   "dependencies": {
-    "@ag-grid-community/core": "29.2.0",
     "@angular/animations": "^18.0.4",
     "@angular/common": "^18.0.4",
     "@angular/compiler": "^18.0.4",

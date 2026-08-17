@@ -1,10 +1,12 @@
+const toJsStringLiteral = require('./toJsStringLiteral');
+
 const IDENTIFIER_RE = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
 
 const formatTSValue = (value, indent = 0) => {
   if (value === null) return 'null';
   if (typeof value === 'boolean') return String(value);
   if (typeof value === 'number') return String(value);
-  if (typeof value === 'string') return `'${value.replace(/'/g, "\\'")}'`;
+  if (typeof value === 'string') return toJsStringLiteral(value);
 
   const pad = ' '.repeat(indent + 2);
   const closePad = ' '.repeat(indent);
@@ -20,7 +22,7 @@ const formatTSValue = (value, indent = 0) => {
     if (entries.length === 0) return '{}';
     const items = entries
       .map(([k, v]) => {
-        const key = IDENTIFIER_RE.test(k) ? k : `'${k}'`;
+        const key = IDENTIFIER_RE.test(k) ? k : toJsStringLiteral(k);
         return `${pad}${key}: ${formatTSValue(v, indent + 2)}`;
       })
       .join(',\n');
@@ -32,7 +34,9 @@ const formatTSValue = (value, indent = 0) => {
 
 const formatJSONValue = (value, indent = 0) => {
   try {
-    return value ? formatTSValue(value, indent) : undefined;
+    // Only `undefined` means "nothing to emit". A truthiness test would swallow
+    // legitimate falsy config such as `suppressMenuHide: false` or `rowHeight: 0`.
+    return value === undefined ? undefined : formatTSValue(value, indent);
   } catch (e) {
     console.warn('Could not serialise value to JSON', value, e);
   }

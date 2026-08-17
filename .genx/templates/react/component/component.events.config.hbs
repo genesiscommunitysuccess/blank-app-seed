@@ -53,12 +53,12 @@ export const customActions: CustomAction[] = [
     icon: '{{this.icon}}',
     {{/if}}
     {{#if this.tooltip}}
-    tooltip: '{{{this.tooltip}}}',
+    tooltip: {{{this.tooltipJs}}},
     {{/if}}
     {{#if this.confirmSubmit}}
     confirmSubmit: {
       state: '{{#if this.confirmSubmit.state}}{{this.confirmSubmit.state}}{{else}}enabled{{/if}}',
-      message: '{{#if this.confirmSubmit.message}}{{{this.confirmSubmit.message}}}{{else}}Are you sure you want to proceed?{{/if}}',
+      message: {{{this.confirmSubmitMessageJs}}},
     },
     {{/if}}
     requiresSelection: true,

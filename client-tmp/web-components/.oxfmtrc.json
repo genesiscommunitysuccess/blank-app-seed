@@ -24,7 +24,7 @@
     "**/*.md",
     "**/*.hbs",
     "**/.genx/**",
-    "**/index.html",
-    "**/src/generated/**"
+    "**/src/generated/**",
+    "**/index.html"
   ]
 }

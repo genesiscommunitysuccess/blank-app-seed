@@ -36,6 +36,9 @@ const PBCContainer: React.FC = () => {
     };
 
     loadElement();
+    // `routes` comes from a memoized context value (see RoutesContext) so its identity is
+    // stable; an unstable one would re-run this effect and remount the PBC custom element
+    // on every re-render of the provider.
   }, [location.pathname, routes]);
 
   return (
