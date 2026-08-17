@@ -16,6 +16,7 @@
     "**/.tmp",
     "**/bootstrap",
     "**/coverage",
+    "**/test-results",
     "**/dist",
     "**/.angular",
     "**/out-tsc",

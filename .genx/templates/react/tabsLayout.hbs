@@ -10,7 +10,7 @@ const defaultLayout = {
           {{#each route.tiles}}
           {
             type: 'tab',
-            name: '{{this.title}}',
+            name: '{{{this.title}}}',
             component: '{{pascalCase this.componentName}}',
           },
           {{/each}}

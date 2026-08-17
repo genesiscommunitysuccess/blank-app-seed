@@ -8,24 +8,27 @@ const registerPartials = ({ registerPartial }, framework) => {
   // It can be reverted after adding changes for angular
   const sourceTemplateDir = `../${DIR_TEMPLATE_BY_FRAMEWORK[framework]}`;
 
+  // Angular always renders through the 'tabs-panel' layout (see formatRouteData),
+  // so the grid/tabs/horizontal layout partials only exist for the other frameworks.
   if (framework === FRAMEWORK_ANGULAR_ALIAS) {
     registerPartial(
       'tabs-panel',
       resolve(__dirname, `${sourceTemplateDir}/tabsPanel.hbs`),
     );
+  } else {
+    registerPartial(
+      'grid-layout',
+      resolve(__dirname, `${sourceTemplateDir}/gridLayout.hbs`),
+    );
+    registerPartial(
+      'tabs-layout',
+      resolve(__dirname, `${sourceTemplateDir}/tabsLayout.hbs`),
+    );
+    registerPartial(
+      'horizontal-layout',
+      resolve(__dirname, `${sourceTemplateDir}/horizontalLayout.hbs`),
+    );
   }
-  registerPartial(
-    'grid-layout',
-    resolve(__dirname, `${sourceTemplateDir}/gridLayout.hbs`),
-  );
-  registerPartial(
-    'tabs-layout',
-    resolve(__dirname, `${sourceTemplateDir}/tabsLayout.hbs`),
-  );
-  registerPartial(
-    'horizontal-layout',
-    resolve(__dirname, `${sourceTemplateDir}/horizontalLayout.hbs`),
-  );
   registerPartial(
     'smart-form',
     resolve(__dirname, `${sourceTemplateDir}/form.hbs`),

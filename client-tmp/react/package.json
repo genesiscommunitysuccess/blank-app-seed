@@ -31,7 +31,6 @@
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "genx lint -l stylelint",
-    "stats": "webpack --mode production --json > stats.json",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:unit:watch": "jest --watchAll",
