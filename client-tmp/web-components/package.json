@@ -55,7 +55,7 @@
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
-      "oxlint --fix --deny-warnings",
+      "node oxlint-staged.js",
       "oxfmt --write"
     ],
     "*.{mjs,cjs}": [
