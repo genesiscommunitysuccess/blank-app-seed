@@ -1,5 +1,28 @@
 # Changelog
 
+## [5.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.23.0) (2026-08-18)
+
+
+### Features
+
+* CI builds the react app; react jest stack repaired; store uses slice initial state [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 62db073
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 7ec4e78
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 6496554
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) (#575) b64f8b9
+
+
+### Bug Fixes
+
+* address code review - serializer robustness, permission semantics, tooling hardening [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 565c9ce
+* address follow-up review - empty gridOptions, react CI coverage, husky invocation [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) c529d7e
+* document-title fallback uses the app name, not 'React App' [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 5d099a7
+* e2e tests actually navigate; template escaping and dead-code cleanups [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) b43ae68
+* generated apps lint-clean out of the box for all frameworks, tiles and layouts [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) f8ee12f
+* pre-commit lint fixes to convergence before gating [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) d9dc184
+* quiet oxlint-staged fix passes and surface spawn failures [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 33ccf58
+* schema import gating, FDC3 width pin, generated-dir glob alignment [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) dfbfd2a
+* type-check and build cleanliness for generated apps [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 8838670
+
 ## [5.22.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.0...v5.22.1) (2026-08-06)
 
 
