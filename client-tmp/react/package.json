@@ -28,7 +28,7 @@
     "dev:no-open": "NO_OPEN=true npm run dev",
     "dev:intellij": "npm run dev",
     "dev:https": "HTTPS=true npm run dev",
-    "git:setup": "cd .. && node client/node_modules/husky/lib/bin.js install",
+    "git:setup": "cd .. && npx --no --prefix client husky install",
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "genx lint -l stylelint",
@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
-      "oxlint --fix",
+      "oxlint --fix --deny-warnings",
       "oxfmt --write"
     ],
     "*.{mjs,cjs}": [

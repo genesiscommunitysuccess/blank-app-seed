@@ -78,6 +78,8 @@ function gridOptionsSerializer(options, indent = 0) {
         fields += `${serialiseEntry(key, value, indent + 2)}\n`;
       }
     });
+    // An expanded empty object is what oxfmt collapses to `{}`; match formatTSValue.
+    if (!fields) return '{}';
     return `{\n${fields}${pad}}`;
   } catch (e) {
     console.error('Error serializing grid options:', e.message);

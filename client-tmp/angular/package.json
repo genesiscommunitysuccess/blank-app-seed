@@ -28,7 +28,7 @@
     "dev:intellij": "npm run dev",
     "dev:https": "npm run dev -- --https",
     "dev:webpack": "npm run dev",
-    "git:setup": "cd .. && node client/node_modules/husky/lib/bin.js install",
+    "git:setup": "cd .. && npx --no --prefix client husky install",
     "lint": "genx lint -l ox",
     "lint:fix": "genx lint -l ox --fix",
     "lint:stylelint": "node lint-css.js",
@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
-      "oxlint --fix",
+      "oxlint --fix --deny-warnings",
       "oxfmt --write"
     ],
     "*.{mjs,cjs}": [
