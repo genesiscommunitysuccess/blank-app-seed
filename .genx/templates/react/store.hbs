@@ -2,11 +2,7 @@ import { createStore } from '@genesislcap/foundation-redux';
 import { eventingSlice } from './slices/eventing.slice';
 
 export const { reduxStore, store, actions, selectors } = createStore([eventingSlice], {
-  eventing: {
-    {{#each events}}
-    {{this}}: null{{#unless @last}},{{/unless}}
-    {{/each}}
-  },
+  eventing: eventingSlice.getInitialState(),
 });
 
 export type Store = typeof store;

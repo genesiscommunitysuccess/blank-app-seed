@@ -42,7 +42,7 @@ describe('ErrorMessage Component', () => {
     render(<ErrorMessage message={message} />);
     const displayedMessage: HTMLElement = screen.getByText(message);
     const messageWrapper: HTMLElement | null = displayedMessage.parentElement;
-    
+
     expect(messageWrapper).toBeInTheDocument();
     expect(messageWrapper).toHaveStyle(`
       color: var(--neutral-foreground-rest);
@@ -67,9 +67,21 @@ describe('ErrorMessage Component', () => {
   });
 
   test('renders the correct element type for various elementType props', () => {
-    const elementTypes: ErrorMessageProps['elementType'][] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div'];
+    const elementTypes: ErrorMessageProps['elementType'][] = [
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'p',
+      'span',
+      'div',
+    ];
     elementTypes.forEach((elementType: ErrorMessageProps['elementType']) => {
-      const { container }: { container: HTMLElement } = render(<ErrorMessage message={message} elementType={elementType} />);
+      const { container }: { container: HTMLElement } = render(
+        <ErrorMessage message={message} elementType={elementType} />,
+      );
       const displayedMessage: HTMLElement | null = container.querySelector(elementType as string);
       expect(displayedMessage).toBeInTheDocument();
       expect(displayedMessage?.tagName).toBe((elementType as string).toUpperCase());

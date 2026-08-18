@@ -60,7 +60,7 @@ module.exports = async (data, utils) => {
       if (!fs.existsSync(templateDir)) {
         fs.mkdirSync(templateDir, { recursive: true });
       }
-      fs.writeFileSync(templateFile, jsonContent);
+      fs.writeFileSync(templateFile, `${jsonContent}\n`);
     } catch (err) {
       console.warn('Failed to write designTokens to template:', err?.message || err);
     }
@@ -152,6 +152,16 @@ module.exports = async (data, utils) => {
   }
 
   excludeFrameworks(data.framework);
+
+  if (data.FDC3.includeDependencies) {
+    const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+    const utilsDir = frameworkDir === 'angular' ? 'src/app/utils' : 'src/utils';
+    utils.writeFileWithData(
+      path.resolve(__dirname, `../client/${utilsDir}/fdc3.ts`),
+      data,
+      path.resolve(__dirname, `templates/${frameworkDir}/fdc3.ts.hbs`),
+    );
+  }
 
   generateStore(data.routes, utils, data.framework);
 

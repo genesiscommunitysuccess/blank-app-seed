@@ -1,15 +1,15 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Connect } from '@genesislcap/foundation-comms';
-import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
-import type { LayoutComponentName } from './types/layout';
+import { customEventFactory, registerStylesTarget } from '../pbc/utils';
 import { configureFoundationAuth } from './share/foundation-auth';
 import { registerComponents } from './share/genesis-components';
 import { getStore } from './store/foundation-store';
-import { customEventFactory, registerStylesTarget } from '../pbc/utils';
+import type { LayoutComponentName } from './types/layout';
 {{#if FDC3.channels.length}}
 import { listenToChannel, onFDC3Ready } from './utils';
 {{/if}}
+import getLayoutNameByRoute from './utils/getLayoutNameByRoute';
 
 @Component({
   selector: '{{rootElement}}',
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     // @ts-ignore
     configureFoundationAuth({ router, connectService: this.connect });
-      
+
     // Set layout componet based on route
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -76,22 +76,21 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
   }
 
-
+  {{#if FDC3.channels.length}}
   ngAfterViewInit() {
-    {{#if FDC3.channels.length}}
     onFDC3Ready(this.FDC3ReadyHandler);
-    {{/if}}
   }
 
-  {{#if FDC3.channels.length}}
   FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
-      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
+      console.log('Received FDC3 message on {{this.name}} ({{this.type}})', result);
       // TODO: Add your listener logic here
       // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
     });
     {{/each}}
   };
+  {{else}}
+  ngAfterViewInit() {}
   {{/if}}
 }

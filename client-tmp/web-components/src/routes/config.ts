@@ -3,9 +3,13 @@ import { Auth, Connect } from '@genesislcap/foundation-comms';
 import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
 import { GENESIS_SOCKET_URL, PUBLIC_PATH } from '@genesislcap/foundation-utils';
 import { defaultLayout, loginLayout } from '../layouts';
+{{#if routes}}
+/* eslint-disable import-es/order -- generated page imports follow the navigation order */
 {{#each routes}}
 import { {{pascalCase this.name}} } from './{{kebabCase this.name}}/{{kebabCase this.name}}';
 {{/each}}
+/* eslint-enable import-es/order */
+{{/if}}
 import { NotFound } from './not-found/not-found';
 import { defaultNotPermittedRoute, NotPermitted } from './not-permitted/not-permitted';
 import { LoginSettings } from './types';

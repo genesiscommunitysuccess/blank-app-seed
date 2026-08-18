@@ -7,7 +7,13 @@ import { AUTH_PATH } from '../app.config';
 /**
  * Configure the micro frontend
  */
-export const configureFoundationAuth = ({ router, connectService,}: { router: Router; connectService: Connect; }) => {
+export const configureFoundationAuth = ({
+  router,
+  connectService,
+}: {
+  router: Router;
+  connectService: Connect;
+}) => {
   const baseElement = document.querySelector('base');
   const basePath = baseElement?.getAttribute('href') || '';
 

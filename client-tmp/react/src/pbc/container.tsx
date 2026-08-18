@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { deriveElementTag } from './utils';
-import { useRoutesContext } from '../store/RoutesContext';
 import { useLocation, RouteObject } from 'react-router-dom';
+import { useRoutesContext } from '../store/RoutesContext';
+import { deriveElementTag } from './utils';
 
 type ExtendedRouteObject = RouteObject & {
   data?: {
@@ -9,7 +9,7 @@ type ExtendedRouteObject = RouteObject & {
     pbcElement?: any;
   };
   path: string;
-}
+};
 
 const PBCContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,9 +36,14 @@ const PBCContainer: React.FC = () => {
     };
 
     loadElement();
+    // `routes` comes from a memoized context value (see RoutesContext) so its identity is
+    // stable; an unstable one would re-run this effect and remount the PBC custom element
+    // on every re-render of the provider.
   }, [location.pathname, routes]);
 
-  return <div ref={containerRef} className="container" style=\{{ width: '100%', height: '100%' }}></div>;
+  return (
+    <div ref={containerRef} className="container" style=\{{ width: '100%', height: '100%' }}></div>
+  );
 };
 
 export default PBCContainer;

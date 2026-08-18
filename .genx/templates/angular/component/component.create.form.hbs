@@ -1,8 +1,16 @@
+{{#ifAny tile.config.createFormUiSchema tile.config.uischema}}
 import { UiSchema } from '@genesislcap/foundation-forms';
 
 {{#if tile.config.createFormUiSchema}}
-export const createFormSchema: UiSchema = {{{ tile.config.createFormUiSchema }}}
+export const createFormSchema: UiSchema = {{{ tile.config.createFormUiSchema }}};
 {{/if}}
 {{#if tile.config.uischema}}
-export const createFormSchema: UiSchema = {{{ tile.config.uischema }}}
+export const createFormSchema: UiSchema = {{{ tile.config.uischema }}};
 {{/if}}
+{{else}}
+/**
+ * No `uischema` was supplied for this form, so its fields are derived from the resource metadata.
+ * Export a `createFormSchema` here and pass it to the form to take control of the layout.
+ */
+export {};
+{{/ifAny}}

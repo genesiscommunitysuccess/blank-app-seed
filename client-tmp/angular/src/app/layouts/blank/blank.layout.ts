@@ -1,9 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import {
-  applyMode,
-  injectThemeStyles,
-  resolveInitialMode,
-} from '@genesislcap/rapid-design-system';
+import { applyMode, injectThemeStyles, resolveInitialMode } from '@genesislcap/rapid-design-system';
 import { activeTheme } from '../../../styles/active-theme';
 
 @Component({

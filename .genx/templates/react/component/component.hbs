@@ -1,64 +1,78 @@
-{{#ifEquals tile.type 'entity-manager'}}
-import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
-{{/ifEquals}}
 {{#ifEquals tile.type 'grid-pro'}}
-import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
-import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
-import { GridProCaseType } from '@genesislcap/grid-pro';
+{{#ifAny tile.config.gridOptions tile.config.eventing.publishEventName}}
+import type { GridOptions } from '@ag-grid-community/core';
+{{/ifAny}}
 {{/ifEquals}}
-{{#ifEquals tile.type 'smart-form'}}
-import { Form } from '@genesislcap/foundation-forms/react';
-{{/ifEquals}}
-{{#ifEquals tile.type 'chart'}}
-import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
-import { ChartConfig } from '@genesislcap/g2plot-chart';
-{{/ifEquals}}
-{{#if tile.config.permissions.viewRight~}}
-import { getUser } from '@genesislcap/foundation-user';
-import { getViewUpdateRightComponent } from '../../../utils';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
-{{else if tile.config.permissions.updateRight~}}
-import { getUser } from '@genesislcap/foundation-user';
-{{#if tile.config.customEvents}}
-import { customEvent } from '@genesislcap/foundation-events';
-{{/if}}
-import { getViewUpdateRightComponent{{#if tile.config.customEvents}}, submitFailureNotification{{/if}} } from '../../../utils';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
-{{/if}}
-{{#if tile.config.customEvents}}
-import { customActions } from './{{pascalCase tile.title}}EventsConfig';
-{{/if}}
-{{#if tile.config.createFormUiSchema~}}
-import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
-{{/if}}
-{{#if tile.config.uischema~}}
-import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
-{{/if}}
-{{#if tile.config.updateFormUiSchema~}}
-import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
-{{/if}}
-{{#if tile.config.filterFormUiSchema~}}
-import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
-{{/if}}
-{{#if tile.config.columns~}}
-import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
-{{/if}}
-{{#if tile.config.gridOptions~}}
-import { GridOptions } from '@ag-grid-community/core';
-import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
-{{/if}}
-{{#if tile.config.eventing.publishEventName}}
-import { actions } from '../../../store/store';
-{{/if}}
-{{#if tile.config.eventing.listener}}
-import { useSelector } from 'react-redux';
-import { selectors } from '../../../store/store';
-{{/if}}
 {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
 {{#ifContains 'entity-manager|grid-pro' tile.type}}
 import { DatasourceConfiguration } from '@genesislcap/foundation-entity-management';
 {{/ifContains}}
 {{/ifAny}}
+{{#ifEquals tile.type 'entity-manager'}}
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'smart-form'}}
+import { Form } from '@genesislcap/foundation-forms/react';
+{{/ifEquals}}
+{{#if tile.config.usesPermissionHelper}}
+import { getUser } from '@genesislcap/foundation-user';
+{{/if}}
+{{#ifEquals tile.type 'chart'}}
+import { ChartConfig } from '@genesislcap/g2plot-chart';
+import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
+{{/ifEquals}}
+{{#ifEquals tile.type 'grid-pro'}}
+import { GridProCaseType } from '@genesislcap/grid-pro';
+import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
+import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
+{{/ifEquals}}
+{{#if tile.config.eventing.listener}}
+import { useSelector } from 'react-redux';
+{{/if}}
+{{#if tile.config.wholeTileRight}}
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+{{/if}}
+{{#if tile.config.eventing.publishEventName}}
+{{#if tile.config.eventing.listener}}
+import { actions, selectors } from '../../../store/store';
+{{else}}
+import { actions } from '../../../store/store';
+{{/if}}
+{{else}}
+{{#if tile.config.eventing.listener}}
+import { selectors } from '../../../store/store';
+{{/if}}
+{{/if}}
+{{#if tile.config.usesPermissionHelper}}
+import { getViewUpdateRightComponent } from '../../../utils';
+{{/if}}
+{{#if tile.config.columns~}}
+import { columnDefs as columnDefsTile } from './{{pascalCase tile.title}}ColumnDefs';
+{{/if}}
+{{#if tile.config.createEvent}}
+{{#if tile.config.createFormUiSchema~}}
+import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
+{{/if}}
+{{/if}}
+{{#if tile.config.uischema~}}
+import { createFormSchema as createFormSchemaTile } from './{{pascalCase tile.title}}CreateFormSchema';
+{{/if}}
+{{#if tile.config.customEvents}}
+import { customActions } from './{{pascalCase tile.title}}EventsConfig';
+{{/if}}
+{{#if tile.config.enableFilters}}
+{{#if tile.config.filterFormUiSchema~}}
+import { filterFormSchema as filterFormSchemaTile } from './{{pascalCase tile.title}}FilterFormSchema';
+{{/if}}
+{{/if}}
+{{#if tile.config.gridOptions~}}
+import { gridOptions as gridOptionsTile } from './{{pascalCase tile.title}}GridOptions';
+{{/if}}
+{{#if tile.config.updateEvent}}
+{{#if tile.config.updateFormUiSchema~}}
+import { updateFormSchema as updateFormSchemaTile } from './{{pascalCase tile.title}}UpdateFormSchema';
+{{/if}}
+{{/if}}
 import './{{pascalCase tile.title}}Component.css';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
@@ -69,13 +83,19 @@ import './{{pascalCase tile.title}}Component.css';
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
 {{/ifAny}}
-
 export const {{pascalCase tile.componentName}}: React.FC = () => {
-  {{#if tile.config.permissions.viewRight}}
-  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
-  {{else if tile.config.permissions.updateRight}}
-  const hasUserPermission = (permissionCode: string): string | boolean => getViewUpdateRightComponent(getUser(), permissionCode);
+  {{#if tile.config.usesPermissionHelper}}
+  const hasUserPermission = (permissionCode: string): string | boolean =>
+    getViewUpdateRightComponent(getUser(), permissionCode);
   {{/if}}
+  {{#ifEquals tile.type 'entity-manager'}}
+  {{#if tile.config.permissions.updateRight}}
+  {{#ifAny tile.config.createEvent tile.config.updateEvent tile.config.deleteEvent}}
+  {{! Hoisted so the CRUD event props stay inside the print width whatever the event names are. }}
+  const canUpdate = hasUserPermission('{{tile.config.permissions.updateRight}}');
+  {{/ifAny}}
+  {{/if}}
+  {{/ifEquals}}
   {{#if tile.config.eventing.publishEventName}}
   const handleRowSelection = (e: any) => {
     {{#ifEquals tile.type 'entity-manager'}}
@@ -91,17 +111,23 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
   };
   {{/if}}
+  {{#if tile.config.createEvent}}
   {{#if tile.config.createFormUiSchema}}
   const createFormSchema: typeof createFormSchemaTile = createFormSchemaTile;
+  {{/if}}
   {{/if}}
   {{#if tile.config.uischema}}
   const uischema: typeof createFormSchemaTile = createFormSchemaTile;
   {{/if}}
+  {{#if tile.config.updateEvent}}
   {{#if tile.config.updateFormUiSchema}}
   const updateFormSchema: typeof updateFormSchemaTile = updateFormSchemaTile;
   {{/if}}
+  {{/if}}
+  {{#if tile.config.enableFilters}}
   {{#if tile.config.filterFormUiSchema}}
   const filterFormSchema: typeof filterFormSchemaTile = filterFormSchemaTile;
+  {{/if}}
   {{/if}}
   {{#if tile.config.columns}}
   const columnDefs: typeof columnDefsTile = [...columnDefsTile];
@@ -116,7 +142,7 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     onSelectionChanged: handleRowSelection,
     rowSelection: 'single',
     {{/if}}
-  }
+  };
   {{/ifAny}}
   {{/ifEquals}}
   {{#ifAny tile.config.snapshot tile.config.reqrep tile.config.eventing.listener}}
@@ -132,10 +158,11 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     {{#if tile.config.eventing.listener}}
     criteria: useSelector(selectors.eventing.getCriteriaFor{{pascalCase tile.title}}),
     {{/if}}
-  }
+  };
   {{/ifContains}}
   {{/ifAny}}
-  {{#if tile.config.type}}
+  {{#ifEquals tile.type 'chart'}}
+  {{! Declared for every chart tile: the chart partial always passes config={chartConfig}. }}
   const chartConfig: ChartConfig = {
     {{#ifEquals tile.config.type 'pie'}}
     radius: 0.75,
@@ -146,9 +173,24 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
     yField: 'value',
     {{/ifEquals}}
   };
-  {{/if}}
-
+  {{/ifEquals}}
+{{#if tile.config.wholeTileRight}}
+  return hasUserPermission('{{tile.config.wholeTileRight}}') ? (
+{{#ifEquals tile.type 'smart-form'}}
+    {{! smart-form renders as a single line; keep the partial inline so its trailing newline survives }}{{> (lookup tile 'type') tile}}
+{{else}}
+    {{> (lookup tile 'type') tile}}
+{{/ifEquals}}
+  ) : (
+    <ErrorMessage elementType="h3" message="You do not have access to view this component." />
+  );
+{{else}}
+{{#ifEquals tile.type 'smart-form'}}
+  return {{> (lookup tile 'type') tile}};
+{{else}}
   return (
     {{> (lookup tile 'type') tile}}
   );
+{{/ifEquals}}
+{{/if}}
 };

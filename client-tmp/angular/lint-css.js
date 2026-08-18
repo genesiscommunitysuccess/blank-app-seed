@@ -1,7 +1,28 @@
 const { execSync } = require('child_process');
-const glob = require('glob');
+const { readdirSync } = require('fs');
 const path = require('path');
-const cssFiles = glob.sync(path.join(__dirname, '**/*.css'));
+
+const IGNORED_DIRS = new Set([
+  'node_modules',
+  'dist',
+  'build',
+  'coverage',
+  '.angular',
+  'out-tsc',
+  'test-results',
+  '.git',
+]);
+
+function findCssFiles(dir) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    if (entry.isDirectory()) {
+      return IGNORED_DIRS.has(entry.name) ? [] : findCssFiles(path.join(dir, entry.name));
+    }
+    return entry.isFile() && entry.name.endsWith('.css') ? [path.join(dir, entry.name)] : [];
+  });
+}
+
+const cssFiles = findCssFiles(__dirname);
 
 if (cssFiles.length === 0) {
   console.log('No CSS files found.');

@@ -4,7 +4,16 @@ const defaultLayout = {
     type: 'row',
     children: [
       {{#each route.tiles}}
-      { type: 'tabset', children: [{ type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' }] },
+      {
+        type: 'tabset',
+        children: [
+          {
+            type: 'tab',
+            name: {{{this.titleJs}}},
+            component: '{{pascalCase this.componentName}}',
+          },
+        ],
+      },
       {{/each}}
     ],
   },

@@ -1,17 +1,13 @@
+import { applyMode, injectThemeStyles, resolveInitialMode } from '@genesislcap/rapid-design-system';
 import React, { ReactNode, useEffect, useRef } from 'react';
-import {
-  applyMode,
-  injectThemeStyles,
-  resolveInitialMode,
-} from '@genesislcap/rapid-design-system';
-import styles from './BlankLayout.module.css';
 import { activeTheme } from '../../styles/active-theme';
+import styles from './BlankLayout.module.css';
 
 interface BlankLayoutProps {
   children: ReactNode;
 }
 
-const BlankLayout: React.FC<BlankLayoutProps> = ({ children }) =>{
+const BlankLayout: React.FC<BlankLayoutProps> = ({ children }) => {
   const designSystemProviderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,10 +18,10 @@ const BlankLayout: React.FC<BlankLayoutProps> = ({ children }) =>{
   }, []);
 
   return (
-  <rapid-design-system-provider ref={designSystemProviderRef} className={styles['blank-layout']}>
-    <section className={styles.content}>{children}</section>
-  </rapid-design-system-provider>
-);
+    <rapid-design-system-provider ref={designSystemProviderRef} className={styles['blank-layout']}>
+      <section className={styles.content}>{children}</section>
+    </rapid-design-system-provider>
+  );
 };
 
 export default BlankLayout;

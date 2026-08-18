@@ -1,22 +1,25 @@
 {{#if route.tiles}}
-import React, { useRef } from 'react';
 import { Layout, Model, TabNode } from 'flexlayout-react';
-import { getFlexLayoutStorageKey } from '../../utils/layout';
+import React, { useRef } from 'react';
 import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
+import { getFlexLayoutStorageKey } from '../../utils/layout';
+/* eslint-disable import-es/order -- generated tile imports follow tile order, not alphabetical */
 {{#each route.tiles}}
 import { {{pascalCase this.componentName}} } from './{{pascalCase this.title}}{{pascalCase this.componentType}}';
 {{/each}}
-{{/if}}
+/* eslint-enable import-es/order */
 import './{{pascalCase route.name}}.css';
 
-{{#if route.tiles}}
-const STORAGE_KEY = getFlexLayoutStorageKey('{{route.layoutKey}}');
+// Kept as its own constant so the (arbitrarily long) layout key never forces a line wrap.
+const LAYOUT_KEY = '{{route.layoutKey}}';
+const STORAGE_KEY = getFlexLayoutStorageKey(LAYOUT_KEY);
 
 {{> (lookup ./route 'layoutType') }}
 
+{{! Map keys match the imported component names so the entries stay shorthand and never wrap. }}
 const componentMap: Record<string, React.FC> = {
   {{#each route.tiles}}
-  '{{camelCase this.componentName}}': {{pascalCase this.componentName}},
+  {{pascalCase this.componentName}},
   {{/each}}
 };
 
@@ -24,15 +27,17 @@ function loadModel(): Model {
   if (STORAGE_KEY) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      try { return Model.fromJson(JSON.parse(saved)); } catch {}
+      try {
+        return Model.fromJson(JSON.parse(saved));
+      } catch {
+        // Ignore a corrupt persisted layout and fall back to the default below.
+      }
     }
   }
   return Model.fromJson(defaultLayout);
 }
-{{/if}}
 
 const {{pascalCase route.name}} = () => {
-  {{#if route.tiles}}
   const modelRef = useRef<Model>(loadModel());
 
   const factory = (node: TabNode) => {
@@ -52,17 +57,19 @@ const {{pascalCase route.name}} = () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(model.toJson()));
     }
   };
-  {{/if}}
 
   return (
     <section className="{{kebabCase route.name}}-page">
-      {{#if route.tiles}}
       <Layout model={modelRef.current} factory={factory} onModelChange={onModelChange} />
-      {{else}}
-      Welcome to {{sentenceCase route.name}}
-      {{/if}}
     </section>
   );
 };
+{{else}}
+import './{{pascalCase route.name}}.css';
+
+const {{pascalCase route.name}} = () => {
+  return <section className="{{kebabCase route.name}}-page">Welcome to {{sentenceCase route.name}}</section>;
+};
+{{/if}}
 
 export default {{pascalCase route.name}};
