@@ -1,5 +1,5 @@
 {
   "UI": "15.7.2",
-  "GSF": "8.16.0-SNAPSHOT",
+  "GSF": "8.15.34-ldap.1",
   "Auth": "8.16.0-SNAPSHOT"
 }
