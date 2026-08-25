@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.23.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.0...v5.23.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 b093abe
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 (#617) aafb04f
+* satisfy new oxlint react rules in seed template and route generator GENC-0 b5b12af
+
 ## [5.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.23.0) (2026-08-18)
 
 
