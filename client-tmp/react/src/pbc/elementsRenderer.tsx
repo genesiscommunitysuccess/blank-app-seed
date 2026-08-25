@@ -20,11 +20,14 @@ const PBCElementsRenderer = ({
   predicate = ALWAYS_TRUE_PREDICATE,
 }: PBCElementsRendererProps) => {
   const containerRef = useRef<PBCContainerElement>(null);
-  const [isConnected, setIsConnected] = useState(false);
+  // Read during render rather than set synchronously in the effect below; the
+  // subscription still delivers every later change.
+  const [isConnected, setIsConnected] = useState(
+    () => DI.getOrCreateDOMContainer().get(Connect).isConnected,
+  );
 
   useEffect(() => {
     const connect = DI.getOrCreateDOMContainer().get(Connect);
-    setIsConnected(connect.isConnected);
     const isConnected$ = (
       connect as {
         isConnected$?: { subscribe: (cb: (v: boolean) => void) => { unsubscribe: () => void } };
