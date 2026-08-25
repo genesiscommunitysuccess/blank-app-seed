@@ -1,6 +1,6 @@
 {{#if route.tiles}}
 import { Layout, Model, TabNode } from 'flexlayout-react';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { getFlexLayoutStorageKey } from '../../utils/layout';
 /* eslint-disable import-es/order -- generated tile imports follow tile order, not alphabetical */
@@ -38,7 +38,7 @@ function loadModel(): Model {
 }
 
 const {{pascalCase route.name}} = () => {
-  const modelRef = useRef<Model>(loadModel());
+  const [model] = useState<Model>(loadModel);
 
   const factory = (node: TabNode) => {
     const Component = componentMap[node.getComponent() ?? ''];
@@ -60,7 +60,7 @@ const {{pascalCase route.name}} = () => {
 
   return (
     <section className="{{kebabCase route.name}}-page">
-      <Layout model={modelRef.current} factory={factory} onModelChange={onModelChange} />
+      <Layout model={model} factory={factory} onModelChange={onModelChange} />
     </section>
   );
 };
