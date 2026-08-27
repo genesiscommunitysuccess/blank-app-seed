@@ -83,6 +83,7 @@ allprojects {
                 password = properties["genesisArtifactoryPassword"].toString()
             }
         }
+        google()
     }
 
     publishing {
