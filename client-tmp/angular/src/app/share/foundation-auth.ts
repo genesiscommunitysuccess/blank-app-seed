@@ -38,28 +38,8 @@ export const configureFoundationAuth = ({
       await connectService.connect(url);
 
       const lastPath = getUser().lastPath()?.replace(basePath, '');
-      const target = lastPath ?? '{{kebabCase routes.[0].name}}';
 
-      router.navigate([target]);
-      // foundation-auth's own router can still be connected for a beat after this navigation
-      // (its teardown races the host app unmounting the auth page), and its hardwired
-      // fallback rewrites any URL outside its routes to `<hostPath>/not-found` for an
-      // authenticated user. When it wins the race, the app renders the right page under a
-      // poisoned URL — until the next full reload boots the router there and strands the
-      // user on Not Found. Until the fallback learns to stand down outside its hostPath,
-      // watch the brief teardown window and re-assert the real destination.
-      const notFoundPath = `${hostPath}/not-found`.replace(/\/{2,}/g, '/');
-      let tries = 0;
-      const reassert = () => {
-        if (window.location.pathname === notFoundPath) {
-          router.navigate([target], { replaceUrl: true });
-        }
-        // Keep watching either way — the router can strike again until its teardown lands.
-        if (tries++ < 10) {
-          window.setTimeout(reassert, 50);
-        }
-      };
-      window.setTimeout(reassert, 0);
+      router.navigate([lastPath ?? '{{kebabCase routes.[0].name}}']);
     },
   });
 };

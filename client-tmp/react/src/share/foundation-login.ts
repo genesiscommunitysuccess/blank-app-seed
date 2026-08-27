@@ -42,27 +42,7 @@ export const configureFoundationLogin = ({
       await connect.connect();
       // Preserve the full original location (query string + hash) so deep-link
       // params such as `?component=<name>` survive the login bounce.
-      const target = buildPostLoginRedirect(location);
-      navigate(target, { replace: true });
-      // foundation-auth's own router can still be connected for a beat after this navigation
-      // (its teardown races the React unmount of the auth page), and its hardwired fallback
-      // rewrites any URL outside its routes to `<hostPath>/not-found` for an authenticated
-      // user. When it wins the race, the app renders the right page under a poisoned URL —
-      // until the next full reload boots the router there and strands the user on Not Found.
-      // Until the fallback learns to stand down outside its hostPath, watch the brief
-      // teardown window and re-assert the real destination.
-      const notFoundPath = `${hostPath}/not-found`.replace(/\/{2,}/g, '/');
-      let tries = 0;
-      const reassert = () => {
-        if (window.location.pathname === notFoundPath) {
-          navigate(target, { replace: true });
-        }
-        // Keep watching either way — the router can strike again until its teardown lands.
-        if (tries++ < 10) {
-          window.setTimeout(reassert, 50);
-        }
-      };
-      window.setTimeout(reassert, 0);
+      navigate(buildPostLoginRedirect(location), { replace: true });
     },
   });
 };
