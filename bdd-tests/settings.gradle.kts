@@ -20,11 +20,6 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
-        mavenLocal {
-            content {
-                excludeGroup("org.agrona")
-            }
-        }
     }
 }
 

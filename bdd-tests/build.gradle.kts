@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
-    kotlin("jvm") version "2.1.21"
+    kotlin("jvm") version "2.4.0"
     java
     id("global.genesis.bdd_automation")
 }
@@ -19,16 +22,13 @@ repositories {
             password = properties["genesisArtifactoryPassword"].toString()
         }
     }
-    mavenLocal {
-        // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
-        content {
-            excludeGroup("org.agrona")
-        }
-    }
 }
 kotlin {
-    jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+    jvmToolchain(17)
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all", "-Xlambdas=indy")
+        jvmTarget.set(JvmTarget.JVM_17)
+        apiVersion.set(KotlinVersion.KOTLIN_2_4)
     }
 }
 
