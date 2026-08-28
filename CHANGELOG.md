@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.23.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.1...v5.23.2) (2026-08-28)
+
+
+### Bug Fixes
+
+* drop the post-login watcher superseded by the foundation-auth fallback fix [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c142f0
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 450a2fe
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#619) 1b4fd2c
+* re-assert the post-login destination while the auth router tears down [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c175e7
+
 ## [5.23.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.0...v5.23.1) (2026-08-25)
 
 
