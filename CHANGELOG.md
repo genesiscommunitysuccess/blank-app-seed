@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.23.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.2...v5.23.3) (2026-09-01)
+
+
+### Bug Fixes
+
+* correct the placeholder comment now that nothing sets the class GENC-0 bc08e96
+* drop the React tile className wiring for now GENC-0 386865e
+* make the React tile style placeholder target a real selector GENC-0 17f00ac
+* make the React tile style placeholder target a real selector GENC-0 (#620) 70b82a6
+* make the smart-form tile always render multi-line to satisfy oxfmt GENC-0 24622f7
+* set the tile's className so the style placeholder selector matches GENC-0 656b18b
+
 ## [5.23.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.1...v5.23.2) (2026-08-28)
 
 
