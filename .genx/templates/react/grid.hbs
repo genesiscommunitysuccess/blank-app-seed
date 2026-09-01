@@ -1,12 +1,18 @@
 {{#if config.useOnlyTemplateCols}}
 <RapidGridPro
+  className="{{kebabCase componentName}}"
   headerCaseType={GridProCaseType.capitalCase}
   onlyTemplateColDefs
   enableRowFlashing
   enableCellFlashing
 >
 {{else}}
-<RapidGridPro headerCaseType={GridProCaseType.capitalCase} enableRowFlashing enableCellFlashing>
+<RapidGridPro
+  className="{{kebabCase componentName}}"
+  headerCaseType={GridProCaseType.capitalCase}
+  enableRowFlashing
+  enableCellFlashing
+>
 {{/if}}
 {{#ifAny config.snapshot config.gridOptions config.eventing.publishEventName config.eventing.listener config.reqrep}}
   {{! prettier-ignore must be bare: attribute widths are user data, keep one attribute per line }}
