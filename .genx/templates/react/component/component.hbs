@@ -176,13 +176,21 @@ export const {{pascalCase tile.componentName}}: React.FC = () => {
   {{/ifEquals}}
 {{#if tile.config.wholeTileRight}}
   return hasUserPermission('{{tile.config.wholeTileRight}}') ? (
+{{#ifEquals tile.type 'smart-form'}}
+    {{! smart-form renders as a single line; keep the partial inline so its trailing newline survives }}{{> (lookup tile 'type') tile}}
+{{else}}
     {{> (lookup tile 'type') tile}}
+{{/ifEquals}}
   ) : (
     <ErrorMessage elementType="h3" message="You do not have access to view this component." />
   );
 {{else}}
+{{#ifEquals tile.type 'smart-form'}}
+  return {{> (lookup tile 'type') tile}};
+{{else}}
   return (
     {{> (lookup tile 'type') tile}}
   );
+{{/ifEquals}}
 {{/if}}
 };
