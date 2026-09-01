@@ -1,8 +1,8 @@
 {{#if config.type}}
-<G2PlotChart type="{{ config.type }}" config={chartConfig}>
+<G2PlotChart className="{{kebabCase componentName}}" type="{{ config.type }}" config={chartConfig}>
 {{else}}
 {{! `type` is optional: G2PlotChart falls back to its own default when it is absent, and type="" is not a ChartTypes. }}
-<G2PlotChart config={chartConfig}>
+<G2PlotChart className="{{kebabCase componentName}}" config={chartConfig}>
 {{/if}}
   <ChartDatasource resourceName="{{ config.resourceName }}" serverFields="{{ config.xField }} {{ config.yField }}" />
 </G2PlotChart>
