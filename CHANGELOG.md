@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.23.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.3...v5.23.4) (2026-09-01)
+
+
+### Bug Fixes
+
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 a948edd
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 (#621) 07cf830
+
 ## [5.23.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.2...v5.23.3) (2026-09-01)
 
 
