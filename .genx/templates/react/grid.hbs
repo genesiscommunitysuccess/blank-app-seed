@@ -5,6 +5,7 @@
   onlyTemplateColDefs
   enableRowFlashing
   enableCellFlashing
+  enableColumnSelection
 >
 {{else}}
 <RapidGridPro
@@ -12,6 +13,7 @@
   headerCaseType={GridProCaseType.capitalCase}
   enableRowFlashing
   enableCellFlashing
+  enableColumnSelection
 >
 {{/if}}
 {{#ifAny config.snapshot config.gridOptions config.eventing.publishEventName config.eventing.listener config.reqrep}}

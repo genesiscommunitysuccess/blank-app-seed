@@ -7,9 +7,15 @@ ${whenElse(
       only-template-col-defs
       enable-row-flashing
       enable-cell-flashing
+      enable-column-selection
     >
     {{else}}
-    <rapid-grid-pro header-case-type="capitalCase" enable-row-flashing enable-cell-flashing>
+    <rapid-grid-pro
+      header-case-type="capitalCase"
+      enable-row-flashing
+      enable-cell-flashing
+      enable-column-selection
+    >
     {{/if}}
       {{#ifAny config.reqrep config.eventing.listener config.gridOptions config.eventing.publishEventName}}
       <grid-pro-genesis-datasource
