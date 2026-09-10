@@ -88,7 +88,7 @@
     "@genesislcap/pbc-notify-ui": "{{versions.UI}}",
     "@genesislcap/pbc-reconciliation-ui": "{{versions.UI}}",
     "@genesislcap/pbc-reporting-ui": "{{versions.UI}}",
-    "flexlayout-react": "^0.8.19",
+    "flexlayout-react": "^0.10.8",
     "change-case": "^4.1.2",
     "tabulator-tables": "6.3.1",
     "history": "^5.3.0",
