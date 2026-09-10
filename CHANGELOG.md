@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.24.0...v5.25.0) (2026-09-10)
+
+
+### Features
+
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) 615dd5d
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) (#624) 501c90d
+
 ## [5.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.4...v5.24.0) (2026-09-04)
 
 
