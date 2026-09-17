@@ -1,9 +1,9 @@
+{{#if tile.config.gridOptions}}
+import type { GridOptions } from '@ag-grid-community/core';
+{{/if}}
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { getUser } from '@genesislcap/foundation-user';
-{{#if tile.config.gridOptions}}
-import { GridOptionsConfig } from '@genesislcap/rapid-grid-pro';
-{{/if}}
 {{#if tile.config.eventing.listener}}
 import { injectSelector } from '@reduxjs/angular-redux';
 {{/if}}
@@ -74,7 +74,7 @@ export class {{pascalCase tile.componentName}} {
   filterFormSchema = filterFormSchema;
   {{/if}}
   {{#if tile.config.gridOptions}}
-  gridOptions = gridOptions as GridOptionsConfig;
+  gridOptions = gridOptions as GridOptions;
   {{/if}}
   {{#if tile.config.columns}}
   columnDefs = [...columnDefs];

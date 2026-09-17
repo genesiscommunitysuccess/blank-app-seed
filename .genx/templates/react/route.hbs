@@ -1,5 +1,7 @@
 {{#if route.tiles}}
-import { Layout, Model, TabNode } from 'flexlayout-react';
+// flexlayout-react and its Rapid theme both arrive with this platform entry point, so the app
+// neither declares the dependency nor installs a stylesheet for it.
+import { Layout, Model, TabNode } from '@genesislcap/foundation-react-utils/flexlayout';
 import React, { useState } from 'react';
 import { TileErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { getFlexLayoutStorageKey } from '../../utils/layout';

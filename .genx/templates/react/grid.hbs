@@ -1,5 +1,5 @@
 {{#if config.useOnlyTemplateCols}}
-<RapidGridPro
+<RapidGridProBeta
   className="{{kebabCase componentName}}"
   headerCaseType={GridProCaseType.capitalCase}
   onlyTemplateColDefs
@@ -8,7 +8,7 @@
   enableColumnSelection
 >
 {{else}}
-<RapidGridPro
+<RapidGridProBeta
   className="{{kebabCase componentName}}"
   headerCaseType={GridProCaseType.capitalCase}
   enableRowFlashing
@@ -43,4 +43,4 @@
     <GridProColumn key={index} definition={columnDef} />
   ))}
   {{/if}}
-</RapidGridPro>
+</RapidGridProBeta>

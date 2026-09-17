@@ -1,5 +1,4 @@
 import { createLogger } from '@genesislcap/foundation-logger';
-import { installRapidFlexLayoutReactStyles } from '@genesislcap/rapid-design-system';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
@@ -8,9 +7,6 @@ import { AppErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { registerPBCs } from './pbc/utils';
 
 import './styles/styles.css';
-
-// Single source of truth for the flexlayout-react theme lives in the platform (@genesislcap/rapid-design-system).
-installRapidFlexLayoutReactStyles();
 
 const logger = createLogger('main');
 
