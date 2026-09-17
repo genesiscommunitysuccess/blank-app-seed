@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.25.0...v5.26.0) (2026-09-17)
+
+
+### Features
+
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) d5f63d1
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) (#625) 15312e0
+
+
+### Bug Fixes
+
+* type angular tile gridOptions concretely so ng build passes [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 528b116
+* use the RapidGridProBeta react wrapper for grid-pro tiles [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 95cbfb9
+
 ## [5.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.24.0...v5.25.0) (2026-09-10)
 
 
