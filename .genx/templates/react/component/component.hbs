@@ -24,7 +24,11 @@ import { G2PlotChart, ChartDatasource } from '@genesislcap/g2plot-chart/react';
 {{#ifEquals tile.type 'grid-pro'}}
 import { GridProCaseType } from '@genesislcap/grid-pro';
 import { GridProGenesisDatasource{{#if tile.config.gridOptions}}, GridProColumn{{/if}} } from '@genesislcap/grid-pro/react';
-import { RapidGridPro } from '@genesislcap/rapid-grid-pro/react';
+{{! foundation-ui#2499 renames GridProBeta to GridPro (and today's GridPro to
+    GridProLegacy), so this becomes RapidGridPro again when that lands — along with
+    rapidGridProBeta() in genesis-components.ts, which rapidGridComponents then
+    registers under <rapid-grid-pro> on its own. Not shipped as of 15.32.1. }}
+import { RapidGridProBeta } from '@genesislcap/rapid-grid-pro/react';
 {{/ifEquals}}
 {{#if tile.config.eventing.listener}}
 import { useSelector } from 'react-redux';
