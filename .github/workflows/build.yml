@@ -14,12 +14,21 @@ jobs:
   # the defaults app. This job keeps every framework's generator honest: for each one it
   # generates the defaults app, the full-routes fixture app and an FDC3-channels app,
   # and runs the ox lint gates over all three.
+  #
+  # BUILD=1 adds `tsc --noEmit` and the production build per app, which is what makes a
+  # broken generated tile fail here. Lint alone does not type-check, and the app the
+  # `build` job below compiles is the defaults one, which generates no tiles at all, so
+  # before this nothing compiled a generated tile: a grid tile passed a prop the React
+  # wrapper's types did not declare and CI stayed green while `npm run build` failed for
+  # anyone scaffolding with routes.
   generated-apps:
     strategy:
       fail-fast: false
       matrix:
         framework: [react, webcomponents, angular]
     runs-on: ubuntu-latest
+    env:
+      BUILD: 1
     steps:
       - uses: actions/checkout@v4
 

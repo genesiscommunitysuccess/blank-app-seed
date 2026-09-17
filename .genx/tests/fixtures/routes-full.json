@@ -274,6 +274,13 @@
         }
       },
       {
+        "title": "Instruments",
+        "type": "grid-pro",
+        "config": {
+          "resourceName": "ALL_INSTRUMENTS"
+        }
+      },
+      {
         "title": "User Form",
         "type": "smart-form",
         "config": {
