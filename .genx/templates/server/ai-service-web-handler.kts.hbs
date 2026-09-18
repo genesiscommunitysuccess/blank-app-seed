@@ -1,3 +1,5 @@
+// Exempts only the build-time auth-map scan: this proxy returns no entity rows. The AI_CHAT right
+// below is still enforced by the router on every call.
 @file:global.genesis.commons.annotation.AuthDisabled
 
 /*
@@ -7,13 +9,6 @@
  * vendor with YOUR key. The key is a system-definition item, never a file in this project —
  * set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY (or _AI_GEMINI_API_KEY) in the environment that starts
  * the server and restart it. A user needs the AI_CHAT right to call these.
- *
- * WHY @AuthDisabled. The platform's build-time security scan wants every endpoint to carry both a
- * permission code AND an auth map (row-level entitlement). An auth map filters Genesis entity rows,
- * and this endpoint returns none — it relays model output — so there is nothing for one to filter.
- * The annotation has SOURCE retention: it only tells the scan so, and changes nothing at runtime.
- * AI_CHAT below is still enforced by the router on every call. It is fully qualified because a
- * file annotation must come before the imports.
  */
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
