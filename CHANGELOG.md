@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.26.0...v5.27.0) (2026-09-18)
+
+
+### Features
+
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 18eba80
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 (#626) 1c75f00
+
 ## [5.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.25.0...v5.26.0) (2026-09-17)
 
 
