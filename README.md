@@ -1,6 +1,33 @@
 # {{appName}}
 
 {{{description}}}
+{{#if AI.enabled}}
+
+## AI chat
+
+This application includes an AI chat panel. It talks to **your** AI vendor with **your** key —
+nothing is routed through Genesis, and no key is stored in this project.
+
+**Set your key where the server starts, not in a file here.** A system-definition item can be
+supplied entirely from the environment, so pick the vendor you use and set one of:
+
+```
+GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY=sk-ant-...
+GENESIS_SYSDEF_AI_GEMINI_API_KEY=...
+```
+
+with `docker run -e`, an `environment:` entry in compose, or a `-D` JVM property.
+Restart the server afterwards — items are read once at boot.
+
+**Grant the right.** Calling the chat endpoint needs the `AI_CHAT` right. Give it to the users
+who should see the chat the way you grant any other Genesis right, through a profile.
+
+**Bound what it can do.** `AI_ALLOWED_MODELS` limits which models may be requested and
+`AI_MAX_OUTPUT_TOKENS` caps the output size of a single call. Both live in
+`server/{{appName}}-app/src/main/genesis/cfg/genesis-ai-system-definition.kts`, and both can be overridden from the
+environment in the same way as the key. With no key configured the endpoint answers **424**, so a
+panel reporting a missing key is telling you exactly what it needs.
+{{/if}}
 
 {{!
 

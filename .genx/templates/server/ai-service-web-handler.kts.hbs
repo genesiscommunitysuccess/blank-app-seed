@@ -1,0 +1,239 @@
+@file:global.genesis.commons.annotation.AuthDisabled
+
+/*
+ * AI chat proxy — generated with this application, safe to edit.
+ *
+ * Your app's own endpoint for the chat panel: the browser talks to this, and this talks to the
+ * vendor with YOUR key. The key is a system-definition item, never a file in this project —
+ * set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY (or _AI_GEMINI_API_KEY) in the environment that starts
+ * the server and restart it. A user needs the AI_CHAT right to call these.
+ *
+ * WHY @AuthDisabled. The platform's build-time security scan wants every endpoint to carry both a
+ * permission code AND an auth map (row-level entitlement). An auth map filters Genesis entity rows,
+ * and this endpoint returns none — it relays model output — so there is nothing for one to filter.
+ * The annotation has SOURCE retention: it only tells the scan so, and changes nothing at runtime.
+ * AI_CHAT below is still enforced by the router on every call. It is fully qualified because a
+ * file annotation must come before the imports.
+ */
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
+import global.genesis.config.system.SystemDefinitionService
+import global.genesis.message.core.HttpStatusCode
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest as JdkHttpRequest
+import java.net.http.HttpResponse as JdkHttpResponse
+import java.time.Duration
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+webHandlers("ai-service") {
+
+    val systemDefinition = injector<SystemDefinitionService>()
+    val mapper = ObjectMapper()
+    val http = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(20))
+        .build()
+
+    config {
+        logLevel = INFO
+    }
+
+    // An upstream status the platform enum does not know would throw on the way out, so anything
+    // unrecognised becomes a plain bad gateway. 529 (the vendors' "overloaded") is not in the enum
+    // either, and it maps to 503 so a client's own retry ladder treats it as retryable.
+    fun upstreamStatus(code: Int): HttpStatusCode = when (code) {
+        529 -> HttpStatusCode.ServiceUnavailable
+        else -> try {
+            HttpStatusCode.valueOf(code)
+        } catch (e: IllegalArgumentException) {
+            HttpStatusCode.BadGateway
+        }
+    }
+
+    // The model a request asks for has to be one this app allows, whatever the browser sent: the
+    // panel is not the only thing that can post here.
+    val allowedModels = systemDefinition.get("AI_ALLOWED_MODELS").orElse("")
+        .split(",")
+        .map { it.trim() }
+        .filter { it.isNotEmpty() }
+
+    val maxOutputTokens = systemDefinition.get("AI_MAX_OUTPUT_TOKENS").orElse("")
+        .trim()
+        .toIntOrNull() ?: 16000
+
+    // Clamp DOWN only: a request asking for less than the ceiling keeps what it asked for.
+    fun clamp(requested: Int): Int = if (requested > maxOutputTokens) maxOutputTokens else requested
+
+    grouping("anthropic") {
+        endpoint<String, String>(POST, "chat") {
+            accepts(ContentType.APPLICATION_JSON)
+            produces(ContentType.APPLICATION_JSON)
+
+            permissioning {
+                permissionCodes("AI_CHAT")
+            }
+
+            handleRequest {
+                val apiKey = systemDefinition.get("AI_ANTHROPIC_API_KEY").orElse("").trim()
+                if (apiKey.isEmpty()) {
+                    // 424, never 503: a client retries a 503 and the user waits instead of being
+                    // told the one thing that fixes this.
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "NO_API_KEY",
+                            "error" to "No anthropic API key is configured for this application. " +
+                                "Set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY in the server's environment and restart."
+                        )
+                    )
+                }
+
+                val payload = mapper.readTree(body) as? ObjectNode
+                    ?: error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "The request body must be a JSON object.")
+                    )
+
+                val model = payload.path("model").asText("")
+                if (allowedModels.isNotEmpty() && !allowedModels.contains(model)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf(
+                            "code" to "MODEL_NOT_ALLOWED",
+                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
+                            "allowedModels" to allowedModels
+                        )
+                    )
+                }
+
+                val requestedMaxTokens = payload.path("max_tokens").asInt(maxOutputTokens)
+                payload.put("max_tokens", clamp(requestedMaxTokens))
+
+                // Every fallback carries its own model AND its own max_tokens, so a fallback is a
+                // way around both the allow-list and the clamp unless it is checked too.
+                val fallbacks = payload.path("fallbacks")
+                if (fallbacks.isArray) {
+                    for (fallback in fallbacks) {
+                        val entry = fallback as? ObjectNode ?: continue
+                        val fallbackModel = entry.path("model").asText("")
+                        if (allowedModels.isNotEmpty() && !allowedModels.contains(fallbackModel)) {
+                            error(
+                                HttpStatusCode.BadRequest,
+                                mapOf(
+                                    "code" to "MODEL_NOT_ALLOWED",
+                                    "error" to "Fallback model '" + fallbackModel + "' is not in AI_ALLOWED_MODELS.",
+                                    "allowedModels" to allowedModels
+                                )
+                            )
+                        }
+                        if (entry.has("max_tokens")) {
+                            entry.put("max_tokens", clamp(entry.path("max_tokens").asInt(maxOutputTokens)))
+                        }
+                    }
+                }
+
+                val upstream = JdkHttpRequest.newBuilder()
+                    .uri(URI.create("https://api.anthropic.com/v1/messages"))
+                    .timeout(Duration.ofSeconds(280))
+                    .header("content-type", "application/json")
+                    .header("x-api-key", apiKey)
+                        .header("anthropic-version", "2023-06-01")
+                    .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
+                    .build()
+
+                val response = withContext(Dispatchers.IO) {
+                    http.send(upstream, JdkHttpResponse.BodyHandlers.ofString())
+                }
+
+                if (response.statusCode() !in 200..299) {
+                    // The vendor's own body travels back untouched — a billing refusal or a rate
+                    // limit says more than anything this proxy could put in its place.
+                    LOG.warn("ai-service: anthropic returned " + response.statusCode())
+                    error(upstreamStatus(response.statusCode()), response.body())
+                }
+
+                // A String response is written raw for application/json, so this is the vendor's
+                // own bytes, not a re-serialisation of them.
+                response.body()
+            }
+        }
+    }
+
+    grouping("gemini") {
+        endpoint<String, String>(POST, "chat") {
+            accepts(ContentType.APPLICATION_JSON)
+            produces(ContentType.APPLICATION_JSON)
+
+            permissioning {
+                permissionCodes("AI_CHAT")
+            }
+
+            handleRequest {
+                val apiKey = systemDefinition.get("AI_GEMINI_API_KEY").orElse("").trim()
+                if (apiKey.isEmpty()) {
+                    // 424, never 503: a client retries a 503 and the user waits instead of being
+                    // told the one thing that fixes this.
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "NO_API_KEY",
+                            "error" to "No gemini API key is configured for this application. " +
+                                "Set GENESIS_SYSDEF_AI_GEMINI_API_KEY in the server's environment and restart."
+                        )
+                    )
+                }
+
+                val payload = mapper.readTree(body) as? ObjectNode
+                    ?: error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "The request body must be a JSON object.")
+                    )
+
+                val model = payload.path("model").asText("")
+                if (allowedModels.isNotEmpty() && !allowedModels.contains(model)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf(
+                            "code" to "MODEL_NOT_ALLOWED",
+                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
+                            "allowedModels" to allowedModels
+                        )
+                    )
+                }
+
+                // The model addresses the endpoint in the URL, so it must not also ride in the body.
+                payload.remove("model")
+
+                val generationConfig = payload.path("generationConfig") as? ObjectNode
+                    ?: mapper.createObjectNode().also { payload.set<JsonNode>("generationConfig", it) }
+                val requestedMaxTokens = generationConfig.path("maxOutputTokens").asInt(maxOutputTokens)
+                generationConfig.put("maxOutputTokens", clamp(requestedMaxTokens))
+
+                val upstream = JdkHttpRequest.newBuilder()
+                    .uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent"))
+                    .timeout(Duration.ofSeconds(280))
+                    .header("content-type", "application/json")
+                    .header("x-goog-api-key", apiKey)
+                    .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
+                    .build()
+
+                val response = withContext(Dispatchers.IO) {
+                    http.send(upstream, JdkHttpResponse.BodyHandlers.ofString())
+                }
+
+                if (response.statusCode() !in 200..299) {
+                    // The vendor's own body travels back untouched — a billing refusal or a rate
+                    // limit says more than anything this proxy could put in its place.
+                    LOG.warn("ai-service: gemini returned " + response.statusCode())
+                    error(upstreamStatus(response.statusCode()), response.body())
+                }
+
+                // A String response is written raw for application/json, so this is the vendor's
+                // own bytes, not a re-serialisation of them.
+                response.body()
+            }
+        }
+    }
+}
