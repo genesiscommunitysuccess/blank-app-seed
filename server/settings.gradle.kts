@@ -21,8 +21,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
         mavenLocal {
             // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
             content {
