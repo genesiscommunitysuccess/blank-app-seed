@@ -6,8 +6,6 @@ pluginManagement {
     }
 
     repositories {
-        gradlePluginPortal()
-        mavenCentral()
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -20,6 +18,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
+        gradlePluginPortal()
+        mavenCentral()
         mavenLocal {
             content {
                 excludeGroup("org.agrona")

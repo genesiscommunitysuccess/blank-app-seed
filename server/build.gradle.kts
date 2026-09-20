@@ -76,7 +76,6 @@ allprojects {
                 excludeGroup("org.agrona")
             }
         }
-        mavenCentral()
         maven {
             val repoUrl = if(properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -89,6 +88,7 @@ allprojects {
                 password = properties["genesisArtifactoryPassword"].toString()
             }
         }
+        mavenCentral()
     }
 
     publishing {
