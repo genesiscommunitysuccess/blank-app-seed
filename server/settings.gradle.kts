@@ -9,8 +9,13 @@ pluginManagement {
     }
 
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
+        mavenLocal {
+            // Scoped to the PBC under test, which CI publishes into -Dmaven.repo.local; anything
+            // else must come from Artifactory, never from a developer's local repository.
+            content {
+                includeGroupByRegex("global\\.genesis.*")
+            }
+        }
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -23,6 +28,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
 
