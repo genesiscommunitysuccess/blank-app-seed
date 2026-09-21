@@ -6,8 +6,9 @@ pluginManagement {
     }
 
     repositories {
-        gradlePluginPortal()
-        mavenCentral()
+        if (providers.gradleProperty("useMavenLocal").orNull == "true") {
+            mavenLocal()
+        }
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -20,6 +21,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
 
