@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.22.2-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.6...v5.22.2-prerelease.7) (2026-09-21)
+
+
+### Bug Fixes
+
+* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) 0cf7b88
+* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) (#634) b5af5bf
+
 ## [5.22.2-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.5...v5.22.2-prerelease.6) (2026-09-10)
 
 
