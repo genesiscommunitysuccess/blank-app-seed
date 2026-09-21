@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.22.2-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.8...v5.22.2-prerelease.9) (2026-09-21)
+
+
+### Bug Fixes
+
+* resolve from Artifactory before Maven Central in every module (GSF-8370) 2a263c2
+* **server:** query the Plugin Portal before Maven Central (GSF-8370) 725b377
+* **server:** resolve from Artifactory before Maven Central (GSF-8370) 64f1d3f
+* **server:** resolve from Artifactory before Maven Central (GSF-8370) (#628) f29106c
+
 ## [5.22.2-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.7...v5.22.2-prerelease.8) (2026-09-21)
 
 
