@@ -6,7 +6,6 @@ plugins {
 description = "{{appName}} BDD Testing Framework"
 
 repositories {
-    mavenCentral()
     maven {
         val repoUrl = if (properties["useDevRepo"] == "true") {
             "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -19,6 +18,7 @@ repositories {
             password = properties["genesisArtifactoryPassword"].toString()
         }
     }
+    mavenCentral()
     mavenLocal {
         // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
         content {
