@@ -9,8 +9,6 @@ pluginManagement {
     }
 
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -23,6 +21,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
+        gradlePluginPortal()
+        mavenCentral()
         mavenLocal {
             // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
             content {
