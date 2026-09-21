@@ -9,12 +9,8 @@ pluginManagement {
     }
 
     repositories {
-        mavenLocal {
-            // Scoped to the PBC under test, which CI publishes into -Dmaven.repo.local; anything
-            // else must come from Artifactory, never from a developer's local repository.
-            content {
-                includeGroupByRegex("global\\.genesis.*")
-            }
+        if (providers.gradleProperty("useMavenLocal").orNull == "true") {
+            mavenLocal()
         }
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
