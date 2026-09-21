@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.22.2-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.7...v5.22.2-prerelease.8) (2026-09-21)
+
+
+### Bug Fixes
+
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) 489b951
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) (#633) ede81ee
+
 ## [5.22.2-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.6...v5.22.2-prerelease.7) (2026-09-21)
 
 
