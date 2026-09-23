@@ -61,6 +61,16 @@ webHandlers("ai-service") {
     // Clamp DOWN only: a request asking for less than the ceiling keeps what it asked for.
     fun clamp(requested: Int): Int = if (requested > maxOutputTokens) maxOutputTokens else requested
 
+    // A model id is also a path segment in the Gemini URL, so it must be a bare id even when
+    // AI_ALLOWED_MODELS is empty and any model is allowed.
+    val modelId = Regex("[A-Za-z0-9][A-Za-z0-9._-]*")
+
+    fun modelAllowed(model: String): Boolean =
+        modelId.matches(model) && (allowedModels.isEmpty() || allowedModels.contains(model))
+
+    // Whatever a vendor sends back, the key does not go to the browser in it.
+    fun withoutKey(text: String, apiKey: String): String = text.replace(apiKey, "[redacted]")
+
     grouping("anthropic") {
         endpoint<String, String>(POST, "chat") {
             accepts(ContentType.APPLICATION_JSON)
@@ -92,7 +102,7 @@ webHandlers("ai-service") {
                     )
 
                 val model = payload.path("model").asText("")
-                if (allowedModels.isNotEmpty() && !allowedModels.contains(model)) {
+                if (!modelAllowed(model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
@@ -108,12 +118,19 @@ webHandlers("ai-service") {
 
                 // Every fallback carries its own model AND its own max_tokens, so a fallback is a
                 // way around both the allow-list and the clamp unless it is checked too.
-                val fallbacks = payload.path("fallbacks")
-                if (fallbacks.isArray) {
+                val fallbacks = payload.get("fallbacks")
+                if (fallbacks != null && !fallbacks.isNull) {
+                    // Anything but an array of objects would skip both checks below.
+                    if (!fallbacks.isArray || fallbacks.any { !it.isObject }) {
+                        error(
+                            HttpStatusCode.BadRequest,
+                            mapOf("code" to "BAD_REQUEST", "error" to "fallbacks must be an array of objects.")
+                        )
+                    }
                     for (fallback in fallbacks) {
-                        val entry = fallback as? ObjectNode ?: continue
+                        val entry = fallback as ObjectNode
                         val fallbackModel = entry.path("model").asText("")
-                        if (allowedModels.isNotEmpty() && !allowedModels.contains(fallbackModel)) {
+                        if (!modelAllowed(fallbackModel)) {
                             error(
                                 HttpStatusCode.BadRequest,
                                 mapOf(
@@ -134,7 +151,7 @@ webHandlers("ai-service") {
                     .timeout(Duration.ofSeconds(280))
                     .header("content-type", "application/json")
                     .header("x-api-key", apiKey)
-                        .header("anthropic-version", "2023-06-01")
+                    .header("anthropic-version", "2023-06-01")
                     .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
                     .build()
 
@@ -146,12 +163,12 @@ webHandlers("ai-service") {
                     // The vendor's own body travels back untouched — a billing refusal or a rate
                     // limit says more than anything this proxy could put in its place.
                     LOG.warn("ai-service: anthropic returned " + response.statusCode())
-                    error(upstreamStatus(response.statusCode()), response.body())
+                    error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
                 // A String response is written raw for application/json, so this is the vendor's
                 // own bytes, not a re-serialisation of them.
-                response.body()
+                withoutKey(response.body(), apiKey)
             }
         }
     }
@@ -187,7 +204,7 @@ webHandlers("ai-service") {
                     )
 
                 val model = payload.path("model").asText("")
-                if (allowedModels.isNotEmpty() && !allowedModels.contains(model)) {
+                if (!modelAllowed(model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
@@ -222,12 +239,12 @@ webHandlers("ai-service") {
                     // The vendor's own body travels back untouched — a billing refusal or a rate
                     // limit says more than anything this proxy could put in its place.
                     LOG.warn("ai-service: gemini returned " + response.statusCode())
-                    error(upstreamStatus(response.statusCode()), response.body())
+                    error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
                 // A String response is written raw for application/json, so this is the vendor's
                 // own bytes, not a re-serialisation of them.
-                response.body()
+                withoutKey(response.body(), apiKey)
             }
         }
     }
