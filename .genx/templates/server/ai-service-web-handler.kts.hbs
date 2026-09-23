@@ -97,9 +97,9 @@ webHandlers("ai-service") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
         // for the whole vendor call, starving every other request that needs one.
         endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
-            // No produces(): it would require Accept: application/json, and the chat panel sends
-            // application/x-ndjson. The reply is labelled application/json below instead.
-            accepts(ContentType.APPLICATION_JSON)
+            // No produces() and no accepts(): each adds a required header, matched by its exact name,
+            // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
+            // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
 
             // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
             // check, and the build's security scan still reports the endpoint as secure.
@@ -223,9 +223,9 @@ webHandlers("ai-service") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
         // for the whole vendor call, starving every other request that needs one.
         endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
-            // No produces(): it would require Accept: application/json, and the chat panel sends
-            // application/x-ndjson. The reply is labelled application/json below instead.
-            accepts(ContentType.APPLICATION_JSON)
+            // No produces() and no accepts(): each adds a required header, matched by its exact name,
+            // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
+            // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
 
             // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
             // check, and the build's security scan still reports the endpoint as secure.
