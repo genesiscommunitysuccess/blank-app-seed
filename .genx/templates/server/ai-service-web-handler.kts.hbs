@@ -10,7 +10,10 @@
  * set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY (or _AI_GEMINI_API_KEY) in the environment that starts
  * the server and restart it. A user needs the AI_CHAT right to call these.
  */
+import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.core.StreamReadConstraints
+import com.fasterxml.jackson.core.exc.StreamConstraintsException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -29,7 +32,19 @@ import kotlinx.coroutines.future.await
 webHandlers("ai-service") {
 
     val systemDefinition = injector<SystemDefinitionService>()
-    val mapper = ObjectMapper()
+    // Bounded parsing: at the router's 5 MiB body cap, a body of tiny objects would build a tree many
+    // times its own size. A real chat turn is far inside these limits.
+    val mapper = ObjectMapper(
+        JsonFactory.builder()
+            .streamReadConstraints(
+                StreamReadConstraints.builder()
+                    .maxDocumentLength(5_242_880L)
+                    .maxTokenCount(250_000L)
+                    .maxNestingDepth(64)
+                    .build()
+            )
+            .build()
+    )
     val http = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(20))
         .build()
@@ -115,6 +130,11 @@ webHandlers("ai-service") {
 
                 val payload = try {
                     mapper.readTree(body) as? ObjectNode
+                } catch (e: StreamConstraintsException) {
+                    error(
+                        HttpStatusCode.RequestTooLong,
+                        mapOf("code" to "REQUEST_TOO_LARGE", "error" to "The request is larger or more deeply nested than this endpoint accepts.")
+                    )
                 } catch (e: JsonProcessingException) {
                     null
                 } ?: error(
@@ -256,6 +276,11 @@ webHandlers("ai-service") {
 
                 val payload = try {
                     mapper.readTree(body) as? ObjectNode
+                } catch (e: StreamConstraintsException) {
+                    error(
+                        HttpStatusCode.RequestTooLong,
+                        mapOf("code" to "REQUEST_TOO_LARGE", "error" to "The request is larger or more deeply nested than this endpoint accepts.")
+                    )
                 } catch (e: JsonProcessingException) {
                     null
                 } ?: error(
