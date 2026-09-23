@@ -16,6 +16,8 @@
 #                   (checkAuthPermissions) to report no insecure endpoint. Needs Genesis artifactory
 #                   credentials, as the sample-app build does.
 #         KEEP=1    keep the generated apps for inspection.
+#         GENX=...  the genx package to generate with (default: a pinned version, so a run is
+#                   reproducible; set GENX=@genesislcap/genx@latest to try the newest).
 
 set -uo pipefail
 
@@ -24,6 +26,7 @@ TEMPLATE="$SEED_DIR/.genx/templates/server/ai-service-web-handler.kts.hbs"
 WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/blank-app-seed-ai.XXXXXXXX")" || exit 1
 MODULE="server/demo-app/src/main/genesis"
 FAILURES=()
+GENX="${GENX:-@genesislcap/genx@15.35.1}"
 
 AI_UI='{"ai":{"enabled":true,"vendor":"gemini","tier":"high","systemPrompt":"x","resources":[]}}'
 
@@ -32,7 +35,7 @@ fail() { FAILURES+=("$1"); echo "FAIL: $1"; }
 generate() {
   local label="$1"; shift
   mkdir -p "$WORK_DIR/$label"
-  (cd "$WORK_DIR/$label" && npx -y @genesislcap/genx@latest init demo -s "$SEED_DIR" -x --no-shell \
+  (cd "$WORK_DIR/$label" && npx -y "$GENX" init demo -s "$SEED_DIR" -x --no-shell \
     --apiHost 'wss://localhost/gwf/' "$@" > "$WORK_DIR/$label.log" 2>&1) \
     || { fail "$label: generation failed (see $WORK_DIR/$label.log)"; return 1; }
 }
