@@ -76,7 +76,9 @@ webHandlers("ai-service") {
     fun withoutKey(text: String, apiKey: String): String = text.replace(apiKey, "[redacted]")
 
     grouping("anthropic") {
-        endpoint<String, HttpResponse>(POST, "chat") {
+        // No transaction: the proxy touches no rows, and one would hold a pooled database connection
+        // for the whole vendor call, starving every other request that needs one.
+        endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
             // No produces(): it would require Accept: application/json, and the chat panel sends
             // application/x-ndjson. The reply is labelled application/json below instead.
             accepts(ContentType.APPLICATION_JSON)
@@ -204,7 +206,9 @@ webHandlers("ai-service") {
     }
 
     grouping("gemini") {
-        endpoint<String, HttpResponse>(POST, "chat") {
+        // No transaction: the proxy touches no rows, and one would hold a pooled database connection
+        // for the whole vendor call, starving every other request that needs one.
+        endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
             // No produces(): it would require Accept: application/json, and the chat panel sends
             // application/x-ndjson. The reply is labelled application/json below instead.
             accepts(ContentType.APPLICATION_JSON)
