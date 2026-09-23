@@ -170,34 +170,14 @@ webHandlers("ai-service") {
                 val requestedMaxTokens = payload.path("max_tokens").asInt(maxOutputTokens)
                 payload.put("max_tokens", clamp(requestedMaxTokens))
 
-                // Every fallback carries its own model AND its own max_tokens, so a fallback is a
-                // way around both the allow-list and the clamp unless it is checked too.
+                // No fallback models: each would be another model and token size to hold to the limits
+                // above, and Anthropic needs a beta header to accept them. Refused, not passed through.
                 val fallbacks = payload.get("fallbacks")
                 if (fallbacks != null && !fallbacks.isNull) {
-                    // Anything but an array of objects would skip both checks below.
-                    if (!fallbacks.isArray || fallbacks.any { !it.isObject }) {
-                        error(
-                            HttpStatusCode.BadRequest,
-                            mapOf("code" to "BAD_REQUEST", "error" to "fallbacks must be an array of objects.")
-                        )
-                    }
-                    for (fallback in fallbacks) {
-                        val entry = fallback as ObjectNode
-                        val fallbackModel = entry.path("model").asText("")
-                        if (!modelAllowed(fallbackModel)) {
-                            error(
-                                HttpStatusCode.BadRequest,
-                                mapOf(
-                                    "code" to "MODEL_NOT_ALLOWED",
-                                    "error" to "Fallback model '" + fallbackModel + "' is not in AI_ALLOWED_MODELS.",
-                                    "allowedModels" to allowedModels
-                                )
-                            )
-                        }
-                        if (entry.has("max_tokens")) {
-                            entry.put("max_tokens", clamp(entry.path("max_tokens").asInt(maxOutputTokens)))
-                        }
-                    }
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "FALLBACKS_NOT_SUPPORTED", "error" to "Fallback models are not supported by this endpoint.")
+                    )
                 }
 
                 val response = try {
