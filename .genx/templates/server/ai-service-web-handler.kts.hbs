@@ -68,6 +68,12 @@ webHandlers("ai-service") {
         .map { it.trim() }
         .filter { it.isNotEmpty() }
 
+    // An empty list refuses every model rather than allowing any: a setting that failed to load must
+    // not become an open door to the most expensive model on your key.
+    if (allowedModels.isEmpty()) {
+        LOG.warn("ai-service: AI_ALLOWED_MODELS is empty, so every chat request will be refused")
+    }
+
     val maxOutputTokens = systemDefinition.get("AI_MAX_OUTPUT_TOKENS").orElse("")
         .trim()
         .toIntOrNull() ?: 16000
@@ -75,12 +81,10 @@ webHandlers("ai-service") {
     // Clamp DOWN only: a request asking for less than the ceiling keeps what it asked for.
     fun clamp(requested: Int): Int = if (requested > maxOutputTokens) maxOutputTokens else requested
 
-    // A model id is also a path segment in the Gemini URL, so it must be a bare id even when
-    // AI_ALLOWED_MODELS is empty and any model is allowed.
+    // A model id is also a path segment in the Gemini URL, so even an allowed one must be a bare id.
     val modelId = Regex("[A-Za-z0-9][A-Za-z0-9._-]*")
 
-    fun modelAllowed(model: String): Boolean =
-        modelId.matches(model) && (allowedModels.isEmpty() || allowedModels.contains(model))
+    fun modelAllowed(model: String): Boolean = modelId.matches(model) && allowedModels.contains(model)
 
     // A key with a character a request header cannot carry (a pasted zero-width space, a smart quote)
     // makes the request builder throw, and the platform echoes that exception, key and all.
