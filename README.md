@@ -16,7 +16,7 @@ GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY=sk-ant-...
 GENESIS_SYSDEF_AI_GEMINI_API_KEY=...
 ```
 
-with `docker run -e`, an `environment:` entry in compose, or a `-D` JVM property.
+with `docker run -e` or an `environment:` entry in compose.
 Restart the server afterwards — items are read once at boot.
 
 **Grant the right.** Calling the chat endpoint needs the `AI_CHAT` right. Give it to the users
