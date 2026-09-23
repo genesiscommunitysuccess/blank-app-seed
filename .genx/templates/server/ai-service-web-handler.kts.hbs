@@ -320,6 +320,17 @@ webHandlers("ai-service") {
                 // The model addresses the endpoint in the URL, so it must not also ride in the body.
                 payload.remove("model")
 
+                // Gemini also reads the snake_case spellings, which would sit beside the camelCase fields
+                // the limits below set, and escape them. The chat panel never sends them.
+                val snakeCase = listOf("generation_config").filter { payload.has(it) } +
+                    listOf("max_output_tokens", "candidate_count").filter { payload.path("generationConfig").has(it) }
+                if (snakeCase.isNotEmpty()) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Use the camelCase field names; " + snakeCase.joinToString() + " is not accepted.")
+                    )
+                }
+
                 val generationConfig = payload.path("generationConfig") as? ObjectNode
                     ?: mapper.createObjectNode().also { payload.set<JsonNode>("generationConfig", it) }
                 val requestedMaxTokens = generationConfig.path("maxOutputTokens").asInt(maxOutputTokens)
