@@ -32,10 +32,6 @@ webHandlers("ai-service") {
         .connectTimeout(Duration.ofSeconds(20))
         .build()
 
-    config {
-        logLevel = INFO
-    }
-
     // An upstream status the platform enum does not know would throw on the way out, so anything
     // unrecognised becomes a plain bad gateway. 529 (the vendors' "overloaded") is not in the enum
     // either, and it maps to 503 so a client's own retry ladder treats it as retryable.
