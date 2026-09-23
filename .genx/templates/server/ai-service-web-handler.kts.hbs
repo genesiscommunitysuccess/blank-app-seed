@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import global.genesis.config.system.SystemDefinitionService
 import global.genesis.message.core.HttpStatusCode
-import global.genesis.router.server.web.http.extensions.HttpResponse
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest as JdkHttpRequest
@@ -96,7 +95,7 @@ webHandlers("ai-service") {
     grouping("anthropic") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
         // for the whole vendor call, starving every other request that needs one.
-        endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
+        endpoint<String, Any>(POST, "chat", transactional = false) {
             // No produces() and no accepts(): each adds a required header, matched by its exact name,
             // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
             // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
@@ -212,9 +211,10 @@ webHandlers("ai-service") {
                     error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
-                // A String body goes out as its own bytes, not a re-serialisation, and the content type
-                // is set here so it never echoes the browser's Accept header.
-                buildResponse { jsonBody(withoutKey(response.body(), apiKey)) }
+                // Declared Any, so the router writes this String as its own bytes labelled application/json,
+                // whatever the browser's Accept says. (A String type would label it with that Accept, and
+                // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)
+                withoutKey(response.body(), apiKey)
             }
         }
     }
@@ -222,7 +222,7 @@ webHandlers("ai-service") {
     grouping("gemini") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
         // for the whole vendor call, starving every other request that needs one.
-        endpoint<String, HttpResponse>(POST, "chat", transactional = false) {
+        endpoint<String, Any>(POST, "chat", transactional = false) {
             // No produces() and no accepts(): each adds a required header, matched by its exact name,
             // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
             // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
@@ -327,9 +327,10 @@ webHandlers("ai-service") {
                     error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
-                // A String body goes out as its own bytes, not a re-serialisation, and the content type
-                // is set here so it never echoes the browser's Accept header.
-                buildResponse { jsonBody(withoutKey(response.body(), apiKey)) }
+                // Declared Any, so the router writes this String as its own bytes labelled application/json,
+                // whatever the browser's Accept says. (A String type would label it with that Accept, and
+                // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)
+                withoutKey(response.body(), apiKey)
             }
         }
     }
