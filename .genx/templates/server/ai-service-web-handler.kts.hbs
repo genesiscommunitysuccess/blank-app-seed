@@ -24,8 +24,7 @@ import java.net.http.HttpResponse as JdkHttpResponse
 import java.net.http.HttpTimeoutException
 import java.time.Duration
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.future.await
 
 webHandlers("ai-service") {
 
@@ -121,6 +120,15 @@ webHandlers("ai-service") {
                         mapOf("code" to "BAD_REQUEST", "error" to "The request body must be a JSON object.")
                     )
 
+                // The chat panel never streams through this proxy, and a streamed reply would hold the
+                // call open with no timeout once its headers arrived.
+                if (payload.path("stream").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Streaming is not supported by this endpoint.")
+                    )
+                }
+
                 val model = payload.path("model").asText("")
                 if (!modelAllowed(model)) {
                     error(
@@ -175,9 +183,9 @@ webHandlers("ai-service") {
                         .header("anthropic-version", "2023-06-01")
                         .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
                         .build()
-                    withContext(Dispatchers.IO) {
-                        http.send(upstream, JdkHttpResponse.BodyHandlers.ofString())
-                    }
+                    // Async, so no thread is held while the vendor works; cancelling this call cancels
+                    // the vendor request with it.
+                    http.sendAsync(upstream, JdkHttpResponse.BodyHandlers.ofString()).await()
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
@@ -279,9 +287,9 @@ webHandlers("ai-service") {
                         .header("x-goog-api-key", apiKey)
                         .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
                         .build()
-                    withContext(Dispatchers.IO) {
-                        http.send(upstream, JdkHttpResponse.BodyHandlers.ofString())
-                    }
+                    // Async, so no thread is held while the vendor works; cancelling this call cancels
+                    // the vendor request with it.
+                    http.sendAsync(upstream, JdkHttpResponse.BodyHandlers.ofString()).await()
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
