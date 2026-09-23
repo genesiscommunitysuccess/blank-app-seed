@@ -282,6 +282,10 @@ webHandlers("ai-service") {
                     ?: mapper.createObjectNode().also { payload.set<JsonNode>("generationConfig", it) }
                 val requestedMaxTokens = generationConfig.path("maxOutputTokens").asInt(maxOutputTokens)
                 generationConfig.put("maxOutputTokens", clamp(requestedMaxTokens))
+                // One candidate: each extra one is generated, and billed, up to the same ceiling again.
+                if (generationConfig.has("candidateCount")) {
+                    generationConfig.put("candidateCount", 1)
+                }
 
                 val response = try {
                     val upstream = JdkHttpRequest.newBuilder()
