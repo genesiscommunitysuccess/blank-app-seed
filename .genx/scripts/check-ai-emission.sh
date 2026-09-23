@@ -87,8 +87,17 @@ grep -rqs 'AI_ALLOWED_MODELS\|AI_MAX_OUTPUT_TOKENS' "$WORK_DIR/on/demo/$MODULE/c
 HANDLER="$WORK_DIR/on/demo/$MODULE/scripts/ai-service-web-handler.kts"
 grep -vE '^[[:space:]]*(//|/[*]|[*])' "$HANDLER" | grep -q 'requiresAuth' \
   && fail "on: the proxy sets requiresAuth, which makes it anonymous"
-[ "$(grep -c 'permissionCodes("AI_CHAT")' "$HANDLER")" = "2" ] \
+[ "$(grep -vE '^[[:space:]]*(//|/[*]|[*])' "$HANDLER" | grep -c 'permissionCodes("AI_CHAT")')" = "2" ] \
   || fail "on: expected permissionCodes(\"AI_CHAT\") on both chat endpoints"
+
+# Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
+# generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
+# web handler or the README), so a file the AI path relied on in there would be silently replaced.
+changed="$(diff -rq -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/on/demo" \
+  | sed -E -e "s#^Files $WORK_DIR/default/demo/(.*) and .* differ\$#\1#" \
+           -e "s#^Only in $WORK_DIR/on/demo/?(.*): (.*)\$#\1/\2#" -e 's#^/##' | sort)"
+expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" | sort)"
+[ "$changed" = "$expected" ] || fail "on: the AI path changed files beyond its own three: $(echo $changed)"
 
 # The seed seeds no rights: the project's rights files belong to the generator that sends them.
 echo "=== no rights written"
