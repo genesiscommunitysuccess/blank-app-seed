@@ -66,6 +66,15 @@ echo "=== on"
 diff -q "$TEMPLATE" "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
   || fail "on: the proxy was changed on its way through handlebars"
 
+# The scan cannot see this one: requiresAuth = false drops the AI_CHAT check and makes the endpoint
+# anonymous while the scan still reports it secure. Comment lines are skipped, since the template's
+# own warning names the setting.
+HANDLER="$WORK_DIR/on/demo/$MODULE/scripts/ai-service-web-handler.kts"
+grep -vE '^[[:space:]]*(//|/[*]|[*])' "$HANDLER" | grep -q 'requiresAuth' \
+  && fail "on: the proxy sets requiresAuth, which makes it anonymous"
+[ "$(grep -c 'permissionCodes("AI_CHAT")' "$HANDLER")" = "2" ] \
+  || fail "on: expected permissionCodes(\"AI_CHAT\") on both chat endpoints"
+
 # The seed seeds no rights: the project's rights files belong to the generator that sends them.
 echo "=== no rights written"
 grep -rqs 'AI_CHAT' "$WORK_DIR/on/demo/$MODULE/data/" && fail "on: the seed wrote an AI_CHAT row; rights belong to the generator"
@@ -81,10 +90,11 @@ if [ "${GRADLE:-0}" = "1" ]; then
   # The build passes even with insecure endpoints unless a project opts into failing it, so the
   # scan's own summary is the assertion — a green build alone proves nothing about permissioning.
   # `--rerun` because a scan restored from the build cache prints no summary at all, and the endpoint
-  # count because a scan that found nothing would also report nothing insecure.
-  grep -q "Total endpoints: 2" "$WORK_DIR/scan.log" \
+  # count because a scan that found nothing would also report nothing insecure. Whole lines only:
+  # "Total endpoints: 2" is inside "Total endpoints: 20", and every per-type line ends "Insecure: N".
+  grep -qx "  Total endpoints: 2" "$WORK_DIR/scan.log" \
     || fail "gradle: the security scan did not see the two chat endpoints (see $WORK_DIR/scan.log)"
-  grep -q "Insecure: 0" "$WORK_DIR/scan.log" \
+  grep -qx "  Insecure: 0" "$WORK_DIR/scan.log" \
     || fail "gradle: the platform security scan found an insecure endpoint (see $WORK_DIR/scan.log)"
 fi
 

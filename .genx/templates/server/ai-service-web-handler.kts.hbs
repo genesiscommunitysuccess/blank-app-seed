@@ -82,6 +82,8 @@ webHandlers("ai-service") {
             // application/x-ndjson. The reply is labelled application/json below instead.
             accepts(ContentType.APPLICATION_JSON)
 
+            // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+            // check, and the build's security scan still reports the endpoint as secure.
             permissioning {
                 permissionCodes("AI_CHAT")
             }
@@ -221,6 +223,8 @@ webHandlers("ai-service") {
             // application/x-ndjson. The reply is labelled application/json below instead.
             accepts(ContentType.APPLICATION_JSON)
 
+            // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+            // check, and the build's security scan still reports the endpoint as secure.
             permissioning {
                 permissionCodes("AI_CHAT")
             }
