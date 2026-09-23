@@ -31,7 +31,7 @@ import kotlinx.coroutines.future.await
 
 webHandlers("ai-service") {
 
-    val systemDefinition = injector<SystemDefinitionService>()
+    val systemDefinition = inject<SystemDefinitionService>()
     // Bounded parsing: at the router's 5 MiB body cap, a body of tiny objects would build a tree many
     // times its own size. A real chat turn is far inside these limits.
     val mapper = ObjectMapper(
