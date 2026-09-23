@@ -203,11 +203,6 @@ module.exports = async (data, utils) => {
       data,
       path.resolve(__dirname, 'templates/server/ai-service-web-handler.kts.hbs'),
     );
-    utils.writeFileWithData(
-      path.join(appModule, 'cfg/genesis-ai-system-definition.kts'),
-      data,
-      path.resolve(__dirname, 'templates/server/genesis-ai-system-definition.kts.hbs'),
-    );
   }
 
   if (data.excludeGradleWrapper) {

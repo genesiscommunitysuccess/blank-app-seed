@@ -24,7 +24,7 @@ who should see the chat the way you grant any other Genesis right, through a pro
 
 **Bound what it can do.** `AI_ALLOWED_MODELS` limits which models may be requested and
 `AI_MAX_OUTPUT_TOKENS` caps the output size of a single call. Both live in
-`server/{{appName}}-app/src/main/genesis/cfg/genesis-ai-system-definition.kts`, and both can be overridden from the
+`server/{{appName}}-app/src/main/genesis/cfg/{{appName}}-system-definition.kts`, and both can be overridden from the
 environment in the same way as the key. With no key configured the endpoint answers **424**, so a
 panel reporting a missing key is telling you exactly what it needs.
 {{/if}}

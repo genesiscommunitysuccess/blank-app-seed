@@ -42,7 +42,7 @@ ai_artifacts_present() {
   local app="$WORK_DIR/$1/demo"
   local found=0
   [ -f "$app/$MODULE/scripts/ai-service-web-handler.kts" ] && found=$((found + 1))
-  [ -f "$app/$MODULE/cfg/genesis-ai-system-definition.kts" ] && found=$((found + 1))
+  grep -q AI_ALLOWED_MODELS "$app/$MODULE/cfg/demo-system-definition.kts" && found=$((found + 1))
   grep -q httpObjectAggregator "$app/$MODULE/scripts/genesis-router.kts" && found=$((found + 1))
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
   echo "$found"
