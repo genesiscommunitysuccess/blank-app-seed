@@ -5,10 +5,11 @@
 
 ## AI chat
 
-This application includes an AI chat panel. It talks to **your** AI vendor with **your** key —
-nothing is routed through Genesis.
+This application includes the server side of an AI chat: an endpoint,
+`/gwf/ai-service/<vendor>/chat`, that a chat panel in the app calls, and that talks to **your** AI
+vendor with **your** key. Nothing is routed through Genesis.
 
-**Set your key where the server runs, never in a file in this project.** A system-definition item
+**Set your key where the server runs, never in a tracked file in this project.** A system-definition item
 can be supplied from the environment, so set the one for your vendor in the environment that starts
 the server, then restart it (items are read once at boot):
 
@@ -18,12 +19,22 @@ GENESIS_SYSDEF_AI_GEMINI_API_KEY=...
 ```
 
 Do not write the key into `docker-compose.yml`, which is committed with the project. Pass it through
-from the shell (`environment: [GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY]`) or keep it in a `.env` file
-(`env_file: .env`), which `.gitignore` already excludes.
+from the shell (`environment: [GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY]`) or keep it in an untracked
+`.env` file (`env_file: .env`), which the project's `.gitignore` already excludes.
 
-Installing the app (`genesisInstall`) writes every resolved system-definition value, in plain text,
-to `generated/cfg/generated-system-definition.json` under the Genesis home. So set the plain
-variable only where the server runs, not in the shell or CI job that builds and installs it. For
+A plain `GENESIS_SYSDEF_...` key can also end up, in plain text:
+
+- in `generated/cfg/generated-system-definition.json` under the Genesis home, if it is set where
+  `genesisInstall` runs;
+- in `~/.bashrc` inside the app's container, which the startup script writes every
+  `GENESIS_SYSDEF_*` variable to;
+- in the Docker image itself, if the image is built with `propagateSysDefEnvVarsInDockerFile` while
+  the key is in the build's environment;
+- in the logs, if `global.genesis` logging is raised to TRACE, which prints every unencrypted
+  system-definition value.
+
+So set the plain variable only where the server runs, not in the shell or CI job that builds and
+installs it. For
 production, prefer the encrypted form, `GENESIS_ENCRYPTED_SYSDEF_AI_ANTHROPIC_API_KEY` (or
 `..._AI_GEMINI_API_KEY`): the install step writes it out as `{REDACTED}`, and the server decrypts it
 with its `GenesisKey`, which must be exactly 32 characters and set as a system-definition item or an
@@ -57,7 +68,10 @@ may show only a generic error, so check the response in your browser's developer
 
 - For the chat, the server accepts request bodies up to 5 MiB instead of the default 256 KiB. That
   limit is router-wide and applies before login, so it covers every endpoint, including unauthenticated
-  ones. A reverse proxy in front of the server may need its own limit raised to match.
+  ones.
+- The app's Docker image puts nginx in front of the server, and its `nginx.conf` sets no
+  `client_max_body_size`, so nginx's 1 MiB default applies: raise it to `5m`, or chat turns over
+  1 MiB are refused before they reach the server. Any other reverse proxy needs the same.
 - The server's default CORS policy accepts any origin with credentials, and the session cookie is
   `SameSite=Lax`. A page on the same site as this app (a sibling subdomain, for example) can therefore
   call the chat as a logged-in user who holds `AI_CHAT`, and spend your key. Serve the app from a
