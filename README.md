@@ -33,13 +33,14 @@ Create with AI Chat selected already has it: the `AI_CHAT_USER` profile holds th
 is in that profile. Add other users to that profile, or grant the right through any other profile.
 Otherwise, create the `AI_CHAT` right and grant it the same way.
 
-**Bound what it can do.** Both settings live in
-`server/{{appName}}-app/src/main/genesis/cfg/{{appName}}-system-definition.kts` and can be overridden
-from the environment the same way as the key:
+**Bound what it can do.** The limits this app was generated with are built into the chat endpoint,
+`server/{{appName}}-app/src/main/genesis/scripts/ai-service-web-handler.kts`. Override either with a
+system-definition item of the same name, set from the environment the same way as the key:
 
-- `AI_ALLOWED_MODELS` lists the models a request may ask for. **An empty list refuses every model.**
-- `AI_MAX_OUTPUT_TOKENS` caps the output a single call can request (Gemini is also held to one
-  candidate).
+- `AI_ALLOWED_MODELS` (`GENESIS_SYSDEF_AI_ALLOWED_MODELS`) lists the models a request may ask for.
+  **Set but empty, it refuses every model.**
+- `AI_MAX_OUTPUT_TOKENS` (`GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS`) caps the output a single call can
+  request (Gemini is also held to one candidate).
 
 Fallback models and streamed replies are refused. Vendor server-side tools (for example Anthropic web
 search or Gemini Google Search grounding) are **not** filtered: anyone with `AI_CHAT` can request

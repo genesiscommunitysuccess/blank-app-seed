@@ -60,22 +60,26 @@ webHandlers("ai-service") {
         }
     }
 
+    // The limits this app was generated with. They live here, not in a system-definition file,
+    // because a generator may rewrite that file; a system-definition item of the same name overrides
+    // them (GENESIS_SYSDEF_AI_ALLOWED_MODELS, GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
+    val defaultAllowedModels = "{{AI.allowedModels}}"
+    val defaultMaxOutputTokens = "{{AI.maxOutputTokens}}"
+
     // The model a request asks for has to be one this app allows, whatever the browser sent: the
-    // panel is not the only thing that can post here.
-    val allowedModels = systemDefinition.get("AI_ALLOWED_MODELS").orElse("")
+    // panel is not the only thing that can post here. AI_ALLOWED_MODELS set but EMPTY refuses every
+    // model, so a setting that failed to load is never an open door to the most expensive one.
+    val allowedModels = (systemDefinition.get("AI_ALLOWED_MODELS").orElse(null) ?: defaultAllowedModels)
         .split(",")
         .map { it.trim() }
         .filter { it.isNotEmpty() }
-
-    // An empty list refuses every model rather than allowing any: a setting that failed to load must
-    // not become an open door to the most expensive model on your key.
     if (allowedModels.isEmpty()) {
-        LOG.warn("ai-service: AI_ALLOWED_MODELS is empty, so every chat request will be refused")
+        LOG.warn("ai-service: AI_ALLOWED_MODELS is set but empty, so every chat request will be refused")
     }
 
-    val maxOutputTokens = systemDefinition.get("AI_MAX_OUTPUT_TOKENS").orElse("")
+    val maxOutputTokens = (systemDefinition.get("AI_MAX_OUTPUT_TOKENS").orElse(null) ?: defaultMaxOutputTokens)
         .trim()
-        .toIntOrNull() ?: 16000
+        .toIntOrNull() ?: defaultMaxOutputTokens.toIntOrNull() ?: 16000
 
     // Clamp DOWN only: a request asking for less than the ceiling keeps what it asked for.
     fun clamp(requested: Int): Int = if (requested > maxOutputTokens) maxOutputTokens else requested

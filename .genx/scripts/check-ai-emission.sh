@@ -7,8 +7,9 @@
 #
 #   off       ui.ai absent and ui.ai.enabled=false generate the same app, and neither carries any
 #             AI file. A project that never asked for chat must not change.
-#   on        the proxy, its sysdef, the router body cap and the README section all appear, and the
-#             proxy is written byte-for-byte from its template (it must survive handlebars untouched).
+#   on        the proxy, the router body cap and the README section all appear; the proxy is its
+#             template with only its two limits filled in, for either vendor; and no AI item lands in
+#             a system-definition file (a generator may rewrite those, so the proxy must not need one).
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
@@ -29,6 +30,10 @@ FAILURES=()
 GENX="${GENX:-@genesislcap/genx@15.35.1}"
 
 AI_UI='{"ai":{"enabled":true,"vendor":"gemini","tier":"high","systemPrompt":"x","resources":[]}}'
+AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","systemPrompt":"x","resources":[]}}'
+# The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
+GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
+ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
 
 fail() { FAILURES+=("$1"); echo "FAIL: $1"; }
 
@@ -45,7 +50,6 @@ ai_artifacts_present() {
   local app="$WORK_DIR/$1/demo"
   local found=0
   [ -f "$app/$MODULE/scripts/ai-service-web-handler.kts" ] && found=$((found + 1))
-  grep -q AI_ALLOWED_MODELS "$app/$MODULE/cfg/demo-system-definition.kts" && found=$((found + 1))
   grep -q httpObjectAggregator "$app/$MODULE/scripts/genesis-router.kts" && found=$((found + 1))
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
   echo "$found"
@@ -55,6 +59,7 @@ echo "=== Generating into $WORK_DIR"
 generate default --framework react
 generate off --framework react --ui '{"ai":{"enabled":false}}'
 generate on --framework react --ui "$AI_UI"
+generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
 echo "=== off"
@@ -65,9 +70,16 @@ diff -r -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/off/
   || fail "off: ui.ai.enabled=false generates a different app from no ui.ai at all"
 
 echo "=== on"
-[ "$(ai_artifacts_present on)" = "4" ] || fail "on: expected all 4 AI artifacts, found $(ai_artifacts_present on)"
-diff -q "$TEMPLATE" "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
-  || fail "on: the proxy was changed on its way through handlebars"
+[ "$(ai_artifacts_present on)" = "3" ] || fail "on: expected all 3 AI artifacts, found $(ai_artifacts_present on)"
+# The proxy is its template with exactly its two limits filled in, and nothing else touched.
+for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
+  label="${pair%%:*}"; models="${pair#*:}"
+  sed -e "s/{{AI.allowedModels}}/$models/" -e "s/{{AI.maxOutputTokens}}/16000/" "$TEMPLATE" \
+    | diff -q - "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
+    || fail "$label: the proxy is not its template with the $label limits filled in"
+done
+grep -rqs 'AI_ALLOWED_MODELS\|AI_MAX_OUTPUT_TOKENS' "$WORK_DIR/on/demo/$MODULE/cfg/" \
+  && fail "on: an AI item landed in a system-definition file; the proxy must carry its own defaults"
 
 # The scan cannot see this one: requiresAuth = false drops the AI_CHAT check and makes the endpoint
 # anonymous while the scan still reports it secure. Comment lines are skipped, since the template's
