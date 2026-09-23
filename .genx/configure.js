@@ -53,11 +53,14 @@ module.exports = async (data, utils) => {
   const aiVendor = data.ui?.ai?.vendor === 'anthropic' ? 'anthropic' : 'gemini';
   data.AI = {
     enabled: !!data.ui?.ai?.enabled && data.framework === 'react',
-    // The models the proxy lets a request ask for, by vendor — the tier table's ids (C-3).
+    // The models the proxy lets a request ask for: every tier (low, high, reasoning) of the chosen
+    // vendor, copied from foundation-ui's DEFAULT_AI_TIERS (foundation-ai src/tiers/ai-tiers.ts,
+    // 3fb72a1096: lines 150, 159, 171 and 179, 187, 196). Hard-coded, so a tier-table change means
+    // updating these too.
     allowedModels:
       aiVendor === 'anthropic'
-        ? 'claude-haiku-4-5-20251001,claude-sonnet-5'
-        : 'gemini-3.1-flash-lite,gemini-3.8-flash',
+        ? 'claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
+        : 'gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview',
     maxOutputTokens: 16000,
   };
 
