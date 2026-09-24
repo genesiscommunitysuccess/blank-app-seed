@@ -3,7 +3,7 @@
     "enabled": true,
     "vendor": "gemini",
     "tier": "high",
-    "systemPrompt": "You are the assistant for {{appName}}. Keep \\{{this}}, {{#if x}}this{{/if}} and {{{that}}} literal; \"quotes\", </script>, ünïcödé and the text \\u007b must survive.",
+    "systemPrompt": "You are the assistant for {{appName}}{{! a comment }}. Keep \\{{this}}, {{#if AI.enabled}}shown{{/if}}, {{#if x}}hidden{{/if}} and {{{that}}} literal; \"quotes\", </script>, ünïcödé and the text \\u007b must survive.",
     "resources": [
       {
         "name": "REQ_TRADE",

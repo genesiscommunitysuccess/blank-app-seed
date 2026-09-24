@@ -40,9 +40,12 @@ MODULE="server/demo-app/src/main/genesis"
 FAILURES=()
 GENX="${GENX:-@genesislcap/genx@15.35.1}"
 
-# The Gemini app runs on the 'ai' fixture: resources of both kinds and a prompt full of Handlebars.
+# The Gemini app runs on the 'ai' fixture: resources of both kinds and a prompt full of Handlebars that
+# renders, so a missing escape changes the file. Text Handlebars cannot even parse is a separate case:
+# there a whole-file render fails and genx ships the file as written, which only the log check catches.
 AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
 AI_UI="$(cat "$AI_FIXTURE")"
+AI_UI_BREAKERS="$(cat "$SEED_DIR/.genx/tests/fixtures/ai-config-parse-breakers.json")"
 AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","systemPrompt":"x","resources":[]}}'
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
@@ -56,6 +59,11 @@ generate() {
   (cd "$WORK_DIR/$label" && npx -y "$GENX" init demo -s "${SEED:-$SEED_DIR}" -x --no-shell \
     --apiHost 'wss://localhost/gwf/' "$@" > "$WORK_DIR/$label.log" 2>&1) \
     || { fail "$label: generation failed (see $WORK_DIR/$label.log)"; return 1; }
+  # genx logs a file it cannot render and ships it unrendered, so a broken {{#if}} in a template, or a
+  # {{ that escaped the ai-config writer, passes generation and only surfaces later, or never.
+  if grep -q 'Error interpolating variables' "$WORK_DIR/$label.log"; then
+    fail "$label: genx could not render a file and shipped it unrendered: $(grep -o 'Error interpolating variables in [^ ]*' "$WORK_DIR/$label.log" | head -3 | tr '\n' ' ')"
+  fi
 }
 
 # Every file or block the feature adds. Used both ways: all present when on, none when off.
@@ -99,6 +107,7 @@ generate default --framework react
 generate off --framework react --ui '{"ai":{"enabled":false}}'
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
+generate breakers --framework react --ui "$AI_UI_BREAKERS"
 # The fixture with fields the contract does not have smuggled in, which the writer must drop.
 generate extras --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.budgetUsd = 5; u.ai.endpoint = "https://example.invalid"; u.ai.resources[0].url = "https://example.invalid"; console.log(JSON.stringify(u))' "$AI_FIXTURE")"
 generate nonreact --framework webcomponents --ui "$AI_UI"
@@ -248,12 +257,12 @@ done
 # the prompt carries; and the client's package.json gains the assistant package at the UI version and
 # the AI build flag on build and dev, and not one thing more.
 echo "=== the panel's configuration and package"
-node - "$WORK_DIR" "$AI_UI" "$AI_UI_ANTHROPIC" "$SEED_DIR/.genx/versions.json" <<'NODE' \
+node - "$WORK_DIR" "$AI_UI" "$AI_UI_ANTHROPIC" "$SEED_DIR/.genx/versions.json" "$AI_UI_BREAKERS" <<'NODE' \
   || fail "on: the panel's configuration or the client package.json is not what the AI path writes (see above)"
 const fs = require('fs');
 const path = require('path');
 const { isDeepStrictEqual } = require('util');
-const [work, geminiUi, anthropicUi, versionsFile] = process.argv.slice(2);
+const [work, geminiUi, anthropicUi, versionsFile, breakersUi] = process.argv.slice(2);
 const ui = versions => versions.UI;
 const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.parse(JSON.stringify({
   enabled, vendor, tier, systemPrompt,
@@ -262,7 +271,7 @@ const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.pa
 const problems = [];
 const read = (label, rel) => fs.readFileSync(path.join(work, label, 'demo', rel), 'utf8');
 // 'extras' got the fixture plus non-contract fields; it must still come out as the fixture's contract fields.
-for (const [label, input] of [['on', geminiUi], ['onanthropic', anthropicUi], ['extras', geminiUi]]) {
+for (const [label, input] of [['on', geminiUi], ['onanthropic', anthropicUi], ['extras', geminiUi], ['breakers', breakersUi]]) {
   const raw = read(label, 'client/src/ai/generated/ai-config.json');
   if (raw.includes('{{')) problems.push(`${label}: ai-config.json still holds {{ for Handlebars to expand`);
   let written;

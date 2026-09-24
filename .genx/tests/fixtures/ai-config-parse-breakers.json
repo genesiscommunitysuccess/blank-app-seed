@@ -1,0 +1,16 @@
+{
+  "ai": {
+    "enabled": true,
+    "vendor": "gemini",
+    "tier": "high",
+    "systemPrompt": "Text Handlebars cannot even parse: {{#if}} opens a block with no argument, {{{ never closes, and {{#each items}} is never closed.",
+    "resources": [
+      {
+        "name": "REQ_TRADE",
+        "kind": "request",
+        "context": "Trades, {{#unless}}.",
+        "maxRows": 50
+      }
+    ]
+  }
+}
