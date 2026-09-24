@@ -254,13 +254,13 @@ for label in on onanthropic; do
     client/package.json client/.oxfmtrc.json client/src/ai client/src/pbc/ai-assistant | sort)"
   [ "$changed" = "$expected" ] || fail "$label: the AI path changed files beyond its own: $(echo $changed)"
   ai_files="$(cd "$app/client/src/ai" 2>/dev/null && find . -type f | sed 's#^\./##' | sort | tr '\n' ' ')"
-  [ "$ai_files" = "extensions/index.ts generated/ai-config.json generated/assistant.ts generated/launcher.ts " ] \
+  [ "$ai_files" = "extensions/index.ts generated/ai-config.json generated/assistant-host.ts generated/assistant.ts " ] \
     || fail "$label: client/src/ai holds $ai_files"
   pbc_files="$(cd "$app/client/src/pbc/ai-assistant" 2>/dev/null && find . -type f | sed 's#^\./##' | tr '\n' ' ')"
   [ "$pbc_files" = "elements.ts " ] || fail "$label: client/src/pbc/ai-assistant holds $pbc_files"
 
   # The panel's code comes out exactly as written: a {{ in it would have been rendered on the way.
-  for pair in "pbc-elements.ts.hbs:pbc/ai-assistant/elements.ts" "launcher.ts.hbs:ai/generated/launcher.ts" \
+  for pair in "pbc-elements.ts.hbs:pbc/ai-assistant/elements.ts" "assistant-host.ts.hbs:ai/generated/assistant-host.ts" \
       "assistant.ts.hbs:ai/generated/assistant.ts" "extensions.ts.hbs:ai/extensions/index.ts"; do
     cmp -s "$SEED_DIR/.genx/templates/react/ai/${pair%%:*}" "$app/client/src/${pair#*:}" \
       || fail "$label: client/src/${pair#*:} is not its template as written"

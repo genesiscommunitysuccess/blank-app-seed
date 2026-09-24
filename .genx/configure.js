@@ -238,7 +238,7 @@ module.exports = async (data, utils) => {
     const clientSrc = path.resolve(__dirname, '../client/src');
     [
       ['pbc-elements.ts.hbs', 'pbc/ai-assistant/elements.ts'],
-      ['launcher.ts.hbs', 'ai/generated/launcher.ts'],
+      ['assistant-host.ts.hbs', 'ai/generated/assistant-host.ts'],
       ['assistant.ts.hbs', 'ai/generated/assistant.ts'],
       ['extensions.ts.hbs', 'ai/extensions/index.ts'],
     ].forEach(([template, target]) => {
