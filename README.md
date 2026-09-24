@@ -165,6 +165,8 @@ npm run genesis-start:headless   # the same launcher with no window, driven over
 **The REST API has no authentication and listens on every network interface**, and it can start and
 stop the app's processes and run its utility scripts. Run headless only on a machine and network you
 trust, or block port 18080 from anything else.
+A web page you visit on that machine may be able to reach `localhost:18080` too: the API checks no
+origin, and stopping a process takes a plain POST, which a browser sends without a CORS preflight.
 
 # License
 
