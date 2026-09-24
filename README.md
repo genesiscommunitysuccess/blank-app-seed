@@ -26,6 +26,8 @@ A plain `GENESIS_SYSDEF_...` key can also end up, in plain text:
 
 - in `generated/cfg/generated-system-definition.json` under the Genesis home, if it is set where
   `genesisInstall` runs;
+- in `server/{{appName}}-app/build/genesis/rendered-templates/generated-system-definition.json`, which
+  every Gradle build of the server writes, if it is set in the shell that runs Gradle;
 - in `~/.bashrc` inside the app's container, which the startup script writes every
   `GENESIS_SYSDEF_*` variable to;
 - in the Docker image itself, if the image is built with `propagateSysDefEnvVarsInDockerFile` while
@@ -34,11 +36,14 @@ A plain `GENESIS_SYSDEF_...` key can also end up, in plain text:
   system-definition value.
 
 So set the plain variable only where the server runs, not in the shell or CI job that builds and
-installs it. For
-production, prefer the encrypted form, `GENESIS_ENCRYPTED_SYSDEF_AI_ANTHROPIC_API_KEY` (or
-`..._AI_GEMINI_API_KEY`), which `encryptUserPassWithKey` produces. The install step leaves it out of
-the generated file. The container's startup script still copies it into `~/.bashrc`, but only
-encrypted. The server decrypts it with its `GenesisKey`:
+installs it. Genesis Start runs the server from the shell that runs Gradle, so there a plain key lands
+in both generated files: they are gitignored, but hold it in plain text on disk.
+
+Prefer the encrypted form, in production and under Genesis Start alike:
+`GENESIS_ENCRYPTED_SYSDEF_AI_ANTHROPIC_API_KEY` (or `..._AI_GEMINI_API_KEY`), which
+`encryptUserPassWithKey` produces. Gradle and the install step leave it out of both generated files.
+The container's startup script still copies it into `~/.bashrc`, but only encrypted. The server
+decrypts it with its `GenesisKey`:
 
 - `GenesisKey` is 32 hexadecimal characters, a 128-bit AES key; generate one with
   `openssl rand -hex 16`. Any other character silently weakens the key.
