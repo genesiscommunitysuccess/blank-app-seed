@@ -77,8 +77,6 @@ allprojects {
             }
         }
         mavenCentral()
-        // The Genesis Start launcher (0.1.12+) pulls Compose Desktop and androidx.* artifacts from Google's repository.
-        google()
         maven {
             val repoUrl = if(properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -89,6 +87,13 @@ allprojects {
             credentials {
                 username = properties["genesisArtifactoryUser"].toString()
                 password = properties["genesisArtifactoryPassword"].toString()
+            }
+        }
+        // The Genesis Start launcher (0.1.12+) needs androidx.* artifacts, which none of the repositories
+        // above have. Last, and for those groups only, so nothing else is ever looked up at Google.
+        google {
+            content {
+                includeGroupByRegex("androidx\\..*")
             }
         }
     }
