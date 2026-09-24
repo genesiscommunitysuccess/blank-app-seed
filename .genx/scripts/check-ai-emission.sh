@@ -188,6 +188,12 @@ for label in on onanthropic; do
   [ "$endpoints" = "2" ] || fail "$label: expected exactly two chat endpoints, found $endpoints"
   [ "$guarded" = "$endpoints" ] \
     || fail "$label: $endpoints endpoints but $guarded permissionCodes(\"AI_CHAT\"); every endpoint needs one"
+  # Each can undo AI_CHAT after it is set, so any logged-in user could spend the key; so can a second
+  # permissioning block on the same endpoint.
+  live_code "$handler" | grep -qE 'permissionCodesDisabled|permissionCodes[[:space:]]*=|customPermissions' \
+    && fail "$label: the proxy loosens its AI_CHAT check"
+  blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
+  [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
 
   # Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
   # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
@@ -208,44 +214,50 @@ done
 echo "=== non-react"
 [ "$(ai_artifacts_present nonreact)" = "0" ] || fail "non-react: AI files emitted with no panel to use them"
 
-# Genesis Start's REST API has no authentication, so only the two headless scripts may turn it on. The
-# launcher also takes its settings as bare project properties (restEnabled=true) or through its Gradle
-# extension, so no Gradle file may set any of them, with AI on or off.
+# Genesis Start's REST API has no authentication, so only the two headless scripts may switch it on.
+# The rules are broad on purpose. In package.json, every line that mentions Genesis Start, gradlew or a
+# headless/REST flag must be one of the three scripts, once each (so no npm hook, template branch or
+# abbreviated task name can run it). No live Gradle line may mention the launcher, apart from its plugin
+# id, nor a key it also reads bare. And Google's repository stays last and androidx-only.
 echo "=== genesis start: desktop unless a headless script asks"
 node - "$SEED_DIR" "$WORK_DIR" default off on onanthropic nonreact <<'NODE' \
-  || fail "genesis start: REST or headless mode is switched on where it must not be (see above)"
+  || fail "genesis start: the launcher is configured where it must not be (see above)"
 const fs = require('fs');
 const path = require('path');
 const [seed, work, ...labels] = process.argv.slice(2);
 const flags = '-Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080';
-const expected = {
-  'genesis-start': 'cd ../server && ./gradlew genesisStart',
-  'genesis-start:headless': `cd ../server && ./gradlew genesisStart ${flags}`,
-  'genesis-start:write-script': `cd ../server && ./gradlew writeStartScript ${flags}`,
-};
-const setting = /genesis\.start\.|genesisStart\s*[{.(]|\b(headless|restEnabled|restPort|restBasePath|restMaxRequestBodyBytes)\b/;
+const scripts = [
+  '"genesis-start": "cd ../server && ./gradlew genesisStart",',
+  `"genesis-start:headless": "cd ../server && ./gradlew genesisStart ${flags}",`,
+  `"genesis-start:write-script": "cd ../server && ./gradlew writeStartScript ${flags}",`,
+];
+const scriptMention = /genesis-?start|genesis\.start|gradlew|-P\S*(headless|rest)/i;
+const gradleMention = /genesis-?start|genesis\.?launcher|genesis\.start|\b(headless|restEnabled|restPort|restBasePath|restMaxRequestBodyBytes)\b/i;
+const pluginId = /^\s*id\("global\.genesis\.genesis-start-gui"\)( version startVersion)?\s*$/;
+const googleBlock = [
+  '                password = properties["genesisArtifactoryPassword"].toString()',
+  '            }',
+  '        }',
+  '        // The Genesis Start launcher (0.1.12+) needs androidx.* artifacts, which none of the repositories',
+  '        // above have. Last, and for those groups only, so nothing else is ever looked up at Google.',
+  '        google {',
+  '            content {',
+  '                includeGroupByRegex("androidx\\\\..*")',
+  '            }',
+  '        }',
+  '    }',
+].join('\n');
 const problems = [];
-const checkScripts = (where, scripts) => {
-  for (const [name, value] of Object.entries(expected)) {
-    if (scripts[name] !== value) problems.push(`${where}: "${name}" is ${JSON.stringify(scripts[name])}`);
+const checkPackageJson = (where, text) => {
+  const found = text.split('\n').filter((l) => scriptMention.test(l)).map((l) => l.trim());
+  const extra = [...found];
+  for (const line of scripts) {
+    const i = extra.indexOf(line);
+    if (i < 0) problems.push(`${where}: missing ${line}`);
+    else extra.splice(i, 1);
   }
-  for (const [name, value] of Object.entries(scripts)) {
-    if (!(name in expected) && /genesis\.start\.|genesisStart|writeStartScript/.test(value)) {
-      problems.push(`${where}: "${name}" runs Genesis Start`);
-    }
-  }
+  extra.forEach((l) => problems.push(`${where}: ${l}`));
 };
-// Every framework's template (Handlebars, so read line by line, not as JSON).
-for (const fw of fs.readdirSync(path.join(seed, 'client-tmp'))) {
-  const file = path.join(seed, 'client-tmp', fw, 'package.json');
-  if (!fs.existsSync(file)) continue;
-  const scripts = {};
-  for (const m of fs.readFileSync(file, 'utf8').matchAll(/^\s*"([^"]+)": ("(?:[^"\\]|\\.)*"),?\s*$/gm)) {
-    scripts[m[1]] = JSON.parse(m[2]);
-  }
-  checkScripts(`client-tmp/${fw}/package.json`, scripts);
-}
-// Every Gradle file of every generated app, comments aside.
 const live = (file) => {
   const text = fs.readFileSync(file, 'utf8');
   return file.endsWith('.properties')
@@ -257,13 +269,22 @@ const gradleFiles = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMa
   if (e.isDirectory()) return ['node_modules', 'build', '.gradle', '.git'].includes(e.name) ? [] : gradleFiles(full);
   return /^gradle\.properties$|\.gradle(\.kts)?$/.test(e.name) ? [full] : [];
 });
+// Every framework's template, as text: a Handlebars branch is just more matching lines.
+for (const fw of fs.readdirSync(path.join(seed, 'client-tmp'))) {
+  const file = path.join(seed, 'client-tmp', fw, 'package.json');
+  if (fs.existsSync(file)) checkPackageJson(`client-tmp/${fw}/package.json`, fs.readFileSync(file, 'utf8'));
+}
 for (const label of labels) {
   const app = path.join(work, label, 'demo');
-  checkScripts(`${label}: client/package.json`, JSON.parse(fs.readFileSync(path.join(app, 'client/package.json'), 'utf8')).scripts);
+  checkPackageJson(`${label}: client/package.json`, fs.readFileSync(path.join(app, 'client/package.json'), 'utf8'));
   for (const file of gradleFiles(app)) {
-    live(file).filter((l) => setting.test(l))
-      .forEach((l) => problems.push(`${label}: ${path.relative(app, file)} sets ${JSON.stringify(l.trim())}`));
+    live(file).filter((l) => gradleMention.test(l) && !pluginId.test(l))
+      .forEach((l) => problems.push(`${label}: ${path.relative(app, file)}: ${JSON.stringify(l.trim())}`));
   }
+  const build = fs.readFileSync(path.join(app, 'server/build.gradle.kts'), 'utf8');
+  if (!build.includes(googleBlock)) problems.push(`${label}: server/build.gradle.kts: the scoped google {} block is not last, whole, after the Genesis repository`);
+  const googles = live(path.join(app, 'server/build.gradle.kts')).filter((l) => /\bgoogle\b/.test(l)).length;
+  if (googles !== 1) problems.push(`${label}: server/build.gradle.kts: ${googles} live lines mention google, expected 1`);
 }
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
