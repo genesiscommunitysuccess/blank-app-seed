@@ -6,7 +6,9 @@
 # routes), a "full" app driven by .genx/tests/fixtures/routes-full.json
 # (every tile type: entity-manager with permissions/custom events/eventing/FDC3,
 # grid-pro with listener/reqrep, chart, smart-form), and an "fdc3" app with
-# FDC3 channels enabled — then runs the ox lint pipeline with zero tolerance:
+# FDC3 channels enabled, plus for React an "ai" app driven by .genx/tests/fixtures/ai-config.json
+# (the AI chat panel, whose configuration carries a prompt full of Handlebars) — then runs the ox lint
+# pipeline with zero tolerance:
 #
 #   oxlint . --deny-warnings   # zero errors, zero warnings
 #   oxfmt --check .            # formatting is already canonical
@@ -33,6 +35,7 @@ set -uo pipefail
 
 SEED_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 FIXTURE="$SEED_DIR/.genx/tests/fixtures/routes-full.json"
+AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
 
 if [ $# -gt 0 ]; then
   FRAMEWORKS=("$@")
@@ -77,7 +80,10 @@ run_lint_checks() {
 }
 
 for fw in "${FRAMEWORKS[@]}"; do
-  for variant in default full fdc3; do
+  variants=(default full fdc3)
+  # The chat panel is React only, like the AI gate in configure.js.
+  [ "$fw" = "react" ] && variants+=(ai)
+  for variant in "${variants[@]}"; do
     label="$fw-$variant"
     app_dir="$WORK_DIR/$label"
     rm -rf "$app_dir"
@@ -85,6 +91,9 @@ for fw in "${FRAMEWORKS[@]}"; do
     extra_args=()
     if [ "$variant" = "full" ]; then
       extra_args=(--routes "$(cat "$FIXTURE")")
+    fi
+    if [ "$variant" = "ai" ]; then
+      extra_args=(--ui "$(cat "$AI_FIXTURE")")
     fi
     if [ "$variant" = "fdc3" ]; then
       extra_args=(--ui '{"fdc3":{"channels":[{"name":"positions","type":"position"},{"name":"instrumentChannel","type":"fdc3.instrument"}]}}')
@@ -115,7 +124,7 @@ if [ ${#FAILURES[@]} -gt 0 ]; then
   exit 1
 fi
 
-echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full + fdc3)"
+echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full + fdc3, and ai for React)"
 if [ "${KEEP:-0}" = "1" ]; then
   echo "Generated apps kept in $WORK_DIR"
 elif [ "$OWNS_WORK_DIR" = "1" ]; then
