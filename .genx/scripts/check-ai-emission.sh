@@ -19,8 +19,9 @@
 #         KEEP=1    keep the generated apps for inspection.
 #         GENX=...  the genx package to generate with (default: a pinned version, so a run is
 #                   reproducible; set GENX=@genesislcap/genx@latest to try the newest).
-#         BASELINE_REF=...  the release to compare an AI-off app against (default origin/main; skipped
-#                   when the ref is not available, e.g. in a shallow clone).
+#         BASELINE_REF=...  also compare an AI-off app against this release (e.g. origin/main). Off
+#                   unless set: the changes it allows are this branch's own, so once they are released
+#                   any other change to an AI-off app would fail it.
 
 set -uo pipefail
 
@@ -74,8 +75,12 @@ diff -r -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/off/
 # Against the last release: an AI-off app may differ from it only in the changes this branch makes
 # on purpose — the Genesis Start launcher version, the repository it needs, its client scripts and
 # the README section about them — and in nothing else, line by line.
-BASELINE_REF="${BASELINE_REF:-origin/main}"
-if git -C "$SEED_DIR" rev-parse --verify -q "$BASELINE_REF^{commit}" > /dev/null; then
+BASELINE_REF="${BASELINE_REF:-}"
+if [ -z "$BASELINE_REF" ]; then
+  echo "=== off vs a release: skipped, set BASELINE_REF to run it"
+elif ! git -C "$SEED_DIR" rev-parse --verify -q "$BASELINE_REF^{commit}" > /dev/null; then
+  fail "off: BASELINE_REF=$BASELINE_REF is not a commit in this clone"
+else
   echo "=== off vs $BASELINE_REF"
   mkdir -p "$WORK_DIR/baseline-seed"
   git -C "$SEED_DIR" archive "$BASELINE_REF" | tar -x -C "$WORK_DIR/baseline-seed"
@@ -110,8 +115,6 @@ for (const line of out.split('\n').filter(Boolean)) {
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
 NODE
-else
-  echo "=== off vs $BASELINE_REF: skipped, the ref is not available here"
 fi
 
 echo "=== on"
