@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.0...v5.27.1) (2026-09-24)
+
+
+### Bug Fixes
+
+* move the UI packages to 15.39.0 and onto the stable grid they ship GENC-1611 (#637) f7314a5
+* register the Angular grid with the stable grid's own styles, not the legacy ones GENC-1611 740cdbc
+
 ## [5.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.26.0...v5.27.0) (2026-09-18)
 
 
