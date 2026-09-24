@@ -179,9 +179,12 @@ for label in on onanthropic; do
   # check while the scan still reports it secure, and a third endpoint could carry no permission at all.
   handler="$app/$MODULE/scripts/ai-service-web-handler.kts"
   live_code "$handler" | grep -q 'requiresAuth' && fail "$label: the proxy sets requiresAuth, which makes it anonymous"
-  [ "$(live_code "$handler" | grep -c 'endpoint<')" = "2" ] || fail "$label: expected exactly two chat endpoints"
-  [ "$(live_code "$handler" | grep -c 'permissionCodes("AI_CHAT")')" = "2" ] \
-    || fail "$label: expected permissionCodes(\"AI_CHAT\") on both chat endpoints"
+  # Every endpoint builder the web DSL has (endpoint and multipartEndpoint), typed or inferred.
+  endpoints="$(live_code "$handler" | grep -oE '(^|[^A-Za-z0-9_])(endpoint|multipartEndpoint)[[:space:]]*[<(]' | wc -l | tr -d ' ')"
+  guarded="$(live_code "$handler" | grep -oF 'permissionCodes("AI_CHAT")' | wc -l | tr -d ' ')"
+  [ "$endpoints" = "2" ] || fail "$label: expected exactly two chat endpoints, found $endpoints"
+  [ "$guarded" = "$endpoints" ] \
+    || fail "$label: $endpoints endpoints but $guarded permissionCodes(\"AI_CHAT\"); every endpoint needs one"
 
   # Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
   # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
