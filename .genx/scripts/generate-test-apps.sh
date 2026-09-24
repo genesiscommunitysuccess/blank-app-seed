@@ -26,7 +26,8 @@
 #              By default an app is deleted as soon as it passes, so a run only
 #              ever holds one app's node_modules at a time. Failing apps are
 #              always kept.
-#   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app
+#   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app, and for the React
+#              ai app check that the assistant is built into a chunk of its own
 #
 # Installs use the app's own bootstrap semantics (plain `npm install`) — NOT
 # --legacy-peer-deps, which would skip the ag-grid peer deps and break builds.
@@ -58,6 +59,23 @@ fi
 
 FAILURES=()
 
+# The assistant loads in a chunk of its own once the layout mounts. The code behind the assistant's
+# registration and the bubble ('pulse-ring' is the bubble's own markup) must be in that chunk and in no
+# other: the entry chunk and the PBC chunk both load at startup. Both names survive minification.
+check_assistant_chunk() {
+  local entry chunk marker other
+  entry="dist/$(grep -oE 'assets/index-[^"]+\.js' dist/index.html | head -1)"
+  chunk="$(ls dist/assets/assistant-*.js 2>/dev/null | head -1)"
+  [ -n "$chunk" ] || { echo "no assistant-*.js chunk in dist/assets"; return 1; }
+  [ -f "$entry" ] || { echo "no entry chunk named in dist/index.html"; return 1; }
+  for marker in registerGenesisAssistant pulse-ring; do
+    grep -q "$marker" "$chunk" || { echo "$marker is not in $chunk"; return 1; }
+    other="$(grep -l "$marker" dist/assets/*.js | grep -vxF "$chunk")"
+    [ -z "$other" ] || { echo "$marker is also in $other"; return 1; }
+  done
+  ! grep -q foundation-ai-chat-bubble "$entry" || { echo "the entry chunk $entry names the chat bubble"; return 1; }
+}
+
 run_lint_checks() {
   local app_dir="$1" label="$2"
   (
@@ -75,6 +93,10 @@ run_lint_checks() {
       npx tsc --noEmit || exit 1
       echo "--- [$label] npm run build"
       npm run build || exit 1
+      if [ "$label" = "react-ai" ]; then
+        echo "--- [$label] the assistant is built into a chunk of its own"
+        check_assistant_chunk || exit 1
+      fi
     fi
   )
 }

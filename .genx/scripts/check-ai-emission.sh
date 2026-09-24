@@ -11,7 +11,10 @@
 #             template with only its two limits filled in, for either vendor; and no AI item lands in
 #             a system-definition file (a generator may rewrite those, so the proxy must not need one).
 #             The client gets its ai-config.json (exactly the contract's fields, whatever the prompt
-#             holds), the assistant package and the AI build flag, and nothing else.
+#             holds); the assistant's four source files (pbc/ai-assistant/elements.ts,
+#             ai/generated/assistant-host.ts and assistant.ts, ai/extensions/index.ts), each its
+#             template as written and holding the parts the assistant needs; the assistant package, the
+#             AI build flag and an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
 #             each of Create's resolver cases reaches the app as exactly its contract fields.
@@ -265,10 +268,74 @@ for label in on onanthropic; do
     cmp -s "$SEED_DIR/.genx/templates/react/ai/${pair%%:*}" "$app/client/src/${pair#*:}" \
       || fail "$label: client/src/${pair#*:} is not its template as written"
   done
-  # The UI Builder can adopt extensions/index.ts, and an adopted copy outlives the assistant when AI is
-  # switched off. With no import of its own it still compiles then.
-  grep -qE '^[[:space:]]*(import|export[^=]*from)[[:space:](]' "$app/client/src/ai/extensions/index.ts" \
-    && fail "$label: ai/extensions/index.ts imports something, so it breaks the build once AI is off"
+
+  # Byte-equality says nothing about what the templates hold, and tsc, oxlint and oxfmt all pass without
+  # the bubble, the target or the AI_CHAT check. So the parts the assistant needs are checked by name.
+  node - "$app/client/src" <<'NODE' || fail "$label: the assistant's code is missing a part it needs (see above)"
+const fs = require('fs');
+const src = process.argv[2];
+// Comments out, strings kept, so a comment can't satisfy a check.
+const code = (file) =>
+  fs
+    .readFileSync(`${src}/${file}`, 'utf8')
+    .replace(/("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`)|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, (m, str) => str ?? '');
+let ok = true;
+const need = (file, what, holds) => {
+  if (!holds) {
+    ok = false;
+    console.log(`FAIL: ${file} ${what}`);
+  }
+};
+
+const elements = code('pbc/ai-assistant/elements.ts');
+need('elements.ts', "does not target 'layout-end'", /targetId:\s*'layout-end'/.test(elements));
+need('elements.ts', 'does not import the assistant host', /^import '\.\.\/\.\.\/ai\/generated\/assistant-host';$/m.test(elements));
+need('elements.ts', 'has no popout manager', elements.includes('<foundation-ai-popout-manager>'));
+need('elements.ts', 'has no chat bubble', /<foundation-ai-chat-bubble[\s>]/.test(elements));
+need('elements.ts', 'does not slot the host into the dialog', elements.includes('<genesis-app-assistant slot="dialog-content">'));
+need(
+  'elements.ts',
+  'does not nest host in bubble in manager',
+  /<foundation-ai-popout-manager>\s*<foundation-ai-chat-bubble[^>]*>\s*<genesis-app-assistant slot="dialog-content"><\/genesis-app-assistant>\s*<\/foundation-ai-chat-bubble>\s*<\/foundation-ai-popout-manager>/.test(elements),
+);
+
+const host = code('ai/generated/assistant-host.ts');
+need('assistant-host.ts', 'does not define genesis-app-assistant', /name:\s*'genesis-app-assistant'/.test(host));
+need('assistant-host.ts', 'does not load the assistant lazily', host.includes("import('./assistant')"));
+// The bubble looks for the assistant in the slotted element's shadow root to give it a close button.
+need('assistant-host.ts', 'does not mount into its shadow root', host.includes('mountAssistant(this.shadowRoot)'));
+
+const assistant = code('ai/generated/assistant.ts');
+need(
+  'assistant.ts',
+  'does not register once, at module top level',
+  /^const registration = registerGenesisAssistant\(/m.test(assistant) && assistant.split('registerGenesisAssistant(').length === 2,
+);
+need(
+  'assistant.ts',
+  'has no AI_CHAT check',
+  /^const AI_CHAT_RIGHT = 'AI_CHAT';$/m.test(assistant) && assistant.includes('hasPermission(AI_CHAT_RIGHT)'),
+);
+need('assistant.ts', "ignores the registration's block", assistant.includes('setBlocked(true, registration.blockedReason)'));
+need('assistant.ts', 'has no per-user session key', assistant.includes('`genesis-app-assistant:${getUser().userName}`'));
+const mount = (assistant.match(/^export function mountAssistant\([^)]*\)[^{]*\{\n([\s\S]*?)\n\}/m) || [])[1] || '';
+need('assistant.ts', 'does not check the blocks on every mount', mount.includes('applyBlocks(assistant)') && !/\breturn\b/.test(mount));
+need(
+  'assistant.ts',
+  'does not set the session key once connected',
+  mount.lastIndexOf("setAttribute('session-key', sessionKey)") > mount.indexOf('host.append(assistant)') &&
+    mount.includes('host.append(assistant)'),
+);
+
+// The UI Builder can adopt extensions/index.ts, and an adopted copy outlives the assistant when AI is
+// switched off. With no import of its own it still compiles then.
+need(
+  'extensions/index.ts',
+  'imports something, so it breaks the build once AI is off',
+  !/\bimport\s*[\s{*('"]|\bfrom\s*['"]|\brequire\s*\(/.test(code('ai/extensions/index.ts')),
+);
+process.exit(ok ? 0 : 1);
+NODE
 done
 
 # The configuration the panel reads is the contract's fields exactly, whatever Handlebars-looking text

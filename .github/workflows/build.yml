@@ -12,15 +12,16 @@ concurrency:
 jobs:
   # The `build` job below covers React end to end (gradle build, lint, unit + e2e) for
   # the defaults app. This job keeps every framework's generator honest: for each one it
-  # generates the defaults app, the full-routes fixture app and an FDC3-channels app,
-  # and runs the ox lint gates over all three.
+  # generates the defaults app, the full-routes fixture app and an FDC3-channels app, plus
+  # for React an app with the AI chat on, and runs the ox lint gates over each.
   #
   # BUILD=1 adds `tsc --noEmit` and the production build per app, which is what makes a
   # broken generated tile fail here. Lint alone does not type-check, and the app the
   # `build` job below compiles is the defaults one, which generates no tiles at all, so
   # before this nothing compiled a generated tile: a grid tile passed a prop the React
   # wrapper's types did not declare and CI stayed green while `npm run build` failed for
-  # anyone scaffolding with routes.
+  # anyone scaffolding with routes. For the AI app it also checks that the assistant and
+  # its bubble are built into a chunk of their own, and into no other.
   generated-apps:
     strategy:
       fail-fast: false
@@ -37,7 +38,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Generate and lint ${{ matrix.framework }} apps (default + full + fdc3)
+      - name: Generate and lint ${{ matrix.framework }} apps (default + full + fdc3, and ai for React)
         run: ./.genx/scripts/generate-test-apps.sh ${{ matrix.framework }}
 
       # Generates its own React and web-components apps, so one leg is enough. This job has no Java
