@@ -19,6 +19,8 @@
 #         KEEP=1    keep the generated apps for inspection.
 #         GENX=...  the genx package to generate with (default: a pinned version, so a run is
 #                   reproducible; set GENX=@genesislcap/genx@latest to try the newest).
+#         BASELINE_REF=...  the release to compare an AI-off app against (default origin/main; skipped
+#                   when the ref is not available, e.g. in a shallow clone).
 
 set -uo pipefail
 
@@ -40,7 +42,7 @@ fail() { FAILURES+=("$1"); echo "FAIL: $1"; }
 generate() {
   local label="$1"; shift
   mkdir -p "$WORK_DIR/$label"
-  (cd "$WORK_DIR/$label" && npx -y "$GENX" init demo -s "$SEED_DIR" -x --no-shell \
+  (cd "$WORK_DIR/$label" && npx -y "$GENX" init demo -s "${SEED:-$SEED_DIR}" -x --no-shell \
     --apiHost 'wss://localhost/gwf/' "$@" > "$WORK_DIR/$label.log" 2>&1) \
     || { fail "$label: generation failed (see $WORK_DIR/$label.log)"; return 1; }
 }
@@ -68,6 +70,49 @@ echo "=== off"
 # answers.json records the seed path and a timestamped layout key, so it differs on every run.
 diff -r -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/off/demo" > /dev/null \
   || fail "off: ui.ai.enabled=false generates a different app from no ui.ai at all"
+
+# Against the last release: an AI-off app may differ from it only in the changes this branch makes
+# on purpose — the Genesis Start launcher version, the repository it needs, its client scripts and
+# the README section about them — and in nothing else, line by line.
+BASELINE_REF="${BASELINE_REF:-origin/main}"
+if git -C "$SEED_DIR" rev-parse --verify -q "$BASELINE_REF^{commit}" > /dev/null; then
+  echo "=== off vs $BASELINE_REF"
+  mkdir -p "$WORK_DIR/baseline-seed"
+  git -C "$SEED_DIR" archive "$BASELINE_REF" | tar -x -C "$WORK_DIR/baseline-seed"
+  SEED="$WORK_DIR/baseline-seed" generate baseline --framework react
+  node - "$WORK_DIR/baseline/demo" "$WORK_DIR/default/demo" "$SEED_DIR/README.md" <<'NODE' \
+    || fail "off: an AI-off app differs from $BASELINE_REF beyond the intended changes (see above)"
+const fs = require('fs');
+const { spawnSync } = require('child_process');
+const [base, next, seedReadme] = process.argv.slice(2);
+const readme = fs.readFileSync(seedReadme, 'utf8');
+const from = readme.indexOf('## Running the application');
+const section = new Set(from < 0 ? [] : readme.slice(from, readme.indexOf('\n# License', from)).split('\n'));
+const allowed = {
+  'server/gradle.properties': { removed: (l) => /^startVersion=/.test(l), added: (l) => /^(startVersion=|#)/.test(l) },
+  'server/build.gradle.kts': { removed: () => false, added: (l) => /^\s*(google\(\)|\/\/)/.test(l) },
+  'client/package.json': { removed: () => false, added: (l) => /^\s*"genesis-start[a-z:-]*": "cd \.\.\/server && \.\/gradlew /.test(l) },
+  'README.md': { removed: () => false, added: (l) => section.has(l) },
+};
+const out = spawnSync('diff', ['-rq', '-x', 'node_modules', '-x', 'answers.json', '-x', '.genx', base, next]).stdout.toString();
+const problems = [];
+for (const line of out.split('\n').filter(Boolean)) {
+  const m = line.match(/^Files (.+) and .+ differ$/);
+  if (!m) { problems.push(line); continue; }
+  const rel = m[1].slice(base.length + 1);
+  const rule = allowed[rel];
+  if (!rule) { problems.push(`${rel} changed`); continue; }
+  const a = fs.readFileSync(`${base}/${rel}`, 'utf8').split('\n');
+  const b = fs.readFileSync(`${next}/${rel}`, 'utf8').split('\n');
+  a.filter((l) => !b.includes(l) && !rule.removed(l)).forEach((l) => problems.push(`${rel}: removed ${JSON.stringify(l)}`));
+  b.filter((l) => !a.includes(l) && !rule.added(l)).forEach((l) => problems.push(`${rel}: added ${JSON.stringify(l)}`));
+}
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
+else
+  echo "=== off vs $BASELINE_REF: skipped, the ref is not available here"
+fi
 
 echo "=== on"
 [ "$(ai_artifacts_present on)" = "3" ] || fail "on: expected all 3 AI artifacts, found $(ai_artifacts_present on)"
