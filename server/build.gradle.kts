@@ -77,6 +77,8 @@ allprojects {
             }
         }
         mavenCentral()
+        // The Genesis Start launcher (0.1.12+) pulls Compose Desktop and androidx.* artifacts from Google's repository.
+        google()
         maven {
             val repoUrl = if(properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
