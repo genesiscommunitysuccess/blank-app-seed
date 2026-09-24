@@ -57,14 +57,15 @@ is in that profile. Add other users to that profile, or grant the right through 
 Otherwise, create the `AI_CHAT` right and grant it the same way.
 
 **The assistant.** Signed-in users get a chat bubble at the bottom right of every page, which opens
-the assistant and can be dragged out of the way. A user without the `AI_CHAT` right is told so when
-they open it, and the assistant sends nothing. Rights are read at sign-in, so sign in again after a
-change. The assistant can read the data this
-project exposes to it: which resources, and what it is told about each, is in
-`client/src/ai/generated/ai-config.json`. That folder is rewritten every time the project is
-generated, so do not edit it; add your own tools in `client/src/ai/extensions/index.ts`, which shows
-how. The client's `build` and `dev` scripts build it with `GENX_ENABLE_AI=true`; without that the
-assistant says AI is switched off.
+the assistant and can be dragged out of the way. Each user gets a conversation of their own, kept until
+the page is reloaded. A user without the `AI_CHAT` right is told so in a banner when they open it,
+and the assistant sends nothing. Rights are read at sign-in, so sign in again after a change. The
+assistant can read the data this project exposes to it: which resources, and what it is told about
+each, is in `client/src/ai/generated/ai-config.json`. That folder is rewritten every time the project
+is generated, so do not edit it; add your own tools in `client/src/ai/extensions/index.ts`, which
+shows how. The client's `build` and `dev` scripts build it with `GENX_ENABLE_AI=true`; without that
+the banner says AI is switched off. Whenever the assistant is blocked, its message box reads "AI usage
+limit reached", whatever the reason; the banner above it gives the real one.
 
 **Bound what it can do.** The limits this app was generated with are built into the chat endpoint,
 `server/{{appName}}-app/src/main/genesis/scripts/ai-service-web-handler.kts`. Override either with a
