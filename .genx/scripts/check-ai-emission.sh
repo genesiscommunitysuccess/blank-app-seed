@@ -88,7 +88,7 @@ const fs = require('fs');
 const path = require('path');
 const pinned = {
   'ui-config-ai.schema.json': { version: '1.1.0', sha256: '9b5c6607fe567545ca526d3b9b96e472d1bd9d56ab0016f609f8f025c4d35e82' },
-  'ai-resolver-cases.json': { version: '1.1.0', sha256: '17cdbfc1d8351a80e2d35240a07a5bbb2e9784eb044ea717a0f1fb72abbce9b2' },
+  'ai-resolver-cases.json': { version: '1.2.0', sha256: 'e9382eada84fcf3d44df9aaa2b583d195c21d376db817b170661a9f4ff681435' },
 };
 let bad = 0;
 for (const [file, want] of Object.entries(pinned)) {
@@ -105,7 +105,9 @@ NODE
 
 echo "=== Generating into $WORK_DIR"
 generate default --framework react
-generate off --framework react --ui '{"ai":{"enabled":false}}'
+# A whole resolved block, switched off: Create can pass one through, and it must emit nothing at all
+# rather than a panel that only says it is blocked.
+generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.enabled = false; console.log(JSON.stringify(u))' "$SEED_DIR/.genx/tests/fixtures/ai-config.json")"
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
