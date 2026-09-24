@@ -166,31 +166,40 @@ headless.
 - `npm run genesis-start:headless` returns once the launcher is up and prints
   `Genesis Start started with PID <n>`. The launcher keeps running in the background, even after the
   terminal closes, and Ctrl+C does not stop it.
-- Stop it with `kill <n>`, which also stops every process it started.
+- To stop it, stop the app's processes first:
+  `curl -X POST http://localhost:18080/api/processes/application/stop-all`, then wait until
+  `curl http://localhost:18080/api/processes` shows none of them `RUNNING`, and stop any utility still
+  running with `curl -X POST http://localhost:18080/api/processes/<id>/stop`. Only then `kill <n>`.
+  Stopping the launcher first leaves every process it started running and holding its ports.
+- It takes over every Genesis process already running on the machine when it starts, so stop-all
+  stops those too, even another app's.
 - It logs to `server/build/genesis-start/output.log` and `error.log`; if it exits within five seconds,
   Gradle says so and points there. Each process it starts logs under the app's Genesis home, and
   `GET /api/processes/{processId}/log` returns that log.
 - Check it is up with `curl http://localhost:18080/api/health`. The API is described at
   `http://localhost:18080/api/docs`.
 - `npm run genesis-start:write-script` writes `server/build/genesis-start/start.sh` (`start.bat` on
-  Windows), which runs the same headless launcher without Gradle and in the foreground: Ctrl+C or
-  `kill` stops it and everything it started, and it logs to the same two files. The script can hold
-  the database password in plain text, so keep it private.
+  Windows), which runs the same headless launcher without Gradle, in the foreground, logging to the
+  same two files. Ctrl+C stops only the launcher, so stop the processes first, as above.
+- The script, and the command line Gradle prints as it starts the launcher (which `ps` also shows),
+  can hold the database password in plain text.
 
 **The REST API has no authentication and listens on every network interface.** Anyone who can reach
 port 18080 can:
 
 - start and stop the app's processes, and apply schema changes to its database (`/api/bootstrap`
   runs Remap);
-- write rows into any table: `/api/import` loads each uploaded file with SendIt, and the file's name
-  picks the table, so a `USER.csv` or `PROFILE_USER.csv` can add users or give them profiles, and
-  with them rights such as `AI_CHAT`. It also imports files by their path on this machine;
+- write rows into any table: `/api/import` loads files from this machine with SendIt, and a file's
+  name picks the table, so a `USER.csv` or `PROFILE_USER.csv` can add users or give them profiles,
+  and with them rights such as `AI_CHAT`. It takes a path; 0.1.15 refuses an uploaded file, but a
+  later version may not;
 - run the app's scripts with any arguments and working directory (`/api/scripts/run`), and type into
   a running utility (`/api/processes/{processId}/input`).
 
 Run headless only on a machine and network you trust, or block port 18080 from anything else. A web
 page you visit on that machine may be able to reach `localhost:18080` too: the API checks no origin,
-and a page can stop or start processes, or upload files to `/api/import`, without a CORS preflight.
+and it takes JSON sent as plain text, so a page can stop or start processes and run the app's scripts
+without a CORS preflight.
 
 # License
 
