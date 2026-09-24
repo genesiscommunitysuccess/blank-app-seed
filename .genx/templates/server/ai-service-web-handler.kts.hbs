@@ -88,12 +88,18 @@ webHandlers("ai-service") {
         LOG.warn("ai-service: AI_ALLOWED_MODELS is empty or unreadable, so every chat request will be refused")
     }
 
-    val maxOutputTokens = (readItem("AI_MAX_OUTPUT_TOKENS").getOrNull() ?: defaultMaxOutputTokens)
-        .trim()
-        .toIntOrNull() ?: defaultMaxOutputTokens.toIntOrNull() ?: 16000
+    // A cap is a whole number from 1 to 1000000. An override that is not one is ignored, with a
+    // warning that names the item, rather than turning into a cap nobody chose.
+    fun tokenCap(raw: String?): Int? = raw?.trim()?.toIntOrNull()?.takeIf { it in 1..1_000_000 }
+    val generatedMaxOutputTokens = tokenCap(defaultMaxOutputTokens) ?: 16000
+    val maxOutputTokens = readItem("AI_MAX_OUTPUT_TOKENS").getOrNull()?.let { raw ->
+        tokenCap(raw) ?: generatedMaxOutputTokens.also {
+            LOG.warn("ai-service: AI_MAX_OUTPUT_TOKENS is not a whole number from 1 to 1000000, so the generated default applies")
+        }
+    } ?: generatedMaxOutputTokens
 
-    // Clamp DOWN only: a request asking for less than the ceiling keeps what it asked for.
-    fun clamp(requested: Int): Int = if (requested > maxOutputTokens) maxOutputTokens else requested
+    // Clamp DOWN to the cap, and never below 1: a request asking for less keeps what it asked for.
+    fun clamp(requested: Int): Int = requested.coerceIn(1, maxOutputTokens)
 
     // A model id is also a path segment in the Gemini URL, so even an allowed one must be a bare id.
     val modelId = Regex("[A-Za-z0-9][A-Za-z0-9._-]*")
