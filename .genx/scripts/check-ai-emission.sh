@@ -15,7 +15,7 @@
 # Usage:  .genx/scripts/check-ai-emission.sh
 # Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
 #                   (checkAuthPermissions) to report no insecure endpoint, and compile both vendors'
-#                   proxies against the app's Genesis version. Needs Genesis artifactory credentials,
+#                   proxies with the platform's preCompileScripts. Needs Genesis artifactory credentials,
 #                   as the sample-app build does.
 #         GRADLE_PARAMS=...  extra arguments for every gradle call (CI passes -PuseDevRepo=true on
 #                   prerelease).
@@ -291,61 +291,47 @@ process.exit(problems.length ? 1 : 0);
 NODE
 
 if [ "${GRADLE:-0}" = "1" ]; then
+  # A CI runner's temporary files are gone once the job ends, so a failing step prints its own log.
+  gradle_in_on_app() { # log file, gradle arguments...
+    local log="$1"; shift
+    # Unquoted on purpose: GRADLE_PARAMS may hold several arguments, or none.
+    (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon ${GRADLE_PARAMS:-} "$@" > "$log" 2>&1) && return 0
+    show_log "$log"; return 1
+  }
+  # The compiler's own errors can sit hundreds of lines above the end, so they come first.
+  show_log() {
+    echo "--- errors in $1"; grep -E ' ERROR |^e: |What went wrong' "$1" | head -n 40
+    echo "--- last 150 lines of $1"; tail -n 150 "$1"; echo "---"
+  }
+
   echo "=== gradle: build + checkAuthPermissions on the AI app"
-  # Unquoted on purpose: GRADLE_PARAMS may hold several arguments, or none.
-  (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:build > "$WORK_DIR/gradle.log" 2>&1 \
-    && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:checkAuthPermissions --rerun > "$WORK_DIR/scan.log" 2>&1) \
-    || fail "gradle: build or scan failed (see $WORK_DIR/gradle.log and scan.log)"
+  gradle_in_on_app "$WORK_DIR/gradle.log" :server:demo-app:build \
+    && gradle_in_on_app "$WORK_DIR/scan.log" :server:demo-app:checkAuthPermissions --rerun \
+    || fail "gradle: build or scan failed (see the log above)"
   # The build passes even with insecure endpoints unless a project opts into failing it, so the
   # scan's own summary is the assertion — a green build alone proves nothing about permissioning.
   # `--rerun` because a scan restored from the build cache prints no summary at all, and the endpoint
   # count because a scan that found nothing would also report nothing insecure. Whole lines only:
   # "Total endpoints: 2" is inside "Total endpoints: 20", and every per-type line ends "Insecure: N".
-  grep -qx "  Total endpoints: 2" "$WORK_DIR/scan.log" \
-    || fail "gradle: the security scan did not see the two chat endpoints (see $WORK_DIR/scan.log)"
-  grep -qx "  Insecure: 0" "$WORK_DIR/scan.log" \
-    || fail "gradle: the platform security scan found an insecure endpoint (see $WORK_DIR/scan.log)"
+  if ! grep -qx "  Total endpoints: 2" "$WORK_DIR/scan.log" || ! grep -qx "  Insecure: 0" "$WORK_DIR/scan.log"; then
+    show_log "$WORK_DIR/scan.log"
+    fail "gradle: the security scan did not report the two chat endpoints, both secure (see the log above)"
+  fi
 
-  # Scripts compile only when the router starts: neither the build nor the scan above would notice a
-  # proxy that no longer compiles against this Genesis version. So compile each vendor's proxy as
-  # Kotlin, as an extension of its script class with the script's default imports spelled out. The
-  # wrappers go only into this throwaway app, after the scan, so the scan never counts them.
-  echo "=== gradle: compile both proxies against the script API"
-  kotlin_dir="$WORK_DIR/on/demo/server/demo-app/src/main/kotlin"
-  for pair in "on:gemini" "onanthropic:anthropic"; do
-    label="${pair%%:*}"; vendor="${pair#*:}"
-    VENDOR="$vendor" perl -0pe '
-      s{^(\@file:[^\n]*\n)}{${1}package aiproxycheck.$ENV{VENDOR}\n}m or die "no \@file line\n";
-      s{^(webHandlers\()}{import global.genesis.db.entity.DeleteResult
-import global.genesis.db.entity.InsertResult
-import global.genesis.db.entity.ModifyResult
-import global.genesis.db.entity.UpsertResult
-import global.genesis.message.core.event.LogLevel
-import global.genesis.message.core.event.LogLevel.*
-import global.genesis.router.extension.ContentType
-import global.genesis.router.extension.PropertyCase
-import global.genesis.router.extension.PropertyCase.*
-import global.genesis.router.extension.WebContext
-import global.genesis.router.extension.WebContextOf
-import global.genesis.router.extension.WebHandlerScript
-import global.genesis.router.server.web.http.extensions.RequestType.*
-import io.netty.handler.codec.http.HttpResponseStatus.*
-import kotlinx.coroutines.flow.*
-
-fun WebHandlerScript.compileCheck() =
-${1}}m or die "no top-level webHandlers(\n";
-    ' "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > "$kotlin_dir/AiProxyCheck_$vendor.kt" \
-      || fail "$label: could not wrap the proxy for compiling"
+  # Scripts compile only when the router starts, so neither the build nor the scan above notices a
+  # proxy that no longer compiles against this Genesis version. The platform's own preCompileScripts
+  # compiles the router's web handlers with the real script host. The Anthropic proxy goes in beside
+  # the Gemini one under a second name, after the scan so the scan never counts it.
+  echo "=== gradle: compile both proxies with the platform's preCompileScripts"
+  cp "$WORK_DIR/onanthropic/demo/$MODULE/scripts/ai-service-web-handler.kts" \
+    "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-anthropic-web-handler.kts"
+  gradle_in_on_app "$WORK_DIR/compile.log" :server:demo-app:preCompileScripts --rerun -PfailPreCompileScriptOnErrors=true \
+    || fail "gradle: a proxy does not compile against this Genesis version (see the log above)"
+  # And both were really compiled: a file the task never picked up would pass by never being built.
+  for name in ai-service-web-handler.kts ai-service-anthropic-web-handler.kts; do
+    grep -q "GENESIS_ROUTER: Compiled script $name " "$WORK_DIR/compile.log" \
+      || fail "gradle: preCompileScripts never compiled $name"
   done
-  (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:compileKotlin --rerun \
-    > "$WORK_DIR/compile.log" 2>&1) \
-    || fail "gradle: a proxy does not compile against the script API (see $WORK_DIR/compile.log)"
-  # And both were really compiled: a wrapper in the wrong place would pass by never being built.
-  for vendor in gemini anthropic; do
-    [ -f "$WORK_DIR/on/demo/server/demo-app/build/classes/kotlin/main/aiproxycheck/$vendor/AiProxyCheck_${vendor}Kt.class" ] \
-      || fail "gradle: the $vendor proxy was not compiled (see $WORK_DIR/compile.log)"
-  done
-  rm -f "$kotlin_dir"/AiProxyCheck_*.kt
 fi
 
 echo
