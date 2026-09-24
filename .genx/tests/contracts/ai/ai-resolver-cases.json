@@ -1,0 +1,450 @@
+{
+  "$comment": "Golden cases for the ui.config.ai resolver (GENC-1601 contract C-8). genesis-create owns this file; the seed carries a VERBATIM copy, and each side pins its digest so a change is a deliberate version bump rather than an edit. Every case states WHY it exists — a case whose reason is not obvious is a case someone will 'fix' the day it fails.",
+  "version": "1.1.0",
+  "cases": [
+    {
+      "name": "AI off: nothing is emitted",
+      "why": "A project that did not select AI chat must generate exactly what it always did — the absence of the block is the contract, not `enabled: false` (C57).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "GenesisServerCore",
+            "DataServerCore"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": null,
+        "warnings": []
+      }
+    },
+    {
+      "name": "A snapshot entity with insert and modify enabled",
+      "why": "The ordinary case: one readable entity, the two write paths that are on by default, and delete left out because it was never exposed (R-2 a).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "GenesisServerCore",
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": false
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "Only snapshot-enabled sources are readable; exposed delete and custom handlers appear",
+      "why": "Codegen emits a requestReply only for a snapshot-enabled entity or view, so POSITION has no REQ_ to address (C34 — a wrong name fails silently). Delete and custom are opt-in and here they were opted into.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            },
+            {
+              "name": "POSITION"
+            }
+          ],
+          "views": [
+            {
+              "name": "TRADE_VIEW",
+              "snapshot": {}
+            },
+            {
+              "name": "POSITION_VIEW"
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "SETTLE_BATCH"
+            },
+            {
+              "type": "custom",
+              "name": "REBUILD_CACHE"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [
+              "TRADE"
+            ],
+            "custom": [
+              "SETTLE_BATCH"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TRADE_VIEW",
+              "kind": "request",
+              "context": "Read current rows from the TRADE_VIEW view.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record."
+            },
+            {
+              "name": "EVENT_SETTLE_BATCH",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the SETTLE_BATCH event handler."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "A stale exposure is pruned with a warning, not an error",
+      "why": "An exposure list outlives what it points at. A validation error here would block the preview build (C70), so the resource is dropped, the build continues, and the warning says which one.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": false
+              }
+            },
+            {
+              "type": "custom",
+              "name": "SETTLE_BATCH"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [
+              "TRADE",
+              "POSITION"
+            ],
+            "custom": [
+              "SETTLE_BATCH_V2"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped exposed delete for \"TRADE\" — no enabled delete handler for it",
+          "ai: dropped exposed delete for \"POSITION\" — no enabled delete handler for it",
+          "ai: dropped exposed custom handler \"SETTLE_BATCH_V2\" — no handler by that name"
+        ]
+      }
+    },
+    {
+      "name": "An enabled delete handler that was never exposed stays out",
+      "why": "Deletes are opt-in (R-2 a): the handler existing is not permission to let a chat call it. Without this case the opt-in gate is unpinned — an implementation that emitted every enabled delete would pass every other case here.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ],
+          "views": []
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "An audited entity gets no _AUDIT resource",
+      "why": "`audit: true` makes codegen emit a second requestReply for <ENTITY>_AUDIT off the same call. v1 leaves it out: a reader can ask about history through the entity's own tools, and exposing audit tables is an opt-in decision for the exposure form, not a default.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {},
+              "audit": true
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "A view named after a table yields one request resource, not two",
+      "why": "Both would derive REQ_TRADE. The chat would tolerate the duplicate; MCP's enableMcp refuses the entire script over one (`require(!enabledResources.containsKey(resource))`), so the whole MCP surface of the generated app dies on a list the preview showed as fine. The supported paths cannot produce this today — getProjectUsedNames (client/src/utils/reserved-names.ts:44) puts entities and views in ONE namespace and both the wizard and the AI tools check it — but a payload can still carry it, and the invariant is cheaper than discovering it at GSF 10.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "views": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped duplicate resource \"REQ_TRADE\" — a name can only be registered once"
+        ]
+      }
+    },
+    {
+      "name": "A custom handler named after a generated CRUD one yields one event resource",
+      "why": "EVENT_TRADE_INSERT from both the entity's enabled insert and a custom handler literally named TRADE_INSERT. This one IS reachable today: the project namespace holds the CRUD handler under its ENTITY key (eventHandlers['TRADE']), so the derived wire name TRADE_INSERT is free for a custom handler to take. The project is already ill-formed at that point — codegen would emit the handler name twice — and the resolver's job is not to fix that but to refuse to compound it into a dead MCP surface.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "TRADE_INSERT"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [],
+            "custom": [
+              "TRADE_INSERT"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it.",
+          "resources": [
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped duplicate resource \"EVENT_TRADE_INSERT\" — a name can only be registered once"
+        ]
+      }
+    }
+  ]
+}

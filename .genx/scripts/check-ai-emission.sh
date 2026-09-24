@@ -11,6 +11,7 @@
 #             template with only its two limits filled in, for either vendor; and no AI item lands in
 #             a system-definition file (a generator may rewrite those, so the proxy must not need one).
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
+#   C-8       the contract files shared with Create are byte-for-byte the copies Create pins.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
 # Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
@@ -60,6 +61,30 @@ ai_artifacts_present() {
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
   echo "$found"
 }
+
+# The C-8 contract files are Create's (server/shared-schemas/ai/), copied here verbatim. Create's resolver
+# test pins the same digests, so an edit on either side fails until both sides bump the version together.
+echo "=== C-8 contract copies"
+node - "$SEED_DIR/.genx/tests/contracts/ai" <<'NODE' || fail "C-8: a contract copy is not the one Create pins (see above)"
+const { createHash } = require('crypto');
+const fs = require('fs');
+const path = require('path');
+const pinned = {
+  'ui-config-ai.schema.json': { version: '1.1.0', sha256: '9b5c6607fe567545ca526d3b9b96e472d1bd9d56ab0016f609f8f025c4d35e82' },
+  'ai-resolver-cases.json': { version: '1.1.0', sha256: '17cdbfc1d8351a80e2d35240a07a5bbb2e9784eb044ea717a0f1fb72abbce9b2' },
+};
+let bad = 0;
+for (const [file, want] of Object.entries(pinned)) {
+  const bytes = fs.readFileSync(path.join(process.argv[2], file));
+  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  const { version } = JSON.parse(bytes);
+  if (sha256 !== want.sha256 || version !== want.version) {
+    console.log(`    ${file}: version ${version}, sha256 ${sha256}`);
+    bad++;
+  }
+}
+process.exit(bad ? 1 : 0);
+NODE
 
 echo "=== Generating into $WORK_DIR"
 generate default --framework react
