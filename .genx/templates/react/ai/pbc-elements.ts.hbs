@@ -1,0 +1,13 @@
+import type { AppElement } from '@genesislcap/foundation-shell/app';
+import { html } from '@genesislcap/web-core';
+import '../../ai/generated/launcher';
+
+/**
+ * The AI assistant's launcher, added after every page's content (the layout's 'layout-end' target).
+ */
+export const aiAssistant: AppElement = {
+  targetId: 'layout-end',
+  elements: html`
+    <genesis-app-assistant></genesis-app-assistant>
+  `,
+};

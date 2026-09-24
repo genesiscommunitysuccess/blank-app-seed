@@ -75,6 +75,7 @@ ai_artifacts_present() {
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
   [ -f "$app/client/src/ai/generated/ai-config.json" ] && found=$((found + 1))
   grep -q '"@genesislcap/ai-assistant"' "$app/client/package.json" && found=$((found + 1))
+  [ -f "$app/client/src/pbc/ai-assistant/elements.ts" ] && found=$((found + 1))
   echo "$found"
 }
 
@@ -205,7 +206,7 @@ NODE
 fi
 
 echo "=== on"
-[ "$(ai_artifacts_present on)" = "5" ] || fail "on: expected all 5 AI artifacts, found $(ai_artifacts_present on)"
+[ "$(ai_artifacts_present on)" = "6" ] || fail "on: expected all 6 AI artifacts, found $(ai_artifacts_present on)"
 # The proxy is its template with exactly its two limits filled in, and nothing else touched.
 for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
   label="${pair%%:*}"; models="${pair#*:}"
@@ -242,15 +243,30 @@ for label in on onanthropic; do
   # Exactly the AI path's own files change, and nothing else. Genesis Create writes its code
   # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
   # web handler or the README), so a file the AI path relied on in there would be silently replaced.
-  # diff reports a new folder once, so client/src/ai is one entry and its contents are pinned below.
+  # diff reports a new folder once, so client/src/ai and client/src/pbc/ai-assistant are one entry each
+  # and their contents are pinned below.
   changed="$(diff -rq -x node_modules -x answers.json "$WORK_DIR/default/demo" "$app" \
     | sed -E -e "s#^Files $WORK_DIR/default/demo/(.*) and .* differ\$#\1#" \
              -e "s#^Only in $app/?(.*): (.*)\$#\1/\2#" -e 's#^/##' | sort)"
   expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" \
-    client/package.json client/.oxfmtrc.json client/src/ai | sort)"
+    client/package.json client/.oxfmtrc.json client/src/ai client/src/pbc/ai-assistant | sort)"
   [ "$changed" = "$expected" ] || fail "$label: the AI path changed files beyond its own: $(echo $changed)"
-  ai_files="$(cd "$app/client/src/ai" 2>/dev/null && find . -type f | sed 's#^\./##' | sort)"
-  [ "$ai_files" = "generated/ai-config.json" ] || fail "$label: client/src/ai holds $(echo $ai_files)"
+  ai_files="$(cd "$app/client/src/ai" 2>/dev/null && find . -type f | sed 's#^\./##' | sort | tr '\n' ' ')"
+  [ "$ai_files" = "extensions/index.ts generated/ai-config.json generated/assistant.ts generated/launcher.ts " ] \
+    || fail "$label: client/src/ai holds $ai_files"
+  pbc_files="$(cd "$app/client/src/pbc/ai-assistant" 2>/dev/null && find . -type f | sed 's#^\./##' | tr '\n' ' ')"
+  [ "$pbc_files" = "elements.ts " ] || fail "$label: client/src/pbc/ai-assistant holds $pbc_files"
+
+  # The panel's code comes out exactly as written: a {{ in it would have been rendered on the way.
+  for pair in "pbc-elements.ts.hbs:pbc/ai-assistant/elements.ts" "launcher.ts.hbs:ai/generated/launcher.ts" \
+      "assistant.ts.hbs:ai/generated/assistant.ts" "extensions.ts.hbs:ai/extensions/index.ts"; do
+    cmp -s "$SEED_DIR/.genx/templates/react/ai/${pair%%:*}" "$app/client/src/${pair#*:}" \
+      || fail "$label: client/src/${pair#*:} is not its template as written"
+  done
+  # The UI Builder can adopt extensions/index.ts, and an adopted copy outlives the assistant when AI is
+  # switched off. With no import of its own it still compiles then.
+  grep -qE '^[[:space:]]*(import|export[^=]*from)[[:space:](]' "$app/client/src/ai/extensions/index.ts" \
+    && fail "$label: ai/extensions/index.ts imports something, so it breaks the build once AI is off"
 done
 
 # The configuration the panel reads is the contract's fields exactly, whatever Handlebars-looking text

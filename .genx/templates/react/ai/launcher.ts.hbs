@@ -1,0 +1,90 @@
+import { getUser } from '@genesislcap/foundation-user';
+import { css, customElement, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
+
+// The right the app's chat proxy demands. Genesis Create grants it through the AI_CHAT_USER profile.
+const AI_CHAT_RIGHT = 'AI_CHAT';
+
+const template = html<AiAssistantLauncher>`
+  <rapid-button
+    class="launcher"
+    appearance="accent"
+    aria-label="AI assistant"
+    aria-expanded=${(x) => String(x.open)}
+    @click=${(x) => x.toggle()}
+  >
+    AI
+  </rapid-button>
+  <section class="panel" ?hidden=${(x) => !x.open}>
+    <p class="notice" ?hidden=${(x) => !x.notice}>${(x) => x.notice}</p>
+    <div class="host" ${ref('host')}></div>
+  </section>
+`;
+
+const styles = css`
+  .launcher {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1000;
+  }
+  .panel {
+    position: fixed;
+    right: 16px;
+    bottom: 64px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    width: min(440px, calc(100vw - 32px));
+    height: min(640px, calc(100vh - 96px));
+    background: var(--neutral-layer-1);
+    border: 1px solid var(--neutral-stroke-rest);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
+  }
+  .panel[hidden],
+  .notice[hidden] {
+    display: none;
+  }
+  .notice {
+    margin: 16px;
+  }
+  .host {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+  .host > * {
+    flex: 1;
+    min-height: 0;
+  }
+`;
+
+/**
+ * A button, and the panel it opens. The assistant itself loads the first time the panel opens, so the
+ * app only pays for it when someone uses it.
+ */
+@customElement({ name: 'genesis-app-assistant', template, styles })
+export class AiAssistantLauncher extends GenesisElement {
+  @observable open = false;
+  @observable notice = '';
+  host!: HTMLElement;
+  private mounted = false;
+
+  async toggle(): Promise<void> {
+    this.open = !this.open;
+    if (!this.open || this.mounted) {
+      return;
+    }
+    // Checked on opening, never on load: the launcher is on the page before anyone has logged in, and
+    // an anonymous user has no rights. Without the right the router refuses every call, and the chat
+    // would only show a generic error.
+    if (!getUser().hasPermission(AI_CHAT_RIGHT)) {
+      this.notice = `You need the ${AI_CHAT_RIGHT} right to use the assistant. An administrator can add you to the AI_CHAT_USER profile.`;
+      return;
+    }
+    this.notice = '';
+    const { mountAssistant } = await import('./assistant');
+    mountAssistant(this.host);
+    this.mounted = true;
+  }
+}

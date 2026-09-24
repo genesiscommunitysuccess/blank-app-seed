@@ -231,6 +231,20 @@ module.exports = async (data, utils) => {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     const json = JSON.stringify(config, null, 2).replace(/\{\{/g, '\\u007b\\u007b');
     fs.writeFileSync(file, `${json}\n`);
+
+    // The panel's code, copied as written. Genx renders these once more like any other file, so they
+    // hold no Handlebars and come out unchanged.
+    const templates = path.resolve(__dirname, 'templates/react/ai');
+    const clientSrc = path.resolve(__dirname, '../client/src');
+    [
+      ['pbc-elements.ts.hbs', 'pbc/ai-assistant/elements.ts'],
+      ['launcher.ts.hbs', 'ai/generated/launcher.ts'],
+      ['assistant.ts.hbs', 'ai/generated/assistant.ts'],
+      ['extensions.ts.hbs', 'ai/extensions/index.ts'],
+    ].forEach(([template, target]) => {
+      fs.mkdirSync(path.dirname(path.join(clientSrc, target)), { recursive: true });
+      fs.copyFileSync(path.join(templates, template), path.join(clientSrc, target));
+    });
   }
 
   if (data.excludeGradleWrapper) {

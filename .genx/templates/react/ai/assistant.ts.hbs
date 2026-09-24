@@ -1,0 +1,29 @@
+import '@genesislcap/ai-assistant';
+import type { FoundationAiAssistant } from '@genesislcap/ai-assistant';
+import { type GenesisAiConfig, registerGenesisAssistant } from '@genesislcap/ai-assistant/genesis';
+import { extensions } from '../extensions';
+import aiConfig from './ai-config.json';
+
+// Registered once, when this module first loads and before any assistant element exists: an element that
+// connects first keeps a provider that does nothing for the rest of the page's life.
+const registration = registerGenesisAssistant({
+  config: aiConfig as GenesisAiConfig,
+  extensions,
+});
+
+// One assistant for the page. Its conversation lives in a store kept under `session-key`, so it
+// survives the layout rebuilding its targets, which it does on every reconnect.
+let assistant: FoundationAiAssistant | undefined;
+
+export function mountAssistant(host: HTMLElement): void {
+  const first = !assistant;
+  if (!assistant) {
+    assistant = document.createElement('foundation-ai-assistant') as FoundationAiAssistant;
+    assistant.setAttribute('session-key', 'genesis-app-assistant');
+    assistant.agents = registration.agents;
+  }
+  host.append(assistant);
+  if (first && registration.blockedReason) {
+    assistant.setBlocked(true, registration.blockedReason);
+  }
+}
