@@ -78,30 +78,38 @@ for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
     | diff -q - "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
     || fail "$label: the proxy is not its template with the $label limits filled in"
 done
-grep -rqs 'AI_ALLOWED_MODELS\|AI_MAX_OUTPUT_TOKENS' "$WORK_DIR/on/demo/$MODULE/cfg/" \
-  && fail "on: an AI item landed in a system-definition file; the proxy must carry its own defaults"
+# Code with its comments removed: block comments whatever their inner lines start with, then whole-line
+# // comments. An inline // is kept, since URLs contain one.
+live_code() { perl -0pe 's{/\*.*?\*/}{}gs; s{^[ \t]*//[^\n]*}{}gm' "$1"; }
 
-# The scan cannot see this one: requiresAuth = false drops the AI_CHAT check and makes the endpoint
-# anonymous while the scan still reports it secure. Comment lines are skipped, since the template's
-# own warning names the setting.
-HANDLER="$WORK_DIR/on/demo/$MODULE/scripts/ai-service-web-handler.kts"
-grep -vE '^[[:space:]]*(//|/[*]|[*])' "$HANDLER" | grep -q 'requiresAuth' \
-  && fail "on: the proxy sets requiresAuth, which makes it anonymous"
-[ "$(grep -vE '^[[:space:]]*(//|/[*]|[*])' "$HANDLER" | grep -c 'permissionCodes("AI_CHAT")')" = "2" ] \
-  || fail "on: expected permissionCodes(\"AI_CHAT\") on both chat endpoints"
+for label in on onanthropic; do
+  app="$WORK_DIR/$label/demo"
+  grep -rqs 'AI_ALLOWED_MODELS\|AI_MAX_OUTPUT_TOKENS' "$app/$MODULE/cfg/" \
+    && fail "$label: an AI item landed in a system-definition file; the proxy must carry its own defaults"
 
-# Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
-# generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
-# web handler or the README), so a file the AI path relied on in there would be silently replaced.
-changed="$(diff -rq -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/on/demo" \
-  | sed -E -e "s#^Files $WORK_DIR/default/demo/(.*) and .* differ\$#\1#" \
-           -e "s#^Only in $WORK_DIR/on/demo/?(.*): (.*)\$#\1/\2#" -e 's#^/##' | sort)"
-expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" | sort)"
-[ "$changed" = "$expected" ] || fail "on: the AI path changed files beyond its own three: $(echo $changed)"
+  # The scan cannot see these: requiresAuth = false makes an endpoint anonymous and drops the AI_CHAT
+  # check while the scan still reports it secure, and a third endpoint could carry no permission at all.
+  handler="$app/$MODULE/scripts/ai-service-web-handler.kts"
+  live_code "$handler" | grep -q 'requiresAuth' && fail "$label: the proxy sets requiresAuth, which makes it anonymous"
+  [ "$(live_code "$handler" | grep -c 'endpoint<')" = "2" ] || fail "$label: expected exactly two chat endpoints"
+  [ "$(live_code "$handler" | grep -c 'permissionCodes("AI_CHAT")')" = "2" ] \
+    || fail "$label: expected permissionCodes(\"AI_CHAT\") on both chat endpoints"
+
+  # Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
+  # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
+  # web handler or the README), so a file the AI path relied on in there would be silently replaced.
+  changed="$(diff -rq -x node_modules -x answers.json "$WORK_DIR/default/demo" "$app" \
+    | sed -E -e "s#^Files $WORK_DIR/default/demo/(.*) and .* differ\$#\1#" \
+             -e "s#^Only in $app/?(.*): (.*)\$#\1/\2#" -e 's#^/##' | sort)"
+  expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" | sort)"
+  [ "$changed" = "$expected" ] || fail "$label: the AI path changed files beyond its own three: $(echo $changed)"
+done
 
 # The seed seeds no rights: the project's rights files belong to the generator that sends them.
 echo "=== no rights written"
-grep -rqs 'AI_CHAT' "$WORK_DIR/on/demo/$MODULE/data/" && fail "on: the seed wrote an AI_CHAT row; rights belong to the generator"
+for label in on onanthropic; do
+  grep -rqs 'AI_CHAT' "$WORK_DIR/$label/demo/$MODULE/data/" && fail "$label: the seed wrote an AI_CHAT row; rights belong to the generator"
+done
 
 echo "=== non-react"
 [ "$(ai_artifacts_present nonreact)" = "0" ] || fail "non-react: AI files emitted with no panel to use them"
