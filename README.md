@@ -152,21 +152,40 @@ npm run genesis-start            # opens the Genesis Start desktop launcher
 npm run genesis-start:headless   # the same launcher with no window, driven over a REST API on port 18080
 ```
 
+On Windows, npm runs these scripts in `cmd.exe`, where `./gradlew` does not work. From `client/`, run
+`cd ..\server && gradlew.bat genesisStart` instead, adding the `-P` flags from `package.json` for
+headless.
+
 **Headless** is for a build machine or a remote development environment:
 
+- `npm run genesis-start:headless` returns once the launcher is up and prints
+  `Genesis Start started with PID <n>`. The launcher keeps running in the background, even after the
+  terminal closes, and Ctrl+C does not stop it.
+- Stop it with `kill <n>`, which also stops every process it started.
+- It logs to `server/build/genesis-start/output.log` and `error.log`; if it exits within five seconds,
+  Gradle says so and points there. Each process it starts logs under the app's Genesis home, and
+  `GET /api/processes/{processId}/log` returns that log.
 - Check it is up with `curl http://localhost:18080/api/health`. The API is described at
   `http://localhost:18080/api/docs`.
-- The launcher logs to the terminal it runs in. Each process it starts logs under the app's Genesis
-  home, and `GET /api/processes/{processId}/log` returns that log.
-- Stop it with Ctrl+C (or SIGTERM), which also stops every process the launcher started.
-- `npm run genesis-start:write-script` writes a start script under `server/build/genesis-start/` that
-  runs the same headless launcher without Gradle.
+- `npm run genesis-start:write-script` writes `server/build/genesis-start/start.sh` (`start.bat` on
+  Windows), which runs the same headless launcher without Gradle and in the foreground: Ctrl+C or
+  `kill` stops it and everything it started, and it logs to the same two files. The script can hold
+  the database password in plain text, so keep it private.
 
-**The REST API has no authentication and listens on every network interface**, and it can start and
-stop the app's processes and run its utility scripts. Run headless only on a machine and network you
-trust, or block port 18080 from anything else.
-A web page you visit on that machine may be able to reach `localhost:18080` too: the API checks no
-origin, and stopping a process takes a plain POST, which a browser sends without a CORS preflight.
+**The REST API has no authentication and listens on every network interface.** Anyone who can reach
+port 18080 can:
+
+- start and stop the app's processes, and apply schema changes to its database (`/api/bootstrap`
+  runs Remap);
+- write rows into any table: `/api/import` loads each uploaded file with SendIt, and the file's name
+  picks the table, so a `USER.csv` or `PROFILE_USER.csv` can add users or give them profiles, and
+  with them rights such as `AI_CHAT`. It also imports files by their path on this machine;
+- run the app's scripts with any arguments and working directory (`/api/scripts/run`), and type into
+  a running utility (`/api/processes/{processId}/input`).
+
+Run headless only on a machine and network you trust, or block port 18080 from anything else. A web
+page you visit on that machine may be able to reach `localhost:18080` too: the API checks no origin,
+and a page can stop or start processes, or upload files to `/api/import`, without a CORS preflight.
 
 # License
 
