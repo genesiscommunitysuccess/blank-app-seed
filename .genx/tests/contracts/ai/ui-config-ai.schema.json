@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "$id": "https://genesis.global/schemas/create/ui-config-ai.schema.json",
   "title": "ui.config.ai",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The AI chat block a generated app reads from ui.config (GENC-1601 contract C-8). Produced by the archive service's ai-resolver from the project payload, and copied VERBATIM into the seed — both sides pin this file's digest, so a change here is a deliberate version bump, not an edit. It carries WHAT the chat may do and nothing about WHERE it talks: no url, endpoint, key or budget field exists, and additionalProperties is false everywhere so one cannot be added by accident. That is load-bearing — this block is written into the generated app's genesis-create.json and ships in the exported project, so a Create endpoint or key here would leave the box.",
   "type": "object",
   "additionalProperties": false,
@@ -37,7 +37,8 @@
           "name": {
             "type": "string",
             "pattern": "^(REQ|EVENT)_[A-Z0-9_]+$",
-            "description": "REQ_<NAME> for a request-server resource, EVENT_<NAME> for an event handler. Never the bare MCP resource name (C34)."
+            "maxLength": 64,
+            "description": "REQ_<NAME> for a request-server resource, EVENT_<NAME> for an event handler. Never the bare MCP resource name (C34). At most 64 characters: the assistant's tool name is this name lowercased, and vendors reject longer tool names."
           },
           "kind": {
             "enum": ["request", "event"],
@@ -58,7 +59,20 @@
             "maximum": 1000,
             "description": "Requests only; the resolver emits 50. A row cap in the host bridge applies regardless — this is guidance, not enforcement."
           }
-        }
+        },
+        "$comment": "The name's prefix decides the rest, as it does in the foundation-ui assistant's validateGenesisAiConfig, which blocks the WHOLE assistant on any mismatch. These rules mirror it, with two things a schema cannot say: two resources sharing a name but differing in another field pass uniqueItems (it only rejects identical items) yet block the assistant, which is why the resolver dedupes by name; and enabled false is valid here because it is a deliberate off, not a block the assistant will run.",
+        "allOf": [
+          {
+            "description": "A REQ_ name is a read: kind request, and no op.",
+            "if": { "properties": { "name": { "pattern": "^REQ_" } } },
+            "then": { "properties": { "kind": { "const": "request" } }, "not": { "required": ["op"] } }
+          },
+          {
+            "description": "An EVENT_ name is a write: kind event, an op, and no maxRows.",
+            "if": { "properties": { "name": { "pattern": "^EVENT_" } } },
+            "then": { "properties": { "kind": { "const": "event" } }, "required": ["op"], "not": { "required": ["maxRows"] } }
+          }
+        ]
       }
     }
   }

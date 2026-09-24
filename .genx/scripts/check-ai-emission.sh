@@ -87,8 +87,8 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.1.0', sha256: '9b5c6607fe567545ca526d3b9b96e472d1bd9d56ab0016f609f8f025c4d35e82' },
-  'ai-resolver-cases.json': { version: '1.2.0', sha256: 'e9382eada84fcf3d44df9aaa2b583d195c21d376db817b170661a9f4ff681435' },
+  'ui-config-ai.schema.json': { version: '1.2.0', sha256: '527f5980d996192904916a14b129f30dee347664c8bcb2201bfbf0a42d11f60e' },
+  'ai-resolver-cases.json': { version: '1.3.0', sha256: '590b16fe42d5098b05f5d58fec55afb3896f72750236573770e3bb4d4aab99b5' },
 };
 let bad = 0;
 for (const [file, want] of Object.entries(pinned)) {

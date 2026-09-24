@@ -1,6 +1,6 @@
 {
   "$comment": "Golden cases for the ui.config.ai resolver (GENC-1601 contract C-8). genesis-create owns this file; the seed carries a VERBATIM copy, and each side pins its digest so a change is a deliberate version bump rather than an edit. Every case states WHY it exists — a case whose reason is not obvious is a case someone will 'fix' the day it fails.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "cases": [
     {
       "name": "AI off: nothing is emitted",
@@ -2093,6 +2093,179 @@
           ]
         },
         "warnings": []
+      }
+    },
+    {
+      "name": "An over-long read is dropped with a warning, and no reference hint points at it",
+      "why": "FUI blocks the WHOLE assistant when one resource name is over 64 characters (its tool name is the name lowercased, and vendors cap tool names at 64), so a 61-character snapshot table must cost only its own read. The drop has to happen where the reads are built: they decide which references get a hint, and a hint that told the chat to copy a value from REQ_ of a table it cannot read would send it to a tool that does not exist. The 60-character table is the boundary — REQ_ plus 60 is exactly 64, and is kept.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+                    "entityReferenceAttribute": "ACCOUNT_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "INSTRUCTION_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "kind": "request",
+              "context": "Read current rows from the SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped table \"COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D\" — REQ_COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D is longer than the 64 characters a tool name allows"
+        ]
+      }
+    },
+    {
+      "name": "An over-long write is dropped, and the same entity is still readable",
+      "why": "The limit is per resource name, not per entity: a 52-character entity reads as REQ_ plus 52, which fits, while its writes are EVENT_ plus 52 plus _INSERT or _MODIFY, which do not. Only the writes go. Custom handlers are named verbatim, so the same boundary applies to them: EVENT_ plus 58 is kept, EVENT_ plus 59 is dropped.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "snapshot": true
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E"
+            },
+            {
+              "type": "custom",
+              "name": "RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [],
+            "custom": [
+              "RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E",
+              "RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "kind": "request",
+              "context": "Read current rows from the CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI event handler."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped the insert handler for \"CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R\" — EVENT_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R_INSERT is longer than the 64 characters a tool name allows",
+          "ai: skipped the modify handler for \"CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R\" — EVENT_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R_MODIFY is longer than the 64 characters a tool name allows",
+          "ai: skipped custom event handler \"RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E\" — EVENT_RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E is longer than the 64 characters a tool name allows"
+        ]
       }
     }
   ]
