@@ -92,12 +92,52 @@ const { spawnSync } = require('child_process');
 const [base, next, seedReadme] = process.argv.slice(2);
 const readme = fs.readFileSync(seedReadme, 'utf8');
 const from = readme.indexOf('## Running the application');
-const section = new Set(from < 0 ? [] : readme.slice(from, readme.indexOf('\n# License', from)).split('\n'));
+const section = from < 0 ? [] : readme.slice(from, readme.indexOf('\n# License', from)).split('\n');
+// Each rule lists the exact lines this change adds or removes; each may be used once.
+const exact = (...lines) => lines;
 const allowed = {
-  'server/gradle.properties': { removed: (l) => /^startVersion=/.test(l), added: (l) => /^(startVersion=|#)/.test(l) },
-  'server/build.gradle.kts': { removed: () => false, added: (l) => /^\s*(google\(\)|\/\/)/.test(l) },
-  'client/package.json': { removed: () => false, added: (l) => /^\s*"genesis-start[a-z:-]*": "cd \.\.\/server && \.\/gradlew /.test(l) },
-  'README.md': { removed: () => false, added: (l) => section.has(l) },
+  'server/gradle.properties': {
+    removed: exact('startVersion=0.1.9'),
+    added: exact(
+      '# Genesis Start launcher. 0.1.15 is the first release with a headless mode (-Pgenesis.start.headless=true);',
+      '# plain genesisStart still opens the desktop launcher.',
+      'startVersion=0.1.15',
+    ),
+  },
+  'server/build.gradle.kts': {
+    removed: exact(),
+    added: exact(
+      "        // The Genesis Start launcher (0.1.12+) needs androidx.* artifacts, which none of the repositories",
+      "        // above have. Last, and for those groups only, so nothing else is ever looked up at Google.",
+      '        google {',
+      '            content {',
+      '                includeGroupByRegex("androidx\\\\..*")',
+      '            }',
+      '        }',
+    ),
+  },
+  'client/package.json': {
+    removed: exact(),
+    added: exact(
+      '    "genesis-start": "cd ../server && ./gradlew genesisStart",',
+      '    "genesis-start:headless": "cd ../server && ./gradlew genesisStart -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080",',
+      '    "genesis-start:write-script": "cd ../server && ./gradlew writeStartScript -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080",',
+    ),
+  },
+  'README.md': { removed: exact(), added: [...section] },
+};
+const counts = (lines) => lines.reduce((m, l) => m.set(l, (m.get(l) || 0) + 1), new Map());
+// Lines in `from` beyond their count in `to`, less the ones `allowance` accounts for.
+const unexpected = (from, to, allowance) => {
+  const left = counts(allowance);
+  const extra = [];
+  for (const [line, n] of counts(from)) {
+    for (let i = counts(to).get(line) || 0; i < n; i++) {
+      if (left.get(line) > 0) left.set(line, left.get(line) - 1);
+      else extra.push(line);
+    }
+  }
+  return extra;
 };
 const out = spawnSync('diff', ['-rq', '-x', 'node_modules', '-x', 'answers.json', '-x', '.genx', base, next]).stdout.toString();
 const problems = [];
@@ -109,8 +149,8 @@ for (const line of out.split('\n').filter(Boolean)) {
   if (!rule) { problems.push(`${rel} changed`); continue; }
   const a = fs.readFileSync(`${base}/${rel}`, 'utf8').split('\n');
   const b = fs.readFileSync(`${next}/${rel}`, 'utf8').split('\n');
-  a.filter((l) => !b.includes(l) && !rule.removed(l)).forEach((l) => problems.push(`${rel}: removed ${JSON.stringify(l)}`));
-  b.filter((l) => !a.includes(l) && !rule.added(l)).forEach((l) => problems.push(`${rel}: added ${JSON.stringify(l)}`));
+  unexpected(a, b, rule.removed).forEach((l) => problems.push(`${rel}: removed ${JSON.stringify(l)}`));
+  unexpected(b, a, rule.added).forEach((l) => problems.push(`${rel}: added ${JSON.stringify(l)}`));
 }
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
@@ -161,6 +201,67 @@ done
 
 echo "=== non-react"
 [ "$(ai_artifacts_present nonreact)" = "0" ] || fail "non-react: AI files emitted with no panel to use them"
+
+# Genesis Start's REST API has no authentication, so only the two headless scripts may turn it on. The
+# launcher also takes its settings as bare project properties (restEnabled=true) or through its Gradle
+# extension, so no Gradle file may set any of them, with AI on or off.
+echo "=== genesis start: desktop unless a headless script asks"
+node - "$SEED_DIR" "$WORK_DIR" default off on onanthropic nonreact <<'NODE' \
+  || fail "genesis start: REST or headless mode is switched on where it must not be (see above)"
+const fs = require('fs');
+const path = require('path');
+const [seed, work, ...labels] = process.argv.slice(2);
+const flags = '-Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080';
+const expected = {
+  'genesis-start': 'cd ../server && ./gradlew genesisStart',
+  'genesis-start:headless': `cd ../server && ./gradlew genesisStart ${flags}`,
+  'genesis-start:write-script': `cd ../server && ./gradlew writeStartScript ${flags}`,
+};
+const setting = /genesis\.start\.|genesisStart\s*[{.(]|\b(headless|restEnabled|restPort|restBasePath|restMaxRequestBodyBytes)\b/;
+const problems = [];
+const checkScripts = (where, scripts) => {
+  for (const [name, value] of Object.entries(expected)) {
+    if (scripts[name] !== value) problems.push(`${where}: "${name}" is ${JSON.stringify(scripts[name])}`);
+  }
+  for (const [name, value] of Object.entries(scripts)) {
+    if (!(name in expected) && /genesis\.start\.|genesisStart|writeStartScript/.test(value)) {
+      problems.push(`${where}: "${name}" runs Genesis Start`);
+    }
+  }
+};
+// Every framework's template (Handlebars, so read line by line, not as JSON).
+for (const fw of fs.readdirSync(path.join(seed, 'client-tmp'))) {
+  const file = path.join(seed, 'client-tmp', fw, 'package.json');
+  if (!fs.existsSync(file)) continue;
+  const scripts = {};
+  for (const m of fs.readFileSync(file, 'utf8').matchAll(/^\s*"([^"]+)": ("(?:[^"\\]|\\.)*"),?\s*$/gm)) {
+    scripts[m[1]] = JSON.parse(m[2]);
+  }
+  checkScripts(`client-tmp/${fw}/package.json`, scripts);
+}
+// Every Gradle file of every generated app, comments aside.
+const live = (file) => {
+  const text = fs.readFileSync(file, 'utf8');
+  return file.endsWith('.properties')
+    ? text.split('\n').filter((l) => !/^\s*[#!]/.test(l))
+    : text.replace(/\/\*[\s\S]*?\*\//g, '').split('\n').filter((l) => !/^\s*\/\//.test(l));
+};
+const gradleFiles = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+  const full = path.join(dir, e.name);
+  if (e.isDirectory()) return ['node_modules', 'build', '.gradle', '.git'].includes(e.name) ? [] : gradleFiles(full);
+  return /^gradle\.properties$|\.gradle(\.kts)?$/.test(e.name) ? [full] : [];
+});
+for (const label of labels) {
+  const app = path.join(work, label, 'demo');
+  checkScripts(`${label}: client/package.json`, JSON.parse(fs.readFileSync(path.join(app, 'client/package.json'), 'utf8')).scripts);
+  for (const file of gradleFiles(app)) {
+    live(file).filter((l) => setting.test(l))
+      .forEach((l) => problems.push(`${label}: ${path.relative(app, file)} sets ${JSON.stringify(l.trim())}`));
+  }
+}
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
 
 if [ "${GRADLE:-0}" = "1" ]; then
   echo "=== gradle: build + checkAuthPermissions on the AI app"
