@@ -143,6 +143,29 @@ When first opening the project, if you receive a notification from IntelliJ IDE 
 The Web client for this project can be found [here](./client/README.md). It is built using Genesis's next
 generation web development framework, which is based on Web Components.
 
+## Running the application
+
+Genesis Start runs the server for you. From `client/`:
+
+```
+npm run genesis-start            # opens the Genesis Start desktop launcher
+npm run genesis-start:headless   # the same launcher with no window, driven over a REST API on port 18080
+```
+
+**Headless** is for a build machine or a remote development environment:
+
+- Check it is up with `curl http://localhost:18080/api/health`. The API is described at
+  `http://localhost:18080/api/docs`.
+- The launcher logs to the terminal it runs in. Each process it starts logs under the app's Genesis
+  home, and `GET /api/processes/{processId}/log` returns that log.
+- Stop it with Ctrl+C (or SIGTERM), which also stops every process the launcher started.
+- `npm run genesis-start:write-script` writes a start script under `server/build/genesis-start/` that
+  runs the same headless launcher without Gradle.
+
+**The REST API has no authentication and listens on every network interface**, and it can start and
+stop the app's processes and run its utility scripts. Run headless only on a machine and network you
+trust, or block port 18080 from anything else.
+
 # License
 
 This is free and unencumbered software released into the public domain. For full terms, see [LICENSE](./LICENSE)
