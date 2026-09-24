@@ -41,7 +41,7 @@ jobs:
         run: ./.genx/scripts/generate-test-apps.sh ${{ matrix.framework }}
 
       # Generates its own React and web-components apps, so one leg is enough. This job has no Java
-      # or artifactory credentials, so it runs the emission checks only, not GRADLE=1.
+      # or artifactory credentials, so it runs the emission checks only; the build job adds GRADLE=1.
       - name: Check what the AI chat path emits
         if: matrix.framework == 'react'
         run: ./.genx/scripts/check-ai-emission.sh
@@ -84,6 +84,14 @@ jobs:
       - name: Build sample app
         working-directory: /tmp/testapp
         run: ./gradlew ${GRADLE_PARAMS} build --info
+
+      # The AI chat proxy is a script, and scripts compile only when the router starts, so no build
+      # compiles it. This one builds an AI app, runs the security scan on it and compiles both
+      # vendors' proxies against this Genesis version. It picks up GRADLE_PARAMS from the job.
+      - name: Build, scan and compile the AI chat proxy
+        env:
+          GRADLE: 1
+        run: ./.genx/scripts/check-ai-emission.sh
 
       - name: Lint UI
         working-directory: /tmp/testapp/client

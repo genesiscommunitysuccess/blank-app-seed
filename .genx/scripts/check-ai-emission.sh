@@ -13,9 +13,12 @@
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
-# Env:    GRADLE=1  also build the AI app's server and require the platform's own security scan
-#                   (checkAuthPermissions) to report no insecure endpoint. Needs Genesis artifactory
-#                   credentials, as the sample-app build does.
+# Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
+#                   (checkAuthPermissions) to report no insecure endpoint, and compile both vendors'
+#                   proxies against the app's Genesis version. Needs Genesis artifactory credentials,
+#                   as the sample-app build does.
+#         GRADLE_PARAMS=...  extra arguments for every gradle call (CI passes -PuseDevRepo=true on
+#                   prerelease).
 #         KEEP=1    keep the generated apps for inspection.
 #         GENX=...  the genx package to generate with (default: a pinned version, so a run is
 #                   reproducible; set GENX=@genesislcap/genx@latest to try the newest).
@@ -268,8 +271,9 @@ NODE
 
 if [ "${GRADLE:-0}" = "1" ]; then
   echo "=== gradle: build + checkAuthPermissions on the AI app"
-  (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon :server:demo-app:build > "$WORK_DIR/gradle.log" 2>&1 \
-    && ./gradlew --no-daemon :server:demo-app:checkAuthPermissions --rerun > "$WORK_DIR/scan.log" 2>&1) \
+  # Unquoted on purpose: GRADLE_PARAMS may hold several arguments, or none.
+  (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:build > "$WORK_DIR/gradle.log" 2>&1 \
+    && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:checkAuthPermissions --rerun > "$WORK_DIR/scan.log" 2>&1) \
     || fail "gradle: build or scan failed (see $WORK_DIR/gradle.log and scan.log)"
   # The build passes even with insecure endpoints unless a project opts into failing it, so the
   # scan's own summary is the assertion — a green build alone proves nothing about permissioning.
@@ -280,6 +284,47 @@ if [ "${GRADLE:-0}" = "1" ]; then
     || fail "gradle: the security scan did not see the two chat endpoints (see $WORK_DIR/scan.log)"
   grep -qx "  Insecure: 0" "$WORK_DIR/scan.log" \
     || fail "gradle: the platform security scan found an insecure endpoint (see $WORK_DIR/scan.log)"
+
+  # Scripts compile only when the router starts: neither the build nor the scan above would notice a
+  # proxy that no longer compiles against this Genesis version. So compile each vendor's proxy as
+  # Kotlin, as an extension of its script class with the script's default imports spelled out. The
+  # wrappers go only into this throwaway app, after the scan, so the scan never counts them.
+  echo "=== gradle: compile both proxies against the script API"
+  kotlin_dir="$WORK_DIR/on/demo/server/demo-app/src/main/kotlin"
+  for pair in "on:gemini" "onanthropic:anthropic"; do
+    label="${pair%%:*}"; vendor="${pair#*:}"
+    VENDOR="$vendor" perl -0pe '
+      s{^(\@file:[^\n]*\n)}{${1}package aiproxycheck.$ENV{VENDOR}\n}m or die "no \@file line\n";
+      s{^(webHandlers\()}{import global.genesis.db.entity.DeleteResult
+import global.genesis.db.entity.InsertResult
+import global.genesis.db.entity.ModifyResult
+import global.genesis.db.entity.UpsertResult
+import global.genesis.message.core.event.LogLevel
+import global.genesis.message.core.event.LogLevel.*
+import global.genesis.router.extension.ContentType
+import global.genesis.router.extension.PropertyCase
+import global.genesis.router.extension.PropertyCase.*
+import global.genesis.router.extension.WebContext
+import global.genesis.router.extension.WebContextOf
+import global.genesis.router.extension.WebHandlerScript
+import global.genesis.router.server.web.http.extensions.RequestType.*
+import io.netty.handler.codec.http.HttpResponseStatus.*
+import kotlinx.coroutines.flow.*
+
+fun WebHandlerScript.compileCheck() =
+${1}}m or die "no top-level webHandlers(\n";
+    ' "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > "$kotlin_dir/AiProxyCheck_$vendor.kt" \
+      || fail "$label: could not wrap the proxy for compiling"
+  done
+  (cd "$WORK_DIR/on/demo" && ./gradlew --no-daemon ${GRADLE_PARAMS:-} :server:demo-app:compileKotlin --rerun \
+    > "$WORK_DIR/compile.log" 2>&1) \
+    || fail "gradle: a proxy does not compile against the script API (see $WORK_DIR/compile.log)"
+  # And both were really compiled: a wrapper in the wrong place would pass by never being built.
+  for vendor in gemini anthropic; do
+    [ -f "$WORK_DIR/on/demo/server/demo-app/build/classes/kotlin/main/aiproxycheck/$vendor/AiProxyCheck_${vendor}Kt.class" ] \
+      || fail "gradle: the $vendor proxy was not compiled (see $WORK_DIR/compile.log)"
+  done
+  rm -f "$kotlin_dir"/AiProxyCheck_*.kt
 fi
 
 echo
