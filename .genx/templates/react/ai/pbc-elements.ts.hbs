@@ -1,0 +1,17 @@
+import type { AppElement } from '@genesislcap/foundation-shell/app';
+import { html } from '@genesislcap/web-core';
+import '../../ai/generated/assistant-host';
+
+/**
+ * The AI assistant, in a chat bubble added after every page's content (the layout's 'layout-end' target).
+ */
+export const aiAssistant: AppElement = {
+  targetId: 'layout-end',
+  elements: html`
+    <foundation-ai-popout-manager>
+      <foundation-ai-chat-bubble title="AI Assistant">
+        <genesis-app-assistant slot="dialog-content"></genesis-app-assistant>
+      </foundation-ai-chat-bubble>
+    </foundation-ai-popout-manager>
+  `,
+};

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://genesis.global/schemas/create/ui-config-ai.schema.json",
+  "title": "ui.config.ai",
+  "version": "1.2.0",
+  "description": "The AI chat block a generated app reads from ui.config (GENC-1601 contract C-8). Produced by the archive service's ai-resolver from the project payload, and copied VERBATIM into the seed — both sides pin this file's digest, so a change here is a deliberate version bump, not an edit. It carries WHAT the chat may do and nothing about WHERE it talks: no url, endpoint, key or budget field exists, and additionalProperties is false everywhere so one cannot be added by accident. That is load-bearing — this block is written into the generated app's genesis-create.json and ships in the exported project, so a Create endpoint or key here would leave the box.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enabled", "vendor", "tier", "systemPrompt", "resources"],
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "description": "Emitted only for a project that selected AI chat; the block is absent entirely otherwise, so a project without AI stays byte-identical (C57)."
+    },
+    "vendor": {
+      "enum": ["gemini", "anthropic"],
+      "description": "Default 'gemini' (R-7). The generated app resolves a provider for it; the endpoint is supplied by the build environment, never from here."
+    },
+    "tier": {
+      "enum": ["low", "high", "reasoning"],
+      "description": "Default 'high' (R-7). Maps to a model through the foundation-ui tier table (C-3), so no model id appears in a generated project."
+    },
+    "systemPrompt": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The assistant's standing instruction. Derived deterministically from the project, so regenerating an unchanged project produces an unchanged file."
+    },
+    "resources": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "What the chat may read and call, by the name the platform actually registers. A name that matches nothing is dropped silently by the runtime (C34), so these are derived from the project rather than typed by hand. One entry per name: the chat tolerates a duplicate, but MCP's enableMcp refuses the whole script over one, so the resolver dedupes and both consumers can trust it.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "kind", "context"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^(REQ|EVENT)_[A-Z0-9_]+$",
+            "maxLength": 64,
+            "description": "REQ_<NAME> for a request-server resource, EVENT_<NAME> for an event handler. Never the bare MCP resource name (C34). At most 64 characters: the assistant's tool name is this name lowercased, and vendors reject longer tool names."
+          },
+          "kind": {
+            "enum": ["request", "event"],
+            "description": "'request' is a read through the request server; 'event' is a write through an event handler."
+          },
+          "op": {
+            "enum": ["insert", "modify", "delete", "custom"],
+            "description": "Events only, in the platform's WIRE vocabulary. The project meta says create/update/delete; the resolver maps create→insert and update→modify so nothing downstream knows two names for one thing."
+          },
+          "context": {
+            "type": "string",
+            "minLength": 1,
+            "description": "One line telling the model what this resource is for."
+          },
+          "maxRows": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Requests only; the resolver emits 50. A row cap in the host bridge applies regardless — this is guidance, not enforcement."
+          }
+        },
+        "$comment": "The name's prefix decides the rest, as it does in the foundation-ui assistant's validateGenesisAiConfig, which blocks the WHOLE assistant on any mismatch. These rules mirror it, with two things a schema cannot say: two resources sharing a name but differing in another field pass uniqueItems (it only rejects identical items) yet block the assistant, which is why the resolver dedupes by name; and enabled false is valid here because it is a deliberate off, not a block the assistant will run.",
+        "allOf": [
+          {
+            "description": "A REQ_ name is a read: kind request, and no op.",
+            "if": { "properties": { "name": { "pattern": "^REQ_" } } },
+            "then": { "properties": { "kind": { "const": "request" } }, "not": { "required": ["op"] } }
+          },
+          {
+            "description": "An EVENT_ name is a write: kind event, an op, and no maxRows.",
+            "if": { "properties": { "name": { "pattern": "^EVENT_" } } },
+            "then": { "properties": { "kind": { "const": "event" } }, "required": ["op"], "not": { "required": ["maxRows"] } }
+          }
+        ]
+      }
+    }
+  }
+}

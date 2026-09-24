@@ -6,7 +6,9 @@
 # routes), a "full" app driven by .genx/tests/fixtures/routes-full.json
 # (every tile type: entity-manager with permissions/custom events/eventing/FDC3,
 # grid-pro with listener/reqrep, chart, smart-form), and an "fdc3" app with
-# FDC3 channels enabled — then runs the ox lint pipeline with zero tolerance:
+# FDC3 channels enabled, plus for React an "ai" app driven by .genx/tests/fixtures/ai-config.json
+# (the AI chat panel, whose configuration carries a prompt full of Handlebars) — then runs the ox lint
+# pipeline with zero tolerance:
 #
 #   oxlint . --deny-warnings   # zero errors, zero warnings
 #   oxfmt --check .            # formatting is already canonical
@@ -24,7 +26,8 @@
 #              By default an app is deleted as soon as it passes, so a run only
 #              ever holds one app's node_modules at a time. Failing apps are
 #              always kept.
-#   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app
+#   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app, and for the React
+#              ai app check that the assistant is built into a chunk of its own
 #
 # Installs use the app's own bootstrap semantics (plain `npm install`) — NOT
 # --legacy-peer-deps, which would skip the ag-grid peer deps and break builds.
@@ -33,6 +36,7 @@ set -uo pipefail
 
 SEED_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 FIXTURE="$SEED_DIR/.genx/tests/fixtures/routes-full.json"
+AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
 
 if [ $# -gt 0 ]; then
   FRAMEWORKS=("$@")
@@ -55,6 +59,23 @@ fi
 
 FAILURES=()
 
+# The assistant loads in a chunk of its own once the layout mounts. The code behind the assistant's
+# registration and the bubble ('pulse-ring' is the bubble's own markup) must be in that chunk and in no
+# other: the entry chunk and the PBC chunk both load at startup. Both names survive minification.
+check_assistant_chunk() {
+  local entry chunk marker other
+  entry="dist/$(grep -oE 'assets/index-[^"]+\.js' dist/index.html | head -1)"
+  chunk="$(ls dist/assets/assistant-*.js 2>/dev/null | head -1)"
+  [ -n "$chunk" ] || { echo "no assistant-*.js chunk in dist/assets"; return 1; }
+  [ -f "$entry" ] || { echo "no entry chunk named in dist/index.html"; return 1; }
+  for marker in registerGenesisAssistant pulse-ring; do
+    grep -q "$marker" "$chunk" || { echo "$marker is not in $chunk"; return 1; }
+    other="$(grep -l "$marker" dist/assets/*.js | grep -vxF "$chunk")"
+    [ -z "$other" ] || { echo "$marker is also in $other"; return 1; }
+  done
+  ! grep -q foundation-ai-chat-bubble "$entry" || { echo "the entry chunk $entry names the chat bubble"; return 1; }
+}
+
 run_lint_checks() {
   local app_dir="$1" label="$2"
   (
@@ -72,12 +93,19 @@ run_lint_checks() {
       npx tsc --noEmit || exit 1
       echo "--- [$label] npm run build"
       npm run build || exit 1
+      if [ "$label" = "react-ai" ]; then
+        echo "--- [$label] the assistant is built into a chunk of its own"
+        check_assistant_chunk || exit 1
+      fi
     fi
   )
 }
 
 for fw in "${FRAMEWORKS[@]}"; do
-  for variant in default full fdc3; do
+  variants=(default full fdc3)
+  # The chat panel is React only, like the AI gate in configure.js.
+  [ "$fw" = "react" ] && variants+=(ai)
+  for variant in "${variants[@]}"; do
     label="$fw-$variant"
     app_dir="$WORK_DIR/$label"
     rm -rf "$app_dir"
@@ -85,6 +113,9 @@ for fw in "${FRAMEWORKS[@]}"; do
     extra_args=()
     if [ "$variant" = "full" ]; then
       extra_args=(--routes "$(cat "$FIXTURE")")
+    fi
+    if [ "$variant" = "ai" ]; then
+      extra_args=(--ui "$(cat "$AI_FIXTURE")")
     fi
     if [ "$variant" = "fdc3" ]; then
       extra_args=(--ui '{"fdc3":{"channels":[{"name":"positions","type":"position"},{"name":"instrumentChannel","type":"fdc3.instrument"}]}}')
@@ -115,7 +146,7 @@ if [ ${#FAILURES[@]} -gt 0 ]; then
   exit 1
 fi
 
-echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full + fdc3)"
+echo "All generated apps are lint-clean: ${FRAMEWORKS[*]} (default + full + fdc3, and ai for React)"
 if [ "${KEEP:-0}" = "1" ]; then
   echo "Generated apps kept in $WORK_DIR"
 elif [ "$OWNS_WORK_DIR" = "1" ]; then

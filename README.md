@@ -5,9 +5,9 @@
 
 ## AI chat
 
-This application includes the server side of an AI chat: an endpoint,
-`/gwf/ai-service/<vendor>/chat`, that a chat panel in the app calls, and that talks to **your** AI
-vendor with **your** key. Nothing is routed through Genesis.
+This application includes an AI chat: an assistant in the app, and the endpoint it calls,
+`/gwf/ai-service/<vendor>/chat`, which talks to **your** AI vendor with **your** key. Nothing is
+routed through Genesis.
 
 **Set your key where the server runs, never in a tracked file in this project.** A system-definition item
 can be supplied from the environment, so set the one for your vendor in the environment that starts
@@ -56,6 +56,17 @@ Create with AI Chat selected already has it: the `AI_CHAT_USER` profile holds th
 is in that profile. Add other users to that profile, or grant the right through any other profile.
 Otherwise, create the `AI_CHAT` right and grant it the same way.
 
+**The assistant.** Signed-in users get a chat bubble at the bottom right of every page, which opens
+the assistant and can be dragged out of the way. Each user gets a conversation of their own, kept until
+the page is reloaded. A user without the `AI_CHAT` right is told so in a banner when they open it,
+and the assistant sends nothing. Rights are read at sign-in, so sign in again after a change. The
+assistant can read the data this project exposes to it: which resources, and what it is told about
+each, is in `client/src/ai/generated/ai-config.json`. That folder is rewritten every time the project
+is generated, so do not edit it; add your own tools in `client/src/ai/extensions/index.ts`, which
+shows how. The client's `build` and `dev` scripts build it with `GENX_ENABLE_AI=true`; without that
+the banner says AI is switched off. Whenever the assistant is blocked, its message box reads "AI usage
+limit reached", whatever the reason; the banner above it gives the real one.
+
 **Bound what it can do.** The limits this app was generated with are built into the chat endpoint,
 `server/{{appName}}-app/src/main/genesis/scripts/ai-service-web-handler.kts`. Override either with a
 system-definition item of the same name, set from the environment the same way as the key:
@@ -72,8 +83,8 @@ them, and they are billed to your key.
 **If the chat cannot answer.** With no key configured the endpoint answers **424** with the code
 `NO_API_KEY` (`BAD_API_KEY` if the key contains characters an API key cannot have, `KEY_UNREADABLE`
 if an encrypted key cannot be decrypted). A key the vendor rejects, revoked or wrong, comes back as
-the vendor's own error, usually 401 or 400. The chat panel
-may show only a generic error, so check the response in your browser's developer tools.
+the vendor's own error, usually 401 or 400. The assistant tries a failed call three times in all and
+then shows only a generic error, so check the response in your browser's developer tools.
 
 **Things to know before deploying.**
 

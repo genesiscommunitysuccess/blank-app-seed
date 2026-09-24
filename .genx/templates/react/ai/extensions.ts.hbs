@@ -1,0 +1,17 @@
+// Your own additions to the AI assistant. This file is yours; Genesis Create's UI Builder may edit it
+// too. It imports nothing, so it still compiles if the assistant is ever removed: the assistant checks
+// it against GenesisAssistantExtensions (from @genesislcap/ai-assistant/genesis) where it reads it.
+//
+// A tool is a definition the model sees and a handler that runs it, under one name, for example:
+//
+//   toolDefinitions: [
+//     {
+//       name: 'current_time',
+//       description: 'The current date and time.',
+//       parameters: { type: 'object', properties: {} },
+//     },
+//   ],
+//   toolHandlers: { current_time: async () => new Date().toISOString() },
+//
+// A tool may not reuse the name of one the app generates from its data (req_* and event_*).
+export const extensions = {};

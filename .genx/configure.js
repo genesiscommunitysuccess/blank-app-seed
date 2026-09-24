@@ -208,6 +208,45 @@ module.exports = async (data, utils) => {
     );
   }
 
+  // The chat panel's configuration as Create resolved it (C-8). Only the contract's fields are copied,
+  // so nothing else in the payload can reach a file in the customer's app. Genx runs every .json file
+  // through Handlebars after this, so each `{{` is written as the JSON escape `\u007b\u007b`: it
+  // parses back to `{{`, and leaves Handlebars nothing to expand.
+  if (data.AI.enabled) {
+    const { enabled, vendor, tier, systemPrompt, resources } = data.ui.ai;
+    const config = {
+      enabled,
+      vendor,
+      tier,
+      systemPrompt,
+      resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({
+        name,
+        kind,
+        op,
+        context,
+        maxRows,
+      })),
+    };
+    const file = path.resolve(__dirname, '../client/src/ai/generated/ai-config.json');
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    const json = JSON.stringify(config, null, 2).replace(/\{\{/g, '\\u007b\\u007b');
+    fs.writeFileSync(file, `${json}\n`);
+
+    // The panel's code, copied as written. Genx renders these once more like any other file, so they
+    // hold no Handlebars and come out unchanged.
+    const templates = path.resolve(__dirname, 'templates/react/ai');
+    const clientSrc = path.resolve(__dirname, '../client/src');
+    [
+      ['pbc-elements.ts.hbs', 'pbc/ai-assistant/elements.ts'],
+      ['assistant-host.ts.hbs', 'ai/generated/assistant-host.ts'],
+      ['assistant.ts.hbs', 'ai/generated/assistant.ts'],
+      ['extensions.ts.hbs', 'ai/extensions/index.ts'],
+    ].forEach(([template, target]) => {
+      fs.mkdirSync(path.dirname(path.join(clientSrc, target)), { recursive: true });
+      fs.copyFileSync(path.join(templates, template), path.join(clientSrc, target));
+    });
+  }
+
   if (data.excludeGradleWrapper) {
     deleteGradleWrappers();
   }

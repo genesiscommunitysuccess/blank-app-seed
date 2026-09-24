@@ -1,0 +1,28 @@
+{
+  "ai": {
+    "enabled": true,
+    "vendor": "gemini",
+    "tier": "high",
+    "systemPrompt": "You are the assistant for {{appName}}{{! a comment }}. Keep \\{{this}}, {{#if AI.enabled}}shown{{/if}}, {{#if x}}hidden{{/if}} and {{{that}}} literal; \"quotes\", </script>, ünïcödé and the text \\u007b must survive.",
+    "resources": [
+      {
+        "name": "REQ_TRADE",
+        "kind": "request",
+        "context": "Trades booked in {{appName}}.",
+        "maxRows": 50
+      },
+      {
+        "name": "EVENT_TRADE_INSERT",
+        "kind": "event",
+        "op": "insert",
+        "context": "Book a new trade."
+      },
+      {
+        "name": "EVENT_TRADE_MODIFY",
+        "kind": "event",
+        "op": "modify",
+        "context": "Change a trade."
+      }
+    ]
+  }
+}

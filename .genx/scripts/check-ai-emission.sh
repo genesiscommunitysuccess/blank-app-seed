@@ -10,7 +10,15 @@
 #   on        the proxy, the router body cap and the README section all appear; the proxy is its
 #             template with only its two limits filled in, for either vendor; and no AI item lands in
 #             a system-definition file (a generator may rewrite those, so the proxy must not need one).
+#             The client gets its ai-config.json (exactly the contract's fields, whatever the prompt
+#             holds); the assistant's four source files (pbc/ai-assistant/elements.ts,
+#             ai/generated/assistant-host.ts and assistant.ts, ai/extensions/index.ts), each its
+#             template as written and holding the parts the assistant needs; the assistant package, the
+#             AI build flag and an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
+#   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
+#             each of Create's resolver cases reaches the app as exactly its contract fields.
+#   leaks     no generated file carries anything Create's export guard would refuse.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
 # Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
@@ -35,7 +43,12 @@ MODULE="server/demo-app/src/main/genesis"
 FAILURES=()
 GENX="${GENX:-@genesislcap/genx@15.35.1}"
 
-AI_UI='{"ai":{"enabled":true,"vendor":"gemini","tier":"high","systemPrompt":"x","resources":[]}}'
+# The Gemini app runs on the 'ai' fixture: resources of both kinds and a prompt full of Handlebars that
+# renders, so a missing escape changes the file. Text Handlebars cannot even parse is a separate case:
+# there a whole-file render fails and genx ships the file as written, which only the log check catches.
+AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
+AI_UI="$(cat "$AI_FIXTURE")"
+AI_UI_BREAKERS="$(cat "$SEED_DIR/.genx/tests/fixtures/ai-config-parse-breakers.json")"
 AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","systemPrompt":"x","resources":[]}}'
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
@@ -49,6 +62,11 @@ generate() {
   (cd "$WORK_DIR/$label" && npx -y "$GENX" init demo -s "${SEED:-$SEED_DIR}" -x --no-shell \
     --apiHost 'wss://localhost/gwf/' "$@" > "$WORK_DIR/$label.log" 2>&1) \
     || { fail "$label: generation failed (see $WORK_DIR/$label.log)"; return 1; }
+  # genx logs a file it cannot render and ships it unrendered, so a broken {{#if}} in a template, or a
+  # {{ that escaped the ai-config writer, passes generation and only surfaces later, or never.
+  if grep -q 'Error interpolating variables' "$WORK_DIR/$label.log"; then
+    fail "$label: genx could not render a file and shipped it unrendered: $(grep -o 'Error interpolating variables in [^ ]*' "$WORK_DIR/$label.log" | head -3 | tr '\n' ' ')"
+  fi
 }
 
 # Every file or block the feature adds. Used both ways: all present when on, none when off.
@@ -58,14 +76,46 @@ ai_artifacts_present() {
   [ -f "$app/$MODULE/scripts/ai-service-web-handler.kts" ] && found=$((found + 1))
   grep -q httpObjectAggregator "$app/$MODULE/scripts/genesis-router.kts" && found=$((found + 1))
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
+  [ -f "$app/client/src/ai/generated/ai-config.json" ] && found=$((found + 1))
+  grep -q '"@genesislcap/ai-assistant"' "$app/client/package.json" && found=$((found + 1))
+  [ -f "$app/client/src/pbc/ai-assistant/elements.ts" ] && found=$((found + 1))
   echo "$found"
 }
 
+# The C-8 contract files are Create's (server/shared-schemas/ai/), copied here verbatim. Create's resolver
+# test pins the same digests, so an edit on either side fails until both sides bump the version together.
+echo "=== C-8 contract copies"
+node - "$SEED_DIR/.genx/tests/contracts/ai" <<'NODE' || fail "C-8: a contract copy is not the one Create pins (see above)"
+const { createHash } = require('crypto');
+const fs = require('fs');
+const path = require('path');
+const pinned = {
+  'ui-config-ai.schema.json': { version: '1.2.0', sha256: '527f5980d996192904916a14b129f30dee347664c8bcb2201bfbf0a42d11f60e' },
+  'ai-resolver-cases.json': { version: '1.3.0', sha256: '590b16fe42d5098b05f5d58fec55afb3896f72750236573770e3bb4d4aab99b5' },
+};
+let bad = 0;
+for (const [file, want] of Object.entries(pinned)) {
+  const bytes = fs.readFileSync(path.join(process.argv[2], file));
+  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  const { version } = JSON.parse(bytes);
+  if (sha256 !== want.sha256 || version !== want.version) {
+    console.log(`    ${file}: version ${version}, sha256 ${sha256}`);
+    bad++;
+  }
+}
+process.exit(bad ? 1 : 0);
+NODE
+
 echo "=== Generating into $WORK_DIR"
 generate default --framework react
-generate off --framework react --ui '{"ai":{"enabled":false}}'
+# A whole resolved block, switched off: Create can pass one through, and it must emit nothing at all
+# rather than a panel that only says it is blocked.
+generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.enabled = false; console.log(JSON.stringify(u))' "$SEED_DIR/.genx/tests/fixtures/ai-config.json")"
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
+generate breakers --framework react --ui "$AI_UI_BREAKERS"
+# The fixture with fields the contract does not have smuggled in, which the writer must drop.
+generate extras --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.budgetUsd = 5; u.ai.endpoint = "https://example.invalid"; u.ai.resources[0].url = "https://example.invalid"; console.log(JSON.stringify(u))' "$AI_FIXTURE")"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
 echo "=== off"
@@ -161,7 +211,7 @@ NODE
 fi
 
 echo "=== on"
-[ "$(ai_artifacts_present on)" = "3" ] || fail "on: expected all 3 AI artifacts, found $(ai_artifacts_present on)"
+[ "$(ai_artifacts_present on)" = "6" ] || fail "on: expected all 6 AI artifacts, found $(ai_artifacts_present on)"
 # The proxy is its template with exactly its two limits filled in, and nothing else touched.
 for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
   label="${pair%%:*}"; models="${pair#*:}"
@@ -195,15 +245,141 @@ for label in on onanthropic; do
   blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
   [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
 
-  # Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
+  # Exactly the AI path's own files change, and nothing else. Genesis Create writes its code
   # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a
   # web handler or the README), so a file the AI path relied on in there would be silently replaced.
+  # diff reports a new folder once, so client/src/ai and client/src/pbc/ai-assistant are one entry each
+  # and their contents are pinned below.
   changed="$(diff -rq -x node_modules -x answers.json "$WORK_DIR/default/demo" "$app" \
     | sed -E -e "s#^Files $WORK_DIR/default/demo/(.*) and .* differ\$#\1#" \
              -e "s#^Only in $app/?(.*): (.*)\$#\1/\2#" -e 's#^/##' | sort)"
-  expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" | sort)"
-  [ "$changed" = "$expected" ] || fail "$label: the AI path changed files beyond its own three: $(echo $changed)"
+  expected="$(printf '%s\n' README.md "$MODULE/scripts/ai-service-web-handler.kts" "$MODULE/scripts/genesis-router.kts" \
+    client/package.json client/.oxfmtrc.json client/src/ai client/src/pbc/ai-assistant | sort)"
+  [ "$changed" = "$expected" ] || fail "$label: the AI path changed files beyond its own: $(echo $changed)"
+  ai_files="$(cd "$app/client/src/ai" 2>/dev/null && find . -type f | sed 's#^\./##' | sort | tr '\n' ' ')"
+  [ "$ai_files" = "extensions/index.ts generated/ai-config.json generated/assistant-host.ts generated/assistant.ts " ] \
+    || fail "$label: client/src/ai holds $ai_files"
+  pbc_files="$(cd "$app/client/src/pbc/ai-assistant" 2>/dev/null && find . -type f | sed 's#^\./##' | tr '\n' ' ')"
+  [ "$pbc_files" = "elements.ts " ] || fail "$label: client/src/pbc/ai-assistant holds $pbc_files"
+
+  # The panel's code comes out exactly as written: a {{ in it would have been rendered on the way.
+  for pair in "pbc-elements.ts.hbs:pbc/ai-assistant/elements.ts" "assistant-host.ts.hbs:ai/generated/assistant-host.ts" \
+      "assistant.ts.hbs:ai/generated/assistant.ts" "extensions.ts.hbs:ai/extensions/index.ts"; do
+    cmp -s "$SEED_DIR/.genx/templates/react/ai/${pair%%:*}" "$app/client/src/${pair#*:}" \
+      || fail "$label: client/src/${pair#*:} is not its template as written"
+  done
+
+  # Byte-equality says nothing about what the templates hold, and tsc, oxlint and oxfmt all pass without
+  # the bubble, the target or the AI_CHAT check. So the parts the assistant needs are checked by name.
+  node - "$app/client/src" <<'NODE' || fail "$label: the assistant's code is missing a part it needs (see above)"
+const fs = require('fs');
+const src = process.argv[2];
+// Comments out, strings kept, so a comment can't satisfy a check.
+const code = (file) =>
+  fs
+    .readFileSync(`${src}/${file}`, 'utf8')
+    .replace(/("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`)|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, (m, str) => str ?? '');
+let ok = true;
+const need = (file, what, holds) => {
+  if (!holds) {
+    ok = false;
+    console.log(`FAIL: ${file} ${what}`);
+  }
+};
+
+const elements = code('pbc/ai-assistant/elements.ts');
+need('elements.ts', "does not target 'layout-end'", /targetId:\s*'layout-end'/.test(elements));
+need('elements.ts', 'does not import the assistant host', /^import '\.\.\/\.\.\/ai\/generated\/assistant-host';$/m.test(elements));
+need('elements.ts', 'has no popout manager', elements.includes('<foundation-ai-popout-manager>'));
+need('elements.ts', 'has no chat bubble', /<foundation-ai-chat-bubble[\s>]/.test(elements));
+need('elements.ts', 'does not slot the host into the dialog', elements.includes('<genesis-app-assistant slot="dialog-content">'));
+need(
+  'elements.ts',
+  'does not nest host in bubble in manager',
+  /<foundation-ai-popout-manager>\s*<foundation-ai-chat-bubble[^>]*>\s*<genesis-app-assistant slot="dialog-content"><\/genesis-app-assistant>\s*<\/foundation-ai-chat-bubble>\s*<\/foundation-ai-popout-manager>/.test(elements),
+);
+
+const host = code('ai/generated/assistant-host.ts');
+need('assistant-host.ts', 'does not define genesis-app-assistant', /name:\s*'genesis-app-assistant'/.test(host));
+need('assistant-host.ts', 'does not load the assistant lazily', host.includes("import('./assistant')"));
+// The bubble looks for the assistant in the slotted element's shadow root to give it a close button.
+need('assistant-host.ts', 'does not mount into its shadow root', host.includes('mountAssistant(this.shadowRoot)'));
+
+const assistant = code('ai/generated/assistant.ts');
+need(
+  'assistant.ts',
+  'does not register once, at module top level',
+  /^const registration = registerGenesisAssistant\(/m.test(assistant) && assistant.split('registerGenesisAssistant(').length === 2,
+);
+need(
+  'assistant.ts',
+  'has no AI_CHAT check',
+  /^const AI_CHAT_RIGHT = 'AI_CHAT';$/m.test(assistant) && assistant.includes('hasPermission(AI_CHAT_RIGHT)'),
+);
+need('assistant.ts', "ignores the registration's block", assistant.includes('setBlocked(true, registration.blockedReason)'));
+need('assistant.ts', 'has no per-user session key', assistant.includes('`genesis-app-assistant:${getUser().userName}`'));
+const mount = (assistant.match(/^export function mountAssistant\([^)]*\)[^{]*\{\n([\s\S]*?)\n\}/m) || [])[1] || '';
+need('assistant.ts', 'does not check the blocks on every mount', mount.includes('applyBlocks(assistant)') && !/\breturn\b/.test(mount));
+need(
+  'assistant.ts',
+  'does not set the session key once connected',
+  mount.lastIndexOf("setAttribute('session-key', sessionKey)") > mount.indexOf('host.append(assistant)') &&
+    mount.includes('host.append(assistant)'),
+);
+
+// The UI Builder can adopt extensions/index.ts, and an adopted copy outlives the assistant when AI is
+// switched off. With no import of its own it still compiles then.
+need(
+  'extensions/index.ts',
+  'imports something, so it breaks the build once AI is off',
+  !/\bimport\s*[\s{*('"]|\bfrom\s*['"]|\brequire\s*\(/.test(code('ai/extensions/index.ts')),
+);
+process.exit(ok ? 0 : 1);
+NODE
 done
+
+# The configuration the panel reads is the contract's fields exactly, whatever Handlebars-looking text
+# the prompt carries; and the client's package.json gains the assistant package at the UI version and
+# the AI build flag on build and dev, and not one thing more.
+echo "=== the panel's configuration and package"
+node - "$WORK_DIR" "$AI_UI" "$AI_UI_ANTHROPIC" "$SEED_DIR/.genx/versions.json" "$AI_UI_BREAKERS" <<'NODE' \
+  || fail "on: the panel's configuration or the client package.json is not what the AI path writes (see above)"
+const fs = require('fs');
+const path = require('path');
+const { isDeepStrictEqual } = require('util');
+const [work, geminiUi, anthropicUi, versionsFile, breakersUi] = process.argv.slice(2);
+const ui = versions => versions.UI;
+const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.parse(JSON.stringify({
+  enabled, vendor, tier, systemPrompt,
+  resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({ name, kind, op, context, maxRows })),
+}));
+const problems = [];
+const read = (label, rel) => fs.readFileSync(path.join(work, label, 'demo', rel), 'utf8');
+// 'extras' got the fixture plus non-contract fields; it must still come out as the fixture's contract fields.
+for (const [label, input] of [['on', geminiUi], ['onanthropic', anthropicUi], ['extras', geminiUi], ['breakers', breakersUi]]) {
+  const raw = read(label, 'client/src/ai/generated/ai-config.json');
+  if (raw.includes('{{')) problems.push(`${label}: ai-config.json still holds {{ for Handlebars to expand`);
+  let written;
+  try { written = JSON.parse(raw); } catch (e) { problems.push(`${label}: ai-config.json is not JSON: ${e.message}`); continue; }
+  if (!isDeepStrictEqual(written, contract(JSON.parse(input).ai))) problems.push(`${label}: ai-config.json is not the contract's fields of the input`);
+
+  const on = JSON.parse(read(label, 'client/package.json'));
+  const off = JSON.parse(read('default', 'client/package.json'));
+  const version = ui(JSON.parse(fs.readFileSync(versionsFile, 'utf8')));
+  const added = Object.keys(on.dependencies).filter((d) => !(d in off.dependencies));
+  const removed = Object.keys(off.dependencies).filter((d) => !(d in on.dependencies));
+  if (added.join() !== '@genesislcap/ai-assistant' || removed.length) problems.push(`${label}: dependencies +[${added}] -[${removed}]`);
+  if (on.dependencies['@genesislcap/ai-assistant'] !== version) problems.push(`${label}: ai-assistant is ${on.dependencies['@genesislcap/ai-assistant']}, not the UI version ${version}`);
+  for (const script of new Set([...Object.keys(on.scripts), ...Object.keys(off.scripts)])) {
+    const want = ['build', 'dev'].includes(script) ? `${off.scripts[script]} -e GENX_ENABLE_AI=true` : off.scripts[script];
+    if (on.scripts[script] !== want) problems.push(`${label}: script "${script}" is ${JSON.stringify(on.scripts[script])}`);
+  }
+  const rest = (pkg) => ({ ...pkg, dependencies: undefined, scripts: undefined });
+  if (!isDeepStrictEqual(rest(on), rest(off))) problems.push(`${label}: package.json differs outside dependencies and scripts`);
+}
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
 
 # The seed seeds no rights: the project's rights files belong to the generator that sends them.
 echo "=== no rights written"
@@ -213,6 +389,75 @@ done
 
 echo "=== non-react"
 [ "$(ai_artifacts_present nonreact)" = "0" ] || fail "non-react: AI files emitted with no panel to use them"
+
+# Create's own resolver cases, as the blocks it actually sends: each must reach the app as exactly its
+# contract fields, and a case that resolves to no block must emit no AI file at all.
+echo "=== C-8 cases through the seed"
+CASES="$SEED_DIR/.genx/tests/contracts/ai/ai-resolver-cases.json"
+case_count="$(node -e 'console.log(require(process.argv[1]).cases.length)' "$CASES")"
+case_labels=()
+for i in $(seq 0 $((case_count - 1))); do
+  generate "case$i" --framework react \
+    --ui "$(node -e 'console.log(JSON.stringify({ ai: require(process.argv[1]).cases[+process.argv[2]].expected.ai }))' "$CASES" "$i")" \
+    && case_labels+=("case$i")
+done
+node - "$CASES" "$WORK_DIR" <<'NODE' || fail "C-8: a resolved block did not reach the app as its contract fields (see above)"
+const fs = require('fs');
+const path = require('path');
+const { isDeepStrictEqual } = require('util');
+const [casesFile, work] = process.argv.slice(2);
+const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.parse(JSON.stringify({
+  enabled, vendor, tier, systemPrompt,
+  resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({ name, kind, op, context, maxRows })),
+}));
+const problems = [];
+JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }, i) => {
+  const client = path.join(work, `case${i}`, 'demo', 'client');
+  const file = path.join(client, 'src/ai/generated/ai-config.json');
+  if (!expected.ai?.enabled) {
+    if (fs.existsSync(path.join(client, 'src/ai'))) problems.push(`case ${i} (${name}): AI files for a project with no chat`);
+    return;
+  }
+  if (!fs.existsSync(file)) return problems.push(`case ${i} (${name}): no ai-config.json`);
+  if (!isDeepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), contract(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its contract fields`);
+});
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
+
+# Create refuses an export carrying any of these (server/archive-generation-service/export-leak-guard.js,
+# LEAK_RULES, copied): catching one here is cheaper than a 422 on a customer's export.
+echo "=== nothing Create's export guard refuses"
+node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
+const fs = require('fs');
+const path = require('path');
+const [work, ...labels] = process.argv.slice(2);
+const RULES = [
+  ['create-ai-route', /\/ai\/api\/[a-z-]+|\/api\/preview-app\/[a-z-]+/],
+  ['create-ai-host', /ai-service:\d+|localhost:3001\/api|:3001\/api\//],
+  ['anthropic-key', /sk-ant-[A-Za-z0-9_-]{8,}/],
+  ['google-key', /AIza[0-9A-Za-z_-]{35}/],
+  ['vendor-key-with-value', /(?<![A-Za-z0-9_])(ANTHROPIC_API_KEY|GENX_GEMINI_API_KEY|OPENAI_API_KEY|GOOGLE_API_KEY)["']?\s*[=:]\s*["']?(?!["']?\s*(?:[,}\n]|$))([^"'\s,}]+)/],
+  ['preview-build-global', /GENX_AI_CHAT_BASE/],
+];
+const SKIP = new Set(['node_modules', '.git', '.gradle', 'build', 'dist', '.idea']);
+const BINARY = /\.(png|jpe?g|gif|ico|svg|webp|woff2?|ttf|eot|zip|jar|gz|tgz|pdf|mp4|class|keystore|p12)$/i;
+const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+  const full = path.join(dir, e.name);
+  if (e.isDirectory()) return SKIP.has(e.name) ? [] : walk(full);
+  return BINARY.test(e.name) || fs.statSync(full).size > 2 * 1024 * 1024 ? [] : [full];
+});
+const problems = [];
+for (const label of labels) {
+  const app = path.join(work, label, 'demo');
+  for (const file of walk(app)) {
+    const text = fs.readFileSync(file, 'utf8');
+    for (const [id, pattern] of RULES) if (pattern.test(text)) problems.push(`${label}: ${path.relative(app, file)}: ${id}`);
+  }
+}
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
 
 # Genesis Start's REST API has no authentication, so only the two headless scripts may switch it on.
 # The rules are broad on purpose. In package.json, every line that mentions Genesis Start, gradlew or a

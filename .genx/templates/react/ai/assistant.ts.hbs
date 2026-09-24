@@ -1,0 +1,51 @@
+import '@genesislcap/ai-assistant';
+import type { FoundationAiAssistant } from '@genesislcap/ai-assistant';
+import { type GenesisAiConfig, registerGenesisAssistant } from '@genesislcap/ai-assistant/genesis';
+import { getUser } from '@genesislcap/foundation-user';
+import { extensions } from '../extensions';
+import aiConfig from './ai-config.json';
+
+// The right the app's chat proxy demands. Genesis Create grants it through the AI_CHAT_USER profile.
+const AI_CHAT_RIGHT = 'AI_CHAT';
+const NO_RIGHT = `You need the ${AI_CHAT_RIGHT} right to use the assistant. An administrator can add you to the AI_CHAT_USER profile.`;
+
+// Registered once, when this module first loads and before any assistant element exists: an element that
+// connects first keeps a provider that does nothing for the rest of the page's life.
+const registration = registerGenesisAssistant({
+  config: aiConfig as GenesisAiConfig,
+  extensions,
+});
+
+// One assistant for the page, kept across the layout rebuilding its targets (it does on every
+// reconnect). Its conversation lives in a store kept under `session-key`, one per signed-in user.
+let assistant: FoundationAiAssistant | undefined;
+
+// Checked on every mount: the user can change while the layout is off the page (the login page has
+// none), and a block written then never reaches the assistant's store.
+function applyBlocks(target: FoundationAiAssistant): void {
+  if (registration.blockedReason) {
+    target.setBlocked(true, registration.blockedReason);
+    return;
+  }
+  // Without the right the router refuses every call, and the chat would only show a generic error. So
+  // the assistant stays blocked, saying why and sending nothing. Only a block of its own is lifted.
+  const noRight = !getUser().hasPermission(AI_CHAT_RIGHT);
+  const blockedForRight = target.blocked && target.blockedReason === NO_RIGHT;
+  if (noRight !== blockedForRight) {
+    target.setBlocked(noRight, noRight ? NO_RIGHT : null);
+  }
+}
+
+export function mountAssistant(host: ParentNode): void {
+  const sessionKey = `genesis-app-assistant:${getUser().userName}`;
+  if (!assistant) {
+    assistant = document.createElement('foundation-ai-assistant') as FoundationAiAssistant;
+    assistant.setAttribute('session-key', sessionKey);
+    assistant.agents = registration.agents;
+  }
+  host.append(assistant);
+  // Set while connected, so a different user switches the assistant to a session of their own and the
+  // previous one, with its history, is torn down.
+  assistant.setAttribute('session-key', sessionKey);
+  applyBlocks(assistant);
+}
