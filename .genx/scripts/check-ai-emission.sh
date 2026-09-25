@@ -7,9 +7,10 @@
 #
 #   off       ui.ai absent and ui.ai.enabled=false generate the same app, and neither carries any
 #             AI file. A project that never asked for chat must not change.
-#   on        the proxy, the router body cap and the README section all appear; the proxy is its
-#             template with only its two limits filled in, for either vendor; and no AI item lands in
-#             a system-definition file (a generator may rewrite those, so the proxy must not need one).
+#   on        the proxy, the router body cap and the README section all appear; the cap is above the
+#             proxy's own document limit; the proxy is its template with only its two limits filled
+#             in, for either vendor; and no AI item lands in a system-definition file (a generator may
+#             rewrite those, so the proxy must not need one).
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
@@ -194,6 +195,13 @@ for label in on onanthropic; do
     && fail "$label: the proxy loosens its AI_CHAT check"
   blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
   [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
+
+  # The router must let a body just over the proxy's own limit through, so the proxy answers it with
+  # its REQUEST_TOO_LARGE code rather than the router refusing it with an empty 413.
+  router_cap="$(live_code "$app/$MODULE/scripts/genesis-router.kts" | grep -oE 'maxContentLength[[:space:]]*=[[:space:]]*[0-9_]+' | grep -oE '[0-9_]+$' | tr -d _)"
+  proxy_cap="$(live_code "$handler" | grep -oE 'maxDocumentLength\([0-9_]+L?\)' | grep -oE '[0-9_]+' | tr -d _)"
+  [ -n "$router_cap" ] && [ -n "$proxy_cap" ] && [ "$router_cap" -gt "$proxy_cap" ] \
+    || fail "$label: the router's body cap (${router_cap:-none}) must be above the proxy's document limit (${proxy_cap:-none})"
 
   # Exactly the AI path's own three files change, and nothing else. Genesis Create writes its code
   # generation over the seed (cfg/<app>-*.kts and .xml, scripts/<app>-*.kts, never the router script, a

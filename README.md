@@ -77,14 +77,15 @@ may show only a generic error, so check the response in your browser's developer
 
 **Things to know before deploying.**
 
-- For the chat, the server accepts request bodies up to 5 MiB instead of the default 256 KiB. That
-  limit is router-wide and applies before login, so it covers every endpoint, including unauthenticated
-  ones.
+- For the chat, the server accepts request bodies up to 6 MiB instead of the default 256 KiB. The chat
+  endpoint itself takes up to 5 MiB, and the extra room lets it answer a turn just over that with its
+  own `REQUEST_TOO_LARGE` code. The 6 MiB limit is router-wide and applies before login, so it covers
+  every endpoint, including unauthenticated ones.
 - The app's Docker image puts nginx in front of the server, and its `nginx.conf` sets no
-  `client_max_body_size`, so nginx's 1 MiB default applies: raise it to `5m`, or chat turns over
+  `client_max_body_size`, so nginx's 1 MiB default applies: raise it to `6m`, or chat turns over
   1 MiB are refused before they reach the server. The Genesis Gradle plugin rewrites that
   `nginx.conf` on every build, so don't edit it. Add a file under `/etc/nginx/conf.d/` containing
-  `client_max_body_size 5m;` instead (`nginx.conf` includes `conf.d/*.conf` inside its `http` block),
+  `client_max_body_size 6m;` instead (`nginx.conf` includes `conf.d/*.conf` inside its `http` block),
   for example from a Dockerfile you supply through the plugin's `customDockerfile` setting, which
   replaces the generated one. Any other reverse proxy needs the same limit.
 - The server's default CORS policy accepts any origin with credentials, and the session cookie is

@@ -31,8 +31,9 @@ import kotlinx.coroutines.future.await
 webHandlers("ai-service") {
 
     val systemDefinition = inject<SystemDefinitionService>()
-    // Bounded parsing: at the router's 5 MiB body cap, a body of tiny objects would build a tree many
-    // times its own size. A real chat turn is far inside these limits.
+    // Bounded parsing: at this 5 MiB document limit, a body of tiny objects would build a tree many
+    // times its own size. A real chat turn is far inside these limits. The router lets a little more
+    // through (6 MiB), so a body just over this limit is answered here, with REQUEST_TOO_LARGE.
     val mapper = ObjectMapper(
         JsonFactory.builder()
             .streamReadConstraints(
