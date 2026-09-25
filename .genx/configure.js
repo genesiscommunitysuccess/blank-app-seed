@@ -44,6 +44,26 @@ module.exports = async (data, utils) => {
   const FDC3EventHandlersEnabled = data.routes.find(
     (route) => route.FDC3EventHandlersEnabled,
   );
+  // AI chat — ONE gate for everything the feature emits, server and client alike.
+  //
+  // `data.ui` here IS the project's ui.config (the generator passes it as the `ui` argument), so the
+  // block is `data.ui.ai`, not `data.ui.config.ai`: gated on the latter it would silently never
+  // fire. React only, because the panel is React only, and the server endpoint follows the same
+  // gate — an endpoint with no panel to call it would be a router compile risk with no user.
+  const aiVendor = data.ui?.ai?.vendor === 'anthropic' ? 'anthropic' : 'gemini';
+  data.AI = {
+    enabled: !!data.ui?.ai?.enabled && data.framework === 'react',
+    // The models the proxy lets a request ask for: every tier (low, high, reasoning) of the chosen
+    // vendor, copied from foundation-ui's DEFAULT_AI_TIERS (foundation-ai src/tiers/ai-tiers.ts,
+    // 3fb72a1096: lines 150, 159, 171 and 179, 187, 196). Hard-coded, so a tier-table change means
+    // updating these too.
+    allowedModels:
+      aiVendor === 'anthropic'
+        ? 'claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
+        : 'gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview',
+    maxOutputTokens: 16000,
+  };
+
   const FDC3ListenersEnabled = data.ui?.fdc3?.channels?.length;
   data.FDC3 = {
     includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
@@ -175,6 +195,18 @@ module.exports = async (data, utils) => {
       generateCsv(entity, utils);
     });
 
+
+  // The chat proxy. It declares the AI_CHAT right but does not seed it: the project's rights files
+  // belong to the generator that sends them, and a second writer here would be overwritten by the
+  // csv loop above anyway (RIGHT, PROFILE and PROFILE_RIGHT arrive with no mode, so they replace).
+  if (data.AI.enabled) {
+    const appModule = path.resolve(__dirname, '../server/{{appName}}-app/src/main/genesis');
+    utils.writeFileWithData(
+      path.join(appModule, 'scripts/ai-service-web-handler.kts'),
+      data,
+      path.resolve(__dirname, 'templates/server/ai-service-web-handler.kts.hbs'),
+    );
+  }
 
   if (data.excludeGradleWrapper) {
     deleteGradleWrappers();
