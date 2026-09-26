@@ -17,7 +17,8 @@ const registration = registerGenesisAssistant({
 });
 
 // One assistant for the page, kept across the layout rebuilding its targets (it does on every
-// reconnect). Its conversation lives in a store kept under `session-key`, one per signed-in user.
+// reconnect). Its conversation is kept in memory under `session-key` for the page's life, one per
+// signed-in user; a reload starts a new one.
 let assistant: FoundationAiAssistant | undefined;
 
 // Checked on every mount: the user can change while the layout is off the page (the login page has
