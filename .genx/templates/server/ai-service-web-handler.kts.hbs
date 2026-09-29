@@ -6,9 +6,9 @@
  * AI chat proxy — generated with this application, safe to edit.
  *
  * Your app's own endpoint for the chat panel: the browser talks to this, and this talks to the
- * vendor with YOUR key. The key is a system-definition item, never a file in this project —
- * set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY (or _AI_GEMINI_API_KEY) in the environment that starts
- * the server and restart it. A user needs the AI_CHAT right to call these.
+ * vendor with YOUR key. The key is read from the environment that starts the server, never from a
+ * file in this project: set AI_ANTHROPIC_API_KEY (or AI_GEMINI_API_KEY) there and restart it. A
+ * user needs the AI_CHAT right to call these.
  */
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -72,6 +72,30 @@ webHandlers("ai-service") {
         Result.failure(e)
     }
 
+    // The keys come straight from the process environment, never from the system definition: a build
+    // writes every system-definition item, a GENESIS_SYSDEF_ one included, in plain text into
+    // build/genesis-home/generated/cfg/generated-system-definition.json, so a key read that way ends
+    // up in every copy of build/.
+    fun keyFor(vendor: String): String = java.lang.System.getenv("AI_" + vendor + "_API_KEY")?.trim() ?: ""
+
+    // A key set the old way is not used: the proxy answers as if none were set. A plain one is already
+    // in the build files. Said once, without the value.
+    for (vendor in listOf("ANTHROPIC", "GEMINI")) {
+        if (java.lang.System.getenv("GENESIS_SYSDEF_AI_" + vendor + "_API_KEY") != null) {
+            LOG.warn(
+                "ai-service: GENESIS_SYSDEF_AI_" + vendor + "_API_KEY is written into the app's build files, " +
+                    "so it is not used; set AI_" + vendor + "_API_KEY instead, delete the app's build " +
+                    "directory and rotate the key"
+            )
+        }
+        if (java.lang.System.getenv("GENESIS_ENCRYPTED_SYSDEF_AI_" + vendor + "_API_KEY") != null) {
+            LOG.warn(
+                "ai-service: GENESIS_ENCRYPTED_SYSDEF_AI_" + vendor + "_API_KEY is not read; set AI_" + vendor +
+                    "_API_KEY instead"
+            )
+        }
+    }
+
     // The limits this app was generated with. They live here, not in a system-definition file,
     // because a generator may rewrite that file; a system-definition item of the same name overrides
     // them (GENESIS_SYSDEF_AI_ALLOWED_MODELS, GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
@@ -129,16 +153,7 @@ webHandlers("ai-service") {
             }
 
             handleRequest {
-                val apiKey = readItem("AI_ANTHROPIC_API_KEY").getOrElse {
-                    error(
-                        HttpStatusCode.FailedDependency,
-                        mapOf(
-                            "code" to "KEY_UNREADABLE",
-                            "error" to "The anthropic API key configured for this application could not be read. " +
-                                "If it is encrypted, check the server's GenesisKey."
-                        )
-                    )
-                }?.trim() ?: ""
+                val apiKey = keyFor("ANTHROPIC")
                 if (apiKey.isEmpty()) {
                     // 424, never 503: a client retries a 503 and the user waits instead of being
                     // told the one thing that fixes this.
@@ -147,7 +162,7 @@ webHandlers("ai-service") {
                         mapOf(
                             "code" to "NO_API_KEY",
                             "error" to "No anthropic API key is configured for this application. " +
-                                "Set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY in the server's environment and restart."
+                                "Set AI_ANTHROPIC_API_KEY in the server's environment and restart."
                         )
                     )
                 }
@@ -157,7 +172,7 @@ webHandlers("ai-service") {
                         mapOf(
                             "code" to "BAD_API_KEY",
                             "error" to "The anthropic API key configured for this application contains characters " +
-                                "an API key cannot have. Set GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY again and restart."
+                                "an API key cannot have. Set AI_ANTHROPIC_API_KEY again and restart."
                         )
                     )
                 }
@@ -265,16 +280,7 @@ webHandlers("ai-service") {
             }
 
             handleRequest {
-                val apiKey = readItem("AI_GEMINI_API_KEY").getOrElse {
-                    error(
-                        HttpStatusCode.FailedDependency,
-                        mapOf(
-                            "code" to "KEY_UNREADABLE",
-                            "error" to "The gemini API key configured for this application could not be read. " +
-                                "If it is encrypted, check the server's GenesisKey."
-                        )
-                    )
-                }?.trim() ?: ""
+                val apiKey = keyFor("GEMINI")
                 if (apiKey.isEmpty()) {
                     // 424, never 503: a client retries a 503 and the user waits instead of being
                     // told the one thing that fixes this.
@@ -283,7 +289,7 @@ webHandlers("ai-service") {
                         mapOf(
                             "code" to "NO_API_KEY",
                             "error" to "No gemini API key is configured for this application. " +
-                                "Set GENESIS_SYSDEF_AI_GEMINI_API_KEY in the server's environment and restart."
+                                "Set AI_GEMINI_API_KEY in the server's environment and restart."
                         )
                     )
                 }
@@ -293,7 +299,7 @@ webHandlers("ai-service") {
                         mapOf(
                             "code" to "BAD_API_KEY",
                             "error" to "The gemini API key configured for this application contains characters " +
-                                "an API key cannot have. Set GENESIS_SYSDEF_AI_GEMINI_API_KEY again and restart."
+                                "an API key cannot have. Set AI_GEMINI_API_KEY again and restart."
                         )
                     )
                 }
