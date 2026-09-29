@@ -1,5 +1,35 @@
 # Changelog
 
+## [5.27.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.1...v5.27.2-prerelease.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* address release workflow review comments 67ce8c3
+* address second round of release workflow review comments 4a1c5f5
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#616) 545eb21
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) 489b951
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) (#633) ede81ee
+* default dist-tag to latest when semantic-release channel is null ce5a216
+* merge main into prerelease GENC-1362 (#589) c7eed71
+* resolve from Artifactory before Maven Central in every module (GSF-8370) 2a263c2
+* **server:** query the Plugin Portal before Maven Central (GSF-8370) 725b377
+* **server:** resolve from Artifactory before Maven Central (GSF-8370) 64f1d3f
+* **server:** resolve from Artifactory before Maven Central (GSF-8370) (#628) f29106c
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e2f022d
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fe2dc7d
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4204083
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 57d68e9
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3755030
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fff92ca
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b1155f0
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) 0cf7b88
+* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) (#634) b5af5bf
+
 ## [5.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.0...v5.27.1) (2026-09-24)
 
 
