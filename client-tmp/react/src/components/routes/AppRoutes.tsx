@@ -2,10 +2,10 @@ import { renderAppRoutes } from '@genesislcap/foundation-react-utils/router';
 import DefaultLayout from '../../layouts/default/DefaultLayout';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage.tsx';
 import { useRoutesContext } from '../../store/RoutesContext';
-import ProtectedRoute from './ProtectedRoute';
 {{#if routes.[0]}}
 import SingleComponent, { initialComponentName } from '../single-component/SingleComponent';
 {{/if}}
+import ProtectedRoute from './ProtectedRoute';
 
 /**
  * Builds the app's `<Routes>` from the declarative route table (see RoutesContext)

@@ -1,120 +1,202 @@
 # Changelog
 
-## [5.22.2-prerelease.11](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.10...v5.22.2-prerelease.11) (2026-09-22)
+## [5.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.0...v5.27.1) (2026-09-24)
 
 
 ### Bug Fixes
 
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) e2f022d
+* move the UI packages to 15.39.0 and onto the stable grid they ship GENC-1611 (#637) f7314a5
+* register the Angular grid with the stable grid's own styles, not the legacy ones GENC-1611 740cdbc
 
-## [5.22.2-prerelease.10](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.9...v5.22.2-prerelease.10) (2026-09-22)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 57d68e9
-
-## [5.22.2-prerelease.9](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.8...v5.22.2-prerelease.9) (2026-09-21)
+## [5.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.26.0...v5.27.0) (2026-09-18)
 
 
-### Bug Fixes
+### Features
 
-* resolve from Artifactory before Maven Central in every module (GSF-8370) 2a263c2
-* **server:** query the Plugin Portal before Maven Central (GSF-8370) 725b377
-* **server:** resolve from Artifactory before Maven Central (GSF-8370) 64f1d3f
-* **server:** resolve from Artifactory before Maven Central (GSF-8370) (#628) f29106c
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 18eba80
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 (#626) 1c75f00
 
-## [5.22.2-prerelease.8](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.7...v5.22.2-prerelease.8) (2026-09-21)
+## [5.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.25.0...v5.26.0) (2026-09-17)
+
+
+### Features
+
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) d5f63d1
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) (#625) 15312e0
 
 
 ### Bug Fixes
 
-* **client:** resolve the client buildscript from Artifactory (GSF-8370) 489b951
-* **client:** resolve the client buildscript from Artifactory (GSF-8370) (#633) ede81ee
+* type angular tile gridOptions concretely so ng build passes [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 528b116
+* use the RapidGridProBeta react wrapper for grid-pro tiles [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 95cbfb9
 
-## [5.22.2-prerelease.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.6...v5.22.2-prerelease.7) (2026-09-21)
-
-
-### Bug Fixes
-
-* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) 0cf7b88
-* use jakarta.inject in the scaffolded EventHandlerTest (GSF-7926) (#634) b5af5bf
-
-## [5.22.2-prerelease.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.5...v5.22.2-prerelease.6) (2026-09-10)
+## [5.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.24.0...v5.25.0) (2026-09-10)
 
 
-### Bug Fixes
+### Features
 
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fe2dc7d
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) 615dd5d
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) (#624) 501c90d
 
-## [5.22.2-prerelease.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.4...v5.22.2-prerelease.5) (2026-09-10)
+## [5.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.4...v5.24.0) (2026-09-04)
 
 
-### Bug Fixes
+### Features
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 3755030
+* update FUI version GENC-1581 06a7d4d
+* update FUI version GENC-1581 (#622) 086cb9b
 
-## [5.22.2-prerelease.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.3...v5.22.2-prerelease.4) (2026-09-07)
+## [5.23.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.3...v5.23.4) (2026-09-01)
 
 
 ### Bug Fixes
 
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 4204083
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 a948edd
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 (#621) 07cf830
 
-## [5.22.2-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.2...v5.22.2-prerelease.3) (2026-09-04)
-
-
-### Bug Fixes
-
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) fff92ca
-
-## [5.22.2-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.1...v5.22.2-prerelease.2) (2026-08-21)
+## [5.23.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.2...v5.23.3) (2026-09-01)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b1155f0
+* correct the placeholder comment now that nothing sets the class GENC-0 bc08e96
+* drop the React tile className wiring for now GENC-0 386865e
+* make the React tile style placeholder target a real selector GENC-0 17f00ac
+* make the React tile style placeholder target a real selector GENC-0 (#620) 70b82a6
+* make the smart-form tile always render multi-line to satisfy oxfmt GENC-0 24622f7
+* set the tile's className so the style placeholder selector matches GENC-0 656b18b
 
-## [5.22.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.22.2-prerelease.1) (2026-08-14)
-
-
-### Bug Fixes
-
-* address release workflow review comments 67ce8c3
-* address second round of release workflow review comments 4a1c5f5
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#616) 545eb21
-* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
-* default dist-tag to latest when semantic-release channel is null ce5a216
-* merge main into prerelease GENC-1362 (#589) c7eed71
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
-
-## [5.17.3-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.2...v5.17.3-prerelease.3) (2026-08-12)
+## [5.23.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.1...v5.23.2) (2026-08-28)
 
 
 ### Bug Fixes
 
-* address release workflow review comments 67ce8c3
-* address second round of release workflow review comments 4a1c5f5
-* default dist-tag to latest when semantic-release channel is null ce5a216
+* drop the post-login watcher superseded by the foundation-auth fallback fix [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c142f0
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 450a2fe
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#619) 1b4fd2c
+* re-assert the post-login destination while the auth router tears down [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c175e7
 
-## [5.17.3-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.1...v5.17.3-prerelease.2) (2026-07-27)
-
-
-### Bug Fixes
-
-* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
-
-## [5.17.3-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3-prerelease.1) (2026-07-07)
+## [5.23.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.0...v5.23.1) (2026-08-25)
 
 
 ### Bug Fixes
 
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
-* merge main into prerelease GENC-1362 (#589) c7eed71
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 b093abe
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 (#617) aafb04f
+* satisfy new oxlint react rules in seed template and route generator GENC-0 b5b12af
+
+## [5.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.23.0) (2026-08-18)
+
+
+### Features
+
+* CI builds the react app; react jest stack repaired; store uses slice initial state [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 62db073
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 7ec4e78
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 6496554
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) (#575) b64f8b9
+
+
+### Bug Fixes
+
+* address code review - serializer robustness, permission semantics, tooling hardening [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 565c9ce
+* address follow-up review - empty gridOptions, react CI coverage, husky invocation [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) c529d7e
+* document-title fallback uses the app name, not 'React App' [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 5d099a7
+* e2e tests actually navigate; template escaping and dead-code cleanups [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) b43ae68
+* generated apps lint-clean out of the box for all frameworks, tiles and layouts [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) f8ee12f
+* pre-commit lint fixes to convergence before gating [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) d9dc184
+* quiet oxlint-staged fix passes and surface spawn failures [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 33ccf58
+* schema import gating, FDC3 width pin, generated-dir glob alignment [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) dfbfd2a
+* type-check and build cleanliness for generated apps [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 8838670
+
+## [5.22.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.0...v5.22.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f02e9d3
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#613) 94ac8e2
+
+## [5.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.1...v5.22.0) (2026-08-04)
+
+
+### Features
+
+* bump versions.UI to 15.4.1 for the Button appearance type fix GENC-1473 (#611) 001f51d
+
+## [5.21.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.0...v5.21.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#610) 46bf5e4
+
+## [5.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.20.0...v5.21.0) (2026-07-27)
+
+
+### Features
+
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 28bb768
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#607) 1d8f13e
+
+
+### Bug Fixes
+
+* **react:** add foundation-react-utils dep + avoid inline style double-brace [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e5d676
+* **react:** theme single-component via FUI modal-theme (active-theme) not legacy design-tokens [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 020d99e
+
+## [5.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.2...v5.20.0) (2026-07-23)
+
+
+### Features
+
+* generate typed event DETAILS via event-type-codegen GENC-0 236a8f0
+* generate typed event DETAILS via event-type-codegen GENC-0 (#606) 3a36492
+
+## [5.19.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.1...v5.19.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* replace foundation-login with foundation-auth dependency GENC-0 fd4d102
+* replace foundation-login with foundation-auth dependency GENC-0 (#604) 4964197
+
+## [5.19.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.0...v5.19.1) (2026-07-21)
+
+
+### Bug Fixes
+
+* update FUI version GENC-0 62a99e6
+* update FUI version GENC-0 (#603) ccc1cb0
+
+## [5.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.18.0...v5.19.0) (2026-07-10)
+
+
+### Features
+
+* adopt FUI modal theme API for theme selection GENC-0 (#602) 8ee122a
+* apply UX default theme to the seed default GENC-0 e6e68de
+* migrate theming to the FUI modal theme API ([FUI-2575](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2575)) GENC-0 60fd54a
+
+
+### Bug Fixes
+
+* align modal theming with FUI review-fixes PR 2384 GENC-0 f326bca
+
+## [5.18.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3...v5.18.0) (2026-07-08)
+
+
+### Features
+
+* update FUI version GENC-0 6a22eb7
+* update FUI version GENC-0 (#601) bf73353
+
+## [5.17.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3) (2026-07-07)
+
+
+### Bug Fixes
+
+* update FUI version GENC-0 80c1350
+* update FUI version GENC-0 (#600) 746b025
 
 ## [5.17.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.1...v5.17.2) (2026-07-03)
 

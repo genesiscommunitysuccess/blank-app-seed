@@ -8,5 +8,4 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   styleUrl: './auth-login.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AuthLoginComponent {
-}
+export class AuthLoginComponent {}

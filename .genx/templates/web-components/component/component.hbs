@@ -1,31 +1,30 @@
+{{#if tile.config.columns}}
+import type { ColDef } from '@ag-grid-community/core';
+{{/if}}
 import { Connect } from '@genesislcap/foundation-comms';
 import { User } from '@genesislcap/foundation-user';
-import { customElement, GenesisElement, observable } from '@genesislcap/web-core';
-{{#if tile.config.gridOptions}}
-import { gridOptions as baseGridOptions } from './{{kebabCase tile.title}}.gridOptions';
-{{/if}}
+import { customElement, GenesisElement{{#if tile.config.columns}}, observable{{/if}} } from '@genesislcap/web-core';
 {{#if tile.config.eventing.publishEventName}}
-import { actions } from '../../../store/store';
-{{/if}}
+import { actions{{#if tile.config.eventing.listener}}, selectors{{/if}} } from '../../../store/store';
+{{else}}
 {{#if tile.config.eventing.listener}}
 import { selectors } from '../../../store/store';
 {{/if}}
-import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
-import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
+{{/if}}
 {{#if tile.config.columns}}
 import { columnDefs } from './{{kebabCase tile.title}}.column.defs';
-import { ColDef } from '@ag-grid-community/core';
 {{/if}}
+import { {{pascalCase tile.title}}Styles as styles } from './{{kebabCase tile.title}}.styles';
+import { {{pascalCase tile.title}}Template as template } from './{{kebabCase tile.title}}.template';
 
 {{#ifAny tile.metadata.comment tile.metadata.todo}}
 /**
 {{~#if tile.metadata.comment}}{{{ tile.metadata.comment }}}{{/if}}
-{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}} 
+{{~#if tile.metadata.todo}}{{#if tile.metadata.comment}}
  *{{/if}}
  * TODO: {{{ tile.metadata.todo }}}{{/if}}
  */
 {{/ifAny}}
-
 @customElement({
   name: '{{kebabCase tile.componentName}}',
   template,
@@ -34,13 +33,12 @@ import { ColDef } from '@ag-grid-community/core';
 export class {{pascalCase tile.componentName}} extends GenesisElement {
   @User user: User;
   @Connect connect!: Connect;
+{{#if tile.config.columns}}
 
-  {{#if tile.config.columns}}
-  @observable columns: ColDef[] = [
-    ...columnDefs,
-  ];
-  {{/if}}
-  {{#if tile.config.eventing.publishEventName}}
+  @observable columns: ColDef[] = [...columnDefs];
+{{/if}}
+{{#if tile.config.eventing.publishEventName}}
+
   public handleRowSelection = (e: any) => {
     const selectedRows = e.api.getSelectedRows();
     if (!selectedRows || !selectedRows.length) {
@@ -50,11 +48,12 @@ export class {{pascalCase tile.componentName}} extends GenesisElement {
     const { TIMESTAMP, RECORD_ID, ROW_REF, ...data } = selectedRows[0];
     actions.eventing.publish{{pascalCase tile.config.eventing.publishEventName}}(data);
   };
-  {{/if}}
-  {{#if tile.config.eventing.listener}}
+{{/if}}
+{{#if tile.config.eventing.listener}}
+
   getCriteria() {
     const c = selectors.eventing.getCriteriaFor{{pascalCase tile.title}}();
     return c || '';
   }
-  {{/if}}
+{{/if}}
 }

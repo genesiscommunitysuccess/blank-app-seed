@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#
+# Git pre-commit hook. Enabled by `npm run git:setup` from the client directory,
+# which points core.hooksPath at this directory (husky).
+#
+# Runs lint-staged in client/, where the oxlint/oxfmt binaries and the
+# lint-staged config live.
+cd client && npx --no lint-staged

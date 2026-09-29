@@ -25,7 +25,8 @@ Run `npm run test:e2e` to execute the end-to-end tests via a platform of your ch
 
 ## Linting
 
-Run `npm run lint` to lint the project.
+Run `npm run lint` to lint the project (Oxlint → Oxfmt → Stylelint via `genx lint -l ox`).
+Run `npm run lint:fix` to auto-fix lint findings and formatting.
 
 ## Styling
 
@@ -50,9 +51,8 @@ modes, and the selected mode is remembered across reloads.
 - `npm run dev:intellij`: Serves the project in development mode (specific for IntelliJ).
 - `npm run dev:https`: Serves the project in development mode with HTTPS.
 - `npm run dev:webpack`: Serves the project in development mode (specific for webpack configuration).
-- `npm run lint`: Lints the project using the specified profile.
-- `npm run lint:fix`: Fixes linting errors in the project.
-- `npm run lint:eslint`: Lints the project using ESLint and the specified profile.
+- `npm run lint`: Lints the project (Oxlint → Oxfmt → Stylelint).
+- `npm run lint:fix`: Fixes lint findings and formatting.
 - `npm run lint:stylelint`: Lints CSS using a custom script.
 - `npm run test`: Runs unit tests.
 - `npm run test:e2e`: Runs end-to-end tests.

@@ -110,7 +110,7 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
   FDC3ReadyHandler = () => {
     {{#each FDC3.channels}}
     listenToChannel('{{this.name}}', '{{this.type}}', (result) => {
-      console.log('Received FDC3 channel message on: {{this.name}} channel, type: {{this.type}}', result);
+      console.log('Received FDC3 message on {{this.name}} ({{this.type}})', result);
       // TODO: Add your listener logic here
       // E.g. open a modal or route to specific page: Route.path.push(`[Route name]`);
     });

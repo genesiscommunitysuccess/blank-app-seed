@@ -7,6 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { layoutComponentImportsByName } from '../app.config';
+
 @Directive({
   selector: '[appLayoutLazyLoad]',
 })

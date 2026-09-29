@@ -6,7 +6,7 @@ import { FoundationRouter } from '@genesislcap/foundation-ui';
 import * as zeroDesignSystem from '@genesislcap/foundation-zero';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
-import { rapidGridComponents, rapidGridProBeta } from '@genesislcap/rapid-grid-pro';
+import { rapidGridComponents, rapidGridPro } from '@genesislcap/rapid-grid-pro';
 import { NotPermittedComponent } from './not-permitted-component';
 
 /**
@@ -32,13 +32,15 @@ export async function registerComponents() {
     designSystem: rapidDesignSystem,
   });
 
-  rapidDesignSystem.provideDesignSystem().register(
-    rapidDesignSystem.baseComponents,
-    rapidGridProBeta(),
-    rapidGridComponents,
-    g2plotChartsComponents,
-    foundationLayoutComponents,
-  );
+  rapidDesignSystem
+    .provideDesignSystem()
+    .register(
+      rapidDesignSystem.baseComponents,
+      rapidGridPro(),
+      rapidGridComponents,
+      g2plotChartsComponents,
+      foundationLayoutComponents,
+    );
 
   configureHeader({
     templateOptions: {
