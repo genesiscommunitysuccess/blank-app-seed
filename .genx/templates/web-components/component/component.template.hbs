@@ -1,26 +1,22 @@
-import { html, whenElse, repeat } from '@genesislcap/web-core';
+import { html, whenElse{{#ifEquals tile.componentType "grid"}}{{#if tile.config.gridOptions}}, repeat{{/if}}{{/ifEquals}} } from '@genesislcap/web-core';
 import { getViewUpdateRightComponent } from '../../../utils';
 import type { {{pascalCase tile.componentName}} } from './{{kebabCase tile.title}}';
-{{#if tile.config.createFormUiSchema}}
+{{#ifAny tile.config.createFormUiSchema tile.config.uischema}}
 import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
-{{/if}}
-{{#if tile.config.uischema}}
-import { createFormSchema } from './{{kebabCase tile.title}}.create.form.schema';
-{{/if}}
-{{#if tile.config.updateFormUiSchema}}
-import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
+{{/ifAny}}
+{{#if tile.config.customEvents}}
+import { customActions } from './{{kebabCase tile.title}}.events.config';
 {{/if}}
 {{#if tile.config.filterFormUiSchema}}
 import { filterFormSchema } from './{{kebabCase tile.title}}.filter.form.schema';
 {{/if}}
-{{#if tile.config.customEvents}}
-import { customActions } from './{{kebabCase tile.title}}.events.config';
-{{/if}}
 {{#if tile.config.gridOptions}}
 import { gridOptions } from './{{kebabCase tile.title}}.gridOptions';
 {{/if}}
-
+{{#if tile.config.updateFormUiSchema}}
+import { updateFormSchema } from './{{kebabCase tile.title}}.update.form.schema';
+{{/if}}
 
 export const {{pascalCase tile.title}}Template = html<{{pascalCase tile.componentName}}>`
-    {{> (lookup tile 'type') tile}}
+  {{> (lookup tile 'type') tile}}
 `;

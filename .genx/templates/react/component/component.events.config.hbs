@@ -1,11 +1,36 @@
-import { type CustomAction, CrudMenuPosition, UiSchema } from '@genesislcap/foundation-entity-management';
+{{#ifContains tile.config.customEvents '"position":'}}
+{{#ifContains tile.config.customEvents '"uischema":'}}
+import {
+  type CustomAction,
+  CrudMenuPosition,
+  UiSchema,
+} from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+{{else}}
+{{#ifContains tile.config.customEvents '"uischema":'}}
+import { type CustomAction, UiSchema } from '@genesislcap/foundation-entity-management';
+{{else}}
+import { type CustomAction } from '@genesislcap/foundation-entity-management';
+{{/ifContains}}
+{{/ifContains}}
 
+{{#ifContains tile.config.customEvents '"uischema":'}}
 {{#each tile.config.customEvents}}
 {{#if this.hasForm}}
 export const {{camelCase this.name}}FormSchema: UiSchema = {{{this.uischema}}};
 {{/if}}
 {{/each}}
 
+{{/ifContains}}
+{{#each tile.config.customEvents}}
+{{#if this.defaultValues}}
+{{! Hoisted so the serialised literal keeps its own indentation; `as const` keeps the record-type discriminators literal so they still satisfy `DefaultValues`. }}
+const {{camelCase this.name}}DefaultValues = {{{this.defaultValues}}} as const;
+
+{{/if}}
+{{/each}}
 export const customActions: CustomAction[] = [
   {{#each tile.config.customEvents}}
   {
@@ -17,7 +42,9 @@ export const customActions: CustomAction[] = [
       {{#if this.hasForm}}
       uiSchema: {{camelCase this.name}}FormSchema,
       {{/if}}
-      defaultValues: {{{this.defaultValues}}},
+      {{#if this.defaultValues}}
+      defaultValues: {{camelCase this.name}}DefaultValues,
+      {{/if}}
     },
     {{#if this.position}}
     position: CrudMenuPosition.{{{pascalCase this.position}}},
@@ -26,12 +53,12 @@ export const customActions: CustomAction[] = [
     icon: '{{this.icon}}',
     {{/if}}
     {{#if this.tooltip}}
-    tooltip: '{{this.tooltip}}',
+    tooltip: {{{this.tooltipJs}}},
     {{/if}}
     {{#if this.confirmSubmit}}
     confirmSubmit: {
-      state: '{{this.confirmSubmit.state}}',
-      message: '{{this.confirmSubmit.message}}'
+      state: '{{#if this.confirmSubmit.state}}{{this.confirmSubmit.state}}{{else}}enabled{{/if}}',
+      message: {{{this.confirmSubmitMessageJs}}},
     },
     {{/if}}
     requiresSelection: true,

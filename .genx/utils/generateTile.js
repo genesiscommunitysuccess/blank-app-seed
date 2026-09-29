@@ -176,7 +176,16 @@ const getFilesToWrite = (
       }
       break;
     case 'smart-form':
-      filesToWrite.push(componentAddFormFile);
+      // Only write the schema module when there is a schema to export; a
+      // schema-less smart-form must not emit a file with unused imports. Both
+      // keys count: the component templates import createFormSchema for either
+      // one, so a file written for `uischema` alone would leave the
+      // `createFormUiSchema` variant importing a module that was never written.
+      // (formatRouteData normalises a smart-form's createFormUiSchema into
+      // uischema, so this is the belt to that braces.)
+      if (tileData.config?.uischema || tileData.config?.createFormUiSchema) {
+        filesToWrite.push(componentAddFormFile);
+      }
       break;
     default:
       break;

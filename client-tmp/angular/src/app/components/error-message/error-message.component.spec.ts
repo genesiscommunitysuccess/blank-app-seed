@@ -66,7 +66,7 @@ describe('ErrorMessageComponent', () => {
     component.elementType = 'h2';
     component.message = 'Testing class application.';
     fixture.detectChanges();
-   
+
     const compiled = fixture.nativeElement;
     const element = compiled.querySelector('.error-message');
     expect(element).toBeTruthy();

@@ -9,10 +9,30 @@ const defaultLayout = {
         children: [
           {{#each route.tiles}}
           {{#ifEquals @index 0}}
-          { type: 'tabset', weight: 50, children: [{ type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' }] },
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              {
+                type: 'tab',
+                name: {{{this.titleJs}}},
+                component: '{{pascalCase this.componentName}}',
+              },
+            ],
+          },
           {{/ifEquals}}
           {{#ifEquals @index 2}}
-          { type: 'tabset', weight: 50, children: [{ type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' }] },
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              {
+                type: 'tab',
+                name: {{{this.titleJs}}},
+                component: '{{pascalCase this.componentName}}',
+              },
+            ],
+          },
           {{/ifEquals}}
           {{/each}}
         ],
@@ -23,10 +43,30 @@ const defaultLayout = {
         children: [
           {{#each route.tiles}}
           {{#ifEquals @index 1}}
-          { type: 'tabset', weight: 50, children: [{ type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' }] },
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              {
+                type: 'tab',
+                name: {{{this.titleJs}}},
+                component: '{{pascalCase this.componentName}}',
+              },
+            ],
+          },
           {{/ifEquals}}
           {{#ifEquals @index 3}}
-          { type: 'tabset', weight: 50, children: [{ type: 'tab', name: '{{this.title}}', component: '{{camelCase this.componentName}}' }] },
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              {
+                type: 'tab',
+                name: {{{this.titleJs}}},
+                component: '{{pascalCase this.componentName}}',
+              },
+            ],
+          },
           {{/ifEquals}}
           {{/each}}
         ],
