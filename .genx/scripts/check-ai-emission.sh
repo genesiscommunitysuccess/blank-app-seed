@@ -24,8 +24,9 @@
 # Usage:  .genx/scripts/check-ai-emission.sh
 # Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
 #                   (checkAuthPermissions) to report no insecure endpoint, and compile both vendors'
-#                   proxies with the platform's preCompileScripts. Needs Genesis artifactory credentials,
-#                   as the sample-app build does.
+#                   proxies with the platform's preCompileScripts, and render the system definition
+#                   with canary keys to show that a key the proxy reads never reaches a build file.
+#                   Needs Genesis artifactory credentials, as the sample-app build does.
 #         GRADLE_PARAMS=...  extra arguments for every gradle call (CI passes -PuseDevRepo=true on
 #                   prerelease).
 #         KEEP=1    keep the generated apps for inspection.
@@ -245,6 +246,16 @@ for label in on onanthropic; do
     && fail "$label: the proxy loosens its AI_CHAT check"
   blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
   [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
+
+  # The keys come from the environment. Everything read through the system definition is rendered, in
+  # plain text, into files under build/, so only the two settings that are not secret go through it,
+  # each by name, and the system definition is touched only inside readItem.
+  sysdef_reads="$(live_code "$handler" | grep -oE 'readItem\([^)]*\)' | LC_ALL=C sort -u | tr '\n' ' ')"
+  [ "$sysdef_reads" = 'readItem("AI_ALLOWED_MODELS") readItem("AI_MAX_OUTPUT_TOKENS") readItem(name: String) ' ] \
+    || fail "$label: the proxy reads more than its two settings through the system definition: $sysdef_reads"
+  sysdef_gets="$(live_code "$handler" | grep -oE 'systemDefinition[.A-Za-z]*\([^)]*\)' | tr '\n' ' ')"
+  [ "$sysdef_gets" = 'systemDefinition.get(name) ' ] \
+    || fail "$label: the proxy reads the system definition outside readItem: $sysdef_gets"
 
   # The router must let a body just over the proxy's own limit through, so the proxy answers it with
   # its REQUEST_TOO_LARGE code rather than the router refusing it with an empty 413.
@@ -585,6 +596,34 @@ if [ "${GRADLE:-0}" = "1" ]; then
     grep -q "GENESIS_ROUTER: Compiled script $name " "$WORK_DIR/compile.log" \
       || fail "gradle: preCompileScripts never compiled $name"
   done
+
+  # A key must never reach a file the build writes. Every GENESIS_SYSDEF_ variable becomes a
+  # system-definition item, and genesisConfigJar renders them all in plain text into
+  # build/genesis/rendered-templates/generated-system-definition.json. So the render runs with CANARY
+  # values, never a real key, under the names the proxy reads and under the old names it refuses. The
+  # old ones MUST land: that proves the render ran, so the new ones' absence means something.
+  # --rerun so it renders even when Gradle would call it up to date.
+  echo "=== gradle: no key the proxy reads lands in the build's files"
+  canary="canary-$$-not-a-key"
+  ( export AI_GEMINI_API_KEY="$canary-gemini" AI_ANTHROPIC_API_KEY="$canary-anthropic" \
+      GENESIS_SYSDEF_AI_GEMINI_API_KEY="$canary-old-gemini" GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY="$canary-old-anthropic"
+    gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:genesisConfigJar --rerun ) \
+    || fail "gradle: the render with canary keys failed (see the log above)"
+  # The files under the AI app that hold a value, with every jar and zip looked into as well.
+  holding() {
+    { grep -rlF "$1" "$WORK_DIR/on/demo" --exclude-dir=node_modules 2>/dev/null
+      find "$WORK_DIR/on/demo" -name node_modules -prune -o \( -name '*.jar' -o -name '*.zip' \) -print \
+        | while read -r archive; do unzip -p "$archive" 2>/dev/null | grep -qF "$1" && echo "$archive"; done
+    } | sed "s#^$WORK_DIR/on/demo/##" | sort -u | tr '\n' ' '
+  }
+  for vendor in GEMINI ANTHROPIC; do
+    lower="$(echo "$vendor" | tr 'A-Z' 'a-z')"
+    found="$(holding "$canary-$lower")"
+    [ -z "$found" ] || fail "gradle: AI_${vendor}_API_KEY reached the build's files: $found"
+    [ -n "$(holding "$canary-old-$lower")" ] \
+      || fail "gradle: GENESIS_SYSDEF_AI_${vendor}_API_KEY reached no file, so the render never ran and this proves nothing"
+  done
+  echo "    the old names, which the proxy refuses, still land in: $(holding "$canary-old")"
 fi
 
 echo
