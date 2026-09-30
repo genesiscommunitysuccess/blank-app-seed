@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "kinds": ["request", "event"],
+  "resourceFields": ["name", "kind", "op", "context", "maxRows", "customCode"]
+}

@@ -1,4 +1,7 @@
 const versions = require('./versions.json');
+// What the pinned @genesislcap/ai-assistant reads: the kinds and resource fields the chat writer passes
+// on. CI proves it against that assistant's GENESIS_AI_CONSUMES (C-15A.6 S-6).
+const aiConsumer = require('./ai-consumer.json');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -208,25 +211,41 @@ module.exports = async (data, utils) => {
     );
   }
 
-  // The chat panel's configuration as Create resolved it (C-8). Only the contract's fields are copied,
-  // so nothing else in the payload can reach a file in the customer's app. Genx runs every .json file
-  // through Handlebars after this, so each `{{` is written as the JSON escape `\u007b\u007b`: it
-  // parses back to `{{`, and leaves Handlebars nothing to expand.
+  // The chat panel's configuration as Create resolved it (C-8). Only what the pinned assistant reads is
+  // copied, as .genx/ai-consumer.json declares it (C-15A.6 S-1): a resource of any other kind, and any
+  // other key on a resource, is dropped and said. A customCode is rebuilt from the two values the
+  // assistant reads, and only an insert, modify or delete keeps it (C-18.D.5). So nothing else in the
+  // payload can reach a file in the customer's app. Genx runs every .json file through Handlebars after
+  // this, so each `{{` is written as the JSON escape `\u007b\u007b`: it parses back to `{{`, and leaves
+  // Handlebars nothing to expand.
   if (data.AI.enabled) {
     const { enabled, vendor, tier, systemPrompt, resources } = data.ui.ai;
-    const config = {
-      enabled,
-      vendor,
-      tier,
-      systemPrompt,
-      resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({
-        name,
-        kind,
-        op,
-        context,
-        maxRows,
-      })),
+    const passed = `passed to @genesislcap/ai-assistant ${versions.UI}`;
+    const projectedCode = ({ op, customCode: code }) => {
+      if (!code || !['insert', 'modify', 'delete'].includes(op)) return undefined;
+      const names = Array.isArray(code.alsoWrites) ? code.alsoWrites : [];
+      const alsoWrites = names.filter((name) => typeof name === 'string');
+      // A list that had to be cut is not complete, whatever it says.
+      const whole = Array.isArray(code.alsoWrites) && alsoWrites.length === names.length;
+      return { alsoWrites, listComplete: whole && code.listComplete === true };
     };
+    const kept = [];
+    for (const resource of resources || []) {
+      if (!aiConsumer.kinds.includes(resource.kind)) {
+        console.warn(`ai: dropped resource ${resource.name} — kind ${resource.kind} is not ${passed}`);
+        continue;
+      }
+      for (const key of Object.keys(resource).filter((key) => !aiConsumer.resourceFields.includes(key))) {
+        console.warn(`ai: dropped ${key} on ${resource.name} — not ${passed}`);
+      }
+      const copy = Object.fromEntries(
+        aiConsumer.resourceFields.filter((key) => key in resource).map((key) => [key, resource[key]]),
+      );
+      // Left undefined, it is not written at all.
+      if ('customCode' in copy) copy.customCode = projectedCode(resource);
+      kept.push(copy);
+    }
+    const config = { enabled, vendor, tier, systemPrompt, resources: kept };
     const file = path.resolve(__dirname, '../client/src/ai/generated/ai-config.json');
     fs.mkdirSync(path.dirname(file), { recursive: true });
     const json = JSON.stringify(config, null, 2).replace(/\{\{/g, '\\u007b\\u007b');
