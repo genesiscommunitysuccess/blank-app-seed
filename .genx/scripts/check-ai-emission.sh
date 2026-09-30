@@ -60,7 +60,8 @@ AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","syste
 # must drop: two top-level keys, a key on the request, a customCode on the request and on the custom
 # event, and customCodes a writer must not pass on as sent: one with a key of its own, a name that is not
 # text and a listComplete that is not true; a whole list whose listComplete is not true; a list cut to
-# its names, and one that is not a list, each saying it is complete. It must come out as its clean form.
+# its names, and one that is not a list, each saying it is complete; and a null one. It must come out as
+# its clean form.
 AI_UI_EXTRAS_CLEAN="$(node -e '
 const u = JSON.parse(process.argv[1]);
 const named = (name) => u.ai.resources.find((resource) => resource.name === name);
@@ -69,6 +70,7 @@ named("EVENT_TRADE_MODIFY").customCode = cut(["POSITION"]);
 u.ai.resources.push(
   { name: "EVENT_TRADE_DELETE", kind: "event", op: "delete", context: "Remove a trade.", customCode: cut([]) },
   { name: "EVENT_POSITION_MODIFY", kind: "event", op: "modify", context: "Change a position.", customCode: cut(["TRADE"]) },
+  { name: "EVENT_POSITION_INSERT", kind: "event", op: "insert", context: "Open a position." },
   { name: "EVENT_TRADE_CANCEL", kind: "event", op: "custom", context: "Cancel a trade." },
 );
 console.log(JSON.stringify(u));' "$AI_UI")"
@@ -89,6 +91,7 @@ insert.customCode = {
 named("EVENT_POSITION_MODIFY").customCode = { alsoWrites: ["TRADE"], listComplete: "yes" };
 named("EVENT_TRADE_MODIFY").customCode = { alsoWrites: ["POSITION", 7], listComplete: true };
 named("EVENT_TRADE_DELETE").customCode = { alsoWrites: "TRADE", listComplete: true };
+named("EVENT_POSITION_INSERT").customCode = null;
 console.log(JSON.stringify(u));' "$AI_UI_EXTRAS_CLEAN")"
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
@@ -462,6 +465,11 @@ for (const [label, sent, clean] of [['on', geminiUi, geminiUi], ['onanthropic', 
   const rest = (pkg) => ({ ...pkg, dependencies: undefined, scripts: undefined });
   if (!isDeepStrictEqual(rest(on), rest(off))) problems.push(`${label}: package.json differs outside dependencies and scripts`);
 }
+// The declaration passes customCode on. Every expectation above derives from it, so it is pinned here.
+const insert = JSON.parse(read('on', 'client/src/ai/generated/ai-config.json')).resources.find((r) => r.name === 'EVENT_TRADE_INSERT');
+if (!isDeepStrictEqual(insert?.customCode, { alsoWrites: ['POSITION'], listComplete: false })) {
+  problems.push(`on: EVENT_TRADE_INSERT's customCode is ${JSON.stringify(insert?.customCode)}, not the fixture's`);
+}
 // Anti-vacuity: 'extras' did send what must be dropped, and was told so.
 if (!said(JSON.parse(extrasUi).ai.resources).length) problems.push('extras: the fixture smuggles nothing the writer must say');
 problems.forEach((p) => console.log(`    ${p}`));
@@ -545,8 +553,9 @@ NODE
 
 # The declaration check runs on the React AI build (generate-test-apps.sh), against whatever assistant
 # that app installed. These are the installs it never meets there: an assistant from before the export,
-# a missing package, an export with nothing in it, one that throws or imports what it may not, one for
-# import only. Each is a stand-in package.
+# none at all or a broken one, an export with nothing usable in it, one that throws, imports what it may
+# not, ends the process, prints, or keeps the process alive, and one for import or for require only.
+# Each is a stand-in package.
 echo "=== the declaration check, against assistants the build does not install"
 node - "$WORK_DIR/declaration" "$SEED_DIR/.genx/ai-consumer.json" "$SEED_DIR/.genx/scripts/check-ai-declaration.mjs" <<'NODE' \
   || fail "declaration: the check does not hold the floor (see above)"
@@ -568,7 +577,25 @@ const reads = app('reads', { '.': './index.js', './genesis/consumes': './consume
   'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`,
 });
 const before = app('before-the-export', { '.': './index.js' });
-const missing = app('missing', null);
+const noManifest = app('no-package-json', null);
+const none = path.join(work, 'no-assistant');
+fs.mkdirSync(none, { recursive: true });
+fs.writeFileSync(path.join(none, 'package.json'), '{"name":"app"}');
+const exporting = (name, text) => app(name, { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': text });
+const seedSet = JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields });
+const falsy = exporting('exports-false', 'exports.GENESIS_AI_CONSUMES = false;');
+const aFunction = exporting('exports-a-function', 'exports.GENESIS_AI_CONSUMES = () => ({});');
+// Its kinds are text that happens to hold the names: only a list counts.
+const notLists = exporting('exports-no-lists', `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: 'request,event', resourceFields: baseline.resourceFields })};`);
+const exits = exporting('exits', 'process.exit(0);');
+// It prints a line that looks like the probe's answer, and a wider one, before its own export.
+const wider = JSON.stringify({ type: 'object', consumes: { kinds: [...seed.kinds, 'unread'], resourceFields: seed.resourceFields } });
+const pretends = exporting('prints-a-wider-answer', `console.log(${JSON.stringify(wider)}); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const prints = exporting('prints', `console.log("loading"); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const stays = exporting('keeps-the-process-alive', `setInterval(() => {}, 1000); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const requireOnly = app('require-only', { './genesis/consumes': { require: './consumes.cjs' } }, {
+  'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${seedSet};`,
+});
 const empty = app('empty-export', { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': 'exports.OTHER = 1;' });
 const throws = app('throws', { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': 'throw new Error("no");' });
 // Its module needs a subpath the package does not export: that is a broken install, not an old one.
@@ -590,7 +617,8 @@ const cases = [
   ['a baseline field left out', declaring('no-op', { ...seed, resourceFields: seed.resourceFields.filter((f) => f !== 'op') }), reads, 1],
   ['the baseline, before the export', declaring('baseline', baseline), before, 0],
   ['more than the baseline, before the export', declaring('more', { ...baseline, resourceFields: [...baseline.resourceFields, 'customCode'] }), before, 1],
-  ['the baseline, with no assistant installed', declaring('baseline', baseline), missing, 1],
+  ['the baseline, with an assistant that has no package.json', declaring('baseline', baseline), noManifest, 1],
+  ['the baseline, with no assistant installed', declaring('baseline', baseline), none, 1],
   ['the baseline, with an export that names nothing', declaring('baseline', baseline), empty, 1],
   ['a declaration of another version', declaring('v2', { ...seed, version: 2 }), reads, 1],
   ['a baseline kind left out', declaring('no-event', { ...seed, kinds: ['request'] }), reads, 1],
@@ -598,6 +626,15 @@ const cases = [
   ['the baseline, with an export that throws', declaring('baseline', baseline), throws, 1],
   ['the baseline, with an export that imports what it may not', declaring('baseline', baseline), unexported, 1],
   ['the seed, on an assistant that exports it for import only', consumerFile, importOnly, 0],
+  ['the baseline, with a constant that is false', declaring('baseline', baseline), falsy, 1],
+  ['the baseline, with a constant that is a function', declaring('baseline', baseline), aFunction, 1],
+  ['the baseline, with a constant whose kinds are not a list', declaring('baseline', baseline), notLists, 1],
+  ['the baseline, with a module that ends the process', declaring('baseline', baseline), exits, 1],
+  ['a kind it does not read, on a module that prints a wider answer first', declaring('kind', { ...seed, kinds: [...seed.kinds, 'unread'] }), pretends, 1],
+  ['the seed, on a module that prints', consumerFile, prints, 0],
+  ['the seed, on a module that keeps the process alive', consumerFile, stays, 0],
+  // Required only, it reads as absent: fail-safe, as that assistant is held to the baseline.
+  ['more than the baseline, on an assistant that exports it for require only', declaring('more', { ...baseline, resourceFields: [...baseline.resourceFields, 'customCode'] }), requireOnly, 1],
 ];
 let wrong = 0;
 for (const [name, declaration, client, want] of cases) {
