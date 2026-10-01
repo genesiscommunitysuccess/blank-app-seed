@@ -214,8 +214,9 @@ module.exports = async (data, utils) => {
   // The chat panel's configuration as Create resolved it (C-8). Only what the pinned assistant reads is
   // copied, as .genx/ai-consumer.json declares it (C-15A.6 S-1): a resource of any other kind, and any
   // other key on a resource, is dropped and said. A customCode is rebuilt from the two values the
-  // assistant reads, and only an insert, modify or delete keeps it (C-18.D.5). So nothing else in the
-  // payload can reach a file in the customer's app. Genx runs every .json file through Handlebars after
+  // assistant reads, and only an insert, modify or delete keeps it (C-18.D.5); references are rebuilt
+  // the same way, and only an insert or a modify keeps them (C-17.5). So nothing else in the payload
+  // can reach a file in the customer's app. Genx runs every .json file through Handlebars after
   // this, so each `{{` is written as the JSON escape `\u007b\u007b`: it parses back to `{{`, and leaves
   // Handlebars nothing to expand.
   if (data.AI.enabled) {
@@ -229,6 +230,21 @@ module.exports = async (data, utils) => {
       const whole = Array.isArray(code.alsoWrites) && alsoWrites.length === names.length;
       return { alsoWrites, listComplete: whole && code.listComplete === true };
     };
+    // A list rebuilt item by item. Absent stays absent; a value that is not a list, or an item that is
+    // not an object, becomes null, which the assistant refuses rather than reads.
+    const isObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
+    const listOf = (value, each) => {
+      if (value === undefined) return undefined;
+      if (!Array.isArray(value)) return null;
+      return value.map((item) => (isObject(item) ? each(item) : null));
+    };
+    const projectedReferences = ({ op, references }) =>
+      op === 'insert' || op === 'modify'
+        ? listOf(references, ({ resource, fields }) => ({
+            resource,
+            fields: fields == null ? [] : listOf(fields, ({ field, targetField }) => ({ field, targetField })),
+          }))
+        : undefined;
     const kept = [];
     for (const resource of resources || []) {
       if (!aiConsumer.kinds.includes(resource.kind)) {
@@ -243,6 +259,7 @@ module.exports = async (data, utils) => {
       );
       // Left undefined, it is not written at all.
       if ('customCode' in copy) copy.customCode = projectedCode(resource);
+      if ('references' in copy) copy.references = projectedReferences(resource);
       kept.push(copy);
     }
     const config = { enabled, vendor, tier, systemPrompt, resources: kept };

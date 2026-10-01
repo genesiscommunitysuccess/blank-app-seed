@@ -81,9 +81,15 @@ const named = (name) => u.ai.resources.find((resource) => resource.name === name
 const code = { alsoWrites: ["TRADE"], listComplete: true };
 u.ai.budgetUsd = 5;
 u.ai.endpoint = "https://example.invalid";
-Object.assign(named("REQ_TRADE"), { url: "https://example.invalid", customCode: code });
+const reference = named("EVENT_TRADE_INSERT").references[0];
+Object.assign(named("REQ_TRADE"), { url: "https://example.invalid", customCode: code, references: [reference] });
+named("EVENT_TRADE_DELETE").references = [reference];
+named("EVENT_TRADE_CANCEL").references = [reference];
 named("EVENT_TRADE_CANCEL").customCode = code;
 const insert = named("EVENT_TRADE_INSERT");
+insert.references = [
+  { ...reference, url: "https://example.invalid", fields: [{ ...reference.fields[0], hint: "x" }] },
+];
 insert.customCode = {
   alsoWrites: [...insert.customCode.alsoWrites, 7],
   listComplete: "yes",
@@ -129,15 +135,29 @@ ai_artifacts_present() {
 # The C-8 contract files are Create's (server/shared-schemas/ai/), copied here verbatim. Create's resolver
 # test pins the same digests, so an edit on either side fails until both sides bump the version together.
 echo "=== C-8 contract copies"
-node - "$SEED_DIR/.genx/tests/contracts/ai" <<'NODE' || fail "C-8: a contract copy is not the one Create pins (see above)"
+node - "$SEED_DIR/.genx/tests/contracts/ai" "$SEED_DIR/.genx/versions.json" <<'NODE' || fail "C-8: a contract copy is not the one Create pins, or the UI pin is below what the copies need (see above)"
 const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.4.0', sha256: '77432cac53db75f69fdac3eda4340e2f1f4cfca17259aa0cca1ea37f24a5727e' },
-  'ai-resolver-cases.json': { version: '1.5.0', sha256: '677c2a3cf2723521efd3e7500eba04d3975dc9e68dfc32a4530be1523be5af9b' },
+  'ui-config-ai.schema.json': { version: '1.5.0', sha256: '64a0be59fa71b251638121e080b82694c347b7e4d17d3bffcfd416b8dc763b49' },
+  'ai-resolver-cases.json': { version: '1.7.0', sha256: '77b0fcacb649db30444f1c20ce9c75dd8d2c843e992d828abee625285ce7f938' },
+};
+// The copies carry queries and references, which only this UI release on reads (C-17.5): a seed that
+// takes the copies without the release would ship them to an assistant that ignores them.
+const MIN_UI_FOR_CASES = '15.47.0';
+const core = (version) => String(version).split(/[-+]/)[0].split('.').map(Number);
+const below = (a, b) => {
+  const [x, y] = [core(a), core(b)];
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] < y[i];
+  return false;
 };
 let bad = 0;
+const ui = JSON.parse(fs.readFileSync(process.argv[3], 'utf8')).UI;
+if (below(ui, MIN_UI_FOR_CASES)) {
+  console.log(`    versions.json pins UI ${ui}, below ${MIN_UI_FOR_CASES}`);
+  bad++;
+}
 for (const [file, want] of Object.entries(pinned)) {
   const bytes = fs.readFileSync(path.join(process.argv[2], file));
   const sha256 = createHash('sha256').update(bytes).digest('hex');
@@ -472,6 +492,11 @@ const insert = JSON.parse(read('on', 'client/src/ai/generated/ai-config.json')).
 if (!isDeepStrictEqual(insert?.customCode, { alsoWrites: ['POSITION'], listComplete: false })) {
   problems.push(`on: EVENT_TRADE_INSERT's customCode is ${JSON.stringify(insert?.customCode)}, not the fixture's`);
 }
+// The declaration passes references on, and the fixture carries them.
+const references = [{ resource: 'REQ_COUNTERPARTY', fields: [{ field: 'COUNTERPARTY_ID', targetField: 'COUNTERPARTY_ID' }] }];
+if (!isDeepStrictEqual(insert?.references, references)) {
+  problems.push(`on: EVENT_TRADE_INSERT's references are ${JSON.stringify(insert?.references)}, not the fixture's`);
+}
 // Anti-vacuity: 'extras' did send what must be dropped, and was told so.
 if (!said(JSON.parse(extrasUi).ai.resources).length) problems.push('extras: the fixture smuggles nothing the writer must say');
 problems.forEach((p) => console.log(`    ${p}`));
@@ -542,7 +567,11 @@ JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }
     return;
   }
   if (!fs.existsSync(file)) return problems.push(`case ${i} (${name}): no ai-config.json`);
-  if (!isDeepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
+  const written = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!isDeepStrictEqual(written, declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
+  // A case the declaration withholds nothing from reaches the app exactly as Create resolved it.
+  const withholds = said(expected.ai.resources).length > 0;
+  if (!withholds && !isDeepStrictEqual(written, JSON.parse(JSON.stringify(expected.ai)))) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
   // Every resource of a kind the declaration withholds, and every key it withholds, is said, in order,
   // and nothing else is.
   const lines = dropLines(fs.readFileSync(path.join(work, `case${i}.log`), 'utf8'));

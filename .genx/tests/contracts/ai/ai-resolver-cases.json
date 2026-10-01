@@ -1,6 +1,6 @@
 {
   "$comment": "Golden cases for the ui.config.ai resolver (GENC-1601 contract C-8). genesis-create owns this file; the seed carries a VERBATIM copy, and each side pins its digest so a change is a deliberate version bump rather than an edit. Every case states WHY it exists — a case whose reason is not obvious is a case someone will 'fix' the day it fails.",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "cases": [
     {
       "name": "AI off: nothing is emitted",
@@ -36,7 +36,7 @@
     },
     {
       "name": "A snapshot entity with insert and modify enabled",
-      "why": "The ordinary case: one readable entity, the two write paths that are on by default, and delete left out because it was never exposed (R-2 a).",
+      "why": "The ordinary case: one readable entity, the two write paths that are on by default, and delete left out because it is not enabled.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -98,8 +98,8 @@
       }
     },
     {
-      "name": "Only snapshot-enabled sources are readable; an exposed delete appears and a code-less custom is skipped",
-      "why": "Codegen emits a requestReply only for a snapshot-enabled entity or view, so POSITION has no REQ_ to address (C34 — a wrong name fails silently). Delete and custom are opt-in and here they were opted into. SETTLE_BATCH has no code, so the app registers only the generated stub, which acks and does nothing: the chat is not offered it (C-18.4 P1).",
+      "name": "Only snapshot-enabled sources are readable; an enabled delete appears and a code-less custom handler is skipped",
+      "why": "Codegen emits a requestReply only for a snapshot-enabled entity or view, so POSITION has no REQ_ to address (C34 — a wrong name fails silently). Every enabled delete is offered, and every custom handler is a candidate, with no exposure to ask for either (C-18.X). SETTLE_BATCH and REBUILD_CACHE have no code, so the app registers only the generated stubs, which ack and do nothing: the chat is offered neither, and each is said (C-18.4 P1).",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -141,16 +141,6 @@
               "name": "REBUILD_CACHE"
             }
           ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [
-              "TRADE"
-            ],
-            "custom": [
-              "SETTLE_BATCH"
-            ]
-          }
         }
       },
       "expected": {
@@ -181,85 +171,14 @@
           ]
         },
         "warnings": [
-          "ai: skipped custom event handler \"SETTLE_BATCH\" — it has no code, so its handler only acknowledges and changes nothing"
+          "ai: skipped custom event handler \"SETTLE_BATCH\" — it has no code, so its handler only acknowledges and changes nothing",
+          "ai: skipped custom event handler \"REBUILD_CACHE\" — it has no code, so its handler only acknowledges and changes nothing"
         ]
       }
     },
     {
-      "name": "A stale exposure is pruned with a warning, not an error",
-      "why": "An exposure list outlives what it points at. A validation error here would block the preview build (C70), so the resource is dropped, the build continues, and the warning says which one.",
-      "input": {
-        "payload": {
-          "projectName": "Trading Desk",
-          "components": [
-            "AssistantAI"
-          ],
-          "tables": [
-            {
-              "name": "TRADE",
-              "snapshot": {}
-            }
-          ],
-          "eventHandlers": [
-            {
-              "type": "crud",
-              "entityName": "TRADE",
-              "create": {
-                "enabled": true
-              },
-              "delete": {
-                "enabled": false
-              }
-            },
-            {
-              "type": "custom",
-              "name": "SETTLE_BATCH"
-            }
-          ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [
-              "TRADE",
-              "POSITION"
-            ],
-            "custom": [
-              "SETTLE_BATCH_V2"
-            ]
-          }
-        }
-      },
-      "expected": {
-        "ai": {
-          "enabled": true,
-          "vendor": "gemini",
-          "tier": "high",
-          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
-          "resources": [
-            {
-              "name": "REQ_TRADE",
-              "kind": "request",
-              "context": "Read current rows from the TRADE table.",
-              "maxRows": 50
-            },
-            {
-              "name": "EVENT_TRADE_INSERT",
-              "kind": "event",
-              "op": "insert",
-              "context": "Create a new TRADE record."
-            }
-          ]
-        },
-        "warnings": [
-          "ai: dropped exposed delete for \"TRADE\" — no enabled delete handler for it",
-          "ai: dropped exposed delete for \"POSITION\" — no enabled delete handler for it",
-          "ai: dropped exposed custom handler \"SETTLE_BATCH_V2\" — no handler by that name"
-        ]
-      }
-    },
-    {
-      "name": "An enabled delete handler that was never exposed stays out",
-      "why": "Deletes are opt-in (R-2 a): the handler existing is not permission to let a chat call it. Without this case the opt-in gate is unpinned — an implementation that emitted every enabled delete would pass every other case here.",
+      "name": "An enabled delete handler is offered",
+      "why": "Every enabled delete is offered (C-18.X, v2.87): the handler existing is enough, because the chat's write still goes through the user's review and approval. Without this case the rule is unpinned: an implementation that left deletes out would pass every case that never enables one.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -305,6 +224,12 @@
               "kind": "event",
               "op": "insert",
               "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record."
             }
           ]
         },
@@ -313,7 +238,7 @@
     },
     {
       "name": "An audited entity gets no _AUDIT resource",
-      "why": "`audit: true` makes codegen emit a second requestReply for <ENTITY>_AUDIT off the same call. v1 leaves it out: a reader can ask about history through the entity's own tools, and exposing audit tables is an opt-in decision for the exposure form, not a default.",
+      "why": "`audit: true` makes codegen emit a second requestReply for <ENTITY>_AUDIT off the same call. v1 leaves it out: a reader can ask about history through the entity's own tools, and audit tables are not offered by default.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -412,14 +337,6 @@
               "name": "TRADE_INSERT"
             }
           ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "TRADE_INSERT"
-            ]
-          }
         }
       },
       "expected": {
@@ -513,14 +430,6 @@
               }
             }
           ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [
-              "TRADE"
-            ],
-            "custom": []
-          }
         }
       },
       "expected": {
@@ -2249,13 +2158,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E",
-              "RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -2389,14 +2291,6 @@
               }
             }
           ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "TRADE_INSERT"
-            ]
-          }
         }
       },
       "expected": {
@@ -2490,8 +2384,8 @@
       }
     },
     {
-      "name": "C-18 GC-C1: an exposed handler whose code proves a row action is offered as one",
-      "why": "An exposed handler whose code proves a row action is offered as one. RESPOND_RFQ from the fi-portal base-app loads one RFQ by its key, sets the trader's price and saves it, so the review shows that row and asks for TRADER_RESPONSE_PRICE.",
+      "name": "C-18 GC-C1: every handler whose code proves a row action is offered as one",
+      "why": "Every custom handler is a candidate and the classifier decides (C-18.X): fi-portal's three RFQ handlers each prove a row action, so all three are offered. RESPOND_RFQ from the fi-portal base-app loads one RFQ by its key, sets the trader's price and saves it, so the review shows that row and asks for TRADER_RESPONSE_PRICE.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -2574,12 +2468,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "RESPOND_RFQ"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -2635,6 +2523,46 @@
                   "required": true
                 }
               ],
+              "effects": [
+                {
+                  "op": "modify",
+                  "table": "RFQ"
+                }
+              ]
+            },
+            {
+              "name": "EVENT_EXECUTE_RFQ",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the EXECUTE_RFQ handler on one existing RFQ row. It changes that RFQ row. It also inserts a TRADE row.",
+              "shape": "row",
+              "entity": "RFQ",
+              "key": [
+                "RFQ_ID"
+              ],
+              "inputs": [],
+              "effects": [
+                {
+                  "op": "modify",
+                  "table": "RFQ"
+                },
+                {
+                  "op": "insert",
+                  "table": "TRADE"
+                }
+              ]
+            },
+            {
+              "name": "EVENT_PASS_RFQ",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the PASS_RFQ handler on one existing RFQ row. It changes that RFQ row.",
+              "shape": "row",
+              "entity": "RFQ",
+              "key": [
+                "RFQ_ID"
+              ],
+              "inputs": [],
               "effects": [
                 {
                   "op": "modify",
@@ -2707,37 +2635,15 @@
           "eventHandlers": [
             {
               "type": "custom",
-              "name": "RESPOND_RFQ",
-              "entityName": "RFQ",
-              "metadata": {
-                "code": "eventHandler<Rfq>(\"RESPOND_RFQ\", transactional = true) {\n      onValidate { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        requireNotNull(details.traderResponsePrice) { \"TRADER_RESPONSE_PRICE is mandatory\" }\n        entityDb.get(Rfq.ById(rfqId)) ?: return@onValidate nack(\"RFQ $rfqId not found\")\n        ack()\n      }\n      onCommit { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        val traderPrice = requireNotNull(details.traderResponsePrice) { \"TRADER_RESPONSE_PRICE is mandatory\" }\n        val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onCommit nack(\"RFQ $rfqId not found\")\n        existingRfq.traderResponsePrice = traderPrice\n        existingRfq.status = Rfq.Status.LIVE_PRICE\n        existingRfq.lastUpdated = now()\n        entityDb.modify(existingRfq)\n        ack(listOf(mapOf(\n          \"RFQ_ID\" to existingRfq.rfqId,\n        )))\n      }\n    }"
-              }
-            },
-            {
-              "type": "custom",
               "name": "EXECUTE_RFQ",
               "entityName": "RFQ",
               "metadata": {
                 "code": "eventHandler<Rfq>(\"EXECUTE_RFQ\", transactional = true) {\n    onValidate { event ->\n      val details = event.details\n      val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n      val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onValidate nack(\"RFQ $rfqId not found\")\n      if (existingRfq.traderResponsePrice == null && existingRfq.salesPrice == null) {\n        return@onValidate nack(\"RFQ $rfqId has no price to execute at\")\n      }\n      ack()\n    }\n    onCommit { event ->\n      val details = event.details\n      val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n      val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onCommit nack(\"RFQ $rfqId not found\")\n      val agreedPrice = existingRfq.traderResponsePrice ?: existingRfq.salesPrice\n        ?: return@onCommit nack(\"RFQ $rfqId has no price to execute at\")\n\n      existingRfq.status = Rfq.Status.EXECUTED\n      existingRfq.lastUpdated = now()\n      entityDb.modify(existingRfq)\n\n      val today = now()\n      val settlement = now().plusDays(2)\n\n      val newTrade = Trade {\n        this.rfqId = existingRfq.rfqId\n        instrumentId = existingRfq.instrumentId\n        clientCode = existingRfq.clientCode\n        axeReference = existingRfq.axeReference\n        direction = Trade.Direction.valueOf(existingRfq.direction.name)\n        trader = existingRfq.trader\n        salesPerson = existingRfq.salesperson\n        tradedPrice = agreedPrice\n        tradedQuantity = existingRfq.quantity\n        tradeDate = today\n        this.settlementDate = settlement\n      }\n      val insertedTrade = entityDb.insert(newTrade)\n\n      ack(listOf(mapOf(\n        \"RFQ_ID\" to existingRfq.rfqId,\n        \"TRADE_ID\" to insertedTrade.record.tradeId,\n      )))\n    }\n  }"
               }
-            },
-            {
-              "type": "custom",
-              "name": "PASS_RFQ",
-              "entityName": "RFQ",
-              "metadata": {
-                "code": "eventHandler<Rfq>(\"PASS_RFQ\", transactional = true) {\n      onValidate { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        entityDb.get(Rfq.ById(rfqId)) ?: return@onValidate nack(\"RFQ $rfqId not found\")\n        ack()\n      }\n      onCommit { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onCommit nack(\"RFQ $rfqId not found\")\n        existingRfq.status = Rfq.Status.PASSED\n        existingRfq.lastUpdated = now()\n        entityDb.modify(existingRfq)\n        ack(listOf(mapOf(\n          \"RFQ_ID\" to existingRfq.rfqId,\n        )))\n      }\n    }"
-              }
             }
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "EXECUTE_RFQ"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -2864,22 +2770,6 @@
           "eventHandlers": [
             {
               "type": "custom",
-              "name": "RESPOND_RFQ",
-              "entityName": "RFQ",
-              "metadata": {
-                "code": "eventHandler<Rfq>(\"RESPOND_RFQ\", transactional = true) {\n      onValidate { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        requireNotNull(details.traderResponsePrice) { \"TRADER_RESPONSE_PRICE is mandatory\" }\n        entityDb.get(Rfq.ById(rfqId)) ?: return@onValidate nack(\"RFQ $rfqId not found\")\n        ack()\n      }\n      onCommit { event ->\n        val details = event.details\n        val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n        val traderPrice = requireNotNull(details.traderResponsePrice) { \"TRADER_RESPONSE_PRICE is mandatory\" }\n        val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onCommit nack(\"RFQ $rfqId not found\")\n        existingRfq.traderResponsePrice = traderPrice\n        existingRfq.status = Rfq.Status.LIVE_PRICE\n        existingRfq.lastUpdated = now()\n        entityDb.modify(existingRfq)\n        ack(listOf(mapOf(\n          \"RFQ_ID\" to existingRfq.rfqId,\n        )))\n      }\n    }"
-              }
-            },
-            {
-              "type": "custom",
-              "name": "EXECUTE_RFQ",
-              "entityName": "RFQ",
-              "metadata": {
-                "code": "eventHandler<Rfq>(\"EXECUTE_RFQ\", transactional = true) {\n    onValidate { event ->\n      val details = event.details\n      val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n      val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onValidate nack(\"RFQ $rfqId not found\")\n      if (existingRfq.traderResponsePrice == null && existingRfq.salesPrice == null) {\n        return@onValidate nack(\"RFQ $rfqId has no price to execute at\")\n      }\n      ack()\n    }\n    onCommit { event ->\n      val details = event.details\n      val rfqId = requireNotNull(details.rfqId) { \"RFQ_ID is mandatory\" }\n      val existingRfq = entityDb.get(Rfq.ById(rfqId)) ?: return@onCommit nack(\"RFQ $rfqId not found\")\n      val agreedPrice = existingRfq.traderResponsePrice ?: existingRfq.salesPrice\n        ?: return@onCommit nack(\"RFQ $rfqId has no price to execute at\")\n\n      existingRfq.status = Rfq.Status.EXECUTED\n      existingRfq.lastUpdated = now()\n      entityDb.modify(existingRfq)\n\n      val today = now()\n      val settlement = now().plusDays(2)\n\n      val newTrade = Trade {\n        this.rfqId = existingRfq.rfqId\n        instrumentId = existingRfq.instrumentId\n        clientCode = existingRfq.clientCode\n        axeReference = existingRfq.axeReference\n        direction = Trade.Direction.valueOf(existingRfq.direction.name)\n        trader = existingRfq.trader\n        salesPerson = existingRfq.salesperson\n        tradedPrice = agreedPrice\n        tradedQuantity = existingRfq.quantity\n        tradeDate = today\n        this.settlementDate = settlement\n      }\n      val insertedTrade = entityDb.insert(newTrade)\n\n      ack(listOf(mapOf(\n        \"RFQ_ID\" to existingRfq.rfqId,\n        \"TRADE_ID\" to insertedTrade.record.tradeId,\n      )))\n    }\n  }"
-              }
-            },
-            {
-              "type": "custom",
               "name": "PASS_RFQ",
               "entityName": "RFQ",
               "metadata": {
@@ -2889,12 +2779,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "PASS_RFQ"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -2958,8 +2842,8 @@
       }
     },
     {
-      "name": "C-18 GC-C4: an exposed handler failing a precondition is skipped with its reason",
-      "why": "One handler per precondition, each exposed: blank code (P1, empty-code: codegen writes it as it is, so nothing registers), the Spring runtime (P2), no table (P4) and a table with no snapshot, so no row to review (P5). None is offered, and each warning says which rule it broke, in payload order.",
+      "name": "C-18 GC-C4: a handler failing a precondition is skipped with its reason",
+      "why": "One handler per precondition: blank code (P1, empty-code: codegen writes it as it is, so nothing registers), the Spring runtime (P2), no table (P4) and a table with no snapshot, so no row to review (P5). None is offered, and each warning says which rule it broke, in payload order.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -3049,15 +2933,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "SETTLE",
-              "RESPOND_RFQ",
-              "HOUSEKEEPING",
-              "ANNOTATE"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -3103,7 +2978,7 @@
     },
     {
       "name": "C-18 GC-C5: a code-less handler named like a CRUD op gets the name reason, not no-code",
-      "why": "The name checks run before the classifier (C-18.P ruling B), so APPROVE_DELETE is refused for claiming a delete even though it has no code either. Without that order, one exposed APPROVE_DELETE would reach FUI as a custom op whose name says delete, and block the whole assistant.",
+      "why": "The name checks run before the classifier (C-18.P ruling B), so APPROVE_DELETE is refused for claiming a delete even though it has no code either. Without that order, APPROVE_DELETE would reach FUI as a custom op whose name says delete, and block the whole assistant.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -3147,12 +3022,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "APPROVE_DELETE"
-            ]
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -3195,7 +3064,7 @@
     },
     {
       "name": "C-18 GC-C9: a proven row action is withheld when the seed does not pass row actions on",
-      "why": "GC-C1's project with no consumer declaration, which means the baseline seed: it copies only name, kind, op, context and maxRows to its UI, so a row action would arrive without the fields that make it one. The resolver withholds it and says so once for the resolve (C-15A.5).",
+      "why": "GC-C1's project with no consumer declaration, which means the baseline seed: it copies only name, kind, op, context and maxRows to its UI, so a row action would arrive without the fields that make it one. The resolver withholds all three and says so once for the resolve (C-15A.5).",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -3276,14 +3145,6 @@
               }
             }
           ]
-        },
-        "options": {
-          "exposure": {
-            "deletes": [],
-            "custom": [
-              "RESPOND_RFQ"
-            ]
-          }
         }
       },
       "expected": {
@@ -3308,7 +3169,7 @@
           ]
         },
         "warnings": [
-          "ai: withheld 1 custom event handler(s) (RESPOND_RFQ) — the app's seed does not pass row actions to its UI"
+          "ai: withheld 3 custom event handler(s) (RESPOND_RFQ, EXECUTE_RFQ, PASS_RFQ) — the app's seed does not pass row actions to its UI"
         ]
       }
     },
@@ -3406,7 +3267,7 @@
     },
     {
       "name": "C-18 GC-D2: a coded op that writes only its own row says it can still do more, and a delete says what its review sends",
-      "why": "fi-portal's RFQ create saves only its own row, so the list is empty and complete, and the sentence says only that the code can do more than the values shown. The coded delete, exposed, gets the delete tail: its review shows the row and sends its key (C-18.D.3).",
+      "why": "fi-portal's RFQ create saves only its own row, so the list is empty and complete, and the sentence says only that the code can do more than the values shown. The coded delete, enabled, gets the delete tail: its review shows the row and sends its key (C-18.D.3).",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -3439,12 +3300,6 @@
           ]
         },
         "options": {
-          "exposure": {
-            "deletes": [
-              "RFQ"
-            ],
-            "custom": []
-          },
           "consumer": {
             "kinds": [
               "request",
@@ -3637,7 +3492,7 @@
     },
     {
       "name": "C-18 GC-D5: a code-less op whose name a custom handler's code also registers is disclosed as unknown",
-      "why": "rfq-management's shape: RFQ create is enabled with no code, while RFQ_INSERT_HANDLER's code registers \"RFQ_INSERT\" too. Which one the app runs is open (C-18.10 LC-5), so the op carries an empty, incomplete list, its sentence says it can also write to other records, and W3 names the other handler (C-18.D.1 case b).",
+      "why": "rfq-management's shape: RFQ create is enabled with no code, while RFQ_INSERT_HANDLER's code registers \"RFQ_INSERT\" too. Which one the app runs is open (C-18.10 LC-5), so the op carries an empty, incomplete list, its sentence says it can also write to other records, and W3 names the other handler (C-18.D.1 case b). RFQ_INSERT_HANDLER is a candidate itself, and is skipped because its code registers a name other than its own.",
       "input": {
         "payload": {
           "projectName": "Trading Desk",
@@ -3711,7 +3566,8 @@
           ]
         },
         "warnings": [
-          "ai: EVENT_RFQ_INSERT is also registered by custom event handler \"RFQ_INSERT_HANDLER\" — which one the app runs is not known (C-18.10 LC-5)"
+          "ai: EVENT_RFQ_INSERT is also registered by custom event handler \"RFQ_INSERT_HANDLER\" — which one the app runs is not known (C-18.10 LC-5)",
+          "ai: skipped custom event handler \"RFQ_INSERT_HANDLER\" — its code registers a different name (line 1)"
         ]
       }
     },
@@ -4586,6 +4442,1377 @@
               "kind": "request",
               "context": "Read current rows from the TRADE table.",
               "maxRows": 50
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R1: a single-field reference is declared on insert and modify, never on the delete or a read",
+      "why": "GC-1's project on a seed that reads references. TRADE.COUNTERPARTY_ID points at COUNTERPARTY, so insert and modify carry one group naming REQ_COUNTERPARTY, the bridge's existence check reads before the review (C-17.2, C-17.4). The enabled delete sends only its key and the reads write nothing, so neither carries it.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY",
+                    "entityReferenceAttribute": "COUNTERPARTY_ID"
+                  }
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "NAME",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_COUNTERPARTY",
+                  "fields": [
+                    {
+                      "field": "COUNTERPARTY_ID",
+                      "targetField": "COUNTERPARTY_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_COUNTERPARTY",
+                  "fields": [
+                    {
+                      "field": "COUNTERPARTY_ID",
+                      "targetField": "COUNTERPARTY_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R2: two roles to one target are two groups, in fields order",
+      "why": "GC-2's FX_RATE: FROM_CCY and TO_CCY both point at CURRENCY's CURRENCY_CODE. One target field means roles, so each field is its own group, in fields[] order, each checked on its own (C-16.4 step 3, C-17.2).",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "FX_RATE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "FROM_CCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "CURRENCY",
+                    "entityReferenceAttribute": "CURRENCY_CODE"
+                  }
+                },
+                {
+                  "name": "TO_CCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "CURRENCY",
+                    "entityReferenceAttribute": "CURRENCY_CODE"
+                  }
+                },
+                {
+                  "name": "RATE",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "CURRENCY",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "CURRENCY_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "FX_RATE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_FX_RATE",
+              "kind": "request",
+              "context": "Read current rows from the FX_RATE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_CURRENCY",
+              "kind": "request",
+              "context": "Read current rows from the CURRENCY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_FX_RATE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new FX_RATE record. FROM_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. TO_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_CURRENCY",
+                  "fields": [
+                    {
+                      "field": "FROM_CCY",
+                      "targetField": "CURRENCY_CODE"
+                    }
+                  ]
+                },
+                {
+                  "resource": "REQ_CURRENCY",
+                  "fields": [
+                    {
+                      "field": "TO_CCY",
+                      "targetField": "CURRENCY_CODE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_FX_RATE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing FX_RATE record. FROM_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. TO_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_CURRENCY",
+                  "fields": [
+                    {
+                      "field": "FROM_CCY",
+                      "targetField": "CURRENCY_CODE"
+                    }
+                  ]
+                },
+                {
+                  "resource": "REQ_CURRENCY",
+                  "fields": [
+                    {
+                      "field": "TO_CCY",
+                      "targetField": "CURRENCY_CODE"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R3: a composite is one group whose members follow fields order",
+      "why": "GC-3's BALANCE reference: three fields, three different target fields, so one group that must match one BALANCE row on all three. Members follow fields[] order, not the key order entityReferences lists, so the legacy and the stripped forms of this payload declare the same bytes (C-16.4, C-17.2).",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSTING",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BALANCE_BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "BUSINESS_DATE"
+                  }
+                },
+                {
+                  "name": "BALANCE_ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "ACCOUNT_CODE"
+                  }
+                },
+                {
+                  "name": "BALANCE_CURRENCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "CURRENCY"
+                  }
+                },
+                {
+                  "name": "AMOUNT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ],
+              "entityReferences": [
+                {
+                  "alias": "BALANCE",
+                  "referenceTableId": 11001,
+                  "indexName": "BALANCE_BY_KEY",
+                  "uniqueEntityRef": true,
+                  "enforceReference": false,
+                  "keyFieldPairs": [
+                    {
+                      "fromTableField": "BALANCE_ACCOUNT_CODE",
+                      "toReferenceTableField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "fromTableField": "BALANCE_CURRENCY",
+                      "toReferenceTableField": "CURRENCY"
+                    },
+                    {
+                      "fromTableField": "BALANCE_BUSINESS_DATE",
+                      "toReferenceTableField": "BUSINESS_DATE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "BALANCE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSTING",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSTING",
+              "kind": "request",
+              "context": "Read current rows from the POSTING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BALANCE",
+              "kind": "request",
+              "context": "Read current rows from the BALANCE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSTING_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_BALANCE",
+                  "fields": [
+                    {
+                      "field": "BALANCE_BUSINESS_DATE",
+                      "targetField": "BUSINESS_DATE"
+                    },
+                    {
+                      "field": "BALANCE_ACCOUNT_CODE",
+                      "targetField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "field": "BALANCE_CURRENCY",
+                      "targetField": "CURRENCY"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_POSTING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_BALANCE",
+                  "fields": [
+                    {
+                      "field": "BALANCE_BUSINESS_DATE",
+                      "targetField": "BUSINESS_DATE"
+                    },
+                    {
+                      "field": "BALANCE_ACCOUNT_CODE",
+                      "targetField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "field": "BALANCE_CURRENCY",
+                      "targetField": "CURRENCY"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R7: a self-reference is declared, and a field pointing at itself on its own table is not",
+      "why": "EMPLOYEE.MANAGER_ID points at EMPLOYEE.EMPLOYEE_ID, a real parent row, so it is declared. TRADE.TRADE_ID pointing at itself would refuse every insert, since the row being inserted does not exist yet, so it is skipped without a warning and TRADE declares none: [] (C-17.4 D4).",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "EMPLOYEE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "EMPLOYEE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "MANAGER_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "EMPLOYEE",
+                    "entityReferenceAttribute": "EMPLOYEE_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "TRADE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "TRADE",
+                    "entityReferenceAttribute": "TRADE_ID"
+                  }
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "EMPLOYEE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_EMPLOYEE",
+              "kind": "request",
+              "context": "Read current rows from the EMPLOYEE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_EMPLOYEE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new EMPLOYEE record. MANAGER_ID must be the EMPLOYEE_ID of one EMPLOYEE row returned by REQ_EMPLOYEE. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_EMPLOYEE",
+                  "fields": [
+                    {
+                      "field": "MANAGER_ID",
+                      "targetField": "EMPLOYEE_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_EMPLOYEE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing EMPLOYEE record. MANAGER_ID must be the EMPLOYEE_ID of one EMPLOYEE row returned by REQ_EMPLOYEE. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "references": [
+                {
+                  "resource": "REQ_EMPLOYEE",
+                  "fields": [
+                    {
+                      "field": "MANAGER_ID",
+                      "targetField": "EMPLOYEE_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record.",
+              "references": []
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record.",
+              "references": []
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R8: a target the chat cannot read is still declared and said, and a name the platform cannot register is said",
+      "why": "Readability is not a gate: REQ_BOOK and REQ_DESK are declared although neither read exists here, so the bridge refuses to check them instead of offering the fields unchecked, and each gets a build-time warning. counter-party is not a platform name, so that group cannot be declared, and the warning says its field is written unchecked (C-17.4 W1, W2, D1).",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BOOK",
+                    "entityReferenceAttribute": "BOOK_ID"
+                  }
+                },
+                {
+                  "name": "DESK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "DESK",
+                    "entityReferenceAttribute": "DESK_ID"
+                  }
+                },
+                {
+                  "name": "CPTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "counter-party",
+                    "entityReferenceAttribute": "CPTY_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "BOOK",
+              "id": 11001,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record.",
+              "references": [
+                {
+                  "resource": "REQ_BOOK",
+                  "fields": [
+                    {
+                      "field": "BOOK_ID",
+                      "targetField": "BOOK_ID"
+                    }
+                  ]
+                },
+                {
+                  "resource": "REQ_DESK",
+                  "fields": [
+                    {
+                      "field": "DESK_ID",
+                      "targetField": "DESK_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record.",
+              "references": [
+                {
+                  "resource": "REQ_BOOK",
+                  "fields": [
+                    {
+                      "field": "BOOK_ID",
+                      "targetField": "BOOK_ID"
+                    }
+                  ]
+                },
+                {
+                  "resource": "REQ_DESK",
+                  "fields": [
+                    {
+                      "field": "DESK_ID",
+                      "targetField": "DESK_ID"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "warnings": [
+          "ai: TRADE references counter-party through CPTY_ID, in a shape the chat cannot check (not a platform name), so those fields are written unchecked",
+          "ai: TRADE references BOOK through BOOK_ID, but REQ_BOOK is not readable, so the chat cannot check that reference and will not offer BOOK_ID for writing",
+          "ai: TRADE references DESK through DESK_ID, but REQ_DESK is not readable, so the chat cannot check that reference and will not offer DESK_ID for writing"
+        ]
+      }
+    },
+    {
+      "name": "C-17 GC-R0: a table that references nothing declares an empty list",
+      "why": "TRADE has a fields list and no reference in it, so its insert and modify say so with []: the bridge checks nothing and warns about nothing. An absent key would mean Create never saw the table (C-17.6).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "PRICE",
+                  "type": "DOUBLE",
+                  "nullable": true
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record.",
+              "references": []
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record.",
+              "references": []
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-17 GC-R23: a reference to a table whose read is too long to register is declared with its full name",
+      "why": "The 61-character table's read, REQ_ plus 61 characters, is dropped at build time because a tool name stops at 64. The reference to it is still declared, by that full 65-character name, which no tool-name limit applies to, so the bridge finds no such read, refuses to check it, and keeps ACCOUNT_ID out (C-17.4, C-17.C HP-C).",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+                    "entityReferenceAttribute": "ACCOUNT_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "INSTRUCTION_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "kind": "request",
+              "context": "Read current rows from the SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record.",
+              "references": [
+                {
+                  "resource": "REQ_COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+                  "fields": [
+                    {
+                      "field": "ACCOUNT_ID",
+                      "targetField": "ACCOUNT_ID"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped table \"COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D\" — REQ_COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D is longer than the 64 characters a tool name allows",
+          "ai: TRADE references COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D through ACCOUNT_ID, but REQ_COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D is not readable, so the chat cannot check that reference and will not offer ACCOUNT_ID for writing"
+        ]
+      }
+    },
+    {
+      "name": "C-17 GC-RW3: a write whose table has no fields list declares nothing, and says so",
+      "why": "TRADE has no fields in the payload, so Create cannot tell what it references. The key stays absent rather than [], which would claim the table declares none, and the warning says the chat cannot check its references (C-17.4 W3, C-17.6).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "GenesisServerCore",
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": false
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: TRADE has no fields in the payload, so the chat cannot check its references"
+        ]
+      }
+    },
+    {
+      "name": "C-17 GC-RP1: a pre-resolved write keeps the references it declares, and one that declares none is said",
+      "why": "An upstream block is not derived, so nothing is added to it (C-16 R4). A well-formed references list stands; an insert or modify without one gets a warning on a seed that reads references, because the bridge will check nothing on it (C-17.4 W4, C-17.C HP-B).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "ui": {
+            "config": {
+              "ai": {
+                "resources": [
+                  {
+                    "name": "REQ_TRADE",
+                    "kind": "request",
+                    "context": "Read current rows from the TRADE table.",
+                    "maxRows": 50
+                  },
+                  {
+                    "name": "REQ_COUNTERPARTY",
+                    "kind": "request",
+                    "context": "Read current rows from the COUNTERPARTY table.",
+                    "maxRows": 50
+                  },
+                  {
+                    "name": "EVENT_TRADE_INSERT",
+                    "kind": "event",
+                    "op": "insert",
+                    "context": "Create a new TRADE record.",
+                    "references": [
+                      {
+                        "resource": "REQ_COUNTERPARTY",
+                        "fields": [
+                          {
+                            "field": "COUNTERPARTY_ID",
+                            "targetField": "COUNTERPARTY_ID"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "EVENT_TRADE_MODIFY",
+                    "kind": "event",
+                    "op": "modify",
+                    "context": "Update an existing TRADE record."
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record.",
+              "references": [
+                {
+                  "resource": "REQ_COUNTERPARTY",
+                  "fields": [
+                    {
+                      "field": "COUNTERPARTY_ID",
+                      "targetField": "COUNTERPARTY_ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: pre-resolved resource \"EVENT_TRADE_MODIFY\" declares no references, so the chat cannot check them"
+        ]
+      }
+    },
+    {
+      "name": "C-17 GC-RC: a coded op carries customCode, then references, in the order the bridge copies them",
+      "why": "ORDER's insert runs custom code and references INSTRUMENT, on a seed that reads both fields. The two sit together on one resource, customCode first and references last, which is the order FUI's normalised copy builds, so this file's bytes and the bridge's copy agree (C-18.D.1, C-17.C HP-D).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "ORDER",
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "ORDER_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "INSTRUMENT_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "INSTRUMENT"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "TRADE"
+            },
+            {
+              "name": "ORDER_FILL"
+            },
+            {
+              "name": "AXE"
+            },
+            {
+              "name": "INSTRUMENT",
+              "snapshot": true
+            },
+            {
+              "name": "CLIENT"
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "ORDER",
+              "create": {
+                "enabled": true,
+                "metadata": {
+                  "code": "eventHandler<Order>(\"ORDER_INSERT\", transactional = true) {\n      onValidate { event ->\n        val details = event.details\n        requireNotNull(details.instrumentId) { \"Instrument ID is mandatory\" }\n        requireNotNull(details.clientCode) { \"Client Code is mandatory\" }\n        requireNotNull(details.direction) { \"Direction is mandatory\" }\n        requireNotNull(details.quantity) { \"Quantity is mandatory\" }\n        require(details.quantity > java.math.BigDecimal.ZERO) { \"Quantity must be greater than zero\" }\n        when (details.orderType) {\n          Order.OrderType.LIMIT -> {\n            requireNotNull(details.limitPrice) { \"Limit Price is mandatory for LIMIT orders\" }\n            require(details.axeReference == null) { \"Axe Reference must be absent for LIMIT orders\" }\n          }\n          Order.OrderType.MARKET -> {\n            require(details.limitPrice == null) { \"Limit Price must be absent for MARKET orders\" }\n            require(details.axeReference == null) { \"Axe Reference must be absent for MARKET orders\" }\n          }\n          Order.OrderType.AXE_HIT -> {\n            requireNotNull(details.axeReference) { \"Axe Reference is mandatory for AXE_HIT orders\" }\n          }\n          else -> return@onValidate nack(\"Unsupported order type\")\n        }\n        entityDb.get(Instrument.ById(details.instrumentId)) ?: return@onValidate nack(\"Instrument not found\")\n        entityDb.get(Client.ByCode(details.clientCode)) ?: return@onValidate nack(\"Client not found\")\n        if (details.orderType == Order.OrderType.AXE_HIT) {\n          val axeRef = requireNotNull(details.axeReference) { \"Axe Reference is mandatory for AXE_HIT orders\" }\n          entityDb.get(Axe.ById(axeRef)) ?: return@onValidate nack(\"Referenced Axe not found\")\n        }\n        ack()\n      }\n      onCommit { event ->\n        val details = event.details\n        val instrumentId = requireNotNull(details.instrumentId) { \"Instrument ID is mandatory\" }\n        val clientCode = requireNotNull(details.clientCode) { \"Client Code is mandatory\" }\n        val orderDirection = requireNotNull(details.direction) { \"Direction is mandatory\" }\n        val orderQuantity = requireNotNull(details.quantity) { \"Quantity is mandatory\" }\n        val submittingUser = event.userName\n        val currentTime = now()\n        val createdKeys = mutableListOf<Map<String, Any>>()\n\n        when (details.orderType) {\n          Order.OrderType.AXE_HIT -> {\n            val axeRef = requireNotNull(details.axeReference) { \"Axe Reference is mandatory for AXE_HIT orders\" }\n            val axe = entityDb.get(Axe.ById(axeRef)) ?: return@onCommit nack(\"Referenced Axe not found\")\n\n            // A client BUY hits the Axe's Ask side; a client SELL hits the Axe's Bid side\n            val isBuy = orderDirection == Order.Direction.BUY\n            val sidePrice = if (isBuy) axe.askPrice else axe.bidPrice\n            val sideSize = if (isBuy) axe.askSize else axe.bidSize\n\n            if (sidePrice == null || sideSize == null || orderQuantity > sideSize) {\n              val rejectedOrder = Order {\n                this.instrumentId = instrumentId\n                this.clientCode = clientCode\n                this.direction = orderDirection\n                this.quantity = orderQuantity\n                this.orderType = Order.OrderType.AXE_HIT\n                this.axeReference = axeRef\n                this.limitPrice = details.limitPrice\n                this.filledQuantity = java.math.BigDecimal.ZERO\n                this.status = Order.Status.REJECTED\n                this.salesperson = submittingUser\n                this.trader = details.trader\n                this.createdAt = currentTime\n                this.lastUpdated = currentTime\n              }\n              val insertedRejected = entityDb.insert(rejectedOrder)\n              createdKeys.add(mapOf(\"ORDER_ID\" to insertedRejected.record.orderId))\n              return@onCommit ack(createdKeys)\n            }\n\n            val filledOrder = Order {\n              this.instrumentId = instrumentId\n              this.clientCode = clientCode\n              this.direction = orderDirection\n              this.quantity = orderQuantity\n              this.orderType = Order.OrderType.AXE_HIT\n              this.axeReference = axeRef\n              this.limitPrice = details.limitPrice\n              this.filledQuantity = orderQuantity\n              this.status = Order.Status.FILLED\n              this.salesperson = submittingUser\n              this.trader = details.trader\n              this.createdAt = currentTime\n              this.lastUpdated = currentTime\n            }\n            val insertedOrder = entityDb.insert(filledOrder)\n            val newOrderId = insertedOrder.record.orderId\n            createdKeys.add(mapOf(\"ORDER_ID\" to newOrderId))\n\n            val newTrade = Trade {\n              this.instrumentId = instrumentId\n              this.clientCode = clientCode\n              this.direction = Trade.Direction.valueOf(orderDirection.name)\n              this.axeReference = axeRef\n              this.orderId = newOrderId\n              this.tradedPrice = sidePrice\n              this.tradedQuantity = orderQuantity\n              this.tradeDate = currentTime\n              this.trader = details.trader\n              this.salesPerson = submittingUser\n              this.sourceProtocol = Trade.SourceProtocol.AXE_HIT\n            }\n            val insertedTrade = entityDb.insert(newTrade)\n            val newTradeId = insertedTrade.record.tradeId\n            createdKeys.add(mapOf(\"TRADE_ID\" to newTradeId))\n\n            val newFill = OrderFill {\n              this.orderId = newOrderId\n              this.fillPrice = sidePrice\n              this.fillQuantity = orderQuantity\n              this.filledAt = currentTime\n              this.matchedAgainstAxe = axeRef\n              this.matchedAgainstType = OrderFill.MatchedAgainstType.AXE\n              this.tradeId = newTradeId\n            }\n            val insertedFill = entityDb.insert(newFill)\n            createdKeys.add(mapOf(\"FILL_ID\" to insertedFill.record.fillId))\n\n            val remainingSize = sideSize.subtract(orderQuantity)\n            val newRemaining = if (remainingSize < java.math.BigDecimal.ZERO) java.math.BigDecimal.ZERO else remainingSize\n            val updatedAxe = axe.copy {\n              if (isBuy) {\n                askSize = newRemaining\n              } else {\n                bidSize = newRemaining\n              }\n              lastUpdated = currentTime\n            }\n            entityDb.modify(updatedAxe)\n\n            ack(createdKeys)\n          }\n          Order.OrderType.LIMIT, Order.OrderType.MARKET -> {\n            val isLimit = details.orderType == Order.OrderType.LIMIT\n            val newOrderLimitPrice = details.limitPrice\n            val oppositeDirection = if (orderDirection == Order.Direction.BUY) Order.Direction.SELL else Order.Direction.BUY\n\n            val restingNew = entityDb.getRange(Order.ByInstrumentIdDirectionStatus(instrumentId, oppositeDirection, Order.Status.NEW)).toList()\n            val restingPartial = entityDb.getRange(Order.ByInstrumentIdDirectionStatus(instrumentId, oppositeDirection, Order.Status.PARTIALLY_FILLED)).toList()\n\n            val candidates = (restingNew + restingPartial)\n              .filter { it.clientCode != clientCode }\n              .filter { it.limitPrice != null }\n              .filter { resting ->\n                if (isLimit) {\n                  val newPrice = requireNotNull(newOrderLimitPrice) { \"Limit Price is mandatory for LIMIT orders\" }\n                  val restingPrice = requireNotNull(resting.limitPrice) { \"Resting order missing limit price\" }\n                  // client BUY matches resting SELL priced <= newPrice; client SELL matches resting BUY priced >= newPrice\n                  if (orderDirection == Order.Direction.BUY) restingPrice <= newPrice else restingPrice >= newPrice\n                } else {\n                  true\n                }\n              }\n\n            // Price-time priority: best price first, then oldest.\n            // For a BUY new order, best (lowest) resting sell price first; for SELL new order, best (highest) resting buy price first.\n            val sortedCandidates = if (orderDirection == Order.Direction.BUY) {\n              candidates.sortedWith(compareBy({ it.limitPrice }, { it.createdAt.millis }))\n            } else {\n              candidates.sortedWith(compareByDescending<Order> { it.limitPrice }.thenBy { it.createdAt.millis })\n            }\n\n            var remainingQty = orderQuantity\n            var newFilledQty = java.math.BigDecimal.ZERO\n\n            val newOrder = Order {\n              this.instrumentId = instrumentId\n              this.clientCode = clientCode\n              this.direction = orderDirection\n              this.quantity = orderQuantity\n              this.orderType = details.orderType\n              this.limitPrice = newOrderLimitPrice\n              this.filledQuantity = java.math.BigDecimal.ZERO\n              this.status = Order.Status.NEW\n              this.salesperson = submittingUser\n              this.trader = details.trader\n              this.createdAt = currentTime\n              this.lastUpdated = currentTime\n            }\n            val insertedNewOrder = entityDb.insert(newOrder)\n            val newOrderId = insertedNewOrder.record.orderId\n\n            for (resting in sortedCandidates) {\n              if (remainingQty <= java.math.BigDecimal.ZERO) break\n              val restingRemaining = resting.quantity.subtract(resting.filledQuantity)\n              if (restingRemaining <= java.math.BigDecimal.ZERO) continue\n              val matchQty = if (remainingQty < restingRemaining) remainingQty else restingRemaining\n              val matchPrice = requireNotNull(resting.limitPrice) { \"Resting order missing limit price\" }\n\n              val newTrade = Trade {\n                this.instrumentId = instrumentId\n                this.clientCode = clientCode\n                this.direction = Trade.Direction.valueOf(orderDirection.name)\n                this.orderId = newOrderId\n                this.tradedPrice = matchPrice\n                this.tradedQuantity = matchQty\n                this.tradeDate = currentTime\n                this.trader = details.trader\n                this.salesPerson = submittingUser\n                this.sourceProtocol = if (isLimit) Trade.SourceProtocol.LIMIT else Trade.SourceProtocol.MARKET\n              }\n              val insertedTrade = entityDb.insert(newTrade)\n              val newTradeId = insertedTrade.record.tradeId\n              createdKeys.add(mapOf(\"TRADE_ID\" to newTradeId))\n\n              val newFill = OrderFill {\n                this.orderId = newOrderId\n                this.fillPrice = matchPrice\n                this.fillQuantity = matchQty\n                this.filledAt = currentTime\n                this.matchedAgainstOrder = resting.orderId\n                this.matchedAgainstType = OrderFill.MatchedAgainstType.ORDER\n                this.tradeId = newTradeId\n              }\n              val insertedFill = entityDb.insert(newFill)\n              createdKeys.add(mapOf(\"FILL_ID\" to insertedFill.record.fillId))\n\n              val restingNewFilled = resting.filledQuantity.add(matchQty)\n              val restingStatus = if (restingNewFilled >= resting.quantity) Order.Status.FILLED else Order.Status.PARTIALLY_FILLED\n              val updatedResting = resting.copy {\n                filledQuantity = restingNewFilled\n                status = restingStatus\n                lastUpdated = currentTime\n              }\n              entityDb.modify(updatedResting)\n\n              remainingQty = remainingQty.subtract(matchQty)\n              newFilledQty = newFilledQty.add(matchQty)\n            }\n\n            val finalStatus = if (newFilledQty >= orderQuantity) {\n              Order.Status.FILLED\n            } else if (isLimit) {\n              if (newFilledQty > java.math.BigDecimal.ZERO) Order.Status.PARTIALLY_FILLED else Order.Status.NEW\n            } else {\n              if (newFilledQty > java.math.BigDecimal.ZERO) Order.Status.CANCELLED else Order.Status.REJECTED\n            }\n\n            val finalOrder = insertedNewOrder.record.copy {\n              filledQuantity = newFilledQty\n              status = finalStatus\n              lastUpdated = currentTime\n            }\n            entityDb.modify(finalOrder)\n\n            createdKeys.add(0, mapOf(\"ORDER_ID\" to newOrderId))\n            ack(createdKeys)\n          }\n          else -> nack(\"Unsupported order type\")\n        }\n      }\n    }"
+                }
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "customCode",
+              "references"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_ORDER",
+              "kind": "request",
+              "context": "Read current rows from the ORDER table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_INSTRUMENT",
+              "kind": "request",
+              "context": "Read current rows from the INSTRUMENT table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_ORDER_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new ORDER record. It runs custom code that can also write to TRADE, ORDER_FILL, AXE and other records; the review shows the values sent. INSTRUMENT_ID must be the INSTRUMENT_ID of one INSTRUMENT row returned by REQ_INSTRUMENT. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "customCode": {
+                "alsoWrites": [
+                  "TRADE",
+                  "ORDER_FILL",
+                  "AXE"
+                ],
+                "listComplete": false
+              },
+              "references": [
+                {
+                  "resource": "REQ_INSTRUMENT",
+                  "fields": [
+                    {
+                      "field": "INSTRUMENT_ID",
+                      "targetField": "INSTRUMENT_ID"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
