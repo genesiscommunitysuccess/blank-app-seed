@@ -7,6 +7,8 @@
 #
 #   off       ui.ai absent and ui.ai.enabled=false generate the same app, and neither carries any
 #             AI file. A project that never asked for chat must not change.
+#   package   every React app depends on @genesislcap/ai-assistant at exactly versions.UI, AI on or
+#             off (Create's prebuilt preview base must already carry it); a non-React app does not.
 #   on        the proxy, the router body cap and the README section all appear; the cap is above the
 #             proxy's own document limit; the proxy is its template with only its two limits filled
 #             in, for either vendor; and no AI item lands in a system-definition file (a generator may
@@ -14,9 +16,8 @@
 #             (exactly what .genx/ai-consumer.json declares, whatever the prompt holds); the
 #             assistant's four source files (pbc/ai-assistant/elements.ts,
 #             ai/generated/assistant-host.ts and assistant.ts, ai/extensions/index.ts), each its
-#             template as written and holding the parts the assistant needs; the assistant
-#             package, the AI build flag and an .oxfmtrc.json entry that skips ai/generated; and
-#             nothing else.
+#             template as written and holding the parts the assistant needs; the AI build flag and
+#             an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
 #             each of Create's resolver cases reaches the app verbatim, minus what the declaration
@@ -112,7 +113,8 @@ generate() {
   fi
 }
 
-# Every file or block the feature adds. Used both ways: all present when on, none when off.
+# Every file or block the feature adds. Used both ways: all present when on, none when off. The assistant
+# package is not one of them: every React app depends on it (checked under "package").
 ai_artifacts_present() {
   local app="$WORK_DIR/$1/demo"
   local found=0
@@ -120,7 +122,6 @@ ai_artifacts_present() {
   grep -q httpObjectAggregator "$app/$MODULE/scripts/genesis-router.kts" && found=$((found + 1))
   grep -q '^## AI chat' "$app/README.md" && found=$((found + 1))
   [ -f "$app/client/src/ai/generated/ai-config.json" ] && found=$((found + 1))
-  grep -q '"@genesislcap/ai-assistant"' "$app/client/package.json" && found=$((found + 1))
   [ -f "$app/client/src/pbc/ai-assistant/elements.ts" ] && found=$((found + 1))
   echo "$found"
 }
@@ -168,8 +169,9 @@ diff -r -x node_modules -x answers.json "$WORK_DIR/default/demo" "$WORK_DIR/off/
   || fail "off: ui.ai.enabled=false generates a different app from no ui.ai at all"
 
 # Against the last release: an AI-off app may differ from it only in the changes this branch makes
-# on purpose — the Genesis Start launcher version, the repository it needs, its client scripts and
-# the README section about them — and in nothing else, line by line.
+# on purpose — the Genesis Start launcher version, the repository it needs, its client scripts, the
+# README section about them, and the assistant package every React app now depends on — and in
+# nothing else, line by line.
 BASELINE_REF="${BASELINE_REF:-}"
 if [ -z "$BASELINE_REF" ]; then
   echo "=== off vs a release: skipped, set BASELINE_REF to run it"
@@ -180,11 +182,12 @@ else
   mkdir -p "$WORK_DIR/baseline-seed"
   git -C "$SEED_DIR" archive "$BASELINE_REF" | tar -x -C "$WORK_DIR/baseline-seed"
   SEED="$WORK_DIR/baseline-seed" generate baseline --framework react
-  node - "$WORK_DIR/baseline/demo" "$WORK_DIR/default/demo" "$SEED_DIR/README.md" <<'NODE' \
+  node - "$WORK_DIR/baseline/demo" "$WORK_DIR/default/demo" "$SEED_DIR/README.md" "$SEED_DIR/.genx/versions.json" <<'NODE' \
     || fail "off: an AI-off app differs from $BASELINE_REF beyond the intended changes (see above)"
 const fs = require('fs');
 const { spawnSync } = require('child_process');
-const [base, next, seedReadme] = process.argv.slice(2);
+const [base, next, seedReadme, versionsFile] = process.argv.slice(2);
+const ui = JSON.parse(fs.readFileSync(versionsFile, 'utf8')).UI;
 const readme = fs.readFileSync(seedReadme, 'utf8');
 const from = readme.indexOf('## Running the application');
 const section = from < 0 ? [] : readme.slice(from, readme.indexOf('\n# License', from)).split('\n');
@@ -214,6 +217,7 @@ const allowed = {
   'client/package.json': {
     removed: exact(),
     added: exact(
+      `    "@genesislcap/ai-assistant": "${ui}",`,
       '    "genesis-start": "cd ../server && ./gradlew genesisStart",',
       '    "genesis-start:headless": "cd ../server && ./gradlew genesisStart -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080",',
       '    "genesis-start:write-script": "cd ../server && ./gradlew writeStartScript -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080",',
@@ -253,7 +257,7 @@ NODE
 fi
 
 echo "=== on"
-[ "$(ai_artifacts_present on)" = "6" ] || fail "on: expected all 6 AI artifacts, found $(ai_artifacts_present on)"
+[ "$(ai_artifacts_present on)" = "5" ] || fail "on: expected all 5 AI artifacts, found $(ai_artifacts_present on)"
 # The proxy is its template with exactly its two limits filled in, and nothing else touched.
 for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
   label="${pair%%:*}"; models="${pair#*:}"
@@ -454,10 +458,8 @@ for (const [label, sent, clean] of [['on', geminiUi, geminiUi], ['onanthropic', 
 
   const on = JSON.parse(read(label, 'client/package.json'));
   const off = JSON.parse(read('default', 'client/package.json'));
-  const added = Object.keys(on.dependencies).filter((d) => !(d in off.dependencies));
-  const removed = Object.keys(off.dependencies).filter((d) => !(d in on.dependencies));
-  if (added.join() !== '@genesislcap/ai-assistant' || removed.length) problems.push(`${label}: dependencies +[${added}] -[${removed}]`);
-  if (on.dependencies['@genesislcap/ai-assistant'] !== version) problems.push(`${label}: ai-assistant is ${on.dependencies['@genesislcap/ai-assistant']}, not the UI version ${version}`);
+  // The assistant package is every React app's, so chat adds no dependency.
+  if (!isDeepStrictEqual(on.dependencies, off.dependencies)) problems.push(`${label}: dependencies differ from an AI-off app's`);
   for (const script of new Set([...Object.keys(on.scripts), ...Object.keys(off.scripts)])) {
     const want = ['build', 'dev'].includes(script) ? `${off.scripts[script]} -e GENX_ENABLE_AI=true` : off.scripts[script];
     if (on.scripts[script] !== want) problems.push(`${label}: script "${script}" is ${JSON.stringify(on.scripts[script])}`);
@@ -645,6 +647,26 @@ for (const [name, declaration, client, want] of cases) {
   }
 }
 process.exit(wrong ? 1 : 0);
+NODE
+
+# Every React app depends on the assistant package, AI on or off, so a prebuilt base already has it: at
+# exactly the UI version, the pin the generated app gets, never a range. A non-React app does not.
+echo "=== package: every React app depends on the assistant"
+node - "$WORK_DIR" "$SEED_DIR/.genx/versions.json" default off on onanthropic breakers extras ${case_labels[@]+"${case_labels[@]}"} <<'NODE' \
+  || fail "package: an app does not depend on the assistant as every React app must (see above)"
+const fs = require('fs');
+const path = require('path');
+const [work, versionsFile, ...labels] = process.argv.slice(2);
+const version = JSON.parse(fs.readFileSync(versionsFile, 'utf8')).UI;
+const dependencies = (label) => JSON.parse(fs.readFileSync(path.join(work, label, 'demo/client/package.json'), 'utf8')).dependencies;
+const problems = [];
+for (const label of labels) {
+  const pin = dependencies(label)['@genesislcap/ai-assistant'];
+  if (pin !== version) problems.push(`${label}: @genesislcap/ai-assistant is ${JSON.stringify(pin)}, not ${version}`);
+}
+if ('@genesislcap/ai-assistant' in dependencies('nonreact')) problems.push('nonreact: a non-React app depends on the assistant');
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
 NODE
 
 # Create refuses an export carrying any of these (server/archive-generation-service/export-leak-guard.js,
