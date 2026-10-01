@@ -215,8 +215,9 @@ module.exports = async (data, utils) => {
   // copied, as .genx/ai-consumer.json declares it (C-15A.6 S-1): a resource of any other kind, and any
   // other key on a resource, is dropped and said. A customCode is rebuilt from the two values the
   // assistant reads, and only an insert, modify or delete keeps it (C-18.D.5); references are rebuilt
-  // the same way, and only an insert or a modify keeps them (C-17.5). So nothing else in the payload
-  // can reach a file in the customer's app. Genx runs every .json file through Handlebars after
+  // the same way, and only an insert or a modify keeps them (C-17.5); and a row action's key, inputs
+  // and effects are rebuilt from theirs (C-18.8.3). So nothing else in the payload can reach a file in
+  // the customer's app. Genx runs every .json file through Handlebars after
   // this, so each `{{` is written as the JSON escape `\u007b\u007b`: it parses back to `{{`, and leaves
   // Handlebars nothing to expand.
   if (data.AI.enabled) {
@@ -245,6 +246,15 @@ module.exports = async (data, utils) => {
             fields: fields == null ? [] : listOf(fields, ({ field, targetField }) => ({ field, targetField })),
           }))
         : undefined;
+    // A row action's fields: shape and entity as given, and each list rebuilt (C-18.8.3).
+    const rowFields = {
+      key: (key) => {
+        if (key === undefined) return undefined;
+        return Array.isArray(key) ? key.filter((name) => typeof name === 'string') : null;
+      },
+      inputs: (inputs) => listOf(inputs, ({ field, required }) => ({ field, required })),
+      effects: (effects) => listOf(effects, ({ op, table }) => ({ op, table })),
+    };
     const kept = [];
     for (const resource of resources || []) {
       if (!aiConsumer.kinds.includes(resource.kind)) {
@@ -260,6 +270,9 @@ module.exports = async (data, utils) => {
       // Left undefined, it is not written at all.
       if ('customCode' in copy) copy.customCode = projectedCode(resource);
       if ('references' in copy) copy.references = projectedReferences(resource);
+      for (const [field, rebuilt] of Object.entries(rowFields)) {
+        if (field in copy) copy[field] = rebuilt(resource[field]);
+      }
       kept.push(copy);
     }
     const config = { enabled, vendor, tier, systemPrompt, resources: kept };

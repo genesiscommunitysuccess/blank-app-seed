@@ -100,6 +100,26 @@ named("EVENT_TRADE_MODIFY").customCode = { alsoWrites: ["POSITION", 7], listComp
 named("EVENT_TRADE_DELETE").customCode = { alsoWrites: "TRADE", listComplete: true };
 named("EVENT_POSITION_INSERT").customCode = null;
 console.log(JSON.stringify(u));' "$AI_UI_EXTRAS_CLEAN")"
+# 'rows' is the fixture plus a row action (C-18.8), then with things smuggled inside its lists that the
+# writer must drop: a key that is not a field name, a key on an input and a key on an effect. It must
+# come out as its clean form.
+AI_UI_ROWS_CLEAN="$(node -e '
+const u = JSON.parse(process.argv[1]);
+u.ai.resources.push({
+  name: "EVENT_REPRICE_TRADE", kind: "event", op: "custom",
+  context: "Run the REPRICE_TRADE handler on one existing TRADE row. It changes that TRADE row. It needs PRICE.",
+  shape: "row", entity: "TRADE", key: ["TRADE_ID"],
+  inputs: [{ field: "PRICE", required: true }],
+  effects: [{ op: "modify", table: "TRADE" }, { op: "insert", table: "POSITION" }],
+});
+console.log(JSON.stringify(u));' "$AI_UI")"
+AI_UI_ROWS="$(node -e '
+const u = JSON.parse(process.argv[1]);
+const row = u.ai.resources.find((resource) => resource.name === "EVENT_REPRICE_TRADE");
+row.key = [...row.key, 7];
+row.inputs[0].url = "https://example.invalid";
+row.effects[0].endpoint = "https://example.invalid";
+console.log(JSON.stringify(u));' "$AI_UI_ROWS_CLEAN")"
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
 ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
@@ -171,6 +191,16 @@ process.exit(bad ? 1 : 0);
 NODE
 
 echo "=== Generating into $WORK_DIR"
+# The row fields reach an app only from a seed that declares them, and this one cannot yet: the UI it
+# pins does not read them, which the declaration check would rightly refuse. So they go through a copy
+# of this seed whose declaration is the test-only one, never through .genx/ai-consumer.json.
+ROW_SEED="$WORK_DIR/seed-row-actions"
+node -e '
+const fs = require("fs");
+const [from, to] = process.argv.slice(1);
+fs.cpSync(from, to, { recursive: true, filter: (p) => !/[\\/](\.git|node_modules)([\\/]|$)/.test(p.slice(from.length)) });
+fs.copyFileSync(`${from}/.genx/tests/fixtures/ai-consumer-row-actions.json`, `${to}/.genx/ai-consumer.json`);' \
+  "$SEED_DIR" "$ROW_SEED" || fail "rows: could not make the seed copy that declares the row fields"
 generate default --framework react
 # A whole resolved block, switched off: Create can pass one through, and it must emit nothing at all
 # rather than a panel that only says it is blocked.
@@ -178,6 +208,7 @@ generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
+SEED="$ROW_SEED" generate rows --framework react --ui "$AI_UI_ROWS"
 generate extras --framework react --ui "$AI_UI_EXTRAS"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
@@ -582,6 +613,59 @@ problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
 NODE
 
+# The row cases, through the seed copy that declares the row fields: each reaches the app exactly as
+# Create resolved it, and the writer's projection drops what 'rows' smuggles inside the lists (C-18.8).
+echo "=== row actions through the writer"
+row_cases="$(node -e '
+const { cases } = require(process.argv[1]);
+console.log(cases.flatMap(({ expected }, i) => ((expected.ai?.resources || []).some((r) => r.shape) ? [i] : [])).join(" "));' "$CASES")"
+row_labels=(rows)
+for i in $row_cases; do
+  SEED="$ROW_SEED" generate "rowcase$i" --framework react \
+    --ui "$(node -e 'console.log(JSON.stringify({ ai: require(process.argv[1]).cases[+process.argv[2]].expected.ai }))' "$CASES" "$i")" \
+    && row_labels+=("rowcase$i")
+done
+node - "$CASES" "$WORK_DIR" "$AI_UI_ROWS_CLEAN" "$row_cases" <<'NODE' \
+  || fail "rows: a row action did not reach the app as Create resolved it (see above)"
+const fs = require('fs');
+const path = require('path');
+const { isDeepStrictEqual } = require('util');
+const [casesFile, work, rowsClean, indexes] = process.argv.slice(2);
+// Verbatim: the file is the block after one JSON round trip, nothing added, dropped or rebuilt.
+const verbatim = (written, sent) => isDeepStrictEqual(written, JSON.parse(JSON.stringify(sent)));
+const read = (label) =>
+  JSON.parse(fs.readFileSync(path.join(work, label, 'demo/client/src/ai/generated/ai-config.json'), 'utf8'));
+const drops = (label) =>
+  fs.readFileSync(`${work}/${label}.log`, 'utf8').split('\n').filter((line) => line.includes('ai: dropped '));
+const problems = [];
+// The compare itself: it must refuse a copy that lost a row field, or carries one more nested key.
+const sample = JSON.parse(rowsClean).ai;
+const swap = (change) => ({ ...sample, resources: sample.resources.map((r) => (r.shape ? change(r) : r)) });
+const lost = swap((r) => ({ ...r, effects: undefined }));
+const extra = swap((r) => ({ ...r, inputs: [{ ...r.inputs[0], url: 'x' }] }));
+if (verbatim(lost, sample) || verbatim(extra, sample)) problems.push('the compare passes a copy that is not verbatim');
+// 'rows': every key is declared, so nothing is said, and the smuggles inside the lists are gone.
+if (!verbatim(read('rows'), sample)) {
+  problems.push(`rows: the row action came out as ${JSON.stringify(read('rows').resources.find((r) => r.shape))}`);
+}
+if (drops('rows').length) problems.push(`rows: the log says ${JSON.stringify(drops('rows'))}`);
+const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases;
+const picked = indexes.split(/\s+/).filter(Boolean).map(Number);
+if (!picked.some((i) => cases[i].name.startsWith('C-18 GC-C1'))) problems.push('GC-C1 is not among the row cases');
+for (const i of picked) {
+  const { name, expected } = cases[i];
+  const written = read(`rowcase${i}`);
+  if (!verbatim(written, expected.ai)) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
+  // Each row action as Create wrote it, byte for byte, key order included.
+  for (const resource of expected.ai.resources.filter((r) => r.shape)) {
+    const got = JSON.stringify(written.resources.find((r) => r.name === resource.name));
+    if (got !== JSON.stringify(resource)) problems.push(`case ${i}: ${resource.name} came out as ${got}`);
+  }
+}
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
+
 # The declaration check runs on the React AI build (generate-test-apps.sh), against whatever assistant
 # that app installed. These are the installs it never meets there: an assistant from before the export,
 # none at all or a broken one, an export with nothing usable in it, one that throws, imports what it may
@@ -701,7 +785,7 @@ NODE
 # Create refuses an export carrying any of these (server/archive-generation-service/export-leak-guard.js,
 # LEAK_RULES, copied): catching one here is cheaper than a 422 on a customer's export.
 echo "=== nothing Create's export guard refuses"
-node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
+node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} ${row_labels[@]+"${row_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
 const fs = require('fs');
 const path = require('path');
 const [work, ...labels] = process.argv.slice(2);

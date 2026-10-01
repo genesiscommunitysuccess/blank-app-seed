@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kinds": ["request", "event", "query"],
+  "resourceFields": [
+    "name",
+    "kind",
+    "op",
+    "context",
+    "maxRows",
+    "customCode",
+    "references",
+    "shape",
+    "entity",
+    "key",
+    "inputs",
+    "effects"
+  ]
+}
