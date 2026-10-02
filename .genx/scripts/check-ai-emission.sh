@@ -13,14 +13,17 @@
 #             proxy's own document limit; the proxy is its template with only its two limits filled
 #             in, for either vendor; and no AI item lands in a system-definition file (a generator may
 #             rewrite those, so the proxy must not need one). The client gets its ai-config.json
-#             (exactly the contract's fields, whatever the prompt holds); the assistant's four source
-#             files (pbc/ai-assistant/elements.ts, ai/generated/assistant-host.ts and assistant.ts,
-#             ai/extensions/index.ts), each its template as written and holding the parts the
-#             assistant needs; the AI build flag and an .oxfmtrc.json entry that skips ai/generated;
-#             and nothing else.
+#             (exactly what .genx/ai-consumer.json declares, whatever the prompt holds); the
+#             assistant's four source files (pbc/ai-assistant/elements.ts,
+#             ai/generated/assistant-host.ts and assistant.ts, ai/extensions/index.ts), each its
+#             template as written and holding the parts the assistant needs; the AI build flag and
+#             an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
 #   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
-#             each of Create's resolver cases reaches the app as exactly its contract fields.
+#             each of Create's resolver cases reaches the app verbatim, minus what the declaration
+#             withholds, and says so for each resource and key it drops.
+#   declared  the declaration check refuses an assistant install it cannot read, and holds the
+#             declaration between the baseline and what the assistant reads.
 #   leaks     no generated file carries anything Create's export guard would refuse.
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
@@ -54,6 +57,43 @@ AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
 AI_UI="$(cat "$AI_FIXTURE")"
 AI_UI_BREAKERS="$(cat "$SEED_DIR/.genx/tests/fixtures/ai-config-parse-breakers.json")"
 AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","systemPrompt":"x","resources":[]}}'
+# 'extras' is the fixture plus more writes and a custom event, then with things smuggled in that the writer
+# must drop: two top-level keys, a key on the request, a customCode on the request and on the custom
+# event, and customCodes a writer must not pass on as sent: one with a key of its own, a name that is not
+# text and a listComplete that is not true; a whole list whose listComplete is not true; a list cut to
+# its names, and one that is not a list, each saying it is complete; and a null one. It must come out as
+# its clean form.
+AI_UI_EXTRAS_CLEAN="$(node -e '
+const u = JSON.parse(process.argv[1]);
+const named = (name) => u.ai.resources.find((resource) => resource.name === name);
+const cut = (alsoWrites) => ({ alsoWrites, listComplete: false });
+named("EVENT_TRADE_MODIFY").customCode = cut(["POSITION"]);
+u.ai.resources.push(
+  { name: "EVENT_TRADE_DELETE", kind: "event", op: "delete", context: "Remove a trade.", customCode: cut([]) },
+  { name: "EVENT_POSITION_MODIFY", kind: "event", op: "modify", context: "Change a position.", customCode: cut(["TRADE"]) },
+  { name: "EVENT_POSITION_INSERT", kind: "event", op: "insert", context: "Open a position." },
+  { name: "EVENT_TRADE_CANCEL", kind: "event", op: "custom", context: "Cancel a trade." },
+);
+console.log(JSON.stringify(u));' "$AI_UI")"
+AI_UI_EXTRAS="$(node -e '
+const u = JSON.parse(process.argv[1]);
+const named = (name) => u.ai.resources.find((resource) => resource.name === name);
+const code = { alsoWrites: ["TRADE"], listComplete: true };
+u.ai.budgetUsd = 5;
+u.ai.endpoint = "https://example.invalid";
+Object.assign(named("REQ_TRADE"), { url: "https://example.invalid", customCode: code });
+named("EVENT_TRADE_CANCEL").customCode = code;
+const insert = named("EVENT_TRADE_INSERT");
+insert.customCode = {
+  alsoWrites: [...insert.customCode.alsoWrites, 7],
+  listComplete: "yes",
+  url: "https://example.invalid",
+};
+named("EVENT_POSITION_MODIFY").customCode = { alsoWrites: ["TRADE"], listComplete: "yes" };
+named("EVENT_TRADE_MODIFY").customCode = { alsoWrites: ["POSITION", 7], listComplete: true };
+named("EVENT_TRADE_DELETE").customCode = { alsoWrites: "TRADE", listComplete: true };
+named("EVENT_POSITION_INSERT").customCode = null;
+console.log(JSON.stringify(u));' "$AI_UI_EXTRAS_CLEAN")"
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
 ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
@@ -94,8 +134,8 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.2.0', sha256: '527f5980d996192904916a14b129f30dee347664c8bcb2201bfbf0a42d11f60e' },
-  'ai-resolver-cases.json': { version: '1.3.0', sha256: '590b16fe42d5098b05f5d58fec55afb3896f72750236573770e3bb4d4aab99b5' },
+  'ui-config-ai.schema.json': { version: '1.4.0', sha256: '77432cac53db75f69fdac3eda4340e2f1f4cfca17259aa0cca1ea37f24a5727e' },
+  'ai-resolver-cases.json': { version: '1.5.0', sha256: '677c2a3cf2723521efd3e7500eba04d3975dc9e68dfc32a4530be1523be5af9b' },
 };
 let bad = 0;
 for (const [file, want] of Object.entries(pinned)) {
@@ -118,8 +158,7 @@ generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
-# The fixture with fields the contract does not have smuggled in, which the writer must drop.
-generate extras --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.budgetUsd = 5; u.ai.endpoint = "https://example.invalid"; u.ai.resources[0].url = "https://example.invalid"; console.log(JSON.stringify(u))' "$AI_FIXTURE")"
+generate extras --framework react --ui "$AI_UI_EXTRAS"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
 echo "=== off"
@@ -362,29 +401,60 @@ process.exit(ok ? 0 : 1);
 NODE
 done
 
-# The configuration the panel reads is the contract's fields exactly, whatever Handlebars-looking text
-# the prompt carries; and the client's package.json gains the assistant package at the UI version and
-# the AI build flag on build and dev, and not one thing more.
+# The configuration the panel reads is what the declaration passes on, exactly, whatever Handlebars-looking
+# text the prompt carries, and the log says each drop and nothing else; and the client's package.json
+# gains the assistant package at the UI version and the AI build flag on build and dev, and not one thing
+# more.
 echo "=== the panel's configuration and package"
-node - "$WORK_DIR" "$AI_UI" "$AI_UI_ANTHROPIC" "$SEED_DIR/.genx/versions.json" "$AI_UI_BREAKERS" <<'NODE' \
+node - "$WORK_DIR" "$SEED_DIR/.genx/versions.json" "$SEED_DIR/.genx/ai-consumer.json" \
+  "$AI_UI" "$AI_UI_ANTHROPIC" "$AI_UI_BREAKERS" "$AI_UI_EXTRAS_CLEAN" "$AI_UI_EXTRAS" <<'NODE' \
   || fail "on: the panel's configuration or the client package.json is not what the AI path writes (see above)"
 const fs = require('fs');
 const path = require('path');
 const { isDeepStrictEqual } = require('util');
-const [work, geminiUi, anthropicUi, , breakersUi] = process.argv.slice(2);
-const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.parse(JSON.stringify({
-  enabled, vendor, tier, systemPrompt,
-  resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({ name, kind, op, context, maxRows })),
-}));
+const [work, versionsFile, consumerFile, geminiUi, anthropicUi, breakersUi, extrasCleanUi, extrasUi] = process.argv.slice(2);
+const version = JSON.parse(fs.readFileSync(versionsFile, 'utf8')).UI;
+const passed = `passed to @genesislcap/ai-assistant ${version}`;
+// The block as sent, minus what the declaration withholds: the same file the writer reads. A customCode
+// is its two values, and only an insert, modify or delete keeps one (C-18.D.5).
+const consumer = JSON.parse(fs.readFileSync(consumerFile, 'utf8'));
+const projected = ({ op, customCode: code }) => {
+  if (!code || !['insert', 'modify', 'delete'].includes(op)) return undefined;
+  // Complete only when it says so and nothing had to be cut (v2.83).
+  const whole = Array.isArray(code.alsoWrites) && code.alsoWrites.every((name) => typeof name === 'string');
+  return {
+    alsoWrites: Array.isArray(code.alsoWrites) ? code.alsoWrites.filter((name) => typeof name === 'string') : [],
+    listComplete: whole && code.listComplete === true,
+  };
+};
+const passedOn = (resources) => (resources || [])
+  .filter((resource) => consumer.kinds.includes(resource.kind))
+  .map((resource) => {
+    const kept = Object.fromEntries(Object.entries(resource).filter(([key]) => consumer.resourceFields.includes(key)));
+    if ('customCode' in kept) kept.customCode = projected(resource);
+    return kept;
+  });
+const declared = ({ enabled, vendor, tier, systemPrompt, resources }) =>
+  JSON.parse(JSON.stringify({ enabled, vendor, tier, systemPrompt, resources: passedOn(resources) }));
+// What the writer says it dropped, in its order.
+const said = (resources) => (resources || []).flatMap((resource) => consumer.kinds.includes(resource.kind)
+  ? Object.keys(resource)
+      .filter((key) => !consumer.resourceFields.includes(key))
+      .map((key) => `ai: dropped ${key} on ${resource.name} — not ${passed}`)
+  : [`ai: dropped resource ${resource.name} — kind ${resource.kind} is not ${passed}`]);
+const dropLines = (log) => log.split('\n').filter((line) => line.includes('ai: dropped ')).map((line) => line.slice(line.indexOf('ai: dropped ')).trimEnd());
 const problems = [];
 const read = (label, rel) => fs.readFileSync(path.join(work, label, 'demo', rel), 'utf8');
-// 'extras' got the fixture plus non-contract fields; it must still come out as the fixture's contract fields.
-for (const [label, input] of [['on', geminiUi], ['onanthropic', anthropicUi], ['extras', geminiUi], ['breakers', breakersUi]]) {
+// Each app: the block it was sent, and the clean block it must come out as.
+for (const [label, sent, clean] of [['on', geminiUi, geminiUi], ['onanthropic', anthropicUi, anthropicUi], ['extras', extrasUi, extrasCleanUi], ['breakers', breakersUi, breakersUi]]) {
   const raw = read(label, 'client/src/ai/generated/ai-config.json');
   if (raw.includes('{{')) problems.push(`${label}: ai-config.json still holds {{ for Handlebars to expand`);
   let written;
   try { written = JSON.parse(raw); } catch (e) { problems.push(`${label}: ai-config.json is not JSON: ${e.message}`); continue; }
-  if (!isDeepStrictEqual(written, contract(JSON.parse(input).ai))) problems.push(`${label}: ai-config.json is not the contract's fields of the input`);
+  if (!isDeepStrictEqual(written, declared(JSON.parse(clean).ai))) problems.push(`${label}: ai-config.json is not the declared fields of the clean input`);
+  const lines = dropLines(fs.readFileSync(`${work}/${label}.log`, 'utf8'));
+  const want = said(JSON.parse(sent).ai.resources);
+  if (!isDeepStrictEqual(lines, want)) problems.push(`${label}: the log says ${JSON.stringify(lines)}, not ${JSON.stringify(want)}`);
 
   const on = JSON.parse(read(label, 'client/package.json'));
   const off = JSON.parse(read('default', 'client/package.json'));
@@ -397,6 +467,13 @@ for (const [label, input] of [['on', geminiUi], ['onanthropic', anthropicUi], ['
   const rest = (pkg) => ({ ...pkg, dependencies: undefined, scripts: undefined });
   if (!isDeepStrictEqual(rest(on), rest(off))) problems.push(`${label}: package.json differs outside dependencies and scripts`);
 }
+// The declaration passes customCode on. Every expectation above derives from it, so it is pinned here.
+const insert = JSON.parse(read('on', 'client/src/ai/generated/ai-config.json')).resources.find((r) => r.name === 'EVENT_TRADE_INSERT');
+if (!isDeepStrictEqual(insert?.customCode, { alsoWrites: ['POSITION'], listComplete: false })) {
+  problems.push(`on: EVENT_TRADE_INSERT's customCode is ${JSON.stringify(insert?.customCode)}, not the fixture's`);
+}
+// Anti-vacuity: 'extras' did send what must be dropped, and was told so.
+if (!said(JSON.parse(extrasUi).ai.resources).length) problems.push('extras: the fixture smuggles nothing the writer must say');
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
 NODE
@@ -410,8 +487,9 @@ done
 echo "=== non-react"
 [ "$(ai_artifacts_present nonreact)" = "0" ] || fail "non-react: AI files emitted with no panel to use them"
 
-# Create's own resolver cases, as the blocks it actually sends: each must reach the app as exactly its
-# contract fields, and a case that resolves to no block must emit no AI file at all.
+# Create's own resolver cases, as the blocks it actually sends: each must reach the app verbatim, top level
+# included, minus the kinds and keys the declaration withholds, with each drop said and nothing else; a
+# case that resolves to no block must emit no AI file at all.
 echo "=== C-8 cases through the seed"
 CASES="$SEED_DIR/.genx/tests/contracts/ai/ai-resolver-cases.json"
 case_count="$(node -e 'console.log(require(process.argv[1]).cases.length)' "$CASES")"
@@ -421,15 +499,40 @@ for i in $(seq 0 $((case_count - 1))); do
     --ui "$(node -e 'console.log(JSON.stringify({ ai: require(process.argv[1]).cases[+process.argv[2]].expected.ai }))' "$CASES" "$i")" \
     && case_labels+=("case$i")
 done
-node - "$CASES" "$WORK_DIR" <<'NODE' || fail "C-8: a resolved block did not reach the app as its contract fields (see above)"
+node - "$CASES" "$WORK_DIR" "$SEED_DIR/.genx/ai-consumer.json" "$SEED_DIR/.genx/versions.json" <<'NODE' \
+  || fail "C-8: a resolved block did not reach the app as what the declaration passes on (see above)"
 const fs = require('fs');
 const path = require('path');
 const { isDeepStrictEqual } = require('util');
-const [casesFile, work] = process.argv.slice(2);
-const contract = ({ enabled, vendor, tier, systemPrompt, resources }) => JSON.parse(JSON.stringify({
-  enabled, vendor, tier, systemPrompt,
-  resources: (resources || []).map(({ name, kind, op, context, maxRows }) => ({ name, kind, op, context, maxRows })),
+const [casesFile, work, consumerFile, versionsFile] = process.argv.slice(2);
+const consumer = JSON.parse(fs.readFileSync(consumerFile, 'utf8'));
+const passed = `passed to @genesislcap/ai-assistant ${JSON.parse(fs.readFileSync(versionsFile, 'utf8')).UI}`;
+const projected = ({ op, customCode: code }) => {
+  if (!code || !['insert', 'modify', 'delete'].includes(op)) return undefined;
+  // Complete only when it says so and nothing had to be cut (v2.83).
+  const whole = Array.isArray(code.alsoWrites) && code.alsoWrites.every((name) => typeof name === 'string');
+  return {
+    alsoWrites: Array.isArray(code.alsoWrites) ? code.alsoWrites.filter((name) => typeof name === 'string') : [],
+    listComplete: whole && code.listComplete === true,
+  };
+};
+// The top level is compared as sent, so a key Create adds there cannot be dropped with this check green.
+const declared = (ai) => JSON.parse(JSON.stringify({
+  ...ai,
+  resources: (ai.resources || [])
+    .filter((resource) => consumer.kinds.includes(resource.kind))
+    .map((resource) => {
+      const kept = Object.fromEntries(Object.entries(resource).filter(([key]) => consumer.resourceFields.includes(key)));
+      if ('customCode' in kept) kept.customCode = projected(resource);
+      return kept;
+    }),
 }));
+const said = (resources) => (resources || []).flatMap((resource) => consumer.kinds.includes(resource.kind)
+  ? Object.keys(resource)
+      .filter((key) => !consumer.resourceFields.includes(key))
+      .map((key) => `ai: dropped ${key} on ${resource.name} — not ${passed}`)
+  : [`ai: dropped resource ${resource.name} — kind ${resource.kind} is not ${passed}`]);
+const dropLines = (log) => log.split('\n').filter((line) => line.includes('ai: dropped ')).map((line) => line.slice(line.indexOf('ai: dropped ')).trimEnd());
 const problems = [];
 JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }, i) => {
   const client = path.join(work, `case${i}`, 'demo', 'client');
@@ -439,10 +542,111 @@ JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }
     return;
   }
   if (!fs.existsSync(file)) return problems.push(`case ${i} (${name}): no ai-config.json`);
-  if (!isDeepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), contract(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its contract fields`);
+  if (!isDeepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
+  // Every resource of a kind the declaration withholds, and every key it withholds, is said, in order,
+  // and nothing else is.
+  const lines = dropLines(fs.readFileSync(path.join(work, `case${i}.log`), 'utf8'));
+  const want = said(expected.ai.resources);
+  if (!isDeepStrictEqual(lines, want)) problems.push(`case ${i} (${name}): the log says ${JSON.stringify(lines)}, not ${JSON.stringify(want)}`);
 });
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
+NODE
+
+# The declaration check runs on the React AI build (generate-test-apps.sh), against whatever assistant
+# that app installed. These are the installs it never meets there: an assistant from before the export,
+# none at all or a broken one, an export with nothing usable in it, one that throws, imports what it may
+# not, ends the process, prints, or keeps the process alive, and one for import or for require only.
+# Each is a stand-in package.
+echo "=== the declaration check, against assistants the build does not install"
+node - "$WORK_DIR/declaration" "$SEED_DIR/.genx/ai-consumer.json" "$SEED_DIR/.genx/scripts/check-ai-declaration.mjs" <<'NODE' \
+  || fail "declaration: the check does not hold the floor (see above)"
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+const [work, consumerFile, check] = process.argv.slice(2);
+const seed = JSON.parse(fs.readFileSync(consumerFile, 'utf8'));
+const baseline = { version: 1, kinds: ['request', 'event'], resourceFields: ['name', 'kind', 'op', 'context', 'maxRows'] };
+const app = (name, exports, files = {}) => {
+  const pkg = path.join(work, name, 'node_modules/@genesislcap/ai-assistant');
+  fs.mkdirSync(pkg, { recursive: true });
+  fs.writeFileSync(path.join(work, name, 'package.json'), '{"name":"app"}');
+  if (exports) fs.writeFileSync(path.join(pkg, 'package.json'), JSON.stringify({ name: '@genesislcap/ai-assistant', exports }));
+  for (const [file, text] of Object.entries(files)) fs.writeFileSync(path.join(pkg, file), text);
+  return path.join(work, name);
+};
+const reads = app('reads', { '.': './index.js', './genesis/consumes': './consumes.cjs' }, {
+  'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`,
+});
+const before = app('before-the-export', { '.': './index.js' });
+const noManifest = app('no-package-json', null);
+const none = path.join(work, 'no-assistant');
+fs.mkdirSync(none, { recursive: true });
+fs.writeFileSync(path.join(none, 'package.json'), '{"name":"app"}');
+const exporting = (name, text) => app(name, { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': text });
+const seedSet = JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields });
+const falsy = exporting('exports-false', 'exports.GENESIS_AI_CONSUMES = false;');
+const aFunction = exporting('exports-a-function', 'exports.GENESIS_AI_CONSUMES = () => ({});');
+// Its kinds are text that happens to hold the names: only a list counts.
+const notLists = exporting('exports-no-lists', `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: 'request,event', resourceFields: baseline.resourceFields })};`);
+const exits = exporting('exits', 'process.exit(0);');
+// It prints a line that looks like the probe's answer, and a wider one, before its own export.
+const wider = JSON.stringify({ type: 'object', consumes: { kinds: [...seed.kinds, 'unread'], resourceFields: seed.resourceFields } });
+const pretends = exporting('prints-a-wider-answer', `console.log(${JSON.stringify(wider)}); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const prints = exporting('prints', `console.log("loading"); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const stays = exporting('keeps-the-process-alive', `setInterval(() => {}, 1000); exports.GENESIS_AI_CONSUMES = ${seedSet};`);
+const requireOnly = app('require-only', { './genesis/consumes': { require: './consumes.cjs' } }, {
+  'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${seedSet};`,
+});
+const empty = app('empty-export', { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': 'exports.OTHER = 1;' });
+const throws = app('throws', { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': 'throw new Error("no");' });
+// Its module needs a subpath the package does not export: that is a broken install, not an old one.
+const unexported = app('imports-unexported', { './genesis/consumes': './consumes.cjs' }, {
+  'consumes.cjs': 'require("@genesislcap/ai-assistant/hidden");',
+});
+const importOnly = app('import-only', { './genesis/consumes': { import: './consumes.mjs' } }, {
+  'consumes.mjs': `export const GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`,
+});
+const declaring = (name, declaration) => {
+  const file = path.join(work, `${name}.json`);
+  fs.writeFileSync(file, JSON.stringify(declaration));
+  return file;
+};
+const cases = [
+  ['the seed, on an assistant that reads what it declares', consumerFile, reads, 0],
+  ['a kind the assistant does not read', declaring('kind', { ...seed, kinds: [...seed.kinds, 'unread'] }), reads, 1],
+  ['a field the assistant does not read', declaring('field', { ...seed, resourceFields: [...seed.resourceFields, 'unread'] }), reads, 1],
+  ['a baseline field left out', declaring('no-op', { ...seed, resourceFields: seed.resourceFields.filter((f) => f !== 'op') }), reads, 1],
+  ['the baseline, before the export', declaring('baseline', baseline), before, 0],
+  ['more than the baseline, before the export', declaring('more', { ...baseline, resourceFields: [...baseline.resourceFields, 'customCode'] }), before, 1],
+  ['the baseline, with an assistant that has no package.json', declaring('baseline', baseline), noManifest, 1],
+  ['the baseline, with no assistant installed', declaring('baseline', baseline), none, 1],
+  ['the baseline, with an export that names nothing', declaring('baseline', baseline), empty, 1],
+  ['a declaration of another version', declaring('v2', { ...seed, version: 2 }), reads, 1],
+  ['a baseline kind left out', declaring('no-event', { ...seed, kinds: ['request'] }), reads, 1],
+  ['query, before the export', declaring('query', { ...baseline, kinds: [...baseline.kinds, 'query'] }), before, 1],
+  ['the baseline, with an export that throws', declaring('baseline', baseline), throws, 1],
+  ['the baseline, with an export that imports what it may not', declaring('baseline', baseline), unexported, 1],
+  ['the seed, on an assistant that exports it for import only', consumerFile, importOnly, 0],
+  ['the baseline, with a constant that is false', declaring('baseline', baseline), falsy, 1],
+  ['the baseline, with a constant that is a function', declaring('baseline', baseline), aFunction, 1],
+  ['the baseline, with a constant whose kinds are not a list', declaring('baseline', baseline), notLists, 1],
+  ['the baseline, with a module that ends the process', declaring('baseline', baseline), exits, 1],
+  ['a kind it does not read, on a module that prints a wider answer first', declaring('kind', { ...seed, kinds: [...seed.kinds, 'unread'] }), pretends, 1],
+  ['the seed, on a module that prints', consumerFile, prints, 0],
+  ['the seed, on a module that keeps the process alive', consumerFile, stays, 0],
+  // Required only, it reads as absent: fail-safe, as that assistant is held to the baseline.
+  ['more than the baseline, on an assistant that exports it for require only', declaring('more', { ...baseline, resourceFields: [...baseline.resourceFields, 'customCode'] }), requireOnly, 1],
+];
+let wrong = 0;
+for (const [name, declaration, client, want] of cases) {
+  const run = spawnSync(process.execPath, [check, declaration, client], { encoding: 'utf8' });
+  if (run.status !== want) {
+    wrong++;
+    console.log(`    ${name}: exit ${run.status}, not ${want}${run.stdout ? `\n${run.stdout}` : ''}${run.stderr}`);
+  }
+}
+process.exit(wrong ? 1 : 0);
 NODE
 
 # Every React app depends on the assistant package, AI on or off, so a prebuilt base already has it: at

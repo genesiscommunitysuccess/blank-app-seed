@@ -27,7 +27,8 @@
 #              ever holds one app's node_modules at a time. Failing apps are
 #              always kept.
 #   BUILD=1    additionally run `npx tsc --noEmit` and `npm run build` per app, and for the React
-#              ai app check that the assistant is built into a chunk of its own
+#              ai app check that the assistant is built into a chunk of its own, and that the seed's
+#              .genx/ai-consumer.json is within what the installed assistant reads (C-15A.6 S-6)
 #
 # Installs use the app's own bootstrap semantics (plain `npm install`) — NOT
 # --legacy-peer-deps, which would skip the ag-grid peer deps and break builds.
@@ -96,6 +97,8 @@ run_lint_checks() {
       if [ "$label" = "react-ai" ]; then
         echo "--- [$label] the assistant is built into a chunk of its own"
         check_assistant_chunk || exit 1
+        echo "--- [$label] the seed's AI declaration is within what the installed assistant reads"
+        node "$SEED_DIR/.genx/scripts/check-ai-declaration.mjs" "$SEED_DIR/.genx/ai-consumer.json" . || exit 1
       fi
     fi
   )

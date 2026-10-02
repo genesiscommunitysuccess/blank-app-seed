@@ -15,7 +15,8 @@
         "name": "EVENT_TRADE_INSERT",
         "kind": "event",
         "op": "insert",
-        "context": "Book a new trade."
+        "context": "Book a new trade.",
+        "customCode": { "alsoWrites": ["POSITION"], "listComplete": false }
       },
       {
         "name": "EVENT_TRADE_MODIFY",

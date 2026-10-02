@@ -21,7 +21,8 @@ jobs:
   # before this nothing compiled a generated tile: a grid tile passed a prop the React
   # wrapper's types did not declare and CI stayed green while `npm run build` failed for
   # anyone scaffolding with routes. For the AI app it also checks that the assistant and
-  # its bubble are built into a chunk of their own, and into no other.
+  # its bubble are built into a chunk of their own, and into no other, and that the seed's
+  # AI declaration holds the baseline and names nothing the installed assistant does not read.
   generated-apps:
     strategy:
       fail-fast: false
