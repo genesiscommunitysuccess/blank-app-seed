@@ -16,13 +16,25 @@
         "kind": "event",
         "op": "insert",
         "context": "Book a new trade.",
-        "customCode": { "alsoWrites": ["POSITION"], "listComplete": false }
+        "customCode": { "alsoWrites": ["POSITION"], "listComplete": false },
+        "references": [
+          { "resource": "REQ_COUNTERPARTY", "fields": [{ "field": "COUNTERPARTY_ID", "targetField": "COUNTERPARTY_ID" }] }
+        ]
       },
       {
         "name": "EVENT_TRADE_MODIFY",
         "kind": "event",
         "op": "modify",
-        "context": "Change a trade."
+        "context": "Change a trade.",
+        "references": [
+          { "resource": "REQ_COUNTERPARTY", "fields": [{ "field": "COUNTERPARTY_ID", "targetField": "COUNTERPARTY_ID" }] }
+        ]
+      },
+      {
+        "name": "REQ_COUNTERPARTY",
+        "kind": "request",
+        "context": "Counterparties a trade can name.",
+        "maxRows": 50
       }
     ]
   }

@@ -81,9 +81,15 @@ const named = (name) => u.ai.resources.find((resource) => resource.name === name
 const code = { alsoWrites: ["TRADE"], listComplete: true };
 u.ai.budgetUsd = 5;
 u.ai.endpoint = "https://example.invalid";
-Object.assign(named("REQ_TRADE"), { url: "https://example.invalid", customCode: code });
+const reference = named("EVENT_TRADE_INSERT").references[0];
+Object.assign(named("REQ_TRADE"), { url: "https://example.invalid", customCode: code, references: [reference] });
+named("EVENT_TRADE_DELETE").references = [reference];
+named("EVENT_TRADE_CANCEL").references = [reference];
 named("EVENT_TRADE_CANCEL").customCode = code;
 const insert = named("EVENT_TRADE_INSERT");
+insert.references = [
+  { ...reference, url: "https://example.invalid", fields: [{ ...reference.fields[0], hint: "x" }] },
+];
 insert.customCode = {
   alsoWrites: [...insert.customCode.alsoWrites, 7],
   listComplete: "yes",
@@ -94,6 +100,32 @@ named("EVENT_TRADE_MODIFY").customCode = { alsoWrites: ["POSITION", 7], listComp
 named("EVENT_TRADE_DELETE").customCode = { alsoWrites: "TRADE", listComplete: true };
 named("EVENT_POSITION_INSERT").customCode = null;
 console.log(JSON.stringify(u));' "$AI_UI_EXTRAS_CLEAN")"
+# 'rows' is the fixture plus a row action (C-18.8) and the modify's key (C-19), then with things
+# smuggled in that the writer must drop: a key that is not a field name on each, a key on an input
+# and on an effect, and a key on a read and on an insert, which name no row. It must come out as its
+# clean form.
+AI_UI_ROWS_CLEAN="$(node -e '
+const u = JSON.parse(process.argv[1]);
+u.ai.resources.push({
+  name: "EVENT_REPRICE_TRADE", kind: "event", op: "custom",
+  context: "Run the REPRICE_TRADE handler on one existing TRADE row. It changes that TRADE row. It needs PRICE.",
+  shape: "row", entity: "TRADE", key: ["TRADE_ID"],
+  inputs: [{ field: "PRICE", required: true }],
+  effects: [{ op: "modify", table: "TRADE" }, { op: "insert", table: "POSITION" }],
+});
+u.ai.resources.find((resource) => resource.name === "EVENT_TRADE_MODIFY").key = ["TRADE_ID"];
+console.log(JSON.stringify(u));' "$AI_UI")"
+AI_UI_ROWS="$(node -e '
+const u = JSON.parse(process.argv[1]);
+const row = u.ai.resources.find((resource) => resource.name === "EVENT_REPRICE_TRADE");
+const named = (name) => u.ai.resources.find((resource) => resource.name === name);
+row.key = [...row.key, 7];
+row.inputs[0].url = "https://example.invalid";
+row.effects[0].endpoint = "https://example.invalid";
+named("EVENT_TRADE_MODIFY").key = ["TRADE_ID", 7];
+named("REQ_TRADE").key = ["TRADE_ID"];
+named("EVENT_TRADE_INSERT").key = ["TRADE_ID"];
+console.log(JSON.stringify(u));' "$AI_UI_ROWS_CLEAN")"
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
 ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
@@ -129,15 +161,30 @@ ai_artifacts_present() {
 # The C-8 contract files are Create's (server/shared-schemas/ai/), copied here verbatim. Create's resolver
 # test pins the same digests, so an edit on either side fails until both sides bump the version together.
 echo "=== C-8 contract copies"
-node - "$SEED_DIR/.genx/tests/contracts/ai" <<'NODE' || fail "C-8: a contract copy is not the one Create pins (see above)"
+node - "$SEED_DIR/.genx/tests/contracts/ai" "$SEED_DIR/.genx/versions.json" <<'NODE' || fail "C-8: a contract copy is not the one Create pins, or the UI pin is below what the copies need (see above)"
 const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.4.0', sha256: '77432cac53db75f69fdac3eda4340e2f1f4cfca17259aa0cca1ea37f24a5727e' },
-  'ai-resolver-cases.json': { version: '1.5.0', sha256: '677c2a3cf2723521efd3e7500eba04d3975dc9e68dfc32a4530be1523be5af9b' },
+  'ui-config-ai.schema.json': { version: '1.6.0', sha256: '99549c80f065564701c9a8b83154e36d98ad9fd46162fc7bfad00aaf1b9b3498' },
+  'ai-resolver-cases.json': { version: '1.8.0', sha256: '48d47fadd396883f1858b60a066fe6a1ae99080537d73be9ab139ab8cca583c7' },
+};
+// The copies are Create master 1c403807d (genesis-create #1934). They carry queries, references, row
+// actions and keys, which only this UI release on reads (C-17.5, C-18.8, C-19): a seed that takes the
+// copies without the release would ship them to an assistant that ignores them, or drops them.
+const MIN_UI_FOR_CASES = '15.50.0';
+const core = (version) => String(version).split(/[-+]/)[0].split('.').map(Number);
+const below = (a, b) => {
+  const [x, y] = [core(a), core(b)];
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] < y[i];
+  return false;
 };
 let bad = 0;
+const ui = JSON.parse(fs.readFileSync(process.argv[3], 'utf8')).UI;
+if (below(ui, MIN_UI_FOR_CASES)) {
+  console.log(`    versions.json pins UI ${ui}, below ${MIN_UI_FOR_CASES}`);
+  bad++;
+}
 for (const [file, want] of Object.entries(pinned)) {
   const bytes = fs.readFileSync(path.join(process.argv[2], file));
   const sha256 = createHash('sha256').update(bytes).digest('hex');
@@ -158,6 +205,7 @@ generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
+generate rows --framework react --ui "$AI_UI_ROWS"
 generate extras --framework react --ui "$AI_UI_EXTRAS"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
@@ -472,6 +520,11 @@ const insert = JSON.parse(read('on', 'client/src/ai/generated/ai-config.json')).
 if (!isDeepStrictEqual(insert?.customCode, { alsoWrites: ['POSITION'], listComplete: false })) {
   problems.push(`on: EVENT_TRADE_INSERT's customCode is ${JSON.stringify(insert?.customCode)}, not the fixture's`);
 }
+// The declaration passes references on, and the fixture carries them.
+const references = [{ resource: 'REQ_COUNTERPARTY', fields: [{ field: 'COUNTERPARTY_ID', targetField: 'COUNTERPARTY_ID' }] }];
+if (!isDeepStrictEqual(insert?.references, references)) {
+  problems.push(`on: EVENT_TRADE_INSERT's references are ${JSON.stringify(insert?.references)}, not the fixture's`);
+}
 // Anti-vacuity: 'extras' did send what must be dropped, and was told so.
 if (!said(JSON.parse(extrasUi).ai.resources).length) problems.push('extras: the fixture smuggles nothing the writer must say');
 problems.forEach((p) => console.log(`    ${p}`));
@@ -542,13 +595,73 @@ JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }
     return;
   }
   if (!fs.existsSync(file)) return problems.push(`case ${i} (${name}): no ai-config.json`);
-  if (!isDeepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
+  const written = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!isDeepStrictEqual(written, declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
+  // A case the declaration withholds nothing from reaches the app exactly as Create resolved it.
+  // The declaration reads everything the copies carry, so every case reaches the app as Create
+  // resolved it, with nothing withheld.
+  if (!isDeepStrictEqual(written, JSON.parse(JSON.stringify(expected.ai)))) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
   // Every resource of a kind the declaration withholds, and every key it withholds, is said, in order,
   // and nothing else is.
   const lines = dropLines(fs.readFileSync(path.join(work, `case${i}.log`), 'utf8'));
   const want = said(expected.ai.resources);
   if (!isDeepStrictEqual(lines, want)) problems.push(`case ${i} (${name}): the log says ${JSON.stringify(lines)}, not ${JSON.stringify(want)}`);
 });
+problems.forEach((p) => console.log(`    ${p}`));
+process.exit(problems.length ? 1 : 0);
+NODE
+
+# The row and key cases, from the apps the C-8 loop generated: each keyed resource reaches the app byte
+# for byte, and the writer's projection drops what 'rows' smuggles inside the lists (C-18.8, C-19).
+echo "=== row actions and keys through the writer"
+row_cases="$(node -e '
+const { cases } = require(process.argv[1]);
+// A row action, or a modify or delete that names its row by a key (C-19).
+const keyed = (r) => r.shape || (["modify", "delete"].includes(r.op) && r.key);
+console.log(cases.flatMap(({ expected }, i) => ((expected.ai?.resources || []).some(keyed) ? [i] : [])).join(" "));' "$CASES")"
+row_labels=(rows)
+node - "$CASES" "$WORK_DIR" "$AI_UI_ROWS_CLEAN" "$row_cases" <<'NODE' \
+  || fail "rows: a row action did not reach the app as Create resolved it (see above)"
+const fs = require('fs');
+const path = require('path');
+const { isDeepStrictEqual } = require('util');
+const [casesFile, work, rowsClean, indexes] = process.argv.slice(2);
+// Verbatim: the file is the block after one JSON round trip, nothing added, dropped or rebuilt.
+const verbatim = (written, sent) => isDeepStrictEqual(written, JSON.parse(JSON.stringify(sent)));
+const read = (label) =>
+  JSON.parse(fs.readFileSync(path.join(work, label, 'demo/client/src/ai/generated/ai-config.json'), 'utf8'));
+const drops = (label) =>
+  fs.readFileSync(`${work}/${label}.log`, 'utf8').split('\n').filter((line) => line.includes('ai: dropped '));
+const problems = [];
+// The compare itself: it must refuse a copy that lost a row field, or carries one more nested key.
+const sample = JSON.parse(rowsClean).ai;
+const swap = (change) => ({ ...sample, resources: sample.resources.map((r) => (r.shape ? change(r) : r)) });
+const lost = swap((r) => ({ ...r, effects: undefined }));
+const extra = swap((r) => ({ ...r, inputs: [{ ...r.inputs[0], url: 'x' }] }));
+if (verbatim(lost, sample) || verbatim(extra, sample)) problems.push('the compare passes a copy that is not verbatim');
+// 'rows': every key is declared, so nothing is said, and the smuggles inside the lists are gone.
+if (!verbatim(read('rows'), sample)) {
+  const wrote = read('rows').resources;
+  const first = sample.resources.findIndex((r, i) => !verbatim(wrote[i], r));
+  problems.push(`rows: ${sample.resources[first]?.name ?? 'the list'} came out as ${JSON.stringify(wrote[first])}`);
+}
+if (drops('rows').length) problems.push(`rows: the log says ${JSON.stringify(drops('rows'))}`);
+const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases;
+const picked = indexes.split(/\s+/).filter(Boolean).map(Number);
+if (!picked.some((i) => cases[i].name.startsWith('C-18 GC-C1'))) problems.push('GC-C1 is not among the row cases');
+// And at least one modify or delete named by its key (C-19), or the key half of this is untested.
+const crudKey = (r) => ['modify', 'delete'].includes(r.op) && r.key !== undefined;
+if (!picked.some((i) => cases[i].expected.ai.resources.some(crudKey))) problems.push('no case names a modify or delete by its key');
+for (const i of picked) {
+  const { name, expected } = cases[i];
+  const written = read(`case${i}`);
+  if (!verbatim(written, expected.ai)) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
+  // Each resource that carries a key as Create wrote it, byte for byte, key order included.
+  for (const resource of expected.ai.resources.filter((r) => r.key !== undefined)) {
+    const got = JSON.stringify(written.resources.find((r) => r.name === resource.name));
+    if (got !== JSON.stringify(resource)) problems.push(`case ${i}: ${resource.name} came out as ${got}`);
+  }
+}
 problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
 NODE
@@ -672,7 +785,7 @@ NODE
 # Create refuses an export carrying any of these (server/archive-generation-service/export-leak-guard.js,
 # LEAK_RULES, copied): catching one here is cheaper than a 422 on a customer's export.
 echo "=== nothing Create's export guard refuses"
-node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
+node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} ${row_labels[@]+"${row_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
 const fs = require('fs');
 const path = require('path');
 const [work, ...labels] = process.argv.slice(2);
