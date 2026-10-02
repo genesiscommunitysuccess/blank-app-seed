@@ -166,8 +166,8 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.5.0', sha256: '64a0be59fa71b251638121e080b82694c347b7e4d17d3bffcfd416b8dc763b49' },
-  'ai-resolver-cases.json': { version: '1.7.0', sha256: '77b0fcacb649db30444f1c20ce9c75dd8d2c843e992d828abee625285ce7f938' },
+  'ui-config-ai.schema.json': { version: '1.6.0', sha256: '99549c80f065564701c9a8b83154e36d98ad9fd46162fc7bfad00aaf1b9b3498' },
+  'ai-resolver-cases.json': { version: '1.8.0', sha256: '48d47fadd396883f1858b60a066fe6a1ae99080537d73be9ab139ab8cca583c7' },
 };
 // The copies carry queries and references, which only this UI release on reads (C-17.5): a seed that
 // takes the copies without the release would ship them to an assistant that ignores them.
@@ -662,6 +662,9 @@ if (drops('rows').length) problems.push(`rows: the log says ${JSON.stringify(dro
 const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases;
 const picked = indexes.split(/\s+/).filter(Boolean).map(Number);
 if (!picked.some((i) => cases[i].name.startsWith('C-18 GC-C1'))) problems.push('GC-C1 is not among the row cases');
+// And at least one modify or delete named by its key (C-19), or the key half of this is untested.
+const crudKey = (r) => ['modify', 'delete'].includes(r.op) && r.key !== undefined;
+if (!picked.some((i) => cases[i].expected.ai.resources.some(crudKey))) problems.push('no case names a modify or delete by its key');
 for (const i of picked) {
   const { name, expected } = cases[i];
   const written = read(`rowcase${i}`);

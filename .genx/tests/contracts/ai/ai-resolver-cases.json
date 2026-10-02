@@ -1,6 +1,6 @@
 {
   "$comment": "Golden cases for the ui.config.ai resolver (GENC-1601 contract C-8). genesis-create owns this file; the seed carries a VERBATIM copy, and each side pins its digest so a change is a deliberate version bump rather than an edit. Every case states WHY it exists — a case whose reason is not obvious is a case someone will 'fix' the day it fails.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "cases": [
     {
       "name": "AI off: nothing is emitted",
@@ -5817,6 +5817,990 @@
           ]
         },
         "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K1: a modify and a delete name their row by the primary key, and an insert does not",
+      "why": "Where the seed reads key (C-15A.5 G-7), a CRUD modify and delete carry the table's primary key, so the bridge asks the model for exactly those fields (C-19.2). Without it the bridge offered every searchable field, the model sent them all, and an ordinary edit was refused (job 9 E7). The key here is a generated field, carried in generatedFields as Create maps it, never in fields: the resolver must not look for it there.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "RFQ",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "RFQ_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "CLIENT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "BIGDECIMAL",
+                  "nullable": false
+                },
+                {
+                  "name": "STATUS",
+                  "type": "ENUM",
+                  "nullable": false
+                }
+              ],
+              "generatedFields": [
+                {
+                  "fieldType": "STRING",
+                  "generatedFieldType": "SEQUENCE",
+                  "name": "RFQ_ID",
+                  "sequence": "RQ",
+                  "useUUID": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "RFQ",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_RFQ",
+              "kind": "request",
+              "context": "Read current rows from the RFQ table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_RFQ_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new RFQ record."
+            },
+            {
+              "name": "EVENT_RFQ_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing RFQ record.",
+              "key": [
+                "RFQ_ID"
+              ]
+            },
+            {
+              "name": "EVENT_RFQ_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing RFQ record.",
+              "key": [
+                "RFQ_ID"
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K2: a composite primary key is named in primary-key order, not fields order",
+      "why": "The key follows primaryKey.fields, the order codegen builds the index in, even where the table lists its fields the other way round. This key's fields are ordinary fields, as for a table keyed by a business code.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSITION",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "INSTRUMENT_ID",
+                  "BOOK_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "INSTRUMENT_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "BIGDECIMAL",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSITION",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSITION",
+              "kind": "request",
+              "context": "Read current rows from the POSITION table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSITION_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSITION record.",
+              "key": [
+                "INSTRUMENT_ID",
+                "BOOK_ID"
+              ]
+            },
+            {
+              "name": "EVENT_POSITION_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing POSITION record.",
+              "key": [
+                "INSTRUMENT_ID",
+                "BOOK_ID"
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K3: a coded modify and delete keep their key, after customCode and references",
+      "why": "A coded op's event is still its table's, so the row it names is the same (C-19.2); its code's other writes are C-18.D's disclosure. The key goes last, in the order the bridge copies the fields: customCode, references, key on the modify, customCode, key on the delete (C-19.R HP-2).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "TRADE_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY",
+                    "entityReferenceAttribute": "COUNTERPARTY_ID"
+                  }
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "BIGDECIMAL",
+                  "nullable": false
+                }
+              ],
+              "generatedFields": [
+                {
+                  "fieldType": "STRING",
+                  "generatedFieldType": "SEQUENCE",
+                  "name": "TRADE_ID",
+                  "sequence": "TR",
+                  "useUUID": false
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "COUNTERPARTY_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "NAME",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "update": {
+                "enabled": true,
+                "metadata": {
+                  "code": "eventHandler<Trade>(\"TRADE_MODIFY\", transactional = true) {\n  onCommit { event ->\n    val details = event.details\n    entityDb.modify(details)\n    entityDb.insert(Counterparty { name = details.counterpartyId })\n    ack()\n  }\n}"
+                }
+              },
+              "delete": {
+                "enabled": true,
+                "metadata": {
+                  "code": "eventHandler<Trade>(\"TRADE_DELETE\", transactional = true) {\n  onCommit { event ->\n    val details = event.details\n    entityDb.delete(details)\n    entityDb.insert(Counterparty { name = details.counterpartyId })\n    ack()\n  }\n}"
+                }
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "customCode",
+              "references",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. It runs custom code that can also write to COUNTERPARTY; the review shows the values sent. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so.",
+              "customCode": {
+                "alsoWrites": [
+                  "COUNTERPARTY"
+                ],
+                "listComplete": true
+              },
+              "references": [
+                {
+                  "resource": "REQ_COUNTERPARTY",
+                  "fields": [
+                    {
+                      "field": "COUNTERPARTY_ID",
+                      "targetField": "COUNTERPARTY_ID"
+                    }
+                  ]
+                }
+              ],
+              "key": [
+                "TRADE_ID"
+              ]
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record. It runs custom code that can also write to COUNTERPARTY; the review shows the row and sends its key.",
+              "customCode": {
+                "alsoWrites": [
+                  "COUNTERPARTY"
+                ],
+                "listComplete": true
+              },
+              "key": [
+                "TRADE_ID"
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K4: a table with no key the bridge could use gets none, and nothing is said",
+      "why": "No primaryKey, an empty one, a field that is not a platform name, and a key on RECORD_ID or TIMESTAMP, which the platform maintains and the bridge refuses as a key (C-19.R HP-1): each modify and delete keeps today's shape, silently, as the switch is silent (C-19.2).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "NOTE",
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "NOTE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "TEXT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "MEMO",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "MEMO_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "LEGACY",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "legacy_id"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "NAME",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "AUDIT_LOG",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "RECORD_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "ACTION",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "TICK",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "TIMESTAMP"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "PRICE",
+                  "type": "DOUBLE",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "NOTE",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "MEMO",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "LEGACY",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "AUDIT_LOG",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "TICK",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_NOTE",
+              "kind": "request",
+              "context": "Read current rows from the NOTE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_MEMO",
+              "kind": "request",
+              "context": "Read current rows from the MEMO table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_LEGACY",
+              "kind": "request",
+              "context": "Read current rows from the LEGACY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_AUDIT_LOG",
+              "kind": "request",
+              "context": "Read current rows from the AUDIT_LOG table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TICK",
+              "kind": "request",
+              "context": "Read current rows from the TICK table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_NOTE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing NOTE record."
+            },
+            {
+              "name": "EVENT_NOTE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing NOTE record."
+            },
+            {
+              "name": "EVENT_MEMO_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing MEMO record."
+            },
+            {
+              "name": "EVENT_MEMO_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing MEMO record."
+            },
+            {
+              "name": "EVENT_LEGACY_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing LEGACY record."
+            },
+            {
+              "name": "EVENT_LEGACY_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing LEGACY record."
+            },
+            {
+              "name": "EVENT_AUDIT_LOG_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing AUDIT_LOG record."
+            },
+            {
+              "name": "EVENT_AUDIT_LOG_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing AUDIT_LOG record."
+            },
+            {
+              "name": "EVENT_TICK_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TICK record."
+            },
+            {
+              "name": "EVENT_TICK_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TICK record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K5: on a seed that does not read key, a modify and a delete carry none",
+      "why": "GC-K1's project on the baseline seed: key is a silent field switch (C-15A.5 G-7), so nothing changes and nothing is said, whatever the table's primary key.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "RFQ",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "RFQ_ID"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "CLIENT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "BIGDECIMAL",
+                  "nullable": false
+                },
+                {
+                  "name": "STATUS",
+                  "type": "ENUM",
+                  "nullable": false
+                }
+              ],
+              "generatedFields": [
+                {
+                  "fieldType": "STRING",
+                  "generatedFieldType": "SEQUENCE",
+                  "name": "RFQ_ID",
+                  "sequence": "RQ",
+                  "useUUID": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "RFQ",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_RFQ",
+              "kind": "request",
+              "context": "Read current rows from the RFQ table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_RFQ_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new RFQ record."
+            },
+            {
+              "name": "EVENT_RFQ_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing RFQ record."
+            },
+            {
+              "name": "EVENT_RFQ_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing RFQ record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-K6: a table keyed by a DATE field still names its row by it",
+      "why": "Create is type-blind here: how a DATE key is read back is the bridge's business (C-19.R HP-6).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "FX_FIXING",
+              "snapshot": true,
+              "primaryKey": {
+                "id": null,
+                "name": null,
+                "fields": [
+                  "FIXING_DATE"
+                ],
+                "indexType": "UNIQUE"
+              },
+              "fields": [
+                {
+                  "name": "FIXING_DATE",
+                  "type": "DATE",
+                  "nullable": false
+                },
+                {
+                  "name": "RATE",
+                  "type": "BIGDECIMAL",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "FX_FIXING",
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_FX_FIXING",
+              "kind": "request",
+              "context": "Read current rows from the FX_FIXING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_FX_FIXING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing FX_FIXING record.",
+              "key": [
+                "FIXING_DATE"
+              ]
+            },
+            {
+              "name": "EVENT_FX_FIXING_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing FX_FIXING record.",
+              "key": [
+                "FIXING_DATE"
+              ]
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-19 GC-KP1: a pre-resolved key is kept on a modify, and checked in the bridge's words",
+      "why": "On the pre-resolved path a key rides a modify or a delete only, and is checked with the bridge's own key rules and words (C-19.2, C-19.R HP-3): a well-formed one stands, a key on an insert or naming a field twice skips its resource.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "ui": {
+            "config": {
+              "ai": {
+                "resources": [
+                  {
+                    "name": "REQ_RFQ",
+                    "kind": "request",
+                    "context": "Read current rows from the RFQ table.",
+                    "maxRows": 50
+                  },
+                  {
+                    "name": "EVENT_RFQ_INSERT",
+                    "kind": "event",
+                    "op": "insert",
+                    "context": "Create a new RFQ record.",
+                    "key": [
+                      "RFQ_ID"
+                    ]
+                  },
+                  {
+                    "name": "EVENT_RFQ_MODIFY",
+                    "kind": "event",
+                    "op": "modify",
+                    "context": "Update an existing RFQ record.",
+                    "key": [
+                      "RFQ_ID"
+                    ]
+                  },
+                  {
+                    "name": "EVENT_RFQ_DELETE",
+                    "kind": "event",
+                    "op": "delete",
+                    "context": "Delete an existing RFQ record.",
+                    "key": [
+                      "RFQ_ID",
+                      "RFQ_ID"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "options": {
+          "consumer": {
+            "kinds": [
+              "request",
+              "event"
+            ],
+            "resourceFields": [
+              "name",
+              "kind",
+              "op",
+              "context",
+              "maxRows",
+              "key"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_RFQ",
+              "kind": "request",
+              "context": "Read current rows from the RFQ table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_RFQ_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing RFQ record.",
+              "key": [
+                "RFQ_ID"
+              ]
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped pre-resolved resource \"EVENT_RFQ_INSERT\" — key applies to a custom event's row action, a modify or a delete only",
+          "ai: skipped pre-resolved resource \"EVENT_RFQ_DELETE\" — key names RFQ_ID twice"
+        ]
       }
     }
   ]
