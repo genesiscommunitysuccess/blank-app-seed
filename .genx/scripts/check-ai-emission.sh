@@ -169,9 +169,10 @@ const pinned = {
   'ui-config-ai.schema.json': { version: '1.6.0', sha256: '99549c80f065564701c9a8b83154e36d98ad9fd46162fc7bfad00aaf1b9b3498' },
   'ai-resolver-cases.json': { version: '1.8.0', sha256: '48d47fadd396883f1858b60a066fe6a1ae99080537d73be9ab139ab8cca583c7' },
 };
-// The copies carry queries and references, which only this UI release on reads (C-17.5): a seed that
-// takes the copies without the release would ship them to an assistant that ignores them.
-const MIN_UI_FOR_CASES = '15.47.0';
+// The copies are Create master 1c403807d (genesis-create #1934). They carry queries, references, row
+// actions and keys, which only this UI release on reads (C-17.5, C-18.8, C-19): a seed that takes the
+// copies without the release would ship them to an assistant that ignores them, or drops them.
+const MIN_UI_FOR_CASES = '15.50.0';
 const core = (version) => String(version).split(/[-+]/)[0].split('.').map(Number);
 const below = (a, b) => {
   const [x, y] = [core(a), core(b)];
@@ -197,16 +198,6 @@ process.exit(bad ? 1 : 0);
 NODE
 
 echo "=== Generating into $WORK_DIR"
-# The row fields reach an app only from a seed that declares them, and this one cannot yet: the UI it
-# pins does not read them, which the declaration check would rightly refuse. So they go through a copy
-# of this seed whose declaration is the test-only one, never through .genx/ai-consumer.json.
-ROW_SEED="$WORK_DIR/seed-row-actions"
-node -e '
-const fs = require("fs");
-const [from, to] = process.argv.slice(1);
-fs.cpSync(from, to, { recursive: true, filter: (p) => !/[\\/](\.git|node_modules)([\\/]|$)/.test(p.slice(from.length)) });
-fs.copyFileSync(`${from}/.genx/tests/fixtures/ai-consumer-row-actions.json`, `${to}/.genx/ai-consumer.json`);' \
-  "$SEED_DIR" "$ROW_SEED" || fail "rows: could not make the seed copy that declares the row fields"
 generate default --framework react
 # A whole resolved block, switched off: Create can pass one through, and it must emit nothing at all
 # rather than a panel that only says it is blocked.
@@ -214,7 +205,7 @@ generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
-SEED="$ROW_SEED" generate rows --framework react --ui "$AI_UI_ROWS"
+generate rows --framework react --ui "$AI_UI_ROWS"
 generate extras --framework react --ui "$AI_UI_EXTRAS"
 generate nonreact --framework webcomponents --ui "$AI_UI"
 
@@ -607,8 +598,9 @@ JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases.forEach(({ name, expected }
   const written = JSON.parse(fs.readFileSync(file, 'utf8'));
   if (!isDeepStrictEqual(written, declared(expected.ai))) problems.push(`case ${i} (${name}): ai-config.json is not its declared kinds and fields`);
   // A case the declaration withholds nothing from reaches the app exactly as Create resolved it.
-  const withholds = said(expected.ai.resources).length > 0;
-  if (!withholds && !isDeepStrictEqual(written, JSON.parse(JSON.stringify(expected.ai)))) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
+  // The declaration reads everything the copies carry, so every case reaches the app as Create
+  // resolved it, with nothing withheld.
+  if (!isDeepStrictEqual(written, JSON.parse(JSON.stringify(expected.ai)))) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
   // Every resource of a kind the declaration withholds, and every key it withholds, is said, in order,
   // and nothing else is.
   const lines = dropLines(fs.readFileSync(path.join(work, `case${i}.log`), 'utf8'));
@@ -619,20 +611,15 @@ problems.forEach((p) => console.log(`    ${p}`));
 process.exit(problems.length ? 1 : 0);
 NODE
 
-# The row cases, through the seed copy that declares the row fields: each reaches the app exactly as
-# Create resolved it, and the writer's projection drops what 'rows' smuggles inside the lists (C-18.8).
-echo "=== row actions through the writer"
+# The row and key cases, from the apps the C-8 loop generated: each keyed resource reaches the app byte
+# for byte, and the writer's projection drops what 'rows' smuggles inside the lists (C-18.8, C-19).
+echo "=== row actions and keys through the writer"
 row_cases="$(node -e '
 const { cases } = require(process.argv[1]);
 // A row action, or a modify or delete that names its row by a key (C-19).
 const keyed = (r) => r.shape || (["modify", "delete"].includes(r.op) && r.key);
 console.log(cases.flatMap(({ expected }, i) => ((expected.ai?.resources || []).some(keyed) ? [i] : [])).join(" "));' "$CASES")"
 row_labels=(rows)
-for i in $row_cases; do
-  SEED="$ROW_SEED" generate "rowcase$i" --framework react \
-    --ui "$(node -e 'console.log(JSON.stringify({ ai: require(process.argv[1]).cases[+process.argv[2]].expected.ai }))' "$CASES" "$i")" \
-    && row_labels+=("rowcase$i")
-done
 node - "$CASES" "$WORK_DIR" "$AI_UI_ROWS_CLEAN" "$row_cases" <<'NODE' \
   || fail "rows: a row action did not reach the app as Create resolved it (see above)"
 const fs = require('fs');
@@ -667,7 +654,7 @@ const crudKey = (r) => ['modify', 'delete'].includes(r.op) && r.key !== undefine
 if (!picked.some((i) => cases[i].expected.ai.resources.some(crudKey))) problems.push('no case names a modify or delete by its key');
 for (const i of picked) {
   const { name, expected } = cases[i];
-  const written = read(`rowcase${i}`);
+  const written = read(`case${i}`);
   if (!verbatim(written, expected.ai)) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
   // Each resource that carries a key as Create wrote it, byte for byte, key order included.
   for (const resource of expected.ai.resources.filter((r) => r.key !== undefined)) {
