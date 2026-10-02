@@ -1,5 +1,61 @@
 # Changelog
 
+## [5.28.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.1...v5.28.0) (2026-10-02)
+
+
+### Features
+
+* add desktop and headless Genesis Start scripts to the client GENC-1609 2806180
+* add the AI assistant to an AI app, in a chat bubble GENC-1611 (#638) 5a04d57
+* add the AI chat panel to an AI app, loading the assistant the first time it opens GENC-1611 b6d31f5
+* always depend on the AI assistant in a React app, so a preview base already has it GENC-1611 393c84b
+* copy Create's schema 1.6.0 and cases 1.8.0, with modifies and deletes named by key GENC-1611 65f4621
+* copy to the AI config only what the seed declares its assistant reads GENC-1611 b07cf57
+* copy to the AI config only what the seed declares its assistant reads GENC-1611 (#642) 4385268
+* give an AI app the assistant package and build it with AI switched on GENC-1611 660ca45
+* keep a key only where it names a row, and check a modify's key through CI GENC-1611 c238ab3
+* move Genesis Start to 0.1.15, the first launcher that can run headless GENC-1609 81136ae
+* open the AI assistant from a chat bubble GENC-1611 212bce1
+* pass queries, references and row actions to the AI chat GENC-1611 (#643) 92d7c5e
+* pin UI 15.47.0 and pass its queries and references to the chat GENC-1611 37ebdfd
+* pin UI 15.50.0 and pass row actions and keys to the chat GENC-1611 6aafccd
+* ship the AI chat proxy with a React app that asks for it GENC-1609 4b67a7a
+* ship the AI chat proxy with a React app that asks for it GENC-1609 (#636) 76dabeb
+* write a row action's fields as the chat reads them, and check them through CI GENC-1611 fa0f782
+* write the chat panel's configuration into an AI app GENC-1611 6eff2c2
+
+
+### Bug Fixes
+
+* accept a lowercase content-type from a proxy GENC-1609 8002275
+* allow the reasoning tier's models in the proxy GENC-1609 0a9c11d
+* answer 424 when the AI key cannot be read, never an exception GENC-1609 6cdb268
+* answer the chat panel as JSON whatever it accepts GENC-1609 9c3cbb7
+* ask Google's repository only for the launcher's androidx artifacts, after Genesis's own GENC-1609 1788d9b
+* bound what the proxy will parse from a request body GENC-1609 032f00b
+* build the AI limits into the proxy so a rewritten sysdef cannot drop them GENC-1609 8144dec
+* document only the environment route for the AI keys GENC-1609 f56f8e0
+* fail the AI declaration check on a GENESIS_AI_CONSUMES it cannot use GENC-1611 35ab208
+* give each user their own assistant session and check the right on every mount GENC-1611 aedc3e3
+* hold Gemini to one candidate so the token cap is the real cap GENC-1609 f238852
+* keep a bad key and failed calls out of replies and logs GENC-1609 2da7ed6
+* keep the key out of vendor replies and bare model ids in the proxy GENC-1609 1865ad5
+* move the UI packages to 15.45.0 GENC-1611 9f85173
+* put the AI settings in the system definition the server reads GENC-1609 8082946
+* raise the router body cap above the chat proxy's 5 MiB limit GENC-1609 42d8bca
+* read the AI keys from the environment, never the system definition GENC-1609 32d5249
+* refuse a nonsense AI_MAX_OUTPUT_TOKENS instead of guessing, and never clamp below 1 GENC-1609 ae9cadc
+* refuse every model when the allow-list is empty GENC-1609 be10603
+* refuse fallback models instead of vetting them GENC-1609 a32f906
+* refuse Gemini's snake_case spellings of the capped fields GENC-1609 83401f7
+* reply through the router's stateless JSON writer GENC-1609 8bc9148
+* run chat calls outside a database transaction GENC-1609 97784a2
+* say plainly that a sent vendor call runs to completion GENC-1609 7fa161f
+* stop holding a thread for the whole vendor call GENC-1609 6ab3e9b
+* stop logging every chat request with the caller's session GENC-1609 4c1eaf9
+* use inject, not the deprecated injector, in the proxy GENC-1609 f0fae49
+* warn against requiresAuth and make the auth checks exact GENC-1609 399ea9b
+
 ## [5.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.0...v5.27.1) (2026-09-24)
 
 
