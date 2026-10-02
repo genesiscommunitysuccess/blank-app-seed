@@ -25,6 +25,9 @@
     "**/*.hbs",
     "**/.genx/**",
     "**/src/generated/**",
+    {{#if AI.enabled}}
+    "**/src/ai/generated/**",
+    {{/if}}
     "**/index.html"
   ]
 }

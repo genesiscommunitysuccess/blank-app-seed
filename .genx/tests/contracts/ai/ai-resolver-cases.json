@@ -1,0 +1,2272 @@
+{
+  "$comment": "Golden cases for the ui.config.ai resolver (GENC-1601 contract C-8). genesis-create owns this file; the seed carries a VERBATIM copy, and each side pins its digest so a change is a deliberate version bump rather than an edit. Every case states WHY it exists — a case whose reason is not obvious is a case someone will 'fix' the day it fails.",
+  "version": "1.3.0",
+  "cases": [
+    {
+      "name": "AI off: nothing is emitted",
+      "why": "A project that did not select AI chat must generate exactly what it always did — the absence of the block is the contract, not `enabled: false` (C57).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "GenesisServerCore",
+            "DataServerCore"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": null,
+        "warnings": []
+      }
+    },
+    {
+      "name": "A snapshot entity with insert and modify enabled",
+      "why": "The ordinary case: one readable entity, the two write paths that are on by default, and delete left out because it was never exposed (R-2 a).",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "GenesisServerCore",
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": false
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "Only snapshot-enabled sources are readable; exposed delete and custom handlers appear",
+      "why": "Codegen emits a requestReply only for a snapshot-enabled entity or view, so POSITION has no REQ_ to address (C34 — a wrong name fails silently). Delete and custom are opt-in and here they were opted into.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            },
+            {
+              "name": "POSITION"
+            }
+          ],
+          "views": [
+            {
+              "name": "TRADE_VIEW",
+              "snapshot": {}
+            },
+            {
+              "name": "POSITION_VIEW"
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "delete": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "SETTLE_BATCH"
+            },
+            {
+              "type": "custom",
+              "name": "REBUILD_CACHE"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [
+              "TRADE"
+            ],
+            "custom": [
+              "SETTLE_BATCH"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TRADE_VIEW",
+              "kind": "request",
+              "context": "Read current rows from the TRADE_VIEW view.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record."
+            },
+            {
+              "name": "EVENT_SETTLE_BATCH",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the SETTLE_BATCH event handler."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "A stale exposure is pruned with a warning, not an error",
+      "why": "An exposure list outlives what it points at. A validation error here would block the preview build (C70), so the resource is dropped, the build continues, and the warning says which one.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": false
+              }
+            },
+            {
+              "type": "custom",
+              "name": "SETTLE_BATCH"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [
+              "TRADE",
+              "POSITION"
+            ],
+            "custom": [
+              "SETTLE_BATCH_V2"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped exposed delete for \"TRADE\" — no enabled delete handler for it",
+          "ai: dropped exposed delete for \"POSITION\" — no enabled delete handler for it",
+          "ai: dropped exposed custom handler \"SETTLE_BATCH_V2\" — no handler by that name"
+        ]
+      }
+    },
+    {
+      "name": "An enabled delete handler that was never exposed stays out",
+      "why": "Deletes are opt-in (R-2 a): the handler existing is not permission to let a chat call it. Without this case the opt-in gate is unpinned — an implementation that emitted every enabled delete would pass every other case here.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ],
+          "views": []
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "An audited entity gets no _AUDIT resource",
+      "why": "`audit: true` makes codegen emit a second requestReply for <ENTITY>_AUDIT off the same call. v1 leaves it out: a reader can ask about history through the entity's own tools, and exposing audit tables is an opt-in decision for the exposure form, not a default.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {},
+              "audit": true
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "A view named after a table yields one request resource, not two",
+      "why": "Both would derive REQ_TRADE. The chat would tolerate the duplicate; MCP's enableMcp refuses the entire script over one (`require(!enabledResources.containsKey(resource))`), so the whole MCP surface of the generated app dies on a list the preview showed as fine. The supported paths cannot produce this today — getProjectUsedNames (client/src/utils/reserved-names.ts:44) puts entities and views in ONE namespace and both the wizard and the AI tools check it — but a payload can still carry it, and the invariant is cheaper than discovering it at GSF 10.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ],
+          "views": [
+            {
+              "name": "TRADE",
+              "snapshot": {}
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped duplicate resource \"REQ_TRADE\" — a name can only be registered once"
+        ]
+      }
+    },
+    {
+      "name": "A custom handler named after a generated CRUD one yields one event resource",
+      "why": "EVENT_TRADE_INSERT from both the entity's enabled insert and a custom handler literally named TRADE_INSERT. This one IS reachable today: the project namespace holds the CRUD handler under its ENTITY key (eventHandlers['TRADE']), so the derived wire name TRADE_INSERT is free for a custom handler to take. The project is already ill-formed at that point — codegen would emit the handler name twice — and the resolver's job is not to fix that but to refuse to compound it into a dead MCP surface.",
+      "input": {
+        "payload": {
+          "projectName": "Trading Desk",
+          "components": [
+            "AssistantAI"
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "TRADE_INSERT"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [],
+            "custom": [
+              "TRADE_INSERT"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trading Desk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: dropped duplicate resource \"EVENT_TRADE_INSERT\" — a name can only be registered once"
+        ]
+      }
+    },
+    {
+      "name": "C-16 GC-1: a single-field reference gets a sentence on insert and modify only",
+      "why": "The chat must not invent a foreign key, and nothing in a generated app enforces one. Insert and modify carry the hint; delete sends only its key, and reads are unchanged.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY",
+                    "entityReferenceAttribute": "COUNTERPARTY_ID"
+                  }
+                },
+                {
+                  "name": "QUANTITY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "NAME",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              },
+              "delete": {
+                "enabled": true
+              }
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [
+              "TRADE"
+            ],
+            "custom": []
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_DELETE",
+              "kind": "event",
+              "op": "delete",
+              "context": "Delete an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-2: two roles to one target are two sentences in fields order and one trailer",
+      "why": "FROM_CCY and TO_CCY both point at CURRENCY_CODE. One rule per field, no merged sentence, and the trailer once.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "FX_RATE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "FROM_CCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "CURRENCY",
+                    "entityReferenceAttribute": "CURRENCY_CODE"
+                  }
+                },
+                {
+                  "name": "TO_CCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "CURRENCY",
+                    "entityReferenceAttribute": "CURRENCY_CODE"
+                  }
+                },
+                {
+                  "name": "RATE",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "CURRENCY",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "CURRENCY_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "FX_RATE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_FX_RATE",
+              "kind": "request",
+              "context": "Read current rows from the FX_RATE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_CURRENCY",
+              "kind": "request",
+              "context": "Read current rows from the CURRENCY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_FX_RATE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new FX_RATE record. FROM_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. TO_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_FX_RATE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing FX_RATE record. FROM_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. TO_CCY must be the CURRENCY_CODE of one CURRENCY row returned by REQ_CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-3: a composite follows fields order, not the key order of entityReferences",
+      "why": "fields order is the only order every payload shape carries, so a legacy payload and its current form give the same bytes. Each field is paired with its target field inline.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSTING",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BALANCE_BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "BUSINESS_DATE"
+                  }
+                },
+                {
+                  "name": "BALANCE_ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "ACCOUNT_CODE"
+                  }
+                },
+                {
+                  "name": "BALANCE_CURRENCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "CURRENCY"
+                  }
+                },
+                {
+                  "name": "AMOUNT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ],
+              "entityReferences": [
+                {
+                  "alias": "BALANCE",
+                  "referenceTableId": 11001,
+                  "indexName": "BALANCE_BY_KEY",
+                  "uniqueEntityRef": true,
+                  "enforceReference": false,
+                  "keyFieldPairs": [
+                    {
+                      "fromTableField": "BALANCE_ACCOUNT_CODE",
+                      "toReferenceTableField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "fromTableField": "BALANCE_CURRENCY",
+                      "toReferenceTableField": "CURRENCY"
+                    },
+                    {
+                      "fromTableField": "BALANCE_BUSINESS_DATE",
+                      "toReferenceTableField": "BUSINESS_DATE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "BALANCE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSTING",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSTING",
+              "kind": "request",
+              "context": "Read current rows from the POSTING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BALANCE",
+              "kind": "request",
+              "context": "Read current rows from the BALANCE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSTING_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_POSTING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-4: the same composite as a legacy meta-only payload gives the same bytes",
+      "why": "A payload from before entityReferences existed must produce exactly the GC-3 context.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSTING",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BALANCE_BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "BUSINESS_DATE"
+                  }
+                },
+                {
+                  "name": "BALANCE_ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "ACCOUNT_CODE"
+                  }
+                },
+                {
+                  "name": "BALANCE_CURRENCY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BALANCE",
+                    "entityReferenceAttribute": "CURRENCY"
+                  }
+                },
+                {
+                  "name": "AMOUNT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "BALANCE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSTING",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSTING",
+              "kind": "request",
+              "context": "Read current rows from the POSTING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BALANCE",
+              "kind": "request",
+              "context": "Read current rows from the BALANCE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSTING_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_POSTING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-5: the same composite recovered from entityReferences alone gives the same bytes",
+      "why": "A payload stripped of field meta still recovers a composite reference from its keyFieldPairs, and the target table is found by id.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSTING",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BALANCE_BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "BALANCE_ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "BALANCE_CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "AMOUNT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ],
+              "entityReferences": [
+                {
+                  "alias": "BALANCE",
+                  "referenceTableId": 11001,
+                  "indexName": "BALANCE_BY_KEY",
+                  "uniqueEntityRef": true,
+                  "enforceReference": false,
+                  "keyFieldPairs": [
+                    {
+                      "fromTableField": "BALANCE_ACCOUNT_CODE",
+                      "toReferenceTableField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "fromTableField": "BALANCE_CURRENCY",
+                      "toReferenceTableField": "CURRENCY"
+                    },
+                    {
+                      "fromTableField": "BALANCE_BUSINESS_DATE",
+                      "toReferenceTableField": "BUSINESS_DATE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "BALANCE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSTING",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSTING",
+              "kind": "request",
+              "context": "Read current rows from the POSTING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BALANCE",
+              "kind": "request",
+              "context": "Read current rows from the BALANCE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSTING_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_POSTING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-5b: an entityReferences target no table matches falls back to its alias",
+      "why": "referenceTableId -1 matches no table, so the alias names the target, and the context is still the GC-3 one.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "POSTING",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BALANCE_BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "BALANCE_ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "BALANCE_CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "AMOUNT",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ],
+              "entityReferences": [
+                {
+                  "alias": "BALANCE",
+                  "referenceTableId": -1,
+                  "indexName": "BALANCE_BY_KEY",
+                  "uniqueEntityRef": true,
+                  "enforceReference": false,
+                  "keyFieldPairs": [
+                    {
+                      "fromTableField": "BALANCE_ACCOUNT_CODE",
+                      "toReferenceTableField": "ACCOUNT_CODE"
+                    },
+                    {
+                      "fromTableField": "BALANCE_CURRENCY",
+                      "toReferenceTableField": "CURRENCY"
+                    },
+                    {
+                      "fromTableField": "BALANCE_BUSINESS_DATE",
+                      "toReferenceTableField": "BUSINESS_DATE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "BALANCE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BUSINESS_DATE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_CODE",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "CURRENCY",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "POSTING",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_POSTING",
+              "kind": "request",
+              "context": "Read current rows from the POSTING table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BALANCE",
+              "kind": "request",
+              "context": "Read current rows from the BALANCE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_POSTING_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_POSTING_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing POSTING record. One BALANCE row returned by REQ_BALANCE must supply all of BALANCE_BUSINESS_DATE from its BUSINESS_DATE, BALANCE_ACCOUNT_CODE from its ACCOUNT_CODE, BALANCE_CURRENCY from its CURRENCY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-6: a nullable single-field reference says if set",
+      "why": "An optional reference may be left empty; when it is set it must still be a real row.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": true,
+                  "meta": {
+                    "entityReference": "BOOK",
+                    "entityReferenceAttribute": "BOOK_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "BOOK",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BOOK",
+              "kind": "request",
+              "context": "Read current rows from the BOOK table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record. BOOK_ID, if set, must be the BOOK_ID of one BOOK row returned by REQ_BOOK. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. BOOK_ID, if set, must be the BOOK_ID of one BOOK row returned by REQ_BOOK. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-7: a self-reference is hinted and a field pointing at itself is not",
+      "why": "MANAGER_ID naming another EMPLOYEE is a genuine reference; TRADE_ID pointing at its own TRADE_ID says nothing and is skipped silently.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "EMPLOYEE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "EMPLOYEE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "MANAGER_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "EMPLOYEE",
+                    "entityReferenceAttribute": "EMPLOYEE_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "TRADE",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "TRADE",
+                    "entityReferenceAttribute": "TRADE_ID"
+                  }
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "EMPLOYEE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_EMPLOYEE",
+              "kind": "request",
+              "context": "Read current rows from the EMPLOYEE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_EMPLOYEE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new EMPLOYEE record. MANAGER_ID must be the EMPLOYEE_ID of one EMPLOYEE row returned by REQ_EMPLOYEE. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_EMPLOYEE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing EMPLOYEE record. MANAGER_ID must be the EMPLOYEE_ID of one EMPLOYEE row returned by REQ_EMPLOYEE. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-8: a target the chat cannot read gets no sentence",
+      "why": "Never describe what the chat cannot reach: a target without a snapshot, one missing from the project, and one that is not a platform name all leave the context as it was, with no new warning.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "BOOK",
+                    "entityReferenceAttribute": "BOOK_ID"
+                  }
+                },
+                {
+                  "name": "DESK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "DESK",
+                    "entityReferenceAttribute": "DESK_ID"
+                  }
+                },
+                {
+                  "name": "CPTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "counter-party",
+                    "entityReferenceAttribute": "CPTY_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "BOOK",
+              "id": 11001,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-9: empty meta, a non-string reference and a missing fields list change nothing",
+      "why": "The mapper emits meta {} for a dangling reference attribute; none of these shapes has a reference to describe.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {}
+                },
+                {
+                  "name": "DESK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": 42
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ORDERS",
+              "id": 11001,
+              "snapshot": true,
+              "fields": null
+            },
+            {
+              "name": "BOOK",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "ORDERS",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_ORDERS",
+              "kind": "request",
+              "context": "Read current rows from the ORDERS table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_BOOK",
+              "kind": "request",
+              "context": "Read current rows from the BOOK table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            },
+            {
+              "name": "EVENT_ORDERS_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new ORDERS record."
+            },
+            {
+              "name": "EVENT_ORDERS_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing ORDERS record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-10: readability is the final resource list, so a view can make a target readable",
+      "why": "TRADER the table has no snapshot, but a view named TRADER does, so REQ_TRADER exists and the sentence is true. A table target with a snapshot but a non-platform name has no REQ resource and gets no sentence.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADER_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "TRADER",
+                    "entityReferenceAttribute": "TRADER_ID"
+                  }
+                },
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "trade-book",
+                    "entityReferenceAttribute": "BOOK_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "TRADER",
+              "id": 11001,
+              "fields": [
+                {
+                  "name": "TRADER_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "trade-book",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "BOOK_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ],
+          "views": [
+            {
+              "name": "TRADER",
+              "snapshot": true
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_TRADER",
+              "kind": "request",
+              "context": "Read current rows from the TRADER view.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record. TRADER_ID must be the TRADER_ID of one TRADER row returned by REQ_TRADER. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. TRADER_ID must be the TRADER_ID of one TRADER row returned by REQ_TRADER. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped table \"trade-book\" — not a platform resource name"
+        ]
+      }
+    },
+    {
+      "name": "C-16 GC-11: a non-platform field name and an ambiguous composite get no sentence",
+      "why": "cpty-id could not appear in a context safely, and two fields onto one target field inside a composite have no truthful sentence.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "cpty-id",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY",
+                    "entityReferenceAttribute": "COUNTERPARTY_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "LEG",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "A_KEY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "POSITION",
+                    "entityReferenceAttribute": "K1"
+                  }
+                },
+                {
+                  "name": "B_KEY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "POSITION",
+                    "entityReferenceAttribute": "K1"
+                  }
+                },
+                {
+                  "name": "C_KEY",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "POSITION",
+                    "entityReferenceAttribute": "K2"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "POSITION",
+              "id": 11003,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "K1",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "K2",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "crud",
+              "entityName": "LEG",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_LEG",
+              "kind": "request",
+              "context": "Read current rows from the LEG table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_POSITION",
+              "kind": "request",
+              "context": "Read current rows from the POSITION table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            },
+            {
+              "name": "EVENT_LEG_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new LEG record."
+            },
+            {
+              "name": "EVENT_LEG_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing LEG record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16 GC-12: a target key that is a generated field is still named",
+      "why": "The target field comes from the reference alone; the resolver does not look it up, so a generated COUNTERPARTY_ID is named like any other.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY",
+                    "entityReferenceAttribute": "COUNTERPARTY_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "NAME",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ],
+              "generatedFields": [
+                {
+                  "name": "COUNTERPARTY_ID",
+                  "fieldType": "STRING",
+                  "generatedFieldType": "SEQUENCE",
+                  "sequence": "CP"
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_COUNTERPARTY",
+              "kind": "request",
+              "context": "Read current rows from the COUNTERPARTY table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record. COUNTERPARTY_ID must be the COUNTERPARTY_ID of one COUNTERPARTY row returned by REQ_COUNTERPARTY. Copy such a value exactly from a row you have read or from a key returned by a confirmed write; never invent one, and if no row matches, say so."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "C-16: an app name outside the context alphabet passes through the prompt unchanged",
+      "why": "The prompt names the customer app as they wrote it; only the fixed wording is held to the context alphabet, and renaming the app would be a silent change.",
+      "input": {
+        "payload": {
+          "projectName": "Trade & Risk",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Trade & Risk application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            },
+            {
+              "name": "EVENT_TRADE_MODIFY",
+              "kind": "event",
+              "op": "modify",
+              "context": "Update an existing TRADE record."
+            }
+          ]
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "An over-long read is dropped with a warning, and no reference hint points at it",
+      "why": "FUI blocks the WHOLE assistant when one resource name is over 64 characters (its tool name is the name lowercased, and vendors cap tool names at 64), so a 61-character snapshot table must cost only its own read. The drop has to happen where the reads are built: they decide which references get a hint, and a hint that told the chat to copy a value from REQ_ of a table it cannot read would send it to a tool that does not exist. The 60-character table is the boundary — REQ_ plus 60 is exactly 64, and is kept.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "TRADE",
+              "id": 11000,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "TRADE_ID",
+                  "type": "STRING",
+                  "nullable": false
+                },
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false,
+                  "meta": {
+                    "entityReference": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+                    "entityReferenceAttribute": "ACCOUNT_ID"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D",
+              "id": 11001,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "ACCOUNT_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            },
+            {
+              "name": "SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "id": 11002,
+              "snapshot": true,
+              "fields": [
+                {
+                  "name": "INSTRUCTION_ID",
+                  "type": "STRING",
+                  "nullable": false
+                }
+              ]
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "TRADE",
+              "create": {
+                "enabled": true
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_TRADE",
+              "kind": "request",
+              "context": "Read current rows from the TRADE table.",
+              "maxRows": 50
+            },
+            {
+              "name": "REQ_SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "kind": "request",
+              "context": "Read current rows from the SETTLEMENT_INSTRUCTION_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_TRADE_INSERT",
+              "kind": "event",
+              "op": "insert",
+              "context": "Create a new TRADE record."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped table \"COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D\" — REQ_COUNTERPARTY_ACCOUNT_LEDGER_ARCHIVE_HISTORY_SNAPSHOT_RECORD_D is longer than the 64 characters a tool name allows"
+        ]
+      }
+    },
+    {
+      "name": "An over-long write is dropped, and the same entity is still readable",
+      "why": "The limit is per resource name, not per entity: a 52-character entity reads as REQ_ plus 52, which fits, while its writes are EVENT_ plus 52 plus _INSERT or _MODIFY, which do not. Only the writes go. Custom handlers are named verbatim, so the same boundary applies to them: EVENT_ plus 58 is kept, EVENT_ plus 59 is dropped.",
+      "input": {
+        "payload": {
+          "projectName": "Demo",
+          "components": [
+            "AssistantAI"
+          ],
+          "tables": [
+            {
+              "name": "CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "snapshot": true
+            }
+          ],
+          "eventHandlers": [
+            {
+              "type": "crud",
+              "entityName": "CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "create": {
+                "enabled": true
+              },
+              "update": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "custom",
+              "name": "RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E"
+            },
+            {
+              "type": "custom",
+              "name": "RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI"
+            }
+          ]
+        },
+        "options": {
+          "exposure": {
+            "deletes": [],
+            "custom": [
+              "RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E",
+              "RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "ai": {
+          "enabled": true,
+          "vendor": "gemini",
+          "tier": "high",
+          "systemPrompt": "You are an assistant inside the Demo application. Answer questions about its data using the tools you are given, and say so plainly when a question cannot be answered from them. Never state that a record was created, changed or removed unless a tool call confirmed it. A value that must match a row in another table, such as an id, is copied exactly from a row a read tool returned or from a key returned by a confirmed write. Never invent one; if no row matches, say so.",
+          "resources": [
+            {
+              "name": "REQ_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R",
+              "kind": "request",
+              "context": "Read current rows from the CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R table.",
+              "maxRows": 50
+            },
+            {
+              "name": "EVENT_RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI",
+              "kind": "event",
+              "op": "custom",
+              "context": "Run the RECALCULATE_ACCRUALS_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAI event handler."
+            }
+          ]
+        },
+        "warnings": [
+          "ai: skipped the insert handler for \"CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R\" — EVENT_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R_INSERT is longer than the 64 characters a tool name allows",
+          "ai: skipped the modify handler for \"CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R\" — EVENT_CORPORATE_ACTION_ELECTION_ARCHIVE_HISTORY_SNAPSHOT_R_MODIFY is longer than the 64 characters a tool name allows",
+          "ai: skipped custom event handler \"RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E\" — EVENT_RECALCULATE_MARGIN_ARCHIVE_HISTORY_SNAPSHOT_RECORD_DETAIL_E is longer than the 64 characters a tool name allows"
+        ]
+      }
+    }
+  ]
+}
