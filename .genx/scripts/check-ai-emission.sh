@@ -100,9 +100,10 @@ named("EVENT_TRADE_MODIFY").customCode = { alsoWrites: ["POSITION", 7], listComp
 named("EVENT_TRADE_DELETE").customCode = { alsoWrites: "TRADE", listComplete: true };
 named("EVENT_POSITION_INSERT").customCode = null;
 console.log(JSON.stringify(u));' "$AI_UI_EXTRAS_CLEAN")"
-# 'rows' is the fixture plus a row action (C-18.8), then with things smuggled inside its lists that the
-# writer must drop: a key that is not a field name, a key on an input and a key on an effect. It must
-# come out as its clean form.
+# 'rows' is the fixture plus a row action (C-18.8) and the modify's key (C-19), then with things
+# smuggled in that the writer must drop: a key that is not a field name on each, a key on an input
+# and on an effect, and a key on a read and on an insert, which name no row. It must come out as its
+# clean form.
 AI_UI_ROWS_CLEAN="$(node -e '
 const u = JSON.parse(process.argv[1]);
 u.ai.resources.push({
@@ -112,13 +113,18 @@ u.ai.resources.push({
   inputs: [{ field: "PRICE", required: true }],
   effects: [{ op: "modify", table: "TRADE" }, { op: "insert", table: "POSITION" }],
 });
+u.ai.resources.find((resource) => resource.name === "EVENT_TRADE_MODIFY").key = ["TRADE_ID"];
 console.log(JSON.stringify(u));' "$AI_UI")"
 AI_UI_ROWS="$(node -e '
 const u = JSON.parse(process.argv[1]);
 const row = u.ai.resources.find((resource) => resource.name === "EVENT_REPRICE_TRADE");
+const named = (name) => u.ai.resources.find((resource) => resource.name === name);
 row.key = [...row.key, 7];
 row.inputs[0].url = "https://example.invalid";
 row.effects[0].endpoint = "https://example.invalid";
+named("EVENT_TRADE_MODIFY").key = ["TRADE_ID", 7];
+named("REQ_TRADE").key = ["TRADE_ID"];
+named("EVENT_TRADE_INSERT").key = ["TRADE_ID"];
 console.log(JSON.stringify(u));' "$AI_UI_ROWS_CLEAN")"
 # The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
 GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
@@ -618,7 +624,9 @@ NODE
 echo "=== row actions through the writer"
 row_cases="$(node -e '
 const { cases } = require(process.argv[1]);
-console.log(cases.flatMap(({ expected }, i) => ((expected.ai?.resources || []).some((r) => r.shape) ? [i] : [])).join(" "));' "$CASES")"
+// A row action, or a modify or delete that names its row by a key (C-19).
+const keyed = (r) => r.shape || (["modify", "delete"].includes(r.op) && r.key);
+console.log(cases.flatMap(({ expected }, i) => ((expected.ai?.resources || []).some(keyed) ? [i] : [])).join(" "));' "$CASES")"
 row_labels=(rows)
 for i in $row_cases; do
   SEED="$ROW_SEED" generate "rowcase$i" --framework react \
@@ -646,7 +654,9 @@ const extra = swap((r) => ({ ...r, inputs: [{ ...r.inputs[0], url: 'x' }] }));
 if (verbatim(lost, sample) || verbatim(extra, sample)) problems.push('the compare passes a copy that is not verbatim');
 // 'rows': every key is declared, so nothing is said, and the smuggles inside the lists are gone.
 if (!verbatim(read('rows'), sample)) {
-  problems.push(`rows: the row action came out as ${JSON.stringify(read('rows').resources.find((r) => r.shape))}`);
+  const wrote = read('rows').resources;
+  const first = sample.resources.findIndex((r, i) => !verbatim(wrote[i], r));
+  problems.push(`rows: ${sample.resources[first]?.name ?? 'the list'} came out as ${JSON.stringify(wrote[first])}`);
 }
 if (drops('rows').length) problems.push(`rows: the log says ${JSON.stringify(drops('rows'))}`);
 const cases = JSON.parse(fs.readFileSync(casesFile, 'utf8')).cases;
@@ -656,8 +666,8 @@ for (const i of picked) {
   const { name, expected } = cases[i];
   const written = read(`rowcase${i}`);
   if (!verbatim(written, expected.ai)) problems.push(`case ${i} (${name}): ai-config.json is not Create's block verbatim`);
-  // Each row action as Create wrote it, byte for byte, key order included.
-  for (const resource of expected.ai.resources.filter((r) => r.shape)) {
+  // Each resource that carries a key as Create wrote it, byte for byte, key order included.
+  for (const resource of expected.ai.resources.filter((r) => r.key !== undefined)) {
     const got = JSON.stringify(written.resources.find((r) => r.name === resource.name));
     if (got !== JSON.stringify(resource)) problems.push(`case ${i}: ${resource.name} came out as ${got}`);
   }

@@ -246,10 +246,12 @@ module.exports = async (data, utils) => {
             fields: fields == null ? [] : listOf(fields, ({ field, targetField }) => ({ field, targetField })),
           }))
         : undefined;
-    // A row action's fields: shape and entity as given, and each list rebuilt (C-18.8.3).
+    // A row action's fields: shape and entity as given, and each list rebuilt (C-18.8.3). A key is
+    // kept only where it names a row, on a custom event, a modify or a delete (C-19); anywhere else
+    // the assistant would leave the whole resource out over it, so it is not written.
     const rowFields = {
-      key: (key) => {
-        if (key === undefined) return undefined;
+      key: (key, { op }) => {
+        if (key === undefined || !['custom', 'modify', 'delete'].includes(op)) return undefined;
         return Array.isArray(key) ? key.filter((name) => typeof name === 'string') : null;
       },
       inputs: (inputs) => listOf(inputs, ({ field, required }) => ({ field, required })),
@@ -271,7 +273,7 @@ module.exports = async (data, utils) => {
       if ('customCode' in copy) copy.customCode = projectedCode(resource);
       if ('references' in copy) copy.references = projectedReferences(resource);
       for (const [field, rebuilt] of Object.entries(rowFields)) {
-        if (field in copy) copy[field] = rebuilt(resource[field]);
+        if (field in copy) copy[field] = rebuilt(resource[field], resource);
       }
       kept.push(copy);
     }
