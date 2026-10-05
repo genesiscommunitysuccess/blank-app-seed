@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.28.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.0...v5.28.1) (2026-10-05)
+
+
+### Bug Fixes
+
+* update FUI version GENC-1611 cacf246
+* update FUI version GENC-1611 (#644) a2812ea
+
 ## [5.28.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.1...v5.28.0) (2026-10-02)
 
 
