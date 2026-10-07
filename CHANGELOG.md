@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.1...v5.29.0) (2026-10-07)
+
+
+### Features
+
+* check the declared row-action shapes against the installed assistant GENC-1611 d53350c
+* declare that the seed's assistant runs key-row actions GENC-1611 02a2ab8
+* let the AI chat run key-only handlers as key-row actions GENC-1611 (#645) bcd9d57
+
+
+### Bug Fixes
+
+* pin ag-grid-community 36.2.0 in a React app, the version FUI 15.54.0 peers on GENC-1611 9e7d56e
+* update FUI version to 15.54.0, which runs key-row actions GENC-1611 8841afb
+
 ## [5.28.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.0...v5.28.1) (2026-10-05)
 
 
