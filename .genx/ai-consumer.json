@@ -14,5 +14,6 @@
     "key",
     "inputs",
     "effects"
-  ]
+  ],
+  "shapes": ["row", "key-row"]
 }
