@@ -680,6 +680,8 @@ const { spawnSync } = require('child_process');
 const [work, consumerFile, check] = process.argv.slice(2);
 const seed = JSON.parse(fs.readFileSync(consumerFile, 'utf8'));
 const baseline = { version: 1, kinds: ['request', 'event'], resourceFields: ['name', 'kind', 'op', 'context', 'maxRows'] };
+// Spelled out rather than read from the seed, so these cases hold whatever the seed declares.
+const KEY_ROW = ['row', 'key-row'];
 const app = (name, exports, files = {}) => {
   const pkg = path.join(work, name, 'node_modules/@genesislcap/ai-assistant');
   fs.mkdirSync(pkg, { recursive: true });
@@ -689,7 +691,7 @@ const app = (name, exports, files = {}) => {
   return path.join(work, name);
 };
 const reads = app('reads', { '.': './index.js', './genesis/consumes': './consumes.cjs' }, {
-  'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`,
+  'consumes.cjs': `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields, shapes: KEY_ROW })};`,
 });
 const before = app('before-the-export', { '.': './index.js' });
 const noManifest = app('no-package-json', null);
@@ -697,7 +699,12 @@ const none = path.join(work, 'no-assistant');
 fs.mkdirSync(none, { recursive: true });
 fs.writeFileSync(path.join(none, 'package.json'), '{"name":"app"}');
 const exporting = (name, text) => app(name, { './genesis/consumes': './consumes.cjs' }, { 'consumes.cjs': text });
-const seedSet = JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields });
+const seedSet = JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields, shapes: KEY_ROW });
+// An assistant that reads every kind and field but lists no shapes, as every one before key-row:
+// it runs a row and nothing more.
+const noShapes = exporting('lists-no-shapes', `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`);
+const shapesText = exporting('shapes-not-a-list', `exports.GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields, shapes: 'row,key-row' })};`);
+const { shapes: _shapes, ...unshaped } = seed;
 const falsy = exporting('exports-false', 'exports.GENESIS_AI_CONSUMES = false;');
 const aFunction = exporting('exports-a-function', 'exports.GENESIS_AI_CONSUMES = () => ({});');
 // Its kinds are text that happens to hold the names: only a list counts.
@@ -718,7 +725,7 @@ const unexported = app('imports-unexported', { './genesis/consumes': './consumes
   'consumes.cjs': 'require("@genesislcap/ai-assistant/hidden");',
 });
 const importOnly = app('import-only', { './genesis/consumes': { import: './consumes.mjs' } }, {
-  'consumes.mjs': `export const GENESIS_AI_CONSUMES = ${JSON.stringify({ kinds: seed.kinds, resourceFields: seed.resourceFields })};`,
+  'consumes.mjs': `export const GENESIS_AI_CONSUMES = ${seedSet};`,
 });
 const declaring = (name, declaration) => {
   const file = path.join(work, `${name}.json`);
@@ -750,6 +757,15 @@ const cases = [
   ['the seed, on a module that keeps the process alive', consumerFile, stays, 0],
   // Required only, it reads as absent: fail-safe, as that assistant is held to the baseline.
   ['more than the baseline, on an assistant that exports it for require only', declaring('more', { ...baseline, resourceFields: [...baseline.resourceFields, 'customCode'] }), requireOnly, 1],
+  // Shapes: absent means a row, on either side.
+  ['key-row, on an assistant that runs it', declaring('key-row', { ...seed, shapes: KEY_ROW }), reads, 0],
+  ['key-row, on an assistant that lists no shapes', declaring('key-row', { ...seed, shapes: KEY_ROW }), noShapes, 1],
+  ['a row, on an assistant that lists no shapes', declaring('row', { ...seed, shapes: ['row'] }), noShapes, 0],
+  ['no shapes, on an assistant that lists none', declaring('unshaped', unshaped), noShapes, 0],
+  ['a shape the assistant does not run', declaring('wide', { ...seed, shapes: [...KEY_ROW, 'wide-row'] }), reads, 1],
+  ['shapes that are not a list', declaring('shapes-text', { ...seed, shapes: 'row,key-row' }), reads, 1],
+  ["no shapes, on an assistant whose shapes are not a list", declaring('unshaped', unshaped), shapesText, 1],
+  ['a shape, before the export', declaring('shape-early', { ...baseline, shapes: ['row'] }), before, 1],
 ];
 let wrong = 0;
 for (const [name, declaration, client, want] of cases) {
@@ -759,6 +775,7 @@ for (const [name, declaration, client, want] of cases) {
     console.log(`    ${name}: exit ${run.status}, not ${want}${run.stdout ? `\n${run.stdout}` : ''}${run.stderr}`);
   }
 }
+console.log(`    ${cases.length - wrong} / ${cases.length} cases as expected`);
 process.exit(wrong ? 1 : 0);
 NODE
 

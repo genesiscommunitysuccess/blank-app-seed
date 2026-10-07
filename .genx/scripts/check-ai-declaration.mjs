@@ -6,6 +6,11 @@
 //
 //   baseline ⊆ declaration ⊆ GENESIS_AI_CONSUMES, for the kinds and for the resource fields.
 //
+// `shapes`, the row-action shapes, is optional on both sides and absent means ["row"]: every
+// assistant that reads `shape` runs a row, and only one that lists more runs more. A declared shape
+// the installed assistant does not run fails the check, so key-row cannot be declared ahead of the
+// assistant pin that runs it.
+//
 // An assistant with no `./genesis/consumes` entry (before the release that added it) reads the
 // baseline only, so the declaration must then BE the baseline. Absent means exactly Node's
 // ERR_PACKAGE_PATH_NOT_EXPORTED for that subpath, when resolving it: the package missing, any error
@@ -38,6 +43,7 @@ if (declaration.version !== 1) problems.push(`version is ${declaration.version},
 for (const part of ['kinds', 'resourceFields']) {
   if (!listOfNames(declaration[part])) problems.push(`${part} is not a list of names`);
 }
+if (declaration.shapes !== undefined && !listOfNames(declaration.shapes)) problems.push('shapes is not a list of names');
 
 // See the header for why this runs in a child.
 const SUBPATH = '@genesislcap/ai-assistant/genesis/consumes';
@@ -96,6 +102,9 @@ if (probed && !said.resolve && !said.load && !consumes) {
 for (const part of consumes ? ['kinds', 'resourceFields'] : []) {
   if (!listOfNames(consumes[part])) problems.push(`the installed assistant's ${part} is not a list of names`);
 }
+if (consumes && consumes.shapes !== undefined && !listOfNames(consumes.shapes)) {
+  problems.push("the installed assistant's shapes is not a list of names");
+}
 
 const missing = (from, within) => from.filter((item) => !within.includes(item));
 for (const part of ['kinds', 'resourceFields']) {
@@ -110,6 +119,17 @@ for (const part of ['kinds', 'resourceFields']) {
     const beyond = missing(declared, BASELINE[part]);
     if (beyond.length) problems.push(`${part} names ${beyond.join(', ')}, and this assistant reads the baseline only`);
   }
+}
+
+// What it runs: the shapes it lists, or a row when it lists none. Before the export it reads the
+// baseline only, which has no `shape` at all.
+const declaredShapes = listOfNames(declaration.shapes) ? declaration.shapes : [];
+if (consumes) {
+  const runs = consumes.shapes === undefined ? ['row'] : listOfNames(consumes.shapes) ? consumes.shapes : [];
+  const beyond = missing(declaredShapes, runs);
+  if (beyond.length) problems.push(`shapes names ${beyond.join(', ')}, which the installed assistant does not run`);
+} else if (absent && declaredShapes.length) {
+  problems.push(`shapes names ${declaredShapes.join(', ')}, and this assistant reads the baseline only`);
 }
 
 problems.forEach((problem) => console.log(`    ${problem}`));
