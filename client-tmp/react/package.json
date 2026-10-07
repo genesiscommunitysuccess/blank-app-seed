@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@microsoft/fast-react-wrapper": ">=0.3.25",
-    "ag-grid-community": "36.0.0",
+    "ag-grid-community": "36.2.0",
     "@genesislcap/ai-assistant": "{{versions.UI}}",
     "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
