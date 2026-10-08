@@ -1,0 +1,27 @@
+/*
+ * This application's MCP server, for Genesis 8.15. Generated with this application, safe to edit.
+ *
+ * It listens on port 3011, over plain HTTP and on every network interface, at the SSE endpoint
+ * /sse. Anyone who can reach the port can list the tools, so keep it where only trusted callers
+ * can, or put TLS and a firewall in front of it.
+ *
+ * A caller signs in with a Genesis session token: the one a login to this application returns.
+ * Every tool call must carry it in the MCP_SESSION_TOKEN argument, and runs as that user, with that
+ * user's rights. The argument is left out of the tools' published inputs, so a model is never asked
+ * for the token: connect through a host or proxy that adds it to each call.
+ *
+ * Keep sessionAuthToken. staticUser runs every caller as one account, and providedUserName trusts a
+ * user name the caller types; neither checks who is calling.
+ *
+ * The tools are listed in {{appName}}-mcp.kts. On Genesis 8.15 they are reads only: a write made
+ * through MCP would be applied with no approval step.
+ */
+server {
+    port = 3011
+    serverName = "{{appName}}"
+    authenticationStrategy {
+        sessionAuthToken {
+            addToToolSpec = false
+        }
+    }
+}

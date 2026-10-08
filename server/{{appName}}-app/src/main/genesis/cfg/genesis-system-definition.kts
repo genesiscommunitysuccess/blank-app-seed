@@ -33,6 +33,12 @@ systemDefinition {
             name = "JVM_OPTIONS",
             value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
         )
+{{#if MCP.enabled}}
+        // The MCP server, with this application's own script. Both items or neither: without the
+        // second, the platform's default script runs instead, on another port and as one fixed user.
+        item(name = "GENESIS_MCP_PROCESS_START", value = "true")
+        item(name = "GENESIS_MCP_PROCESS_SCRIPT", value = "{{appName}}-mcp-server.kts")
+{{/if}}
     }
 
     systems {
