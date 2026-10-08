@@ -48,6 +48,12 @@ jobs:
         if: matrix.framework == 'react'
         run: ./.genx/scripts/check-ai-emission.sh
 
+      # Like the AI check above: generates its own apps, so one leg is enough, and the build job adds
+      # GRADLE=1.
+      - name: Check what the MCP server path emits
+        if: matrix.framework == 'react'
+        run: ./.genx/scripts/check-mcp-emission.sh
+
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
@@ -94,6 +100,14 @@ jobs:
         env:
           GRADLE: 1
         run: ./.genx/scripts/check-ai-emission.sh
+
+      # The MCP server's two scripts compile only when its process starts, and one that does not
+      # compile fails a customer's whole prepare, not only MCP. This compiles both against this
+      # Genesis version and checks the process runs the app's own server script.
+      - name: Compile the MCP server's scripts
+        env:
+          GRADLE: 1
+        run: ./.genx/scripts/check-mcp-emission.sh
 
       - name: Lint UI
         working-directory: /tmp/testapp/client

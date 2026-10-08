@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "enabled": true,
+    "resources": [
+      { "name": "TRADE", "kind": "request", "context": "Reads TRADE rows from the app. This is REQ_TRADE." },
+      { "name": "POSITION", "kind": "request", "context": "Reads POSITION rows from the app. This is REQ_POSITION." }
+    ]
+  }
+}
