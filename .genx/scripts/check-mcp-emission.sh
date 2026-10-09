@@ -13,12 +13,15 @@
 #             live code is pinned here, so a changed setting fails even when the template changed
 #             with it; the system definition carries START and SCRIPT exactly once each, SCRIPT
 #             naming the server script that was written, and is otherwise the default app's; the
-#             README gains its section and nothing else. A web-components app gets the same server
-#             files: MCP is server only.
+#             README gains its section and nothing else; docker-compose.yml publishes 3011 on the
+#             host's loopback only, and only then. A web-components app gets the same server files:
+#             MCP is server only.
 #   dropped   an mcp block carrying entries that cannot be emitted as they are comes out as its clean
 #             form, and the log names each one: a REQ_ name, a lower-case name, a name too long for
 #             its read tool, an event (on 8.15 a write would have no approval step), a repeated name,
-#             and a context that is empty, holds a quote, or holds a $.
+#             and a context that is empty or holds a character that would need escaping: a quote, a
+#             $, a backslash, a { or one Handlebars turns into an entity (' & =). The fixture's own
+#             contexts use every other character the alphabet allows, so a narrowed one fails "on".
 #   line      a GSF line this seed declares no template for emits nothing and says so. Every
 #             declared line has a template, every template a declared line, this seed's own line is
 #             declared, and 8.15 declares reads only.
@@ -61,6 +64,11 @@ u.mcp.resources = [
   { ...trade, context: "A second TRADE." },
   { name: "QUOTED", kind: "request", context: "Reads \"quoted\" rows." },
   { name: "DOLLAR", kind: "request", context: "Reads ${x} rows." },
+  { name: "BACKSLASH", kind: "request", context: "Reads a\\b rows." },
+  { name: "BRACE", kind: "request", context: "Reads {rows}." },
+  { name: "APOSTROPHE", kind: "request", context: "Reads the app" + String.fromCharCode(39) + "s rows." },
+  { name: "AMPERSAND", kind: "request", context: "Reads buys & sells." },
+  { name: "EQUALS", kind: "request", context: "Reads rows where side = BUY." },
   { name: "NO_CONTEXT", kind: "request" },
   position,
 ];
@@ -74,6 +82,11 @@ DROPPED_EXPECTED=(
   'TRADE — it is named twice'
   'QUOTED — its context'
   'DOLLAR — its context'
+  'BACKSLASH — its context'
+  'BRACE — its context'
+  'APOSTROPHE — its context'
+  'AMPERSAND — its context'
+  'EQUALS — its context'
   'NO_CONTEXT — its context'
 )
 MCP_UI_OFF="$(node -e 'const u = JSON.parse(process.argv[1]); u.mcp.enabled = false; console.log(JSON.stringify(u))' "$MCP_UI")"
@@ -157,6 +170,7 @@ const files = (label) => ({
   server: path.join(app(label), module, 'scripts/demo-mcp-server.kts'),
   sysdef: path.join(app(label), module, 'cfg/genesis-system-definition.kts'),
   readme: path.join(app(label), 'README.md'),
+  compose: path.join(app(label), 'docker-compose.yml'),
 });
 const resources = JSON.parse(uiJson).mcp.resources;
 
@@ -219,6 +233,8 @@ for (const [label, file] of Object.entries(defaults)) {
 }
 if (/GENESIS_MCP/.test(defaultSysdef)) problems.push('default: the system definition mentions GENESIS_MCP');
 if (/## MCP server/.test(defaultReadme)) problems.push('default: the README has an MCP section');
+if (/3011/.test(read(defaults.compose))) problems.push('default: docker-compose.yml publishes 3011');
+const COMPOSE_PORT = ["      - '127.0.0.1:3011:3011'"];
 
 for (const label of ['on', 'dropped', 'webcomponents']) {
   const f = files(label);
@@ -245,6 +261,11 @@ for (const label of ['on', 'dropped', 'webcomponents']) {
   const sysdefChange = inserted(read(base.sysdef), sysdef);
   if (sysdefChange.removed.length || !same(sysdefChange.added.filter((line) => !/^\s*\/\//.test(line)), MCP_ITEMS)) {
     problems.push(`${label}: the system definition differs from the default app's in more than its two MCP items`);
+  }
+  // The MCP port is published on the host's loopback only: 8.15 has no connection-level authentication.
+  const composeChange = inserted(read(base.compose), read(f.compose));
+  if (composeChange.removed.length || !same(composeChange.added.filter((line) => !/^\s*#/.test(line)), COMPOSE_PORT)) {
+    problems.push(`${label}: docker-compose.yml differs from the default app's in more than the loopback MCP port:\n${composeChange.added.join('\n')}`);
   }
   const readmeChange = inserted(read(base.readme), readme);
   if (readmeChange.removed.length || !readmeChange.added.includes('## MCP server')) {

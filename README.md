@@ -91,22 +91,29 @@ your browser's developer tools.
 
 ## MCP server
 
-This application includes an MCP server, so an AI client can read its data through tools. It runs as one more server process, `GENESIS_MCP`, started by two items in
+This application includes an MCP server, so an AI client can read its data through tools. It runs
+as one more server process, `GENESIS_MCP`, started by two items in
 `server/{{appName}}-app/src/main/genesis/cfg/genesis-system-definition.kts`.
 
-- **What it exposes** is listed in `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp.kts`:
-  one read tool per request server, named after it, so `TRADE` becomes `trade_query`. On this Genesis
-  version the tools are reads only, because a write made through MCP would be applied with no approval
-  step.
+- **What it exposes** is listed in
+  `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp.kts`: one read tool per request
+  server, named after it, so `TRADE` becomes `trade_query`. On this Genesis version the tools are
+  reads only, because a write made through MCP would be applied with no approval step.
 - **Where it listens**: port 3011, over plain HTTP, at the SSE endpoint `/sse`, on every network
   interface. Anyone who can reach the port can list the tools, so keep it where only trusted callers
-  can, or put TLS and a firewall in front of it.
+  can, or put TLS and a firewall in front of it. In the Docker setup, `docker-compose.yml` publishes
+  it on this machine's loopback only (`127.0.0.1:3011`), so a client on the same machine can connect
+  and nothing else on the network can.
 - **Who it runs as**: every tool call carries a Genesis session token, the one a login to this
   application returns, in its `MCP_SESSION_TOKEN` argument, and runs as that user with that user's
   rights. The argument is left out of the tools' published inputs, so connect through a host or proxy
   that adds it to each call. Never paste a session token into an AI conversation.
-- **The server's settings** are in `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp-server.kts`.
-  Keep `sessionAuthToken`: the other strategies do not check who is calling.
+- **The server's settings** are in
+  `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp-server.kts`. Keep
+  `sessionAuthToken`: the other strategies do not check who is calling.
+- **Before upgrading Genesis** (`genesisVersion` in `server/gradle.properties`), check both MCP
+  scripts against the new version's MCP defaults. They are written for this version, and a later one
+  can expose more by default, such as writes or platform tools.
 {{/if}}
 
 {{!

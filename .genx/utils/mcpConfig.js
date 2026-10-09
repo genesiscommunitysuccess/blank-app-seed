@@ -14,10 +14,12 @@ const PLATFORM_NAME = /^[A-Z0-9_]+$/;
 const MAX_NAME_LENGTH = 64 - '_query'.length;
 
 /**
- * What a context may hold. The script writes it into a Kotlin string literal, and Handlebars renders
- * every .kts once more after this, so it must need no escaping in either (contract C-16.6).
+ * What a context may hold: text that needs no escaping where it goes. It is written into a Kotlin
+ * string literal, where `"`, `\` and `$` would need escaping, through `{{context}}`, which turns `&`,
+ * `'`, `=`, `<`, `>` and backticks into entities, and Handlebars renders every .kts once more after
+ * this, where `{` could open a tag. Any other character drops the resource (contract C-16.6).
  */
-const CONTEXT = /^[A-Za-z0-9_ ,.;]+$/;
+const CONTEXT = /^[A-Za-z0-9_ ,.;:()?!\/-]+$/;
 
 /** `8.15.14` → `8.15`; `10.0.0-beta4` → `10.0`. */
 const gsfLine = (version) => String(version || '').split('.').slice(0, 2).join('.');
@@ -67,7 +69,7 @@ function mcpConfig(mcp, gsfVersion, warn = console.warn) {
             : seen.has(name)
               ? 'it is named twice, and one repeated name stops the whole MCP server'
               : typeof context !== 'string' || !CONTEXT.test(context)
-                ? 'its context is empty or holds something other than letters, digits and _ , . ;'
+                ? 'its context is empty or holds a character other than letters, digits, spaces and _ , . ; : ( ) ? ! / -'
                 : null;
     if (problem) {
       warn(`mcp: dropped resource ${String(name)} — ${problem}`);

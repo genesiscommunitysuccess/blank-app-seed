@@ -15,6 +15,10 @@
  *
  * The tools are listed in {{appName}}-mcp.kts. On Genesis 8.15 they are reads only: a write made
  * through MCP would be applied with no approval step.
+ *
+ * Both files are written for Genesis 8.15. Before raising genesisVersion in server/gradle.properties,
+ * check them against the new version's MCP defaults: a later version can expose more by default, such
+ * as writes or platform tools, and this file keeps running under them.
  */
 server {
     port = 3011
