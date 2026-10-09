@@ -21,6 +21,8 @@ const {
   deleteGradleWrappers,
   generateStore,
   fontUtils,
+  mcpConfig,
+  mcpServerTemplate,
   toModalThemeFormat,
 } = require('./utils');
 
@@ -66,6 +68,11 @@ module.exports = async (data, utils) => {
         : 'gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview',
     maxOutputTokens: 16000,
   };
+
+  // MCP server — ONE gate for everything it emits: its two scripts, the two system-definition items
+  // that start it, and the README section. The block is `data.ui.mcp`, for the same reason as the AI
+  // chat's above. It is server only, so no framework gates it.
+  data.MCP = mcpConfig(data.ui?.mcp, versions.GSF);
 
   const FDC3ListenersEnabled = data.ui?.fdc3?.channels?.length;
   data.FDC3 = {
@@ -208,6 +215,23 @@ module.exports = async (data, utils) => {
       path.join(appModule, 'scripts/ai-service-web-handler.kts'),
       data,
       path.resolve(__dirname, 'templates/server/ai-service-web-handler.kts.hbs'),
+    );
+  }
+
+  // The MCP server's two scripts: what it exposes, and the server itself from this GSF line's
+  // template. Its process is started by two items in cfg/genesis-system-definition.kts, under the same
+  // gate, because that is the one system definition no generator rewrites.
+  if (data.MCP.enabled) {
+    const scripts = path.resolve(__dirname, '../server/{{appName}}-app/src/main/genesis/scripts');
+    utils.writeFileWithData(
+      path.join(scripts, '{{appName}}-mcp.kts'),
+      data,
+      path.resolve(__dirname, 'templates/server/mcp/mcp.kts.hbs'),
+    );
+    utils.writeFileWithData(
+      path.join(scripts, '{{appName}}-mcp-server.kts'),
+      data,
+      mcpServerTemplate(data.MCP.line),
     );
   }
 

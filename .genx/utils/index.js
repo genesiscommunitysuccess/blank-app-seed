@@ -13,6 +13,7 @@ const toModalThemeFormat = require('./toModalThemeFormat');
 const validateRoute = require('./validateRoute');
 const validateFrameworkAlias = require('./validateFrameworkAlias');
 const fontUtils = require('./fontUtils');
+const { mcpConfig, mcpServerTemplate } = require('./mcpConfig');
 
 module.exports = {
   deleteGradleWrappers,
@@ -23,6 +24,8 @@ module.exports = {
   getCombinedCsvData,
   generateStore,
   makeDirectory,
+  mcpConfig,
+  mcpServerTemplate,
   normalizeFrameworkAlias,
   parseJSONArgument,
   registerPartials,
