@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.30.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.29.0...v5.30.0) (2026-10-09)
+
+
+### Features
+
+* give an app that asks for one an MCP server, reads only on GSF 8.15 GENC-1615 10c2763
+* give an app that asks for one an MCP server, reads only on GSF 8.15 GENC-1615 (#646) 84d8129
+
+
+### Bug Fixes
+
+* accept more punctuation in MCP contexts, publish the MCP port in Docker, and warn before a GSF upgrade GENC-1615 a5b724d
+
 ## [5.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.1...v5.29.0) (2026-10-07)
 
 
