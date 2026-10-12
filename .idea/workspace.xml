@@ -104,7 +104,7 @@
       <order>20</order>
       <autoReloadConfigurations>true</autoReloadConfigurations>
     </scriptDefinition>
-    <scriptDefinition className="global.genesis.datapipeline.pal.DataPipelineDefinitionScript" definitionName="Genesis Data Pipeline Definition">
+    <scriptDefinition className="global.genesis.pipeline.pal.PipelineDefinitionScript" definitionName="Genesis Pipeline Definition">
       <order>21</order>
       <autoReloadConfigurations>true</autoReloadConfigurations>
     </scriptDefinition>
