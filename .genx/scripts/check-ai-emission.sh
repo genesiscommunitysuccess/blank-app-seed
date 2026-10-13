@@ -944,8 +944,29 @@ if [ "${GRADLE:-0}" = "1" ]; then
   echo "=== gradle: compile both proxies with the platform's preCompileScripts"
   cp "$WORK_DIR/onanthropic/demo/$MODULE/scripts/ai-service-web-handler.kts" \
     "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-anthropic-web-handler.kts"
+  # Next to two tables that each have an ENUM field RESULT, as the Reconciliation PBC does. Each one
+  # generates an `enum class Result` that the script host imports into every script, so a proxy that
+  # names kotlin's Result without its package stops compiling, and the router never starts.
+  cat > "$WORK_DIR/on/demo/$MODULE/cfg/demo-tables-dictionary.kts" <<'KTS'
+tables {
+    table(name = "SETTLEMENT_CHECK", id = 11000) {
+        field("SETTLEMENT_CHECK_ID", STRING).primaryKey()
+        field("RESULT", ENUM("MATCHED", "FAILED"))
+    }
+    table(name = "PAYMENT_CHECK", id = 11001) {
+        field("PAYMENT_CHECK_ID", STRING).primaryKey()
+        field("RESULT", ENUM("MATCHED", "FAILED", "MISSING"))
+    }
+}
+KTS
   gradle_in_on_app "$WORK_DIR/compile.log" :server:demo-app:preCompileScripts --rerun -PfailPreCompileScriptOnErrors=true \
     || fail "gradle: a proxy does not compile against this Genesis version (see the log above)"
+  ambiguous="$(grep -c 'Overload resolution ambiguity' "$WORK_DIR/compile.log")"
+  [ "$ambiguous" = "0" ] \
+    || fail "gradle: a proxy's Result is ambiguous next to the two RESULT enums ($ambiguous error lines)"
+  # And the two enums were really generated, or the compile above proved nothing about them.
+  enums="$(find "$WORK_DIR/on/demo/server/build" -path '*/gen/dao/enums/*' -name Result.kt | wc -l | tr -d ' ')"
+  [ "$enums" = "2" ] || fail "gradle: the fixture generated $enums enum classes named Result, expected 2"
   # And both were really compiled: a file the task never picked up would pass by never being built.
   for name in ai-service-web-handler.kts ai-service-anthropic-web-handler.kts; do
     grep -q "GENESIS_ROUTER: Compiled script $name " "$WORK_DIR/compile.log" \
