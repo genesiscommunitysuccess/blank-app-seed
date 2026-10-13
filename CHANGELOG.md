@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.30.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.0...v5.30.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* keep the AI chat proxy compiling next to an app's RESULT enum GENC-1681 bdb8bb1
+* keep the AI chat proxy compiling next to an app's RESULT enum GENC-1681 (#649) 3253624
+
 ## [5.30.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.29.0...v5.30.0) (2026-10-09)
 
 
