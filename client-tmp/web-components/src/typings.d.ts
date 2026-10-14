@@ -1,4 +1,3 @@
-declare module 'foundationZero/ZeroDesignSystem';
 declare module 'rapidDesignSystem/RapidDesignSystem';
 declare module '*.png';
 declare module '*.jpg';
