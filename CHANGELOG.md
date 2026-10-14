@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.30.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.2...v5.30.3) (2026-10-14)
+
+
+### Bug Fixes
+
+* update FUI to 15.72.0 so lazily imported PBC deps don't re-optimize mid-load GENC-0 46b0a42
+* update FUI to 15.72.0 so lazily imported PBC deps don't re-optimize mid-load GENC-0 (#651) f4a3dee
+
 ## [5.30.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.1...v5.30.2) (2026-10-14)
 
 
