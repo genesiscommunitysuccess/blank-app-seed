@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.30.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.1...v5.30.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* stop generated apps depending on the zero design system [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 30475a7
+* stop generated apps depending on the zero design system [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#650) 4ef62ff
+
 ## [5.30.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.0...v5.30.1) (2026-10-13)
 
 
