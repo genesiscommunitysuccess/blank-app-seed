@@ -9,7 +9,7 @@ import {
   resolveInitialMode,
 } from '@genesislcap/rapid-design-system';
 import { DI } from '@genesislcap/web-core';
-import React, { useEffect, useRef, useSyncExternalStore } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
 import PBCElementsRenderer from '../../pbc/elementsRenderer';
 import { registerStylesTarget } from '../../pbc/utils';
@@ -65,6 +65,14 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   };
 
   const connected = useSyncExternalStore(subscribe, getSnapshot);
+  // Latched: once the app has connected, the header and the PBC targets stay mounted through a
+  // reconnect. A session refresh reconnects the socket every `sessionTimeoutMins`, and unmounting on
+  // each of those took the nav away and tore down every PBC element while the socket was down.
+  // PBCElementsRenderer re-renders its targets itself when the connection comes back.
+  const [hasConnected, setHasConnected] = useState(connected);
+  if (connected && !hasConnected) {
+    setHasConnected(true);
+  }
 
   useEffect(() => {
     if (designSystemProviderRef.current) {
@@ -81,7 +89,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   return (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
-      {connected && (
+      {hasConnected && (
         <>
           <PBCElementsRenderer target={TARGET_LAYOUT_START} />
           <foundation-header
@@ -103,11 +111,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         </>
       )}
       <section className={styles['content']}>
-        {connected && <PBCElementsRenderer target={TARGET_CONTENT_START} />}
+        {hasConnected && <PBCElementsRenderer target={TARGET_CONTENT_START} />}
         <Outlet />
-        {connected && <PBCElementsRenderer target={TARGET_CONTENT} />}
+        {hasConnected && <PBCElementsRenderer target={TARGET_CONTENT} />}
       </section>
-      {connected && <PBCElementsRenderer target={TARGET_LAYOUT_END} />}
+      {hasConnected && <PBCElementsRenderer target={TARGET_LAYOUT_END} />}
     </rapid-design-system-provider>
   );
 };
