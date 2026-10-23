@@ -65,10 +65,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   };
 
   const connected = useSyncExternalStore(subscribe, getSnapshot);
-  // Latched: once the app has connected, the header and the PBC targets stay mounted through a
-  // reconnect. A session refresh reconnects the socket every `sessionTimeoutMins`, and unmounting on
-  // each of those took the nav away and tore down every PBC element while the socket was down.
-  // PBCElementsRenderer re-renders its targets itself when the connection comes back.
+  // Latched on the first connection, so the header and PBC targets stay mounted through reconnects.
   const [hasConnected, setHasConnected] = useState(connected);
   if (connected && !hasConnected) {
     setHasConnected(true);
