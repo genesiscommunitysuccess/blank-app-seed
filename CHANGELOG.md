@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.30.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.3...v5.30.4) (2026-10-23)
+
+
+### Bug Fixes
+
+* keep the header mounted while the socket reconnects GENC-1742 1adc6ee
+* keep the header mounted while the socket reconnects GENC-1742 (#652) 688d803
+
 ## [5.30.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.2...v5.30.3) (2026-10-14)
 
 
