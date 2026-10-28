@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.30.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.5...v5.30.6) (2026-10-28)
+
+
+### Bug Fixes
+
+* update FUI to 15.86.1 GENC-1739 (#654) 7f2593b
+* update FUI to 15.86.1 so the AI assistant draws its own Close button GENC-1739 c7adfaa
+
 ## [5.30.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.4...v5.30.5) (2026-10-23)
 
 
