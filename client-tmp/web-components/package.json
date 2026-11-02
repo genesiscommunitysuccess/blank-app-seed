@@ -16,7 +16,6 @@
     },
     "federation": {
       "remotes": [
-        "@genesislcap/foundation-zero",
         "@genesislcap/rapid-design-system"
       ]
     },
@@ -104,8 +103,6 @@
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
-    "@genesislcap/foundation-zero": "{{versions.UI}}",
-    "@genesislcap/foundation-zero-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/rapid-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "@genesislcap/grid-tabulator": "{{versions.UI}}",
@@ -137,8 +134,6 @@
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
-    "@genesislcap/foundation-zero": "{{versions.UI}}",
-    "@genesislcap/foundation-zero-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/rapid-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/g2plot-chart": "{{versions.UI}}",
     "@genesislcap/grid-tabulator": "{{versions.UI}}",

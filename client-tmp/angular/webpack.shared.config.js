@@ -46,12 +46,6 @@ module.exports = {
     strictModuleErrorHandling: true,
     strictModuleExceptionHandling: true,
   },
-  /**
-   * Mark the 'foundationZero/ZeroDesignSystem' module federated remote as external.
-   */
-  externals: {
-    'foundationZero/ZeroDesignSystem': 'foundationZero/ZeroDesignSystem',
-  },
   devServer: {
     proxy: [
       {

@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@microsoft/fast-react-wrapper": ">=0.3.25",
-    "ag-grid-community": "36.0.0",
+    "ag-grid-community": "36.2.0",
     "@genesislcap/foundation-auth": "{{versions.UI}}",
     "@genesislcap/foundation-comms": "{{versions.UI}}",
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
@@ -73,7 +73,6 @@
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
-    "@genesislcap/foundation-zero-grid-tabulator": "{{versions.UI}}",
     "@genesislcap/foundation-redux": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
