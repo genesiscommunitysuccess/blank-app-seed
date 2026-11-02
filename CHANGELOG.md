@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.31.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.7...v5.31.0) (2026-11-02)
+
+
+### Features
+
+* every generated app ships the FDC3 helper and package GENC-1812 dec6f11
+* every generated app ships the FDC3 helper and package GENC-1812 (#657) c9b0b5e
+
+
+### Bug Fixes
+
+* the FDC3 helper reuses one DefaultFDC3, built on first use GENC-1812 4d12979
+
 ## [5.30.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.6...v5.30.7) (2026-11-02)
 
 
