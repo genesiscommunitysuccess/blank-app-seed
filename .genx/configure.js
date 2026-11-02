@@ -46,9 +46,6 @@ module.exports = async (data, utils) => {
     .filter(validateRoute)
     .map(formatRouteDataForFramework);
 
-  const FDC3EventHandlersEnabled = data.routes.find(
-    (route) => route.FDC3EventHandlersEnabled,
-  );
   // AI chat — ONE gate for everything the feature emits, server and client alike.
   //
   // `data.ui` here IS the project's ui.config (the generator passes it as the `ui` argument), so the
@@ -74,9 +71,11 @@ module.exports = async (data, utils) => {
   // chat's above. It is server only, so no framework gates it.
   data.MCP = mcpConfig(data.ui?.mcp, versions.GSF);
 
-  const FDC3ListenersEnabled = data.ui?.fdc3?.channels?.length;
+  // FDC3 — every app ships the helper (src/utils/fdc3.ts, re-exported from utils/index.ts) and
+  // @genesislcap/foundation-fdc3, like the AI chat's package: a page can broadcast without the project
+  // turning listening on first, turning it off never breaks a page's import, and package.json never
+  // changes with the setting. Only the channel listeners follow `ui.fdc3.channels`.
   data.FDC3 = {
-    includeDependencies: !!(FDC3ListenersEnabled || FDC3EventHandlersEnabled),
     channels: data.ui?.fdc3?.channels || [],
   };
 
@@ -183,15 +182,13 @@ module.exports = async (data, utils) => {
 
   excludeFrameworks(data.framework);
 
-  if (data.FDC3.includeDependencies) {
-    const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
-    const utilsDir = frameworkDir === 'angular' ? 'src/app/utils' : 'src/utils';
-    utils.writeFileWithData(
-      path.resolve(__dirname, `../client/${utilsDir}/fdc3.ts`),
-      data,
-      path.resolve(__dirname, `templates/${frameworkDir}/fdc3.ts.hbs`),
-    );
-  }
+  const frameworkDir = FRAMEWORKS_DIR_MAP.get(data.framework);
+  const utilsDir = frameworkDir === 'angular' ? 'src/app/utils' : 'src/utils';
+  utils.writeFileWithData(
+    path.resolve(__dirname, `../client/${utilsDir}/fdc3.ts`),
+    data,
+    path.resolve(__dirname, `templates/${frameworkDir}/fdc3.ts.hbs`),
+  );
 
   generateStore(data.routes, utils, data.framework);
 

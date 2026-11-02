@@ -14,6 +14,10 @@
 #   oxfmt --check .            # formatting is already canonical
 #   npm run lint               # genx lint -l ox (Oxlint -> Oxfmt -> Stylelint)
 #
+# Before installing, the default and fdc3 apps also go through check-fdc3-emission.mjs: every app
+# ships the FDC3 helper, its export and package, only the channels app starts listeners, and the two
+# apps' helper, utils/index.ts and package.json are the same (GENC-1812).
+#
 # Usage:
 #   .genx/scripts/generate-test-apps.sh [framework...]
 #
@@ -38,6 +42,7 @@ set -uo pipefail
 SEED_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 FIXTURE="$SEED_DIR/.genx/tests/fixtures/routes-full.json"
 AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
+FDC3_UI='{"fdc3":{"channels":[{"name":"positions","type":"position"},{"name":"instrumentChannel","type":"fdc3.instrument"}]}}'
 
 if [ $# -gt 0 ]; then
   FRAMEWORKS=("$@")
@@ -105,6 +110,9 @@ run_lint_checks() {
 }
 
 for fw in "${FRAMEWORKS[@]}"; do
+  # Where the default app leaves its FDC3 files for the fdc3 app to be compared with.
+  fdc3_stash="$WORK_DIR/fdc3-$fw-default"
+  rm -rf "$fdc3_stash"
   variants=(default full fdc3)
   # The chat panel is React only, like the AI gate in configure.js.
   [ "$fw" = "react" ] && variants+=(ai)
@@ -121,7 +129,7 @@ for fw in "${FRAMEWORKS[@]}"; do
       extra_args=(--ui "$(cat "$AI_FIXTURE")")
     fi
     if [ "$variant" = "fdc3" ]; then
-      extra_args=(--ui '{"fdc3":{"channels":[{"name":"positions","type":"position"},{"name":"instrumentChannel","type":"fdc3.instrument"}]}}')
+      extra_args=(--ui "$FDC3_UI")
     fi
     (
       cd "$WORK_DIR" || exit 1
@@ -131,6 +139,13 @@ for fw in "${FRAMEWORKS[@]}"; do
         --framework "$fw" --apiHost 'wss://localhost/gwf/' \
         ${extra_args[@]+"${extra_args[@]}"}
     ) || { FAILURES+=("$label: generation failed"); continue; }
+    if [ "$variant" = "default" ] || [ "$variant" = "fdc3" ]; then
+      fdc3_ui=()
+      [ "$variant" = "fdc3" ] && fdc3_ui=("$FDC3_UI")
+      echo "--- [$label] what FDC3 emits"
+      node "$SEED_DIR/.genx/scripts/check-fdc3-emission.mjs" "$fw" "$app_dir/client" "$fdc3_stash" \
+        ${fdc3_ui[@]+"${fdc3_ui[@]}"} || { FAILURES+=("$label: FDC3 emission checks failed"); continue; }
+    fi
     if run_lint_checks "$app_dir" "$label"; then
       # Reclaim the app's node_modules straight away — CI runners are disk-tight and
       # each generated app installs well over a gigabyte.
