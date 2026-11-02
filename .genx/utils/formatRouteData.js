@@ -9,8 +9,9 @@ const getLayoutType = require('./getLayoutType');
 const { COMPONENT_TYPE, FRAMEWORK_ANGULAR_ALIAS } = require('../static');
 
 // The factory the grid serialisers emit for an FDC3 click marker. It lives in the
-// generated src/utils/fdc3.ts, which is only written when FDC3EventHandlersEnabled
-// is true — so detection has to key off the very same marker the serialisers act on.
+// generated src/utils/fdc3.ts, which every app has; a tile imports it only when
+// FDC3EventHandlersEnabled is true — so detection has to key off the very same marker
+// the serialisers act on.
 const FDC3_EVENT_FACTORY = 'sendEventOnChannel';
 
 const DEFAULT_CONFIRM_MESSAGE = 'Are you sure you want to proceed?';

@@ -54,6 +54,11 @@ jobs:
         if: matrix.framework == 'react'
         run: ./.genx/scripts/check-mcp-emission.sh
 
+      # Every app ships the FDC3 helper and package; only the listeners follow the channels. Checked in
+      # each framework's leg, since each one generates its own two apps.
+      - name: Check what FDC3 emits
+        run: ./.genx/scripts/check-fdc3-emission.sh ${{ matrix.framework }}
+
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}

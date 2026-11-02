@@ -101,9 +101,7 @@
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
-    {{#if FDC3.includeDependencies}}
     "@genesislcap/foundation-fdc3": "{{versions.UI}}",
-    {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
@@ -141,9 +139,7 @@
     "@genesislcap/foundation-criteria": "{{versions.UI}}",
     "@genesislcap/foundation-entity-management": "{{versions.UI}}",
     "@genesislcap/foundation-events": "{{versions.UI}}",
-    {{#if FDC3.includeDependencies}}
     "@genesislcap/foundation-fdc3": "{{versions.UI}}",
-    {{/if}}
     "@genesislcap/foundation-forms": "{{versions.UI}}",
     "@genesislcap/foundation-header": "{{versions.UI}}",
     "@genesislcap/foundation-layout": "{{versions.UI}}",
