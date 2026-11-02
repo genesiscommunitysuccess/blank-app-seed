@@ -2,6 +2,11 @@ import { DefaultFDC3 } from '@genesislcap/foundation-fdc3';
 
 export const isFDC3 = (): boolean => !!(window as any).fdc3;
 
+// One instance, built on first use: constructing it waits for an FDC3 container, and in an
+// interop.io container it adds a channel listener that is never removed.
+let fdc3Service: DefaultFDC3 | undefined;
+const fdc3 = (): DefaultFDC3 => (fdc3Service ??= new DefaultFDC3());
+
 export const onFDC3Ready = async (FDC3ReadyCb: () => any): Promise<void> => {
   if (isFDC3()) {
     await FDC3ReadyCb();
@@ -17,15 +22,13 @@ export const listenToChannel = async (
   type: string,
   callback: (result: any) => void,
 ): Promise<void> => {
-  const fdc3Service = new DefaultFDC3();
-  fdc3Service.addChannelListener(channelName, type, callback);
+  fdc3().addChannelListener(channelName, type, callback);
 };
 
 export const sendEventOnChannel = (channelName: string, type: string) => {
   return async (e: any) => {
-    const fdc3Service = new DefaultFDC3();
     // check for ag-grid-specific events, fall back to standard events
     const payload = e.data || e.detail;
-    await fdc3Service.broadcastOnChannel(channelName, type, payload);
+    await fdc3().broadcastOnChannel(channelName, type, payload);
   };
 };

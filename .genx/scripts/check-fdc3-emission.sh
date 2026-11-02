@@ -12,8 +12,10 @@
 #   channels   two channels: the app waits for FDC3 and listens on each channel with its type.
 #   same       the helper, utils/index.ts and package.json are byte for byte the same in both apps, so
 #              turning listening on or off never changes the package set or a page's import.
-#   lazy       no helper builds a DefaultFDC3 at module load: its constructor starts waiting for an
-#              FDC3 container, which an app that never broadcasts must not do.
+#   lazy       the helper builds one DefaultFDC3, on first use: its constructor starts waiting for an
+#              FDC3 container, which an app that never broadcasts must not do, and in an interop.io
+#              container adds a channel listener it never removes, so it is built neither at module
+#              load nor per broadcast or listener.
 #
 # Usage:  .genx/scripts/check-fdc3-emission.sh [framework...]   (default: react webcomponents angular)
 # Env:    SEED=...  the seed to check (default: this checkout). Mutation runs point it at a copy.
@@ -84,8 +86,11 @@ for (const fw of frameworks) {
     const starter = read(path.join(app(variant), listeners));
     if (helper === null || !/export const sendEventOnChannel\b/.test(helper)) {
       problems.push(`${label}: ${utils}/fdc3.ts is missing or does not export sendEventOnChannel`);
-    } else if (helper.split('\n').some((line) => /^\S.*new DefaultFDC3\(/.test(line))) {
-      problems.push(`${label}: ${utils}/fdc3.ts builds a DefaultFDC3 at module load`);
+    } else if (
+      (helper.match(/new DefaultFDC3\(/g) ?? []).length !== 1 ||
+      !/=>\s*\(\s*\w+\s*\?\?=\s*new DefaultFDC3\(\)\s*\)/.test(helper)
+    ) {
+      problems.push(`${label}: ${utils}/fdc3.ts does not build one DefaultFDC3 lazily, on first use`);
     }
     if (index === null || !index.split('\n').includes("export * from './fdc3';")) {
       problems.push(`${label}: ${utils}/index.ts does not re-export ./fdc3`);
