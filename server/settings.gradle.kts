@@ -1,6 +1,6 @@
 pluginManagement {
-    val genesisVersion: String by settings
-    val startVersion: String by settings
+    val genesisVersion = providers.gradleProperty("genesisVersion").get()
+    val startVersion = providers.gradleProperty("startVersion").get()
 
     plugins {
         id("global.genesis.settings") version genesisVersion
@@ -39,10 +39,6 @@ genesis {
     dependencies {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
-    }
-
-    plugins {
-        genesisDeploy.enabled = true
     }
 }
 

@@ -13,15 +13,15 @@ repositories {
         mavenLocal()
     }
     maven {
-        val repoUrl = if (properties["useDevRepo"] == "true") {
+        val repoUrl = if (providers.gradleProperty("useDevRepo").orNull == "true") {
             "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
         } else {
             "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
         }
         url = uri(repoUrl)
         credentials {
-            username = properties["genesisArtifactoryUser"].toString()
-            password = properties["genesisArtifactoryPassword"].toString()
+            username = providers.gradleProperty("genesisArtifactoryUser").orNull
+            password = providers.gradleProperty("genesisArtifactoryPassword").orNull
         }
     }
     mavenCentral()
