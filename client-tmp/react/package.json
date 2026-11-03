@@ -77,6 +77,7 @@
     "@genesislcap/foundation-ui": "{{versions.UI}}",
     "@genesislcap/foundation-user": "{{versions.UI}}",
     "@genesislcap/foundation-utils": "{{versions.UI}}",
+    "@genesislcap/foundation-workspace": "{{versions.UI}}",
     "@genesislcap/foundation-redux": "{{versions.UI}}",
     "@genesislcap/rapid-design-system": "{{versions.UI}}",
     "@genesislcap/rapid-grid-pro": "{{versions.UI}}",
