@@ -974,7 +974,7 @@ KTS
   done
 
   # A key must never reach a file the build writes. Every GENESIS_SYSDEF_ variable becomes a
-  # system-definition item, and genesisConfigJar renders them all in plain text into
+  # system-definition item, and prepareProcessTemplates renders them all in plain text into
   # build/genesis/rendered-templates/generated-system-definition.json. So the render runs with CANARY
   # values, never a real key, under the names the proxy reads and under the old names it refuses. The
   # old ones MUST land: that proves the render ran, so the new ones' absence means something.
@@ -983,7 +983,7 @@ KTS
   canary="canary-$$-not-a-key"
   ( export AI_GEMINI_API_KEY="$canary-gemini" AI_ANTHROPIC_API_KEY="$canary-anthropic" \
       GENESIS_SYSDEF_AI_GEMINI_API_KEY="$canary-old-gemini" GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY="$canary-old-anthropic"
-    gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:genesisConfigJar --rerun ) \
+    gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:prepareProcessTemplates --rerun ) \
     || fail "gradle: the render with canary keys failed (see the log above)"
   # The files under the AI app that hold a value, with every jar and zip looked into as well.
   holding() {
