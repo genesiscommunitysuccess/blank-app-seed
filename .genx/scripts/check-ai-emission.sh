@@ -853,10 +853,10 @@ const scripts = [
 const scriptMention = /genesis-?start|genesis\.start|gradlew|-P\S*(headless|rest)/i;
 const gradleMention = /genesis-?start|genesis\.?launcher|genesis\.start|\b(headless|restEnabled|restPort|restBasePath|restMaxRequestBodyBytes)\b/i;
 const pluginId = /^\s*id\("global\.genesis\.genesis-start-gui"\)( version startVersion)?\s*$/;
+// Anchored on mavenCentral(), the repository just before it, not on the Genesis credentials lines, so
+// a change to how those are read doesn't trip a guard that is about Google's place and scope.
 const googleBlock = [
-  '                password = properties["genesisArtifactoryPassword"].toString()',
-  '            }',
-  '        }',
+  '        mavenCentral()',
   '        // The Genesis Start launcher (0.1.12+) needs androidx.* artifacts, which none of the repositories',
   '        // above have. Last, and for those groups only, so nothing else is ever looked up at Google.',
   '        google {',
@@ -901,7 +901,7 @@ for (const label of labels) {
       .forEach((l) => problems.push(`${label}: ${path.relative(app, file)}: ${JSON.stringify(l.trim())}`));
   }
   const build = fs.readFileSync(path.join(app, 'server/build.gradle.kts'), 'utf8');
-  if (!build.includes(googleBlock)) problems.push(`${label}: server/build.gradle.kts: the scoped google {} block is not last, whole, after the Genesis repository`);
+  if (!build.includes(googleBlock)) problems.push(`${label}: server/build.gradle.kts: the scoped google {} block is not last, whole, after mavenCentral()`);
   const googles = live(path.join(app, 'server/build.gradle.kts')).filter((l) => /\bgoogle\b/.test(l)).length;
   if (googles !== 1) problems.push(`${label}: server/build.gradle.kts: ${googles} live lines mention google, expected 1`);
 }
