@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.31.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.31.0...v5.31.1) (2026-11-05)
+
+
+### Bug Fixes
+
+* update FUI to 15.92.0 GENC-1829 d409dfa
+* update FUI to 15.92.0 GENC-1829 (#660) af2c443
+
 ## [5.31.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.7...v5.31.0) (2026-11-02)
 
 
