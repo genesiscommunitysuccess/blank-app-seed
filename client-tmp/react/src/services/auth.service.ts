@@ -1,5 +1,5 @@
 import { Auth } from '@genesislcap/foundation-comms';
-import { DI } from '@microsoft/fast-foundation';
+import { DI } from '@genesislcap/web-core';
 
 class AuthService {
   isAuthenticated = false;

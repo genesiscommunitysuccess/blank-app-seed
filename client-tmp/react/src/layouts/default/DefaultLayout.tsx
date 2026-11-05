@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useSyncExternalStore } from 'react';
-import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
+import { Connect } from '@genesislcap/foundation-comms';
+import type { AppTargetId } from '@genesislcap/foundation-shell/app';
 import { getNavItems } from '@genesislcap/foundation-ui';
+import { LOGOUT_URL } from '@genesislcap/foundation-utils';
 import {
   applyMode,
   injectThemeStyles,
   nextMode,
   resolveInitialMode,
 } from '@genesislcap/rapid-design-system';
-import styles from './DefaultLayout.module.css';
+import { DI } from '@genesislcap/web-core';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { RouteObject, useNavigate, Outlet } from 'react-router-dom';
 import PBCElementsRenderer from '../../pbc/elementsRenderer';
 import { registerStylesTarget } from '../../pbc/utils';
-import { activeTheme, modeToggleEnabled } from '../../styles/active-theme';
 import { useRoutesContext } from '../../store/RoutesContext';
+import { activeTheme, modeToggleEnabled } from '../../styles/active-theme';
 import { useDocumentTitle } from '../../utils/useDocumentTitle';
-import { LOGOUT_URL } from '@genesislcap/foundation-utils';
-import { DI } from '@genesislcap/web-core';
-import { Connect } from '@genesislcap/foundation-comms';
-import type { AppTargetId } from '@genesislcap/foundation-shell/app';
+import styles from './DefaultLayout.module.css';
 
 // Stable target arrays so PBCElementsRenderer effect doesn't re-run on every parent re-render
 const TARGET_LAYOUT_START: AppTargetId = ['layout-start'];
@@ -65,6 +65,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
   };
 
   const connected = useSyncExternalStore(subscribe, getSnapshot);
+  // Latched on the first connection, so the header and PBC targets stay mounted through reconnects.
+  const [hasConnected, setHasConnected] = useState(connected);
+  if (connected && !hasConnected) {
+    setHasConnected(true);
+  }
 
   useEffect(() => {
     if (designSystemProviderRef.current) {
@@ -81,7 +86,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
 
   return (
     <rapid-design-system-provider ref={designSystemProviderRef} class={className}>
-      {connected && (
+      {hasConnected && (
         <>
           <PBCElementsRenderer target={TARGET_LAYOUT_START} />
           <foundation-header
@@ -103,11 +108,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
         </>
       )}
       <section className={styles['content']}>
-        {connected && <PBCElementsRenderer target={TARGET_CONTENT_START} />}
+        {hasConnected && <PBCElementsRenderer target={TARGET_CONTENT_START} />}
         <Outlet />
-        {connected && <PBCElementsRenderer target={TARGET_CONTENT} />}
+        {hasConnected && <PBCElementsRenderer target={TARGET_CONTENT} />}
       </section>
-      {connected && <PBCElementsRenderer target={TARGET_LAYOUT_END} />}
+      {hasConnected && <PBCElementsRenderer target={TARGET_LAYOUT_END} />}
     </rapid-design-system-provider>
   );
 };

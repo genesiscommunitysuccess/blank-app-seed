@@ -64,3 +64,11 @@ if (!('adoptedStyleSheets' in document)) {
     value: [],
   });
 }
+
+// jsdom lacks structuredClone, which the design-system theme merge uses
+if (typeof globalThis.structuredClone === 'undefined') {
+  Object.defineProperty(globalThis, 'structuredClone', {
+    writable: true,
+    value: (value: unknown) => JSON.parse(JSON.stringify(value)),
+  });
+}

@@ -7,10 +7,10 @@ import {
   nextMode,
   resolveInitialMode,
 } from '@genesislcap/rapid-design-system';
+import { registerStylesTarget } from '../../../pbc/utils';
 import { activeTheme, modeToggleEnabled } from '../../../styles/active-theme';
 import { RouteService } from '../../services/route.service';
 import BaseLayout from '../base.layout';
-import { registerStylesTarget } from '../../../pbc/utils';
 
 @Component({
   selector: 'app-default-layout',

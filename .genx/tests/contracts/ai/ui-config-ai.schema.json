@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://genesis.global/schemas/create/ui-config-ai.schema.json",
+  "title": "ui.config.ai",
+  "version": "1.6.0",
+  "description": "The AI chat block a generated app reads from ui.config (GENC-1601 contract C-8). Produced by the archive service's ai-resolver from the project payload, and copied VERBATIM into the seed — both sides pin this file's digest, so a change here is a deliberate version bump, not an edit. It carries WHAT the chat may do and nothing about WHERE it talks: no url, endpoint, key or budget field exists, and additionalProperties is false everywhere so one cannot be added by accident. That is load-bearing — this block is written into the generated app's genesis-create.json and ships in the exported project, so a Create endpoint or key here would leave the box.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["enabled", "vendor", "tier", "systemPrompt", "resources"],
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "description": "Emitted only for a project that selected AI chat; the block is absent entirely otherwise, so a project without AI stays byte-identical (C57)."
+    },
+    "vendor": {
+      "enum": ["gemini", "anthropic"],
+      "description": "Default 'gemini' (R-7). The generated app resolves a provider for it; the endpoint is supplied by the build environment, never from here."
+    },
+    "tier": {
+      "enum": ["low", "high", "reasoning"],
+      "description": "Default 'high' (R-7). Maps to a model through the foundation-ui tier table (C-3), so no model id appears in a generated project."
+    },
+    "systemPrompt": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The assistant's standing instruction. Derived deterministically from the project, so regenerating an unchanged project produces an unchanged file."
+    },
+    "resources": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "What the chat may read and call, by the name the platform actually registers. A name that matches nothing is dropped silently by the runtime (C34), so these are derived from the project rather than typed by hand. One entry per name: the chat tolerates a duplicate, but MCP's enableMcp refuses the whole script over one, so the resolver dedupes and both consumers can trust it.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "kind", "context"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$",
+            "maxLength": 64,
+            "description": "REQ_<NAME> for a request-server resource, EVENT_<NAME> for an event handler, and a dataserver query's own name, which is neither (C-15A.5 K-2). Never the bare MCP resource name (C34). At most 64 characters: the assistant's tool name is this name lowercased, and vendors reject longer tool names."
+          },
+          "kind": {
+            "enum": ["request", "event", "query"],
+            "description": "'request' is a read through the request server; 'event' is a write through an event handler; 'query' is a read of a dataserver query's live rows (C-15). A seed passes 'query' on only when its UI reads it (C-15A.5)."
+          },
+          "op": {
+            "enum": ["insert", "modify", "delete", "custom"],
+            "description": "Events only, in the platform's WIRE vocabulary. The project meta says create/update/delete; the resolver maps create→insert and update→modify so nothing downstream knows two names for one thing."
+          },
+          "context": {
+            "type": "string",
+            "minLength": 1,
+            "description": "One line telling the model what this resource is for."
+          },
+          "maxRows": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Requests and queries only; the resolver emits 50. A row cap in the host bridge applies regardless — this is guidance, not enforcement."
+          },
+          "shape": {
+            "enum": ["row"],
+            "description": "Custom events only (C-18.3). 'row': the handler's code was proven to change one existing row of entity, looked up by its primary key, and optionally insert rows elsewhere. A new meaning gets a new value, never a looser 'row'."
+          },
+          "entity": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$",
+            "description": "The table a resource acts on. Allowed on any resource with that one meaning (C-8); required with shape, where the bridge reads the row through REQ_<entity>."
+          },
+          "key": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[A-Z0-9_]+$", "not": { "enum": ["RECORD_ID", "TIMESTAMP"] } },
+            "description": "The table's primary-key fields, in primary-key order. On a row action, the row the handler loads is the row the review shows; on a modify or a delete, the row the write names. RECORD_ID and TIMESTAMP are the platform's own and never a key."
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["field", "required"],
+              "properties": {
+                "field": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+                "required": { "const": true }
+              }
+            },
+            "description": "The fields the handler's code reads from the request beyond the key. May be empty. Every input is required in v1, and the constant is written so the bridge checks it rather than assumes it."
+          },
+          "effects": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["op", "table"],
+              "properties": {
+                "op": { "enum": ["modify", "insert"] },
+                "table": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+              }
+            },
+            "contains": { "required": ["op"], "properties": { "op": { "const": "modify" } } },
+            "minContains": 1,
+            "maxContains": 1,
+            "description": "One per write call in the handler's code, in code order: exactly one modify, of entity, and any inserts."
+          },
+          "customCode": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["alsoWrites", "listComplete"],
+            "properties": {
+              "alsoWrites": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+                "description": "Tables other than its own that the op's custom code provably writes to, in the order it first writes each. A floor, never the whole story on its own."
+              },
+              "listComplete": {
+                "type": "boolean",
+                "description": "True only when every write, call and way out of the code was accounted for, so alsoWrites names every other table it writes."
+              }
+            },
+            "description": "A CRUD event whose handler runs custom code (C-18.D): the review tells the user that the code can do more than save the values shown."
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["resource", "fields"],
+              "properties": {
+                "resource": { "type": "string", "pattern": "^REQ_[A-Z0-9_]+$" },
+                "fields": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["field", "targetField"],
+                    "properties": {
+                      "field": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+                      "targetField": { "type": "string", "pattern": "^[A-Z0-9_]+$" }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Declared references of this write, for the bridge's existence check. Absent on a config older than this version, when the app's seed does not declare references, when an upstream pre-resolved block omits it, or when Create had no fields list for the table; [] means the table declares none. Only an insert or modify event carries it. Two rules the schema cannot say: a field appears at most once across all groups, and a group's targetField values are distinct; the resolver guarantees both by construction and its resourceProblem checks them on the pre-resolved path."
+          }
+        },
+        "$comment": "The kind decides the rest, and the name's prefix must fit it, as in the foundation-ui assistant's validateGenesisAiConfig, which blocks the WHOLE assistant on any mismatch. These rules mirror it, with two things a schema cannot say: two resources sharing a name but differing in another field pass uniqueItems (it only rejects identical items) yet block the assistant, which is why the resolver dedupes by name; and enabled false is valid here because it is a deliberate off, not a block the assistant will run. A row action (shape) has three more the schema cannot say, enforced by the resolver and mirrored by the bridge's rowActionProblem: the modify effect's table is entity; no key field is also an input; and REQ_<entity> is a request resource in the same block.",
+        "allOf": [
+          {
+            "description": "A request is a REQ_ name, and no op.",
+            "if": { "properties": { "kind": { "const": "request" } } },
+            "then": { "properties": { "name": { "pattern": "^REQ_[A-Z0-9_]+$" } }, "not": { "required": ["op"] } }
+          },
+          {
+            "description": "An event is an EVENT_ name, an op, and no maxRows.",
+            "if": { "properties": { "kind": { "const": "event" } } },
+            "then": { "properties": { "name": { "pattern": "^EVENT_[A-Z0-9_]+$" } }, "required": ["op"], "not": { "required": ["maxRows"] } }
+          },
+          {
+            "description": "A query is a name that is neither a request's nor an event's, and no op (C-15A.5 K-2, K-3).",
+            "if": { "properties": { "kind": { "const": "query" } } },
+            "then": { "properties": { "name": { "not": { "pattern": "^(REQ|EVENT)_" } } }, "not": { "required": ["op"] } }
+          },
+          {
+            "description": "A row action's companions ride a custom op with shape only, and with shape all four are required. key may also ride a modify or a delete (below).",
+            "if": { "required": ["op", "shape"], "properties": { "op": { "const": "custom" } } },
+            "then": { "required": ["entity", "key", "inputs", "effects"] },
+            "else": {
+              "not": {
+                "anyOf": [{ "required": ["shape"] }, { "required": ["inputs"] }, { "required": ["effects"] }]
+              }
+            }
+          },
+          {
+            "description": "key rides a custom op with shape (above) or a modify or delete event (C-19.1). op is required in each branch: an absent op would satisfy it vacuously.",
+            "if": { "required": ["key"] },
+            "then": {
+              "anyOf": [
+                { "required": ["op", "shape"], "properties": { "op": { "const": "custom" } } },
+                { "required": ["op"], "properties": { "op": { "enum": ["modify", "delete"] } } }
+              ]
+            }
+          },
+          {
+            "description": "customCode rides an insert, modify or delete event only. op is required here: an absent op would satisfy an if on op vacuously.",
+            "if": { "required": ["customCode"] },
+            "then": { "required": ["op"], "properties": { "op": { "enum": ["insert", "modify", "delete"] } } }
+          },
+          {
+            "description": "references ride an insert or modify event only (C-17.3). op is required in the if: an absent op would satisfy it vacuously.",
+            "if": { "required": ["op"], "properties": { "op": { "enum": ["insert", "modify"] } } },
+            "else": { "not": { "required": ["references"] } }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -30,9 +30,11 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 
   setConnected(connected: boolean) {
     this.connected = connected;
-    document.dispatchEvent(new CustomEvent('connected-changed', {
-      detail: { connected }
-    }));
+    document.dispatchEvent(
+      new CustomEvent('connected-changed', {
+        detail: { connected },
+      }),
+    );
   }
 }
 

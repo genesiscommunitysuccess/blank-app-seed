@@ -3,10 +3,9 @@ import { Filters, Form } from '@genesislcap/foundation-forms';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
-import * as zeroDesignSystem from '@genesislcap/foundation-zero';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
-import { rapidGridComponents, rapidGridProBeta } from '@genesislcap/rapid-grid-pro';
+import { rapidGridComponents, rapidGridPro } from '@genesislcap/rapid-grid-pro';
 import { NotPermittedComponent } from './not-permitted-component';
 
 /**
@@ -32,13 +31,15 @@ export async function registerComponents() {
     designSystem: rapidDesignSystem,
   });
 
-  rapidDesignSystem.provideDesignSystem().register(
-    rapidDesignSystem.baseComponents,
-    rapidGridProBeta(),
-    rapidGridComponents,
-    g2plotChartsComponents,
-    foundationLayoutComponents,
-  );
+  rapidDesignSystem
+    .provideDesignSystem()
+    .register(
+      rapidDesignSystem.baseComponents,
+      rapidGridPro(),
+      rapidGridComponents,
+      g2plotChartsComponents,
+      foundationLayoutComponents,
+    );
 
   configureHeader({
     templateOptions: {
@@ -50,11 +51,4 @@ export async function registerComponents() {
       flyout: 'rapid-flyout',
     },
   });
-
-  /**
-   * Still required while we transition all PBCs to rapid. Remove when complete.
-   */
-  zeroDesignSystem
-    .provideDesignSystem()
-    .register(zeroDesignSystem.baseComponents, g2plotChartsComponents, foundationLayoutComponents);
 }

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  FunctionComponent,
-} from 'react';
+import { createContext, useState, useContext, ReactNode, FunctionComponent } from 'react';
 import { authService } from '../services/auth.service';
 
 interface AuthContextType {
@@ -31,9 +25,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
-  children,
-}) => {
+export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const checkAuthStatus = async () => {

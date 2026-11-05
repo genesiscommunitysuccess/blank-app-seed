@@ -1,0 +1,18 @@
+/*
+ * What this application's MCP server lets an AI client call. Generated with this application, safe
+ * to edit.
+ *
+ * Each enableMcp names one resource as the platform registers it. A request server is named by its
+ * bare name (TRADE, not REQ_TRADE) and becomes the read tool trade_query. A name that matches
+ * nothing is ignored without a message; a name written twice stops the whole MCP server.
+ *
+ * Every tool runs as the signed-in caller, with that caller's rights. requiresAuth is true unless
+ * you write otherwise: never set it to false.
+ */
+mcp {
+{{#each MCP.resources}}
+    enableMcp(resource = "{{name}}") {
+        context = "{{context}}"
+    }
+{{/each}}
+}

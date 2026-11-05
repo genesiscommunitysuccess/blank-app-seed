@@ -10,6 +10,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The `build` job below covers React end to end (gradle build, lint, unit + e2e) for
+  # the defaults app. This job keeps every framework's generator honest: for each one it
+  # generates the defaults app, the full-routes fixture app and an FDC3-channels app, plus
+  # for React an app with the AI chat on, and runs the ox lint gates over each.
+  #
+  # BUILD=1 adds `tsc --noEmit` and the production build per app, which is what makes a
+  # broken generated tile fail here. Lint alone does not type-check, and the app the
+  # `build` job below compiles is the defaults one, which generates no tiles at all, so
+  # before this nothing compiled a generated tile: a grid tile passed a prop the React
+  # wrapper's types did not declare and CI stayed green while `npm run build` failed for
+  # anyone scaffolding with routes. For the AI app it also checks that the assistant and
+  # its bubble are built into a chunk of their own, and into no other, and that the seed's
+  # AI declaration holds the baseline and names nothing the installed assistant does not read.
+  generated-apps:
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [react, webcomponents, angular]
+    runs-on: ubuntu-latest
+    env:
+      BUILD: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate and lint ${{ matrix.framework }} apps (default + full + fdc3, and ai for React)
+        run: ./.genx/scripts/generate-test-apps.sh ${{ matrix.framework }}
+
+      # Generates its own React and web-components apps, so one leg is enough. This job has no Java
+      # or artifactory credentials, so it runs the emission checks only; the build job adds GRADLE=1.
+      - name: Check what the AI chat path emits
+        if: matrix.framework == 'react'
+        run: ./.genx/scripts/check-ai-emission.sh
+
+      # Like the AI check above: generates its own apps, so one leg is enough, and the build job adds
+      # GRADLE=1.
+      - name: Check what the MCP server path emits
+        if: matrix.framework == 'react'
+        run: ./.genx/scripts/check-mcp-emission.sh
+
   build:
     env:
       genesisArtifactoryUser: ${{ secrets.JFROG_LIBS_RELEASE_CLIENT_RO_USER }}
@@ -40,7 +84,7 @@ jobs:
 
       - name: Generate sample app
         working-directory: /tmp
-        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x --enableDeployPlugin
+        run: npx -y @genesislcap/genx@latest init testapp -s "${{github.workspace}}" -x --framework react --enableDeployPlugin
 
       - name: Copy fixtures
         run: cp -R ./.genx/tests/fixtures/testapp/* /tmp/testapp
@@ -48,6 +92,22 @@ jobs:
       - name: Build sample app
         working-directory: /tmp/testapp
         run: ./gradlew ${GRADLE_PARAMS} build --info
+
+      # The AI chat proxy is a script, and scripts compile only when the router starts, so no build
+      # compiles it. This one builds an AI app, runs the security scan on it and compiles both
+      # vendors' proxies against this Genesis version. It picks up GRADLE_PARAMS from the job.
+      - name: Build, scan and compile the AI chat proxy
+        env:
+          GRADLE: 1
+        run: ./.genx/scripts/check-ai-emission.sh
+
+      # The MCP server's two scripts compile only when its process starts, and one that does not
+      # compile fails a customer's whole prepare, not only MCP. This compiles both against this
+      # Genesis version and checks the process runs the app's own server script.
+      - name: Compile the MCP server's scripts
+        env:
+          GRADLE: 1
+        run: ./.genx/scripts/check-mcp-emission.sh
 
       - name: Lint UI
         working-directory: /tmp/testapp/client

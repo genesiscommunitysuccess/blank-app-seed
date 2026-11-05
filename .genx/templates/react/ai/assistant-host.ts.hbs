@@ -1,0 +1,30 @@
+import { css, customElement, GenesisElement } from '@genesislcap/web-core';
+
+const styles = css`
+  :host,
+  foundation-ai-assistant {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+/**
+ * Holds the assistant in the chat bubble's dialog. The bubble gives the assistant its close button by
+ * looking for it in this element's shadow root when the dialog opens, so it has to be there by then.
+ *
+ * The assistant's code loads when this element reaches the page rather than with the app. The bubble
+ * and the popout manager around it come from the same package, and upgrade when it arrives.
+ */
+@customElement({ name: 'genesis-app-assistant', styles })
+export class AiAssistantHost extends GenesisElement {
+  connectedCallback(): void {
+    super.connectedCallback();
+    void import('./assistant').then(({ mountAssistant }) => {
+      // The layout may have rebuilt its targets while the code loaded.
+      if (this.isConnected && this.shadowRoot) {
+        mountAssistant(this.shadowRoot);
+      }
+    });
+  }
+}

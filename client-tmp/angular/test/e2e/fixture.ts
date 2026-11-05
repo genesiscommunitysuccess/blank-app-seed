@@ -1,6 +1,6 @@
 import { base, Page } from '@genesislcap/foundation-testing/e2e';
+import { environment } from '../../src/environments/environment';
 import { ProtectedPage } from './pages';
-import { environment } from '../../src/environments/environment'
 
 export type FixtureConfig = {
   API_HOST: string;
@@ -17,7 +17,7 @@ export type Fixture = {
 const { PORT, API_HOST } = environment;
 export const test = base.extend<Fixture>({
   config: [{ PORT, API_HOST, DEFAULT_PASSWORD: '', DEFAULT_USER: '' }, { option: true }],
-  protectedPage: async ({ config, page }: { config: FixtureConfig, page: Page }, use: any) => {
+  protectedPage: async ({ config, page }: { config: FixtureConfig; page: Page }, use: any) => {
     const protectedPage = new ProtectedPage(config, page);
     await protectedPage.goto();
     await use(protectedPage);

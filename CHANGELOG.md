@@ -1,52 +1,371 @@
 # Changelog
 
-## [5.22.2-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.2-prerelease.1...v5.22.2-prerelease.2) (2026-08-21)
+## [5.31.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.31.0...v5.31.1) (2026-11-05)
 
 
 ### Bug Fixes
 
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b1155f0
+* update FUI to 15.92.0 GENC-1829 d409dfa
+* update FUI to 15.92.0 GENC-1829 (#660) af2c443
 
-## [5.22.2-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.22.2-prerelease.1) (2026-08-14)
+## [5.31.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.7...v5.31.0) (2026-11-02)
 
 
-### Bug Fixes
+### Features
 
-* address release workflow review comments 67ce8c3
-* address second round of release workflow review comments 4a1c5f5
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#616) 545eb21
-* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
-* default dist-tag to latest when semantic-release channel is null ce5a216
-* merge main into prerelease GENC-1362 (#589) c7eed71
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
-
-## [5.17.3-prerelease.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.2...v5.17.3-prerelease.3) (2026-08-12)
+* every generated app ships the FDC3 helper and package GENC-1812 dec6f11
+* every generated app ships the FDC3 helper and package GENC-1812 (#657) c9b0b5e
 
 
 ### Bug Fixes
 
-* address release workflow review comments 67ce8c3
-* address second round of release workflow review comments 4a1c5f5
-* default dist-tag to latest when semantic-release channel is null ce5a216
+* the FDC3 helper reuses one DefaultFDC3, built on first use GENC-1812 4d12979
 
-## [5.17.3-prerelease.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3-prerelease.1...v5.17.3-prerelease.2) (2026-07-27)
+## [5.30.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.6...v5.30.7) (2026-11-02)
 
 
 ### Bug Fixes
 
-* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
+* update FUI to 15.90.0 [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2f2f28c
+* update FUI to 15.90.0 [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#656) 4d67c2e
 
-## [5.17.3-prerelease.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3-prerelease.1) (2026-07-07)
+## [5.30.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.5...v5.30.6) (2026-10-28)
 
 
 ### Bug Fixes
 
-* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
-* merge main into prerelease GENC-1362 (#589) c7eed71
-* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
-* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* update FUI to 15.86.1 GENC-1739 (#654) 7f2593b
+* update FUI to 15.86.1 so the AI assistant draws its own Close button GENC-1739 c7adfaa
+
+## [5.30.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.4...v5.30.5) (2026-10-23)
+
+
+### Bug Fixes
+
+* update FUI version GENC-1742 99ebde2
+* update FUI version GENC-1742 (#653) a706a2a
+
+## [5.30.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.3...v5.30.4) (2026-10-23)
+
+
+### Bug Fixes
+
+* keep the header mounted while the socket reconnects GENC-1742 1adc6ee
+* keep the header mounted while the socket reconnects GENC-1742 (#652) 688d803
+
+## [5.30.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.2...v5.30.3) (2026-10-14)
+
+
+### Bug Fixes
+
+* update FUI to 15.72.0 so lazily imported PBC deps don't re-optimize mid-load GENC-0 46b0a42
+* update FUI to 15.72.0 so lazily imported PBC deps don't re-optimize mid-load GENC-0 (#651) f4a3dee
+
+## [5.30.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.1...v5.30.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* stop generated apps depending on the zero design system [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 30475a7
+* stop generated apps depending on the zero design system [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#650) 4ef62ff
+
+## [5.30.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.30.0...v5.30.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* keep the AI chat proxy compiling next to an app's RESULT enum GENC-1681 bdb8bb1
+* keep the AI chat proxy compiling next to an app's RESULT enum GENC-1681 (#649) 3253624
+
+## [5.30.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.29.0...v5.30.0) (2026-10-09)
+
+
+### Features
+
+* give an app that asks for one an MCP server, reads only on GSF 8.15 GENC-1615 10c2763
+* give an app that asks for one an MCP server, reads only on GSF 8.15 GENC-1615 (#646) 84d8129
+
+
+### Bug Fixes
+
+* accept more punctuation in MCP contexts, publish the MCP port in Docker, and warn before a GSF upgrade GENC-1615 a5b724d
+
+## [5.29.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.1...v5.29.0) (2026-10-07)
+
+
+### Features
+
+* check the declared row-action shapes against the installed assistant GENC-1611 d53350c
+* declare that the seed's assistant runs key-row actions GENC-1611 02a2ab8
+* let the AI chat run key-only handlers as key-row actions GENC-1611 (#645) bcd9d57
+
+
+### Bug Fixes
+
+* pin ag-grid-community 36.2.0 in a React app, the version FUI 15.54.0 peers on GENC-1611 9e7d56e
+* update FUI version to 15.54.0, which runs key-row actions GENC-1611 8841afb
+
+## [5.28.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.28.0...v5.28.1) (2026-10-05)
+
+
+### Bug Fixes
+
+* update FUI version GENC-1611 cacf246
+* update FUI version GENC-1611 (#644) a2812ea
+
+## [5.28.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.1...v5.28.0) (2026-10-02)
+
+
+### Features
+
+* add desktop and headless Genesis Start scripts to the client GENC-1609 2806180
+* add the AI assistant to an AI app, in a chat bubble GENC-1611 (#638) 5a04d57
+* add the AI chat panel to an AI app, loading the assistant the first time it opens GENC-1611 b6d31f5
+* always depend on the AI assistant in a React app, so a preview base already has it GENC-1611 393c84b
+* copy Create's schema 1.6.0 and cases 1.8.0, with modifies and deletes named by key GENC-1611 65f4621
+* copy to the AI config only what the seed declares its assistant reads GENC-1611 b07cf57
+* copy to the AI config only what the seed declares its assistant reads GENC-1611 (#642) 4385268
+* give an AI app the assistant package and build it with AI switched on GENC-1611 660ca45
+* keep a key only where it names a row, and check a modify's key through CI GENC-1611 c238ab3
+* move Genesis Start to 0.1.15, the first launcher that can run headless GENC-1609 81136ae
+* open the AI assistant from a chat bubble GENC-1611 212bce1
+* pass queries, references and row actions to the AI chat GENC-1611 (#643) 92d7c5e
+* pin UI 15.47.0 and pass its queries and references to the chat GENC-1611 37ebdfd
+* pin UI 15.50.0 and pass row actions and keys to the chat GENC-1611 6aafccd
+* ship the AI chat proxy with a React app that asks for it GENC-1609 4b67a7a
+* ship the AI chat proxy with a React app that asks for it GENC-1609 (#636) 76dabeb
+* write a row action's fields as the chat reads them, and check them through CI GENC-1611 fa0f782
+* write the chat panel's configuration into an AI app GENC-1611 6eff2c2
+
+
+### Bug Fixes
+
+* accept a lowercase content-type from a proxy GENC-1609 8002275
+* allow the reasoning tier's models in the proxy GENC-1609 0a9c11d
+* answer 424 when the AI key cannot be read, never an exception GENC-1609 6cdb268
+* answer the chat panel as JSON whatever it accepts GENC-1609 9c3cbb7
+* ask Google's repository only for the launcher's androidx artifacts, after Genesis's own GENC-1609 1788d9b
+* bound what the proxy will parse from a request body GENC-1609 032f00b
+* build the AI limits into the proxy so a rewritten sysdef cannot drop them GENC-1609 8144dec
+* document only the environment route for the AI keys GENC-1609 f56f8e0
+* fail the AI declaration check on a GENESIS_AI_CONSUMES it cannot use GENC-1611 35ab208
+* give each user their own assistant session and check the right on every mount GENC-1611 aedc3e3
+* hold Gemini to one candidate so the token cap is the real cap GENC-1609 f238852
+* keep a bad key and failed calls out of replies and logs GENC-1609 2da7ed6
+* keep the key out of vendor replies and bare model ids in the proxy GENC-1609 1865ad5
+* move the UI packages to 15.45.0 GENC-1611 9f85173
+* put the AI settings in the system definition the server reads GENC-1609 8082946
+* raise the router body cap above the chat proxy's 5 MiB limit GENC-1609 42d8bca
+* read the AI keys from the environment, never the system definition GENC-1609 32d5249
+* refuse a nonsense AI_MAX_OUTPUT_TOKENS instead of guessing, and never clamp below 1 GENC-1609 ae9cadc
+* refuse every model when the allow-list is empty GENC-1609 be10603
+* refuse fallback models instead of vetting them GENC-1609 a32f906
+* refuse Gemini's snake_case spellings of the capped fields GENC-1609 83401f7
+* reply through the router's stateless JSON writer GENC-1609 8bc9148
+* run chat calls outside a database transaction GENC-1609 97784a2
+* say plainly that a sent vendor call runs to completion GENC-1609 7fa161f
+* stop holding a thread for the whole vendor call GENC-1609 6ab3e9b
+* stop logging every chat request with the caller's session GENC-1609 4c1eaf9
+* use inject, not the deprecated injector, in the proxy GENC-1609 f0fae49
+* warn against requiresAuth and make the auth checks exact GENC-1609 399ea9b
+
+## [5.27.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.27.0...v5.27.1) (2026-09-24)
+
+
+### Bug Fixes
+
+* move the UI packages to 15.39.0 and onto the stable grid they ship GENC-1611 (#637) f7314a5
+* register the Angular grid with the stable grid's own styles, not the legacy ones GENC-1611 740cdbc
+
+## [5.27.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.26.0...v5.27.0) (2026-09-18)
+
+
+### Features
+
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 18eba80
+* update FUI to 15.34.1 and drop ag-grid-enterprise GENC-0 (#626) 1c75f00
+
+## [5.26.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.25.0...v5.26.0) (2026-09-17)
+
+
+### Features
+
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) d5f63d1
+* consume flexlayout-react via the platform export [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) (#625) 15312e0
+
+
+### Bug Fixes
+
+* type angular tile gridOptions concretely so ng build passes [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 528b116
+* use the RapidGridProBeta react wrapper for grid-pro tiles [FUI-2626](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2626) 95cbfb9
+
+## [5.25.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.24.0...v5.25.0) (2026-09-10)
+
+
+### Features
+
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) 615dd5d
+* enable column selection by default on create tiles [FUI-2601](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2601) (#624) 501c90d
+
+## [5.24.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.4...v5.24.0) (2026-09-04)
+
+
+### Features
+
+* update FUI version GENC-1581 06a7d4d
+* update FUI version GENC-1581 (#622) 086cb9b
+
+## [5.23.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.3...v5.23.4) (2026-09-01)
+
+
+### Bug Fixes
+
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 a948edd
+* bump versions.UI to 15.19.5 for the event-type-codegen enum-collision fix GENC-0 (#621) 07cf830
+
+## [5.23.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.2...v5.23.3) (2026-09-01)
+
+
+### Bug Fixes
+
+* correct the placeholder comment now that nothing sets the class GENC-0 bc08e96
+* drop the React tile className wiring for now GENC-0 386865e
+* make the React tile style placeholder target a real selector GENC-0 17f00ac
+* make the React tile style placeholder target a real selector GENC-0 (#620) 70b82a6
+* make the smart-form tile always render multi-line to satisfy oxfmt GENC-0 24622f7
+* set the tile's className so the style placeholder selector matches GENC-0 656b18b
+
+## [5.23.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.1...v5.23.2) (2026-08-28)
+
+
+### Bug Fixes
+
+* drop the post-login watcher superseded by the foundation-auth fallback fix [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c142f0
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 450a2fe
+* give the auth hostPath a leading slash when no base path is set [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#619) 1b4fd2c
+* re-assert the post-login destination while the auth router tears down [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2c175e7
+
+## [5.23.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.23.0...v5.23.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 b093abe
+* bump versions.UI to 15.18.0 for event-type date and wire-name fixes GENC-1526 (#617) aafb04f
+* satisfy new oxlint react rules in seed template and route generator GENC-0 b5b12af
+
+## [5.23.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.1...v5.23.0) (2026-08-18)
+
+
+### Features
+
+* CI builds the react app; react jest stack repaired; store uses slice initial state [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 62db073
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 7ec4e78
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 6496554
+* oxlint/oxfmt as default linters [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) (#575) b64f8b9
+
+
+### Bug Fixes
+
+* address code review - serializer robustness, permission semantics, tooling hardening [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 565c9ce
+* address follow-up review - empty gridOptions, react CI coverage, husky invocation [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) c529d7e
+* document-title fallback uses the app name, not 'React App' [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 5d099a7
+* e2e tests actually navigate; template escaping and dead-code cleanups [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) b43ae68
+* generated apps lint-clean out of the box for all frameworks, tiles and layouts [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) f8ee12f
+* pre-commit lint fixes to convergence before gating [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) d9dc184
+* quiet oxlint-staged fix passes and surface spawn failures [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 33ccf58
+* schema import gating, FDC3 width pin, generated-dir glob alignment [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) dfbfd2a
+* type-check and build cleanliness for generated apps [FUI-2489](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2489) 8838670
+
+## [5.22.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.22.0...v5.22.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) f02e9d3
+* update FUI version for modal/dialog fixes [FUI-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#613) 94ac8e2
+
+## [5.22.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.1...v5.22.0) (2026-08-04)
+
+
+### Features
+
+* bump versions.UI to 15.4.1 for the Button appearance type fix GENC-1473 (#611) 001f51d
+
+## [5.21.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.21.0...v5.21.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#610) 46bf5e4
+
+## [5.21.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.20.0...v5.21.0) (2026-07-27)
+
+
+### Features
+
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 28bb768
+* **react:** migrate template routing to foundation-react-utils/router primitives [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#607) 1d8f13e
+
+
+### Bug Fixes
+
+* **react:** add foundation-react-utils dep + avoid inline style double-brace [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 7e5d676
+* **react:** theme single-component via FUI modal-theme (active-theme) not legacy design-tokens [PTC-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 020d99e
+
+## [5.20.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.2...v5.20.0) (2026-07-23)
+
+
+### Features
+
+* generate typed event DETAILS via event-type-codegen GENC-0 236a8f0
+* generate typed event DETAILS via event-type-codegen GENC-0 (#606) 3a36492
+
+## [5.19.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.1...v5.19.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* replace foundation-login with foundation-auth dependency GENC-0 fd4d102
+* replace foundation-login with foundation-auth dependency GENC-0 (#604) 4964197
+
+## [5.19.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.19.0...v5.19.1) (2026-07-21)
+
+
+### Bug Fixes
+
+* update FUI version GENC-0 62a99e6
+* update FUI version GENC-0 (#603) ccc1cb0
+
+## [5.19.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.18.0...v5.19.0) (2026-07-10)
+
+
+### Features
+
+* adopt FUI modal theme API for theme selection GENC-0 (#602) 8ee122a
+* apply UX default theme to the seed default GENC-0 e6e68de
+* migrate theming to the FUI modal theme API ([FUI-2575](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/2575)) GENC-0 60fd54a
+
+
+### Bug Fixes
+
+* align modal theming with FUI review-fixes PR 2384 GENC-0 f326bca
+
+## [5.18.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.3...v5.18.0) (2026-07-08)
+
+
+### Features
+
+* update FUI version GENC-0 6a22eb7
+* update FUI version GENC-0 (#601) bf73353
+
+## [5.17.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.2...v5.17.3) (2026-07-07)
+
+
+### Bug Fixes
+
+* update FUI version GENC-0 80c1350
+* update FUI version GENC-0 (#600) 746b025
 
 ## [5.17.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.17.1...v5.17.2) (2026-07-03)
 
