@@ -1,6 +1,7 @@
 {
   "version": 1,
   "gsfLines": {
-    "8.15": { "kinds": ["request"] }
+    "8.15": { "kinds": ["request"] },
+    "10.0": { "kinds": ["request"] }
   }
 }

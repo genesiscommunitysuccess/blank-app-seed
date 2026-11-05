@@ -1,0 +1,31 @@
+/*
+ * This application's MCP server, for Genesis 10. Generated with this application, safe to edit.
+ *
+ * It listens on port 3011, over plain HTTP and on every network interface, at the Streamable HTTP
+ * endpoint /mcp. Keep it where only trusted callers can reach it, or put TLS and a firewall in front.
+ *
+ * Every request must carry a Genesis session token, the one a login to this application returns, in a
+ * SESSION_AUTH_TOKEN header (or as Authorization: Bearer). A request without one is refused, the list
+ * of tools included, and each call runs as that user, with that user's rights.
+ *
+ * Keep sessionAuthToken. staticUser runs every caller as one account, and providedUserName trusts a
+ * user name the caller sends; neither checks who is calling.
+ *
+ * The tools are listed in {{appName}}-mcp.kts: this application's own reads. The platform's built-in
+ * tools stay off: they include reads of whole tables that bypass this application's permissions, and
+ * operations such as remaps. A write you expose there is held for another user's approval, not run.
+ *
+ * Both files are written for Genesis 10. Before raising genesisVersion in server/gradle.properties,
+ * check them against the new version's MCP defaults: a later version can expose more by default, and
+ * this file keeps running under them.
+ */
+server {
+    port = 3011
+    serverName = "{{appName}}"
+    platformTools = false
+    requireAuthenticatedConnections = true
+    requireApprovalForWrites = true
+    authenticationStrategy {
+        sessionAuthToken { }
+    }
+}

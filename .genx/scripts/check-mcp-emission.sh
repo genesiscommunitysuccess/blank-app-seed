@@ -13,20 +13,21 @@
 #             live code is pinned here, so a changed setting fails even when the template changed
 #             with it; the system definition carries START and SCRIPT exactly once each, SCRIPT
 #             naming the server script that was written, and is otherwise the default app's; the
-#             README gains its section and nothing else; docker-compose.yml publishes 3011 on the
+#             README gains its section, naming this line's endpoint and no other, and nothing else;
+#             docker-compose.yml publishes 3011 on the
 #             host's loopback only, and only then. A web-components app gets the same server files:
 #             MCP is server only.
 #   dropped   an mcp block carrying entries that cannot be emitted as they are comes out as its clean
 #             form, and the log names each one: a REQ_ name, a lower-case name, a name too long for
-#             its read tool, an event (on 8.15 a write would have no approval step), a repeated name,
+#             its read tool, an event (no line declares writes yet), a repeated name,
 #             and a context that is empty or holds a character that would need escaping: a quote, a
 #             $, a backslash, a { or one Handlebars turns into an entity (' & =). The fixture's own
 #             contexts use every other character the alphabet allows, so a narrowed one fails "on".
 #   line      a GSF line this seed declares no template for emits nothing and says so. Every
 #             declared line has a template, every template a declared line, this seed's own line is
-#             declared, and 8.15 declares reads only.
+#             declared, and each line declares reads only.
 #   safe      no MCP script in any generated app names a strategy that does not check the caller,
-#             sets requiresAuth to false, or uses a setting 8.15 does not have.
+#             sets requiresAuth to false, or uses a setting its GSF line does not have.
 #
 # Usage:  .genx/scripts/check-mcp-emission.sh
 # Env:    GRADLE=1  also compile the MCP app's two scripts with the platform's preCompileScripts. A
@@ -50,6 +51,8 @@ FAILURES=()
 GENX="${GENX:-@genesislcap/genx@15.35.1}"
 
 MCP_UI="$(cat "$SRC/.genx/tests/fixtures/mcp-config.json")"
+# This seed's own GSF line, which the drop messages name.
+OWN_LINE="$(node -e 'console.log(require(process.argv[1]).GSF.split(".").slice(0, 2).join("."))' "$SRC/.genx/versions.json")"
 # The fixture with every entry the writer must drop, interleaved. It must come out as the fixture.
 MCP_UI_DROPPED="$(node -e '
 const u = JSON.parse(process.argv[1]);
@@ -78,7 +81,7 @@ DROPPED_EXPECTED=(
   'REQ_TRADE — a request is named by its bare name'
   'trade — its name is not a platform name'
   "$(printf 'T%.0s' $(seq 1 59)) — its name is longer than the 58"
-  'EVENT_TRADE_INSERT — kind event is not exposed on GSF 8.15'
+  "EVENT_TRADE_INSERT — kind event is not exposed on GSF $OWN_LINE"
   'TRADE — it is named twice'
   'QUOTED — its context'
   'DOLLAR — its context'
@@ -189,7 +192,21 @@ const SERVERS = {
     '    }',
     '}',
   ],
+  '10.0': [
+    'server {',
+    '    port = 3011',
+    '    serverName = "demo"',
+    '    platformTools = false',
+    '    requireAuthenticatedConnections = true',
+    '    requireApprovalForWrites = true',
+    '    authenticationStrategy {',
+    '        sessionAuthToken { }',
+    '    }',
+    '}',
+  ],
 };
+// Where each line's server listens, as its README section must say: SSE on 8.15, Streamable HTTP on 10.
+const ENDPOINTS = { '8.15': '`/sse`', '10.0': '`/mcp`' };
 // What no MCP script may hold on any line, and what a line does not have at all.
 const UNSAFE = [
   [/\bstaticUser\b/, 'the staticUser strategy, which runs every caller as one account'],
@@ -198,6 +215,7 @@ const UNSAFE = [
 ];
 const NOT_ON_LINE = {
   '8.15': [/\b(platformTools|requireAuthenticatedConnections|requireApprovalForWrites|approverRight|oidc)\b/, 'a setting GSF 8.15 does not have'],
+  '10.0': [/\baddToToolSpec\b/, 'a setting GSF 10 does not have'],
 };
 const ownLine = JSON.parse(read(path.join(src, '.genx/versions.json'))).GSF.split('.').slice(0, 2).join('.');
 const EXPOSURE = [
@@ -272,6 +290,13 @@ for (const label of ['on', 'dropped', 'webcomponents']) {
     problems.push(`${label}: the README differs from the default app's in more than an MCP section`);
   } else if (/\{\{|\}\}/.test(readmeChange.added.join('\n'))) {
     problems.push(`${label}: the README's MCP section holds unrendered Handlebars`);
+  } else {
+    const section = readmeChange.added.join('\n');
+    for (const [line, endpoint] of Object.entries(ENDPOINTS)) {
+      if (section.includes(endpoint) !== (line === ownLine)) {
+        problems.push(`${label}: the README's MCP section ${line === ownLine ? 'does not name' : 'names'} the GSF ${line} endpoint ${endpoint}`);
+      }
+    }
   }
 }
 
@@ -291,7 +316,10 @@ for (const line of lines) if (!templated.includes(line)) problems.push(`line: GS
 for (const line of templated) if (!lines.includes(line)) problems.push(`line: server-${line}.kts.hbs has no declared GSF line`);
 if (!lines.includes(ownLine)) problems.push(`line: this seed's own GSF line ${ownLine} is not declared`);
 for (const line of lines) if (!SERVERS[line]) problems.push(`line: GSF ${line} is declared but this check pins no server for it`);
-if (!same(declaration.gsfLines['8.15']?.kinds, ['request'])) problems.push(`line: GSF 8.15 must declare reads only, not ${JSON.stringify(declaration.gsfLines['8.15']?.kinds)}`);
+for (const line of lines) if (!ENDPOINTS[line]) problems.push(`line: GSF ${line} is declared but this check knows no endpoint for its README`);
+for (const line of lines) {
+  if (!same(declaration.gsfLines[line].kinds, ['request'])) problems.push(`line: GSF ${line} must declare reads only, not ${JSON.stringify(declaration.gsfLines[line].kinds)}`);
+}
 
 // safe: every MCP script in every app.
 for (const label of fs.readdirSync(workDir)) {
