@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.0...v5.32.1) (2026-11-06)
+
+
+### Bug Fixes
+
+* the BDD tests' Allure tasks work on Gradle 9 GENC-0 723e854
+* the BDD tests' Allure tasks work on Gradle 9 GENC-0 (#661) ee4b92d
+
 ## [5.32.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.31.1...v5.32.0) (2026-11-06)
 
 
