@@ -97,8 +97,10 @@ as one more server process, `GENESIS_MCP`, started by two items in
 
 - **What it exposes** is listed in
   `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp.kts`: one read tool per request
-  server, named after it, so `TRADE` becomes `trade_query`. On this Genesis version the tools are
-  reads only, because a write made through MCP would be applied with no approval step.
+  server, named after it, so `TRADE` becomes `trade_query`.
+{{#ifEquals MCP.line '8.15'}}
+  On this Genesis version the tools are reads only, because a write made through MCP would be
+  applied with no approval step.
 - **Where it listens**: port 3011, over plain HTTP, at the SSE endpoint `/sse`, on every network
   interface. Anyone who can reach the port can list the tools, so keep it where only trusted callers
   can, or put TLS and a firewall in front of it. In the Docker setup, `docker-compose.yml` publishes
@@ -108,6 +110,23 @@ as one more server process, `GENESIS_MCP`, started by two items in
   application returns, in its `MCP_SESSION_TOKEN` argument, and runs as that user with that user's
   rights. The argument is left out of the tools' published inputs, so connect through a host or proxy
   that adds it to each call. Never paste a session token into an AI conversation.
+{{/ifEquals}}
+{{#ifEquals MCP.line '10.0'}}
+  The platform's own tools are off (`platformTools = false`): they include reads of whole tables that
+  bypass this application's permissions. A write you expose there is held for another user's
+  approval (`requireApprovalForWrites = true`).
+- **Where it listens**: port 3011, over plain HTTP, at the Streamable HTTP endpoint `/mcp`, on every
+  network interface. Keep it where only trusted callers can reach it, or put TLS and a firewall in
+  front of it. In the Docker setup, `docker-compose.yml` publishes it on this machine's loopback only
+  (`127.0.0.1:3011`), so a client on the same machine can connect and nothing else on the network
+  can.
+- **Who it runs as**: every request carries a Genesis session token, the one a login to this
+  application returns, in a `SESSION_AUTH_TOKEN` header (or `Authorization: Bearer <token>`), and
+  runs as that user with that user's rights. A request without one is refused, the list of tools
+  included. Point your MCP client at `http://<host>:3011/mcp` and have it send the header on every
+  request; the Genesis documentation's Model Context Protocol page shows how for Claude Code, Claude
+  Desktop and other clients. Never paste a session token into an AI conversation.
+{{/ifEquals}}
 - **The server's settings** are in
   `server/{{appName}}-app/src/main/genesis/scripts/{{appName}}-mcp-server.kts`. Keep
   `sessionAuthToken`: the other strategies do not check who is calling.

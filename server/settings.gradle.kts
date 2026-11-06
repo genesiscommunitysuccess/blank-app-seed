@@ -1,6 +1,6 @@
 pluginManagement {
-    val genesisVersion: String by settings
-    val startVersion: String by settings
+    val genesisVersion = providers.gradleProperty("genesisVersion").get()
+    val startVersion = providers.gradleProperty("startVersion").get()
 
     plugins {
         id("global.genesis.settings") version genesisVersion
@@ -9,8 +9,9 @@ pluginManagement {
     }
 
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
+        if (providers.gradleProperty("useMavenLocal").orNull == "true") {
+            mavenLocal()
+        }
         maven {
             val repoUrl = if(extra.properties["useDevRepo"] == "true") {
                 "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
@@ -23,13 +24,8 @@ pluginManagement {
                 password = extra.properties["genesisArtifactoryPassword"].toString()
             }
         }
-        mavenLocal {
-            // VERY IMPORTANT!!! EXCLUDE AGRONA AS IT IS A POM DEPENDENCY AND DOES NOT PLAY NICELY WITH MAVEN LOCAL!
-            content {
-                excludeGroup("org.agrona")
-            }
-        }
-        google()
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
 

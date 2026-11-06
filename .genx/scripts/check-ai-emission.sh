@@ -853,10 +853,10 @@ const scripts = [
 const scriptMention = /genesis-?start|genesis\.start|gradlew|-P\S*(headless|rest)/i;
 const gradleMention = /genesis-?start|genesis\.?launcher|genesis\.start|\b(headless|restEnabled|restPort|restBasePath|restMaxRequestBodyBytes)\b/i;
 const pluginId = /^\s*id\("global\.genesis\.genesis-start-gui"\)( version startVersion)?\s*$/;
+// Anchored on mavenCentral(), the repository just before it, not on the Genesis credentials lines, so
+// a change to how those are read doesn't trip a guard that is about Google's place and scope.
 const googleBlock = [
-  '                password = properties["genesisArtifactoryPassword"].toString()',
-  '            }',
-  '        }',
+  '        mavenCentral()',
   '        // The Genesis Start launcher (0.1.12+) needs androidx.* artifacts, which none of the repositories',
   '        // above have. Last, and for those groups only, so nothing else is ever looked up at Google.',
   '        google {',
@@ -901,7 +901,7 @@ for (const label of labels) {
       .forEach((l) => problems.push(`${label}: ${path.relative(app, file)}: ${JSON.stringify(l.trim())}`));
   }
   const build = fs.readFileSync(path.join(app, 'server/build.gradle.kts'), 'utf8');
-  if (!build.includes(googleBlock)) problems.push(`${label}: server/build.gradle.kts: the scoped google {} block is not last, whole, after the Genesis repository`);
+  if (!build.includes(googleBlock)) problems.push(`${label}: server/build.gradle.kts: the scoped google {} block is not last, whole, after mavenCentral()`);
   const googles = live(path.join(app, 'server/build.gradle.kts')).filter((l) => /\bgoogle\b/.test(l)).length;
   if (googles !== 1) problems.push(`${label}: server/build.gradle.kts: ${googles} live lines mention google, expected 1`);
 }
@@ -974,7 +974,7 @@ KTS
   done
 
   # A key must never reach a file the build writes. Every GENESIS_SYSDEF_ variable becomes a
-  # system-definition item, and genesisConfigJar renders them all in plain text into
+  # system-definition item, and prepareProcessTemplates renders them all in plain text into
   # build/genesis/rendered-templates/generated-system-definition.json. So the render runs with CANARY
   # values, never a real key, under the names the proxy reads and under the old names it refuses. The
   # old ones MUST land: that proves the render ran, so the new ones' absence means something.
@@ -983,7 +983,7 @@ KTS
   canary="canary-$$-not-a-key"
   ( export AI_GEMINI_API_KEY="$canary-gemini" AI_ANTHROPIC_API_KEY="$canary-anthropic" \
       GENESIS_SYSDEF_AI_GEMINI_API_KEY="$canary-old-gemini" GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY="$canary-old-anthropic"
-    gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:genesisConfigJar --rerun ) \
+    gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:prepareProcessTemplates --rerun ) \
     || fail "gradle: the render with canary keys failed (see the log above)"
   # The files under the AI app that hold a value, with every jar and zip looked into as well.
   holding() {

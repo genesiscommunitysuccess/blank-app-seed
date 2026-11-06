@@ -16,7 +16,7 @@ services:
       - '5432:5432'
       - '4569:4569'
 {{#if MCP.enabled}}
-      # The MCP server, on this machine only: it has no connection-level authentication.
+      # The MCP server, on this machine only: it serves plain HTTP.
       - '127.0.0.1:3011:3011'
 {{/if}}
   frontend:

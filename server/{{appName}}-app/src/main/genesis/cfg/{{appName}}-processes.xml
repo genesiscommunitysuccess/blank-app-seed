@@ -85,8 +85,8 @@
 <!--        <start>true</start>-->
 <!--        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>-->
 <!--        <module>genesis-pal-datapipeline</module>-->
-<!--        <package>global.genesis.datapipeline.pal</package>-->
-<!--        <script>{{appName}}-data-pipeline.kts</script>-->
+<!--        <package>global.genesis.pipeline</package>-->
+<!--        <script>{{appName}}-pipelines.kts</script>-->
 <!--        <description>External data ingress pipeline</description>-->
 <!--        <language>pal</language>-->
 <!--        <loggingLevel>TRACE,DATADUMP_ON</loggingLevel>-->
