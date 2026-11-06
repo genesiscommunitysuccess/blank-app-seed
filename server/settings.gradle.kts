@@ -40,6 +40,10 @@ genesis {
         dependency("global.genesis:auth:${extra.properties["authVersion"]}")
 
     }
+
+    plugins {
+        genesisDeploy.enabled = true
+    }
 }
 
 include("{{appName}}-app")
