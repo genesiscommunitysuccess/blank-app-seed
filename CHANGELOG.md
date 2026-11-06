@@ -1,5 +1,37 @@
 # Changelog
 
+## [5.32.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.31.1...v5.32.0) (2026-11-06)
+
+
+### Features
+
+* give an app on GSF 10 its MCP server GENC-1615 86bfcd3
+
+
+### Bug Fixes
+
+* address release workflow review comments 67ce8c3
+* address second round of release workflow review comments 4a1c5f5
+* Artifactory-first resolution, and restore mavenLocal scoped to the PBC (GSF-8370) 5260bf2
+* Artifactory-first resolution, and restore mavenLocal scoped to the PBC (GSF-8370) (#630) 0f42829
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#599) 841793f
+* backport main to prerelease [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#616) 545eb21
+* Bump BDD framework (bddVersion) from 3.5.30 to 3.5.73 GENC-0 (#609) 4b8bb58
+* Bump BDD framework (bddVersion) from 3.5.73 to 3.5.75 GENC-0 c7b9c8f
+* Bump BDD framework (bddVersion) from 3.5.73 to 3.5.75 GENC-0 (#635) 8311f42
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) aa79998
+* **client:** resolve the client buildscript from Artifactory (GSF-8370) (#631) c636679
+* default dist-tag to latest when semantic-release channel is null ce5a216
+* gate mavenLocal behind useMavenLocal instead of a group filter (GSF-8370) 4f65722
+* merge main into prerelease GENC-1362 (#589) c7eed71
+* point the commented-out pipeline process at the 10.0 package and pipelines script GSF-8575 865828e
+* point the commented-out pipeline process at the 10.0 package and pipelines script GSF-8575 (#648) 535462b
+* restore the genesisDeploy toggle so the Docker image gets genesis-home [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) d8f0399
+* updating server version information for Auth [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 0ea031d
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) b1155f0
+* updating server version information for GSF [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 2b31d47
+* use jakarta.inject in scaffolded EventHandlerTest (GSF-7926) 6a99497
+
 ## [5.31.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.31.0...v5.31.1) (2026-11-05)
 
 
