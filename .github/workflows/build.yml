@@ -93,6 +93,13 @@ jobs:
         working-directory: /tmp/testapp
         run: ./gradlew ${GRADLE_PARAMS} build --info
 
+      # The root build skips bdd-tests, so nothing above creates its Allure tasks, while an IDE sync
+      # creates every one. This does the same, so an Allure plugin that cannot run on this Gradle
+      # fails here rather than in a customer's IDE.
+      - name: Configure the BDD tests' Allure tasks
+        working-directory: /tmp/testapp/bdd-tests
+        run: ./gradlew ${GRADLE_PARAMS} --dry-run allureServe allureReport allureGenesisReport test
+
       # The AI chat proxy is a script, and scripts compile only when the router starts, so no build
       # compiles it. This one builds an AI app, runs the security scan on it and compiles both
       # vendors' proxies against this Genesis version. It picks up GRADLE_PARAMS from the job.
