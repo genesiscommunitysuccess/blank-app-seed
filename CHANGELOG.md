@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.1...v5.32.2) (2026-11-09)
+
+
+### Bug Fixes
+
+* move GSF to 10.0.1 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) 11152e7
+* move GSF to 10.0.1 [PSD-0](https://github.com/genesiscommunitysuccess/blank-app-seed/issues/0) (#662) 0e405de
+
 ## [5.32.1](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.0...v5.32.1) (2026-11-06)
 
 
