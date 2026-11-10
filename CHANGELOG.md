@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.2...v5.32.3) (2026-11-10)
+
+
+### Bug Fixes
+
+* the BDD tests' reply checks pass again on BDD framework 4.0.1 GENC-0 f72340d
+* the BDD tests' reply checks pass again on BDD framework 4.0.1 GENC-0 (#663) 8b600d2
+
 ## [5.32.2](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.1...v5.32.2) (2026-11-09)
 
 
