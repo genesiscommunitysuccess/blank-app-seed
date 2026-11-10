@@ -1,0 +1,19 @@
+bdd-tests/gradle.properties
+  s_a65993a6892398::t_f51b39619597ba 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f72340d1437dd799fb1ab5702558d2dc670303f5",
+  "prompts": {},
+  "sessions": {
+    "s_a65993a6892398": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5650d885-0417-4c7c-98ad-562eb4caf1f1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Matt Walker <matt.walker@genesis.global>"
+    }
+  }
+}
