@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.3...v5.32.4) (2026-11-12)
+
+
+### Bug Fixes
+
+* update FUI to 15.95.1 so grids save their column state GENC-1876 265c997
+* update FUI to 15.95.1 so grids save their column state GENC-1876 (#664) 66563df
+
 ## [5.32.3](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.2...v5.32.3) (2026-11-10)
 
 
