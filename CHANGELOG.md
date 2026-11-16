@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.5](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.4...v5.32.5) (2026-11-16)
+
+
+### Bug Fixes
+
+* update FUI to 15.96.2 so grids fed by rowData render GENC-0 a97a636
+* update FUI to 15.96.2 so grids fed by rowData render GENC-0 (#665) 5a6e819
+
 ## [5.32.4](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.3...v5.32.4) (2026-11-12)
 
 
