@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.32.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.6...v5.32.7) (2026-11-19)
+
+
+### Bug Fixes
+
+* update FUI to 15.99.3 so charts with a meta entry on their series or colour field render GENC-1951 290d254
+* update FUI to 15.99.3 so charts with a meta entry on their series or colour field render GENC-1951 (#667) 75a3fd4
+
 ## [5.32.6](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.5...v5.32.6) (2026-11-18)
 
 
