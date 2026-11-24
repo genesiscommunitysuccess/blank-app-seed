@@ -1,6 +1,7 @@
 import { getApp } from '@genesislcap/foundation-shell/app';
 import { FoundationRouter } from '@genesislcap/foundation-ui';
 import { avoidTreeShaking } from '@genesislcap/foundation-utils';
+import { workspaceComponents } from '@genesislcap/foundation-workspace';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents, rapidGridPro } from '@genesislcap/rapid-grid-pro';
@@ -29,6 +30,7 @@ export async function registerComponents() {
       rapidDesignSystem.baseComponents,
       rapidGridPro(),
       rapidGridComponents,
+      workspaceComponents,
       g2plotChartsComponents,
     );
 
