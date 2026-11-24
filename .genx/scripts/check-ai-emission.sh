@@ -320,12 +320,15 @@ fi
 
 echo "=== on"
 [ "$(ai_artifacts_present on)" = "5" ] || fail "on: expected all 5 AI artifacts, found $(ai_artifacts_present on)"
-# The proxy is its template with exactly its two limits filled in, and nothing else touched.
-for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS" "onopenai:$OPENAI_MODELS"; do
-  label="${pair%%:*}"; models="${pair#*:}"
-  sed -e "s/{{AI.allowedModels}}/$models/" -e "s/{{AI.maxOutputTokens}}/16000/" "$TEMPLATE" \
+# The proxy is its template with exactly its generated values filled in, and nothing else touched: the
+# app's own vendor, every vendor's models (each app gets all three lists) and the token cap.
+for pair in "on:gemini" "onanthropic:anthropic" "onopenai:openai"; do
+  label="${pair%%:*}"; vendor="${pair#*:}"
+  sed -e "s/{{AI.vendor}}/$vendor/" -e "s/{{AI.models.anthropic}}/$ANTHROPIC_MODELS/" \
+    -e "s/{{AI.models.gemini}}/$GEMINI_MODELS/" -e "s/{{AI.models.openai}}/$OPENAI_MODELS/" \
+    -e "s/{{AI.maxOutputTokens}}/16000/" "$TEMPLATE" \
     | diff -q - "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
-    || fail "$label: the proxy is not its template with the $label limits filled in"
+    || fail "$label: the proxy is not its template with the $label values filled in"
 done
 # Code with its comments removed: block comments whatever their inner lines start with, then whole-line
 # // comments. An inline // is kept, since URLs contain one.
@@ -361,7 +364,7 @@ for label in on onanthropic onopenai; do
   # Every endpoint builder the web DSL has (endpoint and multipartEndpoint), typed or inferred.
   endpoints="$(live_code "$handler" | grep -oE '(^|[^A-Za-z0-9_])(endpoint|multipartEndpoint)[[:space:]]*[<(]' | wc -l | tr -d ' ')"
   guarded="$(live_code "$handler" | grep -oF 'permissionCodes("AI_CHAT")' | wc -l | tr -d ' ')"
-  [ "$endpoints" = "3" ] || fail "$label: expected exactly three chat endpoints, found $endpoints"
+  [ "$endpoints" = "4" ] || fail "$label: expected exactly four endpoints (three chat, one vendor), found $endpoints"
   [ "$guarded" = "$endpoints" ] \
     || fail "$label: $endpoints endpoints but $guarded permissionCodes(\"AI_CHAT\"); every endpoint needs one"
   # Each can undo AI_CHAT after it is set, so any logged-in user could spend the key; so can a second
@@ -381,11 +384,27 @@ for label in on onanthropic onopenai; do
     || fail "$label: the proxy no longer sends the allowlisted anthropic-beta values upstream"
 
   # The keys come from the environment. Everything read through the system definition is rendered, in
-  # plain text, into files under build/, so only the two settings that are not secret go through it,
-  # each by name, and the system definition is touched only inside readItem.
+  # plain text, into files under build/, so only the settings that are not secret go through it, each
+  # by name, and the system definition is touched only inside readItem.
   sysdef_reads="$(live_code "$handler" | grep -oE 'readItem\([^)]*\)' | LC_ALL=C sort -u | tr '\n' ' ')"
-  [ "$sysdef_reads" = 'readItem("AI_ALLOWED_MODELS") readItem("AI_MAX_OUTPUT_TOKENS") readItem(name: String) ' ] \
-    || fail "$label: the proxy reads more than its two settings through the system definition: $sysdef_reads"
+  want_reads='readItem("AI_ALLOWED_MODELS") readItem("AI_ALLOWED_MODELS_ANTHROPIC") readItem("AI_ALLOWED_MODELS_GEMINI") '
+  want_reads+='readItem("AI_ALLOWED_MODELS_OPENAI") readItem("AI_MAX_OUTPUT_TOKENS") readItem(name: String) '
+  [ "$sysdef_reads" = "$want_reads" ] \
+    || fail "$label: the proxy reads more than its model and token settings through the system definition: $sysdef_reads"
+
+  # GET vendor says which vendors have a key, and nothing about any key: its reply is exactly the two
+  # fields, and it logs nothing. Each chat endpoint checks a model against its own vendor's list only.
+  vendor_code="$(live_code "$handler" | sed -n '/endpoint<Unit, Any>(GET, "vendor"/,/grouping("anthropic")/p')"
+  [ -n "$vendor_code" ] || fail "$label: the proxy has no GET vendor endpoint"
+  grep -qF 'mapper.writeValueAsString(mapOf("vendor" to vendor, "offeredVendors" to offered))' <<< "$vendor_code" \
+    || fail "$label: GET vendor no longer replies with exactly vendor and offeredVendors"
+  grep -qE 'LOG\.|apiKey|keyFor' <<< "$vendor_code" \
+    && fail "$label: GET vendor reads or logs a key itself; only offerable() may, and it returns a yes or no"
+  for vendor in anthropic gemini openai; do
+    grouping_code="$(live_code "$handler" | sed -n "/grouping(\"$vendor\")/,/^    }\$/p")"
+    grep -qF "modelAllowed(\"$vendor\", model)" <<< "$grouping_code" \
+      || fail "$label: the $vendor endpoint does not check the model against $vendor's own list"
+  done
   sysdef_gets="$(live_code "$handler" | grep -oE 'systemDefinition[.A-Za-z]*\([^)]*\)' | tr '\n' ' ')"
   [ "$sysdef_gets" = 'systemDefinition.get(name) ' ] \
     || fail "$label: the proxy reads the system definition outside readItem: $sysdef_gets"
@@ -972,10 +991,10 @@ if [ "${GRADLE:-0}" = "1" ]; then
   # scan's own summary is the assertion — a green build alone proves nothing about permissioning.
   # `--rerun` because a scan restored from the build cache prints no summary at all, and the endpoint
   # count because a scan that found nothing would also report nothing insecure. Whole lines only:
-  # "Total endpoints: 3" is inside "Total endpoints: 30", and every per-type line ends "Insecure: N".
-  if ! grep -qx "  Total endpoints: 3" "$WORK_DIR/scan.log" || ! grep -qx "  Insecure: 0" "$WORK_DIR/scan.log"; then
+  # "Total endpoints: 4" is inside "Total endpoints: 40", and every per-type line ends "Insecure: N".
+  if ! grep -qx "  Total endpoints: 4" "$WORK_DIR/scan.log" || ! grep -qx "  Insecure: 0" "$WORK_DIR/scan.log"; then
     show_log "$WORK_DIR/scan.log"
-    fail "gradle: the security scan did not report the three chat endpoints, all secure (see the log above)"
+    fail "gradle: the security scan did not report the four AI endpoints (three chat, one vendor), all secure (see the log above)"
   fi
 
   # Scripts compile only when the router starts, so neither the build nor the scan above notices a

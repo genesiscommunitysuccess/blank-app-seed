@@ -57,9 +57,9 @@ module.exports = async (data, utils) => {
   // fire. React only, because the panel is React only, and the server endpoint follows the same
   // gate — an endpoint with no panel to call it would be a router compile risk with no user.
   //
-  // The vendor picks its own allowlist by name, never by elimination: a vendor this seed has no models
-  // for fails generation rather than quietly getting another vendor's list, which would refuse every
-  // request the panel makes. The schema's default vendor is gemini (R-7).
+  // The vendor is looked up by name, never by elimination: a vendor this seed has no models for fails
+  // generation rather than starting the panel on a vendor the proxy cannot serve. The schema's default
+  // vendor is gemini (R-7).
   const aiEnabled = !!data.ui?.ai?.enabled && data.framework === 'react';
   const aiVendor = data.ui?.ai?.vendor ?? 'gemini';
   const aiVendorModels = Object.hasOwn(aiModels, aiVendor) ? aiModels[aiVendor] : undefined;
@@ -70,9 +70,18 @@ module.exports = async (data, utils) => {
   }
   data.AI = {
     enabled: aiEnabled,
-    // The models the proxy lets a request ask for: every tier (low, high, reasoning) of the chosen
-    // vendor, from .genx/ai-models.json, which CI holds to foundation-ui's DEFAULT_AI_TIERS.
-    allowedModels: aiVendorModels ? Object.values(aiVendorModels).join(',') : '',
+    // The vendor the panel starts on when its key is set; the proxy serves every vendor, and the panel
+    // may use any whose key is set on the server (GET /gwf/ai-service/vendor).
+    vendor: aiVendor,
+    // Its key's environment variable, for the README.
+    keyName: `AI_${aiVendor.toUpperCase()}_API_KEY`,
+    vendorUpper: aiVendor.toUpperCase(),
+    // Every vendor's models, one per tier (low, high, reasoning), from .genx/ai-models.json, which CI
+    // holds to foundation-ui's DEFAULT_AI_TIERS: the proxy allows each vendor's own list on its own
+    // endpoint.
+    models: Object.fromEntries(
+      Object.entries(aiModels).map(([vendor, tiers]) => [vendor, Object.values(tiers).join(',')]),
+    ),
     maxOutputTokens: 16000,
   };
 

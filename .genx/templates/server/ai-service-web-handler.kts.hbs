@@ -5,10 +5,11 @@
 /*
  * AI chat proxy — generated with this application, safe to edit.
  *
- * Your app's own endpoint for the chat panel: the browser talks to this, and this talks to the
- * vendor with YOUR key. The key is read from the environment that starts the server, never from a
- * file in this project: set AI_ANTHROPIC_API_KEY (or AI_GEMINI_API_KEY, or AI_OPENAI_API_KEY) there
- * and restart it. A user needs the AI_CHAT right to call these.
+ * Your app's own endpoints for the chat panel: the browser talks to these, and they talk to the
+ * vendor with YOUR key. One chat endpoint per vendor (anthropic, gemini, openai), and GET vendor,
+ * which tells the panel which vendors have a key. Each key is read from the environment that starts
+ * the server, never from a file in this project: set AI_ANTHROPIC_API_KEY, AI_GEMINI_API_KEY or
+ * AI_OPENAI_API_KEY there (one or more) and restart it. A user needs the AI_CHAT right to call these.
  */
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -101,19 +102,51 @@ webHandlers("ai-service") {
 
     // The limits this app was generated with. They live here, not in a system-definition file,
     // because a generator may rewrite that file; a system-definition item of the same name overrides
-    // them (GENESIS_SYSDEF_AI_ALLOWED_MODELS, GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
-    val defaultAllowedModels = "{{AI.allowedModels}}"
+    // them (see below, and GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
+    //
+    // The vendor this app was generated for: the panel starts on it when its key is set.
+    val defaultVendor = "{{AI.vendor}}"
+    // Every vendor's models, one per tier (low, high, reasoning): the ones the panel asks for.
+    val generatedModels = mapOf(
+        "anthropic" to "{{AI.models.anthropic}}",
+        "gemini" to "{{AI.models.gemini}}",
+        "openai" to "{{AI.models.openai}}",
+    )
+    val vendors = generatedModels.keys.toList()
     val defaultMaxOutputTokens = "{{AI.maxOutputTokens}}"
 
-    // The model a request asks for has to be one this app allows, whatever the browser sent: the
-    // panel is not the only thing that can post here. AI_ALLOWED_MODELS set but EMPTY refuses every
-    // model, so a setting that failed to load is never an open door to the most expensive one.
-    val allowedModels = (readItem("AI_ALLOWED_MODELS").getOrElse { "" } ?: defaultAllowedModels)
-        .split(",")
-        .map { it.trim() }
-        .filter { it.isNotEmpty() }
-    if (allowedModels.isEmpty()) {
-        LOG.warn("ai-service: AI_ALLOWED_MODELS is empty or unreadable, so every chat request will be refused")
+    // The model a request asks for has to be one this app allows FOR THAT ENDPOINT'S VENDOR, whatever
+    // the browser sent: the panel is not the only thing that can post here, and one vendor's list
+    // never lets a request through another vendor's endpoint.
+    //
+    // AI_ALLOWED_MODELS_<VENDOR> replaces that vendor's list. AI_ALLOWED_MODELS, which an app with one
+    // vendor used, still replaces the list of the vendor this app was generated for, unless that
+    // vendor's own item is set. Set but EMPTY (or unreadable) refuses every model of that vendor, so
+    // a setting that failed to load is never an open door to the most expensive one.
+    val modelOverrides = mapOf(
+        "anthropic" to readItem("AI_ALLOWED_MODELS_ANTHROPIC"),
+        "gemini" to readItem("AI_ALLOWED_MODELS_GEMINI"),
+        "openai" to readItem("AI_ALLOWED_MODELS_OPENAI"),
+    )
+    val legacyModelOverride = readItem("AI_ALLOWED_MODELS")
+    fun modelList(raw: String): List<String> = raw.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+    val allowedModels: Map<String, List<String>> = vendors.associateWith { vendor ->
+        val own = modelOverrides.getValue(vendor)
+        val raw = when {
+            own.isFailure -> ""
+            own.getOrNull() != null -> own.getOrNull()!!
+            vendor != defaultVendor -> generatedModels.getValue(vendor)
+            else -> legacyModelOverride.getOrElse { "" } ?: generatedModels.getValue(vendor)
+        }
+        modelList(raw)
+    }
+    for ((vendor, models) in allowedModels) {
+        if (models.isEmpty()) {
+            LOG.warn(
+                "ai-service: no " + vendor + " model is allowed (its allowed-models setting is empty or " +
+                    "unreadable), so every " + vendor + " chat request will be refused"
+            )
+        }
     }
 
     // A cap is a whole number from 1 to 1000000. An override that is not one is ignored, with a
@@ -132,7 +165,8 @@ webHandlers("ai-service") {
     // A model id is also a path segment in the Gemini URL, so even an allowed one must be a bare id.
     val modelId = Regex("[A-Za-z0-9][A-Za-z0-9._-]*")
 
-    fun modelAllowed(model: String): Boolean = modelId.matches(model) && allowedModels.contains(model)
+    fun modelAllowed(vendor: String, model: String): Boolean =
+        modelId.matches(model) && allowedModels.getValue(vendor).contains(model)
 
     // A key with a character a request header cannot carry (a pasted zero-width space, a smart quote)
     // makes the request builder throw, and the platform echoes that exception, key and all.
@@ -163,6 +197,39 @@ webHandlers("ai-service") {
             .filter { it in forwardedAnthropicBetas }
             .distinct()
             .joinToString(",")
+
+    // Whether a vendor can be offered: its key is set and usable, and at least one of its models is
+    // allowed. Only yes or no comes out of here: never the key, its length or anything derived from it.
+    fun offerable(vendor: String): Boolean {
+        val key = keyFor(vendor.uppercase())
+        return key.isNotEmpty() && keyChars.matches(key) && allowedModels.getValue(vendor).isNotEmpty()
+    }
+
+    // GET /gwf/ai-service/vendor: the vendors the panel may use, every one whose key is set, and the one
+    // it starts on: this app's own vendor if it has a key, otherwise the first that has one, otherwise
+    // this app's own vendor anyway, so the chat says plainly that no key is set (NO_API_KEY). Read on
+    // every call, so a key set and a server restarted shows at once.
+    endpoint<Unit, Any>(GET, "vendor", transactional = false) {
+        // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+        // check, and the build's security scan still reports the endpoint as secure.
+        permissioning {
+            permissionCodes("AI_CHAT")
+        }
+
+        handleRequest {
+            val offered = vendors.filter { offerable(it) }
+            val vendor = when {
+                defaultVendor in offered -> defaultVendor
+                offered.isNotEmpty() -> offered.first()
+                else -> defaultVendor
+            }
+            // Declared Any and returned as a String, like the chat replies: the router writes it as
+            // its own bytes, labelled application/json. No Cache-Control: setting a header means
+            // buildResponse, which grows the router's composer cache, and this is called on every
+            // focus and after every turn. The reply has no validator, so a browser does not cache it.
+            mapper.writeValueAsString(mapOf("vendor" to vendor, "offeredVendors" to offered))
+        }
+    }
 
     grouping("anthropic") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
@@ -227,13 +294,13 @@ webHandlers("ai-service") {
                 }
 
                 val model = payload.path("model").asText("")
-                if (!modelAllowed(model)) {
+                if (!modelAllowed("anthropic", model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
                             "code" to "MODEL_NOT_ALLOWED",
-                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
-                            "allowedModels" to allowedModels
+                            "error" to "Model '" + model + "' is not one this application allows for anthropic.",
+                            "allowedModels" to allowedModels.getValue("anthropic")
                         )
                     )
                 }
@@ -348,13 +415,13 @@ webHandlers("ai-service") {
                     )
 
                 val model = payload.path("model").asText("")
-                if (!modelAllowed(model)) {
+                if (!modelAllowed("gemini", model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
                             "code" to "MODEL_NOT_ALLOWED",
-                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
-                            "allowedModels" to allowedModels
+                            "error" to "Model '" + model + "' is not one this application allows for gemini.",
+                            "allowedModels" to allowedModels.getValue("gemini")
                         )
                     )
                 }
@@ -525,13 +592,13 @@ webHandlers("ai-service") {
                 }
 
                 val model = payload.path("model").asText("")
-                if (!modelAllowed(model)) {
+                if (!modelAllowed("openai", model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
                             "code" to "MODEL_NOT_ALLOWED",
-                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
-                            "allowedModels" to allowedModels
+                            "error" to "Model '" + model + "' is not one this application allows for openai.",
+                            "allowedModels" to allowedModels.getValue("openai")
                         )
                     )
                 }
