@@ -19,6 +19,8 @@
 #             template as written and holding the parts the assistant needs; the AI build flag and
 #             an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
+#   tiers     .genx/ai-models.json, the proxy's allowlists, is foundation-ai's DEFAULT_AI_TIERS at the
+#             pinned UI version (check-ai-tiers.mjs).
 #   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
 #             each of Create's resolver cases reaches the app verbatim, minus what the declaration
 #             withholds, and says so for each resource and key it drops.
@@ -126,9 +128,11 @@ named("EVENT_TRADE_MODIFY").key = ["TRADE_ID", 7];
 named("REQ_TRADE").key = ["TRADE_ID"];
 named("EVENT_TRADE_INSERT").key = ["TRADE_ID"];
 console.log(JSON.stringify(u));' "$AI_UI_ROWS_CLEAN")"
-# The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
-GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
-ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
+# The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models, from
+# the seed's one copy of them (held to foundation-ui's tier table under "tiers" below).
+vendor_models() { node -e 'console.log(Object.values(require(process.argv[1])[process.argv[2]]).join(","))' "$SEED_DIR/.genx/ai-models.json" "$1"; }
+GEMINI_MODELS="$(vendor_models gemini)"
+ANTHROPIC_MODELS="$(vendor_models anthropic)"
 
 fail() { FAILURES+=("$1"); echo "FAIL: $1"; }
 
@@ -196,6 +200,13 @@ for (const [file, want] of Object.entries(pinned)) {
 }
 process.exit(bad ? 1 : 0);
 NODE
+
+# The proxy's allowlists against the tier table the generated panel picks its models from, at the UI
+# version this seed pins. A UI bump that moves a tier must move .genx/ai-models.json with it, or every
+# chat request an exported app makes is refused as MODEL_NOT_ALLOWED.
+echo "=== tiers"
+node "$SEED_DIR/.genx/scripts/check-ai-tiers.mjs" \
+  || fail "tiers: .genx/ai-models.json is not foundation-ai's DEFAULT_AI_TIERS at the pinned UI version (see above)"
 
 echo "=== Generating into $WORK_DIR"
 generate default --framework react
@@ -338,6 +349,15 @@ for label in on onanthropic; do
     && fail "$label: the proxy loosens its AI_CHAT check"
   blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
   [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
+
+  # A beta can unlock spend the proxy's limits know nothing about, so the anthropic-beta values it
+  # passes on are a list, each added on purpose, and never server-side-fallback (fallbacks are refused).
+  # A new value means changing this line as well.
+  betas="$(live_code "$handler" | grep -oE 'forwardedAnthropicBetas = setOf\([^)]*\)')"
+  [ "$betas" = 'forwardedAnthropicBetas = setOf("thinking-binding-controls-2026-08-01")' ] \
+    || fail "$label: the proxy passes on anthropic-beta values other than thinking-binding-controls: ${betas:-no list found}"
+  live_code "$handler" | grep -qF 'header("anthropic-beta", betas)' \
+    || fail "$label: the proxy no longer sends the allowlisted anthropic-beta values upstream"
 
   # The keys come from the environment. Everything read through the system definition is rendered, in
   # plain text, into files under build/, so only the two settings that are not secret go through it,

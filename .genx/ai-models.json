@@ -1,0 +1,12 @@
+{
+  "anthropic": {
+    "low": "claude-haiku-4-5-20251001",
+    "high": "claude-sonnet-5",
+    "reasoning": "claude-opus-4-8"
+  },
+  "gemini": {
+    "low": "gemini-3.1-flash-lite",
+    "high": "gemini-3.8-flash",
+    "reasoning": "gemini-3.1-pro-preview"
+  }
+}

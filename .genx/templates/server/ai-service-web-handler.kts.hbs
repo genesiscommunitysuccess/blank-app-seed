@@ -141,6 +141,29 @@ webHandlers("ai-service") {
     // Whatever a vendor sends back, the key does not go to the browser in it.
     fun withoutKey(text: String, apiKey: String): String = text.replace(apiKey, "[redacted]")
 
+    // The anthropic-beta values the chat panel may ask this proxy to send on. The panel sets the
+    // header for each beta-gated body field it uses, and that field without its header is a 400 from
+    // Anthropic. A list rather than a pass-through, because a beta can unlock spend (larger outputs,
+    // fast mode) that the limits above know nothing about, so each value is added deliberately.
+    //
+    // - thinking-binding-controls-2026-08-01: thinking.block_binding, which the panel sends on the
+    //   claude-*-5-5 models.
+    //
+    // Not server-side-fallback-2026-06-01: fallback models are refused below.
+    val forwardedAnthropicBetas = setOf("thinking-binding-controls-2026-08-01")
+
+    // The allowlisted values from the request's anthropic-beta header (or headers), joined into one.
+    // Anything else is dropped without a word: the panel only sends a beta beside its field, so a
+    // dropped one comes back as Anthropic's own 400 naming that field, which is the clearer error.
+    // The header map ignores case.
+    fun forwardedBetas(headers: Map<String, List<String>>): String =
+        headers["anthropic-beta"].orEmpty()
+            .flatMap { it.split(",") }
+            .map { it.trim() }
+            .filter { it in forwardedAnthropicBetas }
+            .distinct()
+            .joinToString(",")
+
     grouping("anthropic") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
         // for the whole vendor call, starving every other request that needs one.
@@ -228,6 +251,8 @@ webHandlers("ai-service") {
                     )
                 }
 
+                val betas = forwardedBetas(request.headers.data)
+
                 val response = try {
                     val upstream = JdkHttpRequest.newBuilder()
                         .uri(URI.create("https://api.anthropic.com/v1/messages"))
@@ -235,6 +260,7 @@ webHandlers("ai-service") {
                         .header("content-type", "application/json")
                         .header("x-api-key", apiKey)
                         .header("anthropic-version", "2023-06-01")
+                        .apply { if (betas.isNotEmpty()) header("anthropic-beta", betas) }
                         .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
                         .build()
                     // Async, so no thread is held while the vendor works. Nothing cancels the call once it is

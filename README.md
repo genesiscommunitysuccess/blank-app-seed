@@ -59,7 +59,9 @@ are not secret):
 - `AI_MAX_OUTPUT_TOKENS` (`GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS`) caps the output a single call can
   request (Gemini is also held to one candidate).
 
-Fallback models and streamed replies are refused. Vendor server-side tools (for example Anthropic web
+Fallback models and streamed replies are refused. Of Anthropic's beta headers, the endpoint passes on
+only `thinking-binding-controls-2026-08-01`, which the assistant sends with the Claude 5.5 models;
+any other `anthropic-beta` value is dropped. Vendor server-side tools (for example Anthropic web
 search or Gemini Google Search grounding) are **not** filtered: anyone with `AI_CHAT` can request
 them, and they are billed to your key.
 
