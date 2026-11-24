@@ -172,7 +172,7 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.6.0', sha256: '99549c80f065564701c9a8b83154e36d98ad9fd46162fc7bfad00aaf1b9b3498' },
+  'ui-config-ai.schema.json': { version: '1.8.0', sha256: '7002b7ed308d2323b5fa9a4cc39e33d6605432fb83a7d1a90fa762c229fe7db3' },
   'ai-resolver-cases.json': { version: '1.8.0', sha256: '48d47fadd396883f1858b60a066fe6a1ae99080537d73be9ab139ab8cca583c7' },
 };
 // The copies are Create master 1c403807d (genesis-create #1934). They carry queries, references, row
