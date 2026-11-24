@@ -8,5 +8,10 @@
     "low": "gemini-3.1-flash-lite",
     "high": "gemini-3.8-flash",
     "reasoning": "gemini-3.1-pro-preview"
+  },
+  "openai": {
+    "low": "gpt-6-luna",
+    "high": "gpt-6.1-terra",
+    "reasoning": "gpt-6.1-sol"
   }
 }

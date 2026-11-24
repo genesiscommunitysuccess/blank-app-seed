@@ -7,8 +7,8 @@
  *
  * Your app's own endpoint for the chat panel: the browser talks to this, and this talks to the
  * vendor with YOUR key. The key is read from the environment that starts the server, never from a
- * file in this project: set AI_ANTHROPIC_API_KEY (or AI_GEMINI_API_KEY) there and restart it. A
- * user needs the AI_CHAT right to call these.
+ * file in this project: set AI_ANTHROPIC_API_KEY (or AI_GEMINI_API_KEY, or AI_OPENAI_API_KEY) there
+ * and restart it. A user needs the AI_CHAT right to call these.
  */
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -83,7 +83,7 @@ webHandlers("ai-service") {
 
     // A key set the old way is not used: the proxy answers as if none were set. A plain one is already
     // in the build files. Said once, without the value.
-    for (vendor in listOf("ANTHROPIC", "GEMINI")) {
+    for (vendor in listOf("ANTHROPIC", "GEMINI", "OPENAI")) {
         if (java.lang.System.getenv("GENESIS_SYSDEF_AI_" + vendor + "_API_KEY") != null) {
             LOG.warn(
                 "ai-service: GENESIS_SYSDEF_AI_" + vendor + "_API_KEY is written into the app's build files, " +
@@ -413,6 +413,166 @@ webHandlers("ai-service") {
                     error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
+                // Declared Any, so the router writes this String as its own bytes labelled application/json,
+                // whatever the browser's Accept says. (A String type would label it with that Accept, and
+                // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)
+                withoutKey(response.body(), apiKey)
+            }
+        }
+    }
+
+    grouping("openai") {
+        // No transaction: the proxy touches no rows, and one would hold a pooled database connection
+        // for the whole vendor call, starving every other request that needs one.
+        endpoint<String, Any>(POST, "chat", transactional = false) {
+            // No produces() and no accepts(): each adds a required header, matched by its exact name,
+            // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
+            // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
+
+            // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+            // check, and the build's security scan still reports the endpoint as secure.
+            permissioning {
+                permissionCodes("AI_CHAT")
+            }
+
+            handleRequest {
+                val apiKey = keyFor("OPENAI")
+                if (apiKey.isEmpty()) {
+                    // 424, never 503: a client retries a 503 and the user waits instead of being
+                    // told the one thing that fixes this.
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "NO_API_KEY",
+                            "error" to "No openai API key is configured for this application. " +
+                                "Set AI_OPENAI_API_KEY in the server's environment and restart."
+                        )
+                    )
+                }
+                if (!keyChars.matches(apiKey)) {
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "BAD_API_KEY",
+                            "error" to "The openai API key configured for this application contains characters " +
+                                "an API key cannot have. Set AI_OPENAI_API_KEY again and restart."
+                        )
+                    )
+                }
+
+                val payload = try {
+                    mapper.readTree(body) as? ObjectNode
+                } catch (e: StreamConstraintsException) {
+                    error(
+                        HttpStatusCode.RequestTooLong,
+                        mapOf("code" to "REQUEST_TOO_LARGE", "error" to "The request is larger or more deeply nested than this endpoint accepts.")
+                    )
+                } catch (e: JsonProcessingException) {
+                    null
+                } ?: error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "The request body must be a JSON object.")
+                    )
+
+                // The chat panel never streams through this proxy, and a streamed reply would hold the
+                // call open with no timeout once its headers arrived. A background response would
+                // return at once and go on running, and billing, with nothing here waiting for it.
+                if (payload.path("stream").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Streaming is not supported by this endpoint.")
+                    )
+                }
+                if (payload.path("background").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Background responses are not supported by this endpoint.")
+                    )
+                }
+
+                // Stateless, as the chat panel is: it sends store: false and carries everything a later
+                // turn needs in the request itself. A stored response is kept at OpenAI under this
+                // app's key, and previous_response_id or conversation would read one back for whoever
+                // asks, so neither is accepted. OpenAI stores a response by default, so a request that
+                // says nothing about it is sent as store: false.
+                if (payload.path("store").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Stored responses are not supported by this endpoint; send store: false.")
+                    )
+                }
+                val stateful = listOf("previous_response_id", "conversation").filter { name ->
+                    payload.get(name)?.isNull == false
+                }
+                if (stateful.isNotEmpty()) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to stateful.joinToString() + " is not supported by this endpoint.")
+                    )
+                }
+                payload.put("store", false)
+
+                // A service tier other than the default is billed at its own rate (priority costs
+                // more), which the limits above know nothing about.
+                val serviceTier = payload.get("service_tier")
+                if (serviceTier != null && !serviceTier.isNull &&
+                    !(serviceTier.isTextual && serviceTier.asText() in setOf("auto", "default"))
+                ) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Only the auto and default service tiers are supported by this endpoint.")
+                    )
+                }
+
+                val model = payload.path("model").asText("")
+                if (!modelAllowed(model)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf(
+                            "code" to "MODEL_NOT_ALLOWED",
+                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
+                            "allowedModels" to allowedModels
+                        )
+                    )
+                }
+
+                val requestedMaxTokens = payload.path("max_output_tokens").asInt(maxOutputTokens)
+                payload.put("max_output_tokens", clamp(requestedMaxTokens))
+
+                val response = try {
+                    val upstream = JdkHttpRequest.newBuilder()
+                        .uri(URI.create("https://api.openai.com/v1/responses"))
+                        .timeout(Duration.ofSeconds(280))
+                        .header("content-type", "application/json")
+                        .header("authorization", "Bearer " + apiKey)
+                        .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
+                        .build()
+                    // Async, so no thread is held while the vendor works. Nothing cancels the call once it is
+                    // sent: a caller who goes away does not stop it, and it is billed as usual.
+                    http.sendAsync(upstream, JdkHttpResponse.BodyHandlers.ofString()).await()
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    // Only the type is logged: an exception's message can carry what the request was
+                    // built from, and one that escapes is logged by the platform with the caller's cookies.
+                    LOG.warn("ai-service: openai call failed: " + e.javaClass.simpleName)
+                    val timedOut = e is HttpTimeoutException || e.cause is HttpTimeoutException
+                    error(
+                        if (timedOut) HttpStatusCode.GatewayTimeout else HttpStatusCode.BadGateway,
+                        mapOf("code" to "VENDOR_UNREACHABLE", "error" to "The AI vendor could not be reached. Try again.")
+                    )
+                }
+
+                if (response.statusCode() !in 200..299) {
+                    // The vendor's own body travels back untouched — a billing refusal or a rate
+                    // limit says more than anything this proxy could put in its place.
+                    LOG.warn("ai-service: openai returned " + response.statusCode())
+                    error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
+                }
+
+                // A response that failed at OpenAI still arrives as a 200, with status "failed" and its
+                // error inside. It goes back as it came: the panel reads that status and reports it.
+                //
                 // Declared Any, so the router writes this String as its own bytes labelled application/json,
                 // whatever the browser's Accept says. (A String type would label it with that Accept, and
                 // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)
