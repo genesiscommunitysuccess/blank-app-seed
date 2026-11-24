@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.33.0](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.7...v5.33.0) (2026-11-24)
+
+
+### Features
+
+* an exported app's AI chat offers every vendor whose key is set on its server GENC-2038 aa079bc
+* the AI chat proxy serves every vendor whose key is set, OpenAI and the Claude 5.5 models included GENC-2038 (#670) 16f72d1
+* the AI chat proxy talks to OpenAI, for an app whose chat uses it GENC-2038 a644ad0
+
+
+### Bug Fixes
+
+* generated apps install foundation-ui 15.109.0, the release with OpenAI tiers, the Claude 5.5 tiers and the vendor picker GENC-2038 cd235d6
+* generated apps run the Claude 5.5 tier models with the FUI that ships them GENC-2038 0acf3f3
+* the AI chat proxy passes on the Claude 5.5 beta header and keeps its models in step with FUI's tier table GENC-2038 2fa45a3
+
 ## [5.32.7](https://github.com/genesiscommunitysuccess/blank-app-seed/compare/v5.32.6...v5.32.7) (2026-11-19)
 
 
