@@ -2,6 +2,10 @@ const versions = require('./versions.json');
 // What the pinned @genesislcap/ai-assistant reads: the kinds and resource fields the chat writer passes
 // on. CI proves it against that assistant's GENESIS_AI_CONSUMES (C-15A.6 S-6).
 const aiConsumer = require('./ai-consumer.json');
+// The models the AI chat proxy lets a request ask for, per vendor and tier. The ONE copy in the seed:
+// .genx/scripts/check-ai-tiers.mjs fails CI when it is not foundation-ui's DEFAULT_AI_TIERS at the
+// pinned UI version, and check-ai-emission.sh reads it too.
+const aiModels = require('./ai-models.json');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -52,17 +56,32 @@ module.exports = async (data, utils) => {
   // block is `data.ui.ai`, not `data.ui.config.ai`: gated on the latter it would silently never
   // fire. React only, because the panel is React only, and the server endpoint follows the same
   // gate — an endpoint with no panel to call it would be a router compile risk with no user.
-  const aiVendor = data.ui?.ai?.vendor === 'anthropic' ? 'anthropic' : 'gemini';
+  //
+  // The vendor is looked up by name, never by elimination: a vendor this seed has no models for fails
+  // generation rather than starting the panel on a vendor the proxy cannot serve. The schema's default
+  // vendor is gemini (R-7).
+  const aiEnabled = !!data.ui?.ai?.enabled && data.framework === 'react';
+  const aiVendor = data.ui?.ai?.vendor ?? 'gemini';
+  const aiVendorModels = Object.hasOwn(aiModels, aiVendor) ? aiModels[aiVendor] : undefined;
+  if (aiEnabled && !aiVendorModels) {
+    throw new Error(
+      `AI chat: vendor '${aiVendor}' has no models in .genx/ai-models.json (it has: ${Object.keys(aiModels).join(', ')})`,
+    );
+  }
   data.AI = {
-    enabled: !!data.ui?.ai?.enabled && data.framework === 'react',
-    // The models the proxy lets a request ask for: every tier (low, high, reasoning) of the chosen
-    // vendor, copied from foundation-ui's DEFAULT_AI_TIERS (foundation-ai src/tiers/ai-tiers.ts,
-    // 3fb72a1096: lines 150, 159, 171 and 179, 187, 196). Hard-coded, so a tier-table change means
-    // updating these too.
-    allowedModels:
-      aiVendor === 'anthropic'
-        ? 'claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
-        : 'gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview',
+    enabled: aiEnabled,
+    // The vendor the panel starts on when its key is set; the proxy serves every vendor, and the panel
+    // may use any whose key is set on the server (GET /gwf/ai-service/vendor).
+    vendor: aiVendor,
+    // Its key's environment variable, for the README.
+    keyName: `AI_${aiVendor.toUpperCase()}_API_KEY`,
+    vendorUpper: aiVendor.toUpperCase(),
+    // Every vendor's models, one per tier (low, high, reasoning), from .genx/ai-models.json, which CI
+    // holds to foundation-ui's DEFAULT_AI_TIERS: the proxy allows each vendor's own list on its own
+    // endpoint.
+    models: Object.fromEntries(
+      Object.entries(aiModels).map(([vendor, tiers]) => [vendor, Object.values(tiers).join(',')]),
+    ),
     maxOutputTokens: 16000,
   };
 

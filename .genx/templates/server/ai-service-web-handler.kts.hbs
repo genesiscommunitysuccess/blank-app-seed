@@ -5,10 +5,11 @@
 /*
  * AI chat proxy — generated with this application, safe to edit.
  *
- * Your app's own endpoint for the chat panel: the browser talks to this, and this talks to the
- * vendor with YOUR key. The key is read from the environment that starts the server, never from a
- * file in this project: set AI_ANTHROPIC_API_KEY (or AI_GEMINI_API_KEY) there and restart it. A
- * user needs the AI_CHAT right to call these.
+ * Your app's own endpoints for the chat panel: the browser talks to these, and they talk to the
+ * vendor with YOUR key. One chat endpoint per vendor (anthropic, gemini, openai), and GET vendor,
+ * which tells the panel which vendors have a key. Each key is read from the environment that starts
+ * the server, never from a file in this project: set AI_ANTHROPIC_API_KEY, AI_GEMINI_API_KEY or
+ * AI_OPENAI_API_KEY there (one or more) and restart it. A user needs the AI_CHAT right to call these.
  */
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -83,7 +84,7 @@ webHandlers("ai-service") {
 
     // A key set the old way is not used: the proxy answers as if none were set. A plain one is already
     // in the build files. Said once, without the value.
-    for (vendor in listOf("ANTHROPIC", "GEMINI")) {
+    for (vendor in listOf("ANTHROPIC", "GEMINI", "OPENAI")) {
         if (java.lang.System.getenv("GENESIS_SYSDEF_AI_" + vendor + "_API_KEY") != null) {
             LOG.warn(
                 "ai-service: GENESIS_SYSDEF_AI_" + vendor + "_API_KEY is written into the app's build files, " +
@@ -101,19 +102,51 @@ webHandlers("ai-service") {
 
     // The limits this app was generated with. They live here, not in a system-definition file,
     // because a generator may rewrite that file; a system-definition item of the same name overrides
-    // them (GENESIS_SYSDEF_AI_ALLOWED_MODELS, GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
-    val defaultAllowedModels = "{{AI.allowedModels}}"
+    // them (see below, and GENESIS_SYSDEF_AI_MAX_OUTPUT_TOKENS).
+    //
+    // The vendor this app was generated for: the panel starts on it when its key is set.
+    val defaultVendor = "{{AI.vendor}}"
+    // Every vendor's models, one per tier (low, high, reasoning): the ones the panel asks for.
+    val generatedModels = mapOf(
+        "anthropic" to "{{AI.models.anthropic}}",
+        "gemini" to "{{AI.models.gemini}}",
+        "openai" to "{{AI.models.openai}}",
+    )
+    val vendors = generatedModels.keys.toList()
     val defaultMaxOutputTokens = "{{AI.maxOutputTokens}}"
 
-    // The model a request asks for has to be one this app allows, whatever the browser sent: the
-    // panel is not the only thing that can post here. AI_ALLOWED_MODELS set but EMPTY refuses every
-    // model, so a setting that failed to load is never an open door to the most expensive one.
-    val allowedModels = (readItem("AI_ALLOWED_MODELS").getOrElse { "" } ?: defaultAllowedModels)
-        .split(",")
-        .map { it.trim() }
-        .filter { it.isNotEmpty() }
-    if (allowedModels.isEmpty()) {
-        LOG.warn("ai-service: AI_ALLOWED_MODELS is empty or unreadable, so every chat request will be refused")
+    // The model a request asks for has to be one this app allows FOR THAT ENDPOINT'S VENDOR, whatever
+    // the browser sent: the panel is not the only thing that can post here, and one vendor's list
+    // never lets a request through another vendor's endpoint.
+    //
+    // AI_ALLOWED_MODELS_<VENDOR> replaces that vendor's list. AI_ALLOWED_MODELS, which an app with one
+    // vendor used, still replaces the list of the vendor this app was generated for, unless that
+    // vendor's own item is set. Set but EMPTY (or unreadable) refuses every model of that vendor, so
+    // a setting that failed to load is never an open door to the most expensive one.
+    val modelOverrides = mapOf(
+        "anthropic" to readItem("AI_ALLOWED_MODELS_ANTHROPIC"),
+        "gemini" to readItem("AI_ALLOWED_MODELS_GEMINI"),
+        "openai" to readItem("AI_ALLOWED_MODELS_OPENAI"),
+    )
+    val legacyModelOverride = readItem("AI_ALLOWED_MODELS")
+    fun modelList(raw: String): List<String> = raw.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+    val allowedModels: Map<String, List<String>> = vendors.associateWith { vendor ->
+        val own = modelOverrides.getValue(vendor)
+        val raw = when {
+            own.isFailure -> ""
+            own.getOrNull() != null -> own.getOrNull()!!
+            vendor != defaultVendor -> generatedModels.getValue(vendor)
+            else -> legacyModelOverride.getOrElse { "" } ?: generatedModels.getValue(vendor)
+        }
+        modelList(raw)
+    }
+    for ((vendor, models) in allowedModels) {
+        if (models.isEmpty()) {
+            LOG.warn(
+                "ai-service: no " + vendor + " model is allowed (its allowed-models setting is empty or " +
+                    "unreadable), so every " + vendor + " chat request will be refused"
+            )
+        }
     }
 
     // A cap is a whole number from 1 to 1000000. An override that is not one is ignored, with a
@@ -132,7 +165,8 @@ webHandlers("ai-service") {
     // A model id is also a path segment in the Gemini URL, so even an allowed one must be a bare id.
     val modelId = Regex("[A-Za-z0-9][A-Za-z0-9._-]*")
 
-    fun modelAllowed(model: String): Boolean = modelId.matches(model) && allowedModels.contains(model)
+    fun modelAllowed(vendor: String, model: String): Boolean =
+        modelId.matches(model) && allowedModels.getValue(vendor).contains(model)
 
     // A key with a character a request header cannot carry (a pasted zero-width space, a smart quote)
     // makes the request builder throw, and the platform echoes that exception, key and all.
@@ -140,6 +174,62 @@ webHandlers("ai-service") {
 
     // Whatever a vendor sends back, the key does not go to the browser in it.
     fun withoutKey(text: String, apiKey: String): String = text.replace(apiKey, "[redacted]")
+
+    // The anthropic-beta values the chat panel may ask this proxy to send on. The panel sets the
+    // header for each beta-gated body field it uses, and that field without its header is a 400 from
+    // Anthropic. A list rather than a pass-through, because a beta can unlock spend (larger outputs,
+    // fast mode) that the limits above know nothing about, so each value is added deliberately.
+    //
+    // - thinking-binding-controls-2026-08-01: thinking.block_binding, which the panel sends on the
+    //   claude-*-5-5 models.
+    //
+    // Not server-side-fallback-2026-06-01: fallback models are refused below.
+    val forwardedAnthropicBetas = setOf("thinking-binding-controls-2026-08-01")
+
+    // The allowlisted values from the request's anthropic-beta header (or headers), joined into one.
+    // Anything else is dropped without a word: the panel only sends a beta beside its field, so a
+    // dropped one comes back as Anthropic's own 400 naming that field, which is the clearer error.
+    // The header map ignores case.
+    fun forwardedBetas(headers: Map<String, List<String>>): String =
+        headers["anthropic-beta"].orEmpty()
+            .flatMap { it.split(",") }
+            .map { it.trim() }
+            .filter { it in forwardedAnthropicBetas }
+            .distinct()
+            .joinToString(",")
+
+    // Whether a vendor can be offered: its key is set and usable, and at least one of its models is
+    // allowed. Only yes or no comes out of here: never the key, its length or anything derived from it.
+    fun offerable(vendor: String): Boolean {
+        val key = keyFor(vendor.uppercase())
+        return key.isNotEmpty() && keyChars.matches(key) && allowedModels.getValue(vendor).isNotEmpty()
+    }
+
+    // GET /gwf/ai-service/vendor: the vendors the panel may use, every one whose key is set, and the one
+    // it starts on: this app's own vendor if it has a key, otherwise the first that has one, otherwise
+    // this app's own vendor anyway, so the chat says plainly that no key is set (NO_API_KEY). Read on
+    // every call, so a key set and a server restarted shows at once.
+    endpoint<Unit, Any>(GET, "vendor", transactional = false) {
+        // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+        // check, and the build's security scan still reports the endpoint as secure.
+        permissioning {
+            permissionCodes("AI_CHAT")
+        }
+
+        handleRequest {
+            val offered = vendors.filter { offerable(it) }
+            val vendor = when {
+                defaultVendor in offered -> defaultVendor
+                offered.isNotEmpty() -> offered.first()
+                else -> defaultVendor
+            }
+            // Declared Any and returned as a String, like the chat replies: the router writes it as
+            // its own bytes, labelled application/json. No Cache-Control: setting a header means
+            // buildResponse, which grows the router's composer cache, and this is called on every
+            // focus and after every turn. The reply has no validator, so a browser does not cache it.
+            mapper.writeValueAsString(mapOf("vendor" to vendor, "offeredVendors" to offered))
+        }
+    }
 
     grouping("anthropic") {
         // No transaction: the proxy touches no rows, and one would hold a pooled database connection
@@ -204,13 +294,13 @@ webHandlers("ai-service") {
                 }
 
                 val model = payload.path("model").asText("")
-                if (!modelAllowed(model)) {
+                if (!modelAllowed("anthropic", model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
                             "code" to "MODEL_NOT_ALLOWED",
-                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
-                            "allowedModels" to allowedModels
+                            "error" to "Model '" + model + "' is not one this application allows for anthropic.",
+                            "allowedModels" to allowedModels.getValue("anthropic")
                         )
                     )
                 }
@@ -228,6 +318,8 @@ webHandlers("ai-service") {
                     )
                 }
 
+                val betas = forwardedBetas(request.headers.data)
+
                 val response = try {
                     val upstream = JdkHttpRequest.newBuilder()
                         .uri(URI.create("https://api.anthropic.com/v1/messages"))
@@ -235,6 +327,7 @@ webHandlers("ai-service") {
                         .header("content-type", "application/json")
                         .header("x-api-key", apiKey)
                         .header("anthropic-version", "2023-06-01")
+                        .apply { if (betas.isNotEmpty()) header("anthropic-beta", betas) }
                         .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
                         .build()
                     // Async, so no thread is held while the vendor works. Nothing cancels the call once it is
@@ -322,13 +415,13 @@ webHandlers("ai-service") {
                     )
 
                 val model = payload.path("model").asText("")
-                if (!modelAllowed(model)) {
+                if (!modelAllowed("gemini", model)) {
                     error(
                         HttpStatusCode.BadRequest,
                         mapOf(
                             "code" to "MODEL_NOT_ALLOWED",
-                            "error" to "Model '" + model + "' is not in AI_ALLOWED_MODELS for this application.",
-                            "allowedModels" to allowedModels
+                            "error" to "Model '" + model + "' is not one this application allows for gemini.",
+                            "allowedModels" to allowedModels.getValue("gemini")
                         )
                     )
                 }
@@ -387,6 +480,166 @@ webHandlers("ai-service") {
                     error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
                 }
 
+                // Declared Any, so the router writes this String as its own bytes labelled application/json,
+                // whatever the browser's Accept says. (A String type would label it with that Accept, and
+                // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)
+                withoutKey(response.body(), apiKey)
+            }
+        }
+    }
+
+    grouping("openai") {
+        // No transaction: the proxy touches no rows, and one would hold a pooled database connection
+        // for the whole vendor call, starving every other request that needs one.
+        endpoint<String, Any>(POST, "chat", transactional = false) {
+            // No produces() and no accepts(): each adds a required header, matched by its exact name,
+            // so the panel's Accept: application/x-ndjson, or a proxy sending a lowercase content-type,
+            // would get a 406. The body is parsed as JSON anyway, and replies go out as JSON.
+
+            // Never set requiresAuth = false: it makes this endpoint anonymous and drops the AI_CHAT
+            // check, and the build's security scan still reports the endpoint as secure.
+            permissioning {
+                permissionCodes("AI_CHAT")
+            }
+
+            handleRequest {
+                val apiKey = keyFor("OPENAI")
+                if (apiKey.isEmpty()) {
+                    // 424, never 503: a client retries a 503 and the user waits instead of being
+                    // told the one thing that fixes this.
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "NO_API_KEY",
+                            "error" to "No openai API key is configured for this application. " +
+                                "Set AI_OPENAI_API_KEY in the server's environment and restart."
+                        )
+                    )
+                }
+                if (!keyChars.matches(apiKey)) {
+                    error(
+                        HttpStatusCode.FailedDependency,
+                        mapOf(
+                            "code" to "BAD_API_KEY",
+                            "error" to "The openai API key configured for this application contains characters " +
+                                "an API key cannot have. Set AI_OPENAI_API_KEY again and restart."
+                        )
+                    )
+                }
+
+                val payload = try {
+                    mapper.readTree(body) as? ObjectNode
+                } catch (e: StreamConstraintsException) {
+                    error(
+                        HttpStatusCode.RequestTooLong,
+                        mapOf("code" to "REQUEST_TOO_LARGE", "error" to "The request is larger or more deeply nested than this endpoint accepts.")
+                    )
+                } catch (e: JsonProcessingException) {
+                    null
+                } ?: error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "The request body must be a JSON object.")
+                    )
+
+                // The chat panel never streams through this proxy, and a streamed reply would hold the
+                // call open with no timeout once its headers arrived. A background response would
+                // return at once and go on running, and billing, with nothing here waiting for it.
+                if (payload.path("stream").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Streaming is not supported by this endpoint.")
+                    )
+                }
+                if (payload.path("background").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Background responses are not supported by this endpoint.")
+                    )
+                }
+
+                // Stateless, as the chat panel is: it sends store: false and carries everything a later
+                // turn needs in the request itself. A stored response is kept at OpenAI under this
+                // app's key, and previous_response_id or conversation would read one back for whoever
+                // asks, so neither is accepted. OpenAI stores a response by default, so a request that
+                // says nothing about it is sent as store: false.
+                if (payload.path("store").asBoolean(false)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Stored responses are not supported by this endpoint; send store: false.")
+                    )
+                }
+                val stateful = listOf("previous_response_id", "conversation").filter { name ->
+                    payload.get(name)?.isNull == false
+                }
+                if (stateful.isNotEmpty()) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to stateful.joinToString() + " is not supported by this endpoint.")
+                    )
+                }
+                payload.put("store", false)
+
+                // A service tier other than the default is billed at its own rate (priority costs
+                // more), which the limits above know nothing about.
+                val serviceTier = payload.get("service_tier")
+                if (serviceTier != null && !serviceTier.isNull &&
+                    !(serviceTier.isTextual && serviceTier.asText() in setOf("auto", "default"))
+                ) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf("code" to "BAD_REQUEST", "error" to "Only the auto and default service tiers are supported by this endpoint.")
+                    )
+                }
+
+                val model = payload.path("model").asText("")
+                if (!modelAllowed("openai", model)) {
+                    error(
+                        HttpStatusCode.BadRequest,
+                        mapOf(
+                            "code" to "MODEL_NOT_ALLOWED",
+                            "error" to "Model '" + model + "' is not one this application allows for openai.",
+                            "allowedModels" to allowedModels.getValue("openai")
+                        )
+                    )
+                }
+
+                val requestedMaxTokens = payload.path("max_output_tokens").asInt(maxOutputTokens)
+                payload.put("max_output_tokens", clamp(requestedMaxTokens))
+
+                val response = try {
+                    val upstream = JdkHttpRequest.newBuilder()
+                        .uri(URI.create("https://api.openai.com/v1/responses"))
+                        .timeout(Duration.ofSeconds(280))
+                        .header("content-type", "application/json")
+                        .header("authorization", "Bearer " + apiKey)
+                        .POST(JdkHttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(payload)))
+                        .build()
+                    // Async, so no thread is held while the vendor works. Nothing cancels the call once it is
+                    // sent: a caller who goes away does not stop it, and it is billed as usual.
+                    http.sendAsync(upstream, JdkHttpResponse.BodyHandlers.ofString()).await()
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    // Only the type is logged: an exception's message can carry what the request was
+                    // built from, and one that escapes is logged by the platform with the caller's cookies.
+                    LOG.warn("ai-service: openai call failed: " + e.javaClass.simpleName)
+                    val timedOut = e is HttpTimeoutException || e.cause is HttpTimeoutException
+                    error(
+                        if (timedOut) HttpStatusCode.GatewayTimeout else HttpStatusCode.BadGateway,
+                        mapOf("code" to "VENDOR_UNREACHABLE", "error" to "The AI vendor could not be reached. Try again.")
+                    )
+                }
+
+                if (response.statusCode() !in 200..299) {
+                    // The vendor's own body travels back untouched — a billing refusal or a rate
+                    // limit says more than anything this proxy could put in its place.
+                    LOG.warn("ai-service: openai returned " + response.statusCode())
+                    error(upstreamStatus(response.statusCode()), withoutKey(response.body(), apiKey))
+                }
+
+                // A response that failed at OpenAI still arrives as a 200, with status "failed" and its
+                // error inside. It goes back as it came: the panel reads that status and reports it.
+                //
                 // Declared Any, so the router writes this String as its own bytes labelled application/json,
                 // whatever the browser's Accept says. (A String type would label it with that Accept, and
                 // buildResponse/jsonBody grows the router's composer cache by one entry per reply.)

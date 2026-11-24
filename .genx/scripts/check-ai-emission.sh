@@ -11,7 +11,7 @@
 #             off (Create's prebuilt preview base must already carry it); a non-React app does not.
 #   on        the proxy, the router body cap and the README section all appear; the cap is above the
 #             proxy's own document limit; the proxy is its template with only its two limits filled
-#             in, for either vendor; and no AI item lands in a system-definition file (a generator may
+#             in, for each vendor; and no AI item lands in a system-definition file (a generator may
 #             rewrite those, so the proxy must not need one). The client gets its ai-config.json
 #             (exactly what .genx/ai-consumer.json declares, whatever the prompt holds); the
 #             assistant's four source files (pbc/ai-assistant/elements.ts,
@@ -19,6 +19,8 @@
 #             template as written and holding the parts the assistant needs; the AI build flag and
 #             an .oxfmtrc.json entry that skips ai/generated; and nothing else.
 #   non-react ui.ai.enabled on a non-React app emits nothing: there is no panel to call the proxy.
+#   tiers     .genx/ai-models.json, the proxy's allowlists, is foundation-ai's DEFAULT_AI_TIERS at the
+#             pinned UI version (check-ai-tiers.mjs).
 #   C-8       the contract files shared with Create are byte-for-byte the copies Create pins, and
 #             each of Create's resolver cases reaches the app verbatim, minus what the declaration
 #             withholds, and says so for each resource and key it drops.
@@ -28,7 +30,7 @@
 #
 # Usage:  .genx/scripts/check-ai-emission.sh
 # Env:    GRADLE=1  also build the AI app's server, require the platform's own security scan
-#                   (checkAuthPermissions) to report no insecure endpoint, and compile both vendors'
+#                   (checkAuthPermissions) to report no insecure endpoint, and compile all three vendors'
 #                   proxies with the platform's preCompileScripts, and render the system definition
 #                   with canary keys to show that a key the proxy reads never reaches a build file.
 #                   Needs Genesis artifactory credentials, as the sample-app build does.
@@ -57,6 +59,7 @@ AI_FIXTURE="$SEED_DIR/.genx/tests/fixtures/ai-config.json"
 AI_UI="$(cat "$AI_FIXTURE")"
 AI_UI_BREAKERS="$(cat "$SEED_DIR/.genx/tests/fixtures/ai-config-parse-breakers.json")"
 AI_UI_ANTHROPIC='{"ai":{"enabled":true,"vendor":"anthropic","tier":"high","systemPrompt":"x","resources":[]}}'
+AI_UI_OPENAI='{"ai":{"enabled":true,"vendor":"openai","tier":"high","systemPrompt":"x","resources":[]}}'
 # 'extras' is the fixture plus more writes and a custom event, then with things smuggled in that the writer
 # must drop: two top-level keys, a key on the request, a customCode on the request and on the custom
 # event, and customCodes a writer must not pass on as sent: one with a key of its own, a name that is not
@@ -126,9 +129,12 @@ named("EVENT_TRADE_MODIFY").key = ["TRADE_ID", 7];
 named("REQ_TRADE").key = ["TRADE_ID"];
 named("EVENT_TRADE_INSERT").key = ["TRADE_ID"];
 console.log(JSON.stringify(u));' "$AI_UI_ROWS_CLEAN")"
-# The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models.
-GEMINI_MODELS='gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.1-pro-preview'
-ANTHROPIC_MODELS='claude-haiku-4-5-20251001,claude-sonnet-5,claude-opus-4-8'
+# The limits configure.js writes into the proxy, per vendor: every tier of that vendor's models, from
+# the seed's one copy of them (held to foundation-ui's tier table under "tiers" below).
+vendor_models() { node -e 'console.log(Object.values(require(process.argv[1])[process.argv[2]]).join(","))' "$SEED_DIR/.genx/ai-models.json" "$1"; }
+GEMINI_MODELS="$(vendor_models gemini)"
+ANTHROPIC_MODELS="$(vendor_models anthropic)"
+OPENAI_MODELS="$(vendor_models openai)"
 
 fail() { FAILURES+=("$1"); echo "FAIL: $1"; }
 
@@ -166,7 +172,7 @@ const { createHash } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const pinned = {
-  'ui-config-ai.schema.json': { version: '1.6.0', sha256: '99549c80f065564701c9a8b83154e36d98ad9fd46162fc7bfad00aaf1b9b3498' },
+  'ui-config-ai.schema.json': { version: '1.8.0', sha256: '7002b7ed308d2323b5fa9a4cc39e33d6605432fb83a7d1a90fa762c229fe7db3' },
   'ai-resolver-cases.json': { version: '1.8.0', sha256: '48d47fadd396883f1858b60a066fe6a1ae99080537d73be9ab139ab8cca583c7' },
 };
 // The copies are Create master 1c403807d (genesis-create #1934). They carry queries, references, row
@@ -197,6 +203,13 @@ for (const [file, want] of Object.entries(pinned)) {
 process.exit(bad ? 1 : 0);
 NODE
 
+# The proxy's allowlists against the tier table the generated panel picks its models from, at the UI
+# version this seed pins. A UI bump that moves a tier must move .genx/ai-models.json with it, or every
+# chat request an exported app makes is refused as MODEL_NOT_ALLOWED.
+echo "=== tiers"
+node "$SEED_DIR/.genx/scripts/check-ai-tiers.mjs" \
+  || fail "tiers: .genx/ai-models.json is not foundation-ai's DEFAULT_AI_TIERS at the pinned UI version (see above)"
+
 echo "=== Generating into $WORK_DIR"
 generate default --framework react
 # A whole resolved block, switched off: Create can pass one through, and it must emit nothing at all
@@ -204,6 +217,7 @@ generate default --framework react
 generate off --framework react --ui "$(node -e 'const u = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); u.ai.enabled = false; console.log(JSON.stringify(u))' "$SEED_DIR/.genx/tests/fixtures/ai-config.json")"
 generate on --framework react --ui "$AI_UI"
 generate onanthropic --framework react --ui "$AI_UI_ANTHROPIC"
+generate onopenai --framework react --ui "$AI_UI_OPENAI"
 generate breakers --framework react --ui "$AI_UI_BREAKERS"
 generate rows --framework react --ui "$AI_UI_ROWS"
 generate extras --framework react --ui "$AI_UI_EXTRAS"
@@ -306,18 +320,39 @@ fi
 
 echo "=== on"
 [ "$(ai_artifacts_present on)" = "5" ] || fail "on: expected all 5 AI artifacts, found $(ai_artifacts_present on)"
-# The proxy is its template with exactly its two limits filled in, and nothing else touched.
-for pair in "on:$GEMINI_MODELS" "onanthropic:$ANTHROPIC_MODELS"; do
-  label="${pair%%:*}"; models="${pair#*:}"
-  sed -e "s/{{AI.allowedModels}}/$models/" -e "s/{{AI.maxOutputTokens}}/16000/" "$TEMPLATE" \
+# The proxy is its template with exactly its generated values filled in, and nothing else touched: the
+# app's own vendor, every vendor's models (each app gets all three lists) and the token cap.
+for pair in "on:gemini" "onanthropic:anthropic" "onopenai:openai"; do
+  label="${pair%%:*}"; vendor="${pair#*:}"
+  sed -e "s/{{AI.vendor}}/$vendor/" -e "s/{{AI.models.anthropic}}/$ANTHROPIC_MODELS/" \
+    -e "s/{{AI.models.gemini}}/$GEMINI_MODELS/" -e "s/{{AI.models.openai}}/$OPENAI_MODELS/" \
+    -e "s/{{AI.maxOutputTokens}}/16000/" "$TEMPLATE" \
     | diff -q - "$WORK_DIR/$label/demo/$MODULE/scripts/ai-service-web-handler.kts" > /dev/null \
-    || fail "$label: the proxy is not its template with the $label limits filled in"
+    || fail "$label: the proxy is not its template with the $label values filled in"
 done
 # Code with its comments removed: block comments whatever their inner lines start with, then whole-line
 # // comments. An inline // is kept, since URLs contain one.
 live_code() { perl -0pe 's{/\*.*?\*/}{}gs; s{^[ \t]*//[^\n]*}{}gm' "$1"; }
 
-for label in on onanthropic; do
+# What the OpenAI endpoint refuses or forces, each a way to spend beyond the limits or keep data at
+# OpenAI under the app's key. The panel never sends any of it (it sends store: false), so each line
+# going missing would pass every other check.
+openai_rules=(
+  'payload.path("stream").asBoolean(false)'
+  'payload.path("background").asBoolean(false)'
+  'payload.path("store").asBoolean(false)'
+  'listOf("previous_response_id", "conversation")'
+  'payload.put("store", false)'
+  'setOf("auto", "default")'
+  'payload.put("max_output_tokens", clamp(requestedMaxTokens))'
+  'URI.create("https://api.openai.com/v1/responses")'
+)
+openai_code="$(live_code "$TEMPLATE" | sed -n '/grouping("openai")/,$p')"
+for rule in "${openai_rules[@]}"; do
+  grep -qF "$rule" <<< "$openai_code" || fail "openai: the proxy's openai endpoint no longer has $rule"
+done
+
+for label in on onanthropic onopenai; do
   app="$WORK_DIR/$label/demo"
   grep -rqs 'AI_ALLOWED_MODELS\|AI_MAX_OUTPUT_TOKENS' "$app/$MODULE/cfg/" \
     && fail "$label: an AI item landed in a system-definition file; the proxy must carry its own defaults"
@@ -329,7 +364,7 @@ for label in on onanthropic; do
   # Every endpoint builder the web DSL has (endpoint and multipartEndpoint), typed or inferred.
   endpoints="$(live_code "$handler" | grep -oE '(^|[^A-Za-z0-9_])(endpoint|multipartEndpoint)[[:space:]]*[<(]' | wc -l | tr -d ' ')"
   guarded="$(live_code "$handler" | grep -oF 'permissionCodes("AI_CHAT")' | wc -l | tr -d ' ')"
-  [ "$endpoints" = "2" ] || fail "$label: expected exactly two chat endpoints, found $endpoints"
+  [ "$endpoints" = "4" ] || fail "$label: expected exactly four endpoints (three chat, one vendor), found $endpoints"
   [ "$guarded" = "$endpoints" ] \
     || fail "$label: $endpoints endpoints but $guarded permissionCodes(\"AI_CHAT\"); every endpoint needs one"
   # Each can undo AI_CHAT after it is set, so any logged-in user could spend the key; so can a second
@@ -339,12 +374,37 @@ for label in on onanthropic; do
   blocks="$(live_code "$handler" | grep -oE 'permissioning[[:space:]]*\{' | wc -l | tr -d ' ')"
   [ "$blocks" = "$endpoints" ] || fail "$label: $endpoints endpoints but $blocks permissioning blocks"
 
+  # A beta can unlock spend the proxy's limits know nothing about, so the anthropic-beta values it
+  # passes on are a list, each added on purpose, and never server-side-fallback (fallbacks are refused).
+  # A new value means changing this line as well.
+  betas="$(live_code "$handler" | grep -oE 'forwardedAnthropicBetas = setOf\([^)]*\)')"
+  [ "$betas" = 'forwardedAnthropicBetas = setOf("thinking-binding-controls-2026-08-01")' ] \
+    || fail "$label: the proxy passes on anthropic-beta values other than thinking-binding-controls: ${betas:-no list found}"
+  live_code "$handler" | grep -qF 'header("anthropic-beta", betas)' \
+    || fail "$label: the proxy no longer sends the allowlisted anthropic-beta values upstream"
+
   # The keys come from the environment. Everything read through the system definition is rendered, in
-  # plain text, into files under build/, so only the two settings that are not secret go through it,
-  # each by name, and the system definition is touched only inside readItem.
+  # plain text, into files under build/, so only the settings that are not secret go through it, each
+  # by name, and the system definition is touched only inside readItem.
   sysdef_reads="$(live_code "$handler" | grep -oE 'readItem\([^)]*\)' | LC_ALL=C sort -u | tr '\n' ' ')"
-  [ "$sysdef_reads" = 'readItem("AI_ALLOWED_MODELS") readItem("AI_MAX_OUTPUT_TOKENS") readItem(name: String) ' ] \
-    || fail "$label: the proxy reads more than its two settings through the system definition: $sysdef_reads"
+  want_reads='readItem("AI_ALLOWED_MODELS") readItem("AI_ALLOWED_MODELS_ANTHROPIC") readItem("AI_ALLOWED_MODELS_GEMINI") '
+  want_reads+='readItem("AI_ALLOWED_MODELS_OPENAI") readItem("AI_MAX_OUTPUT_TOKENS") readItem(name: String) '
+  [ "$sysdef_reads" = "$want_reads" ] \
+    || fail "$label: the proxy reads more than its model and token settings through the system definition: $sysdef_reads"
+
+  # GET vendor says which vendors have a key, and nothing about any key: its reply is exactly the two
+  # fields, and it logs nothing. Each chat endpoint checks a model against its own vendor's list only.
+  vendor_code="$(live_code "$handler" | sed -n '/endpoint<Unit, Any>(GET, "vendor"/,/grouping("anthropic")/p')"
+  [ -n "$vendor_code" ] || fail "$label: the proxy has no GET vendor endpoint"
+  grep -qF 'mapper.writeValueAsString(mapOf("vendor" to vendor, "offeredVendors" to offered))' <<< "$vendor_code" \
+    || fail "$label: GET vendor no longer replies with exactly vendor and offeredVendors"
+  grep -qE 'LOG\.|apiKey|keyFor' <<< "$vendor_code" \
+    && fail "$label: GET vendor reads or logs a key itself; only offerable() may, and it returns a yes or no"
+  for vendor in anthropic gemini openai; do
+    grouping_code="$(live_code "$handler" | sed -n "/grouping(\"$vendor\")/,/^    }\$/p")"
+    grep -qF "modelAllowed(\"$vendor\", model)" <<< "$grouping_code" \
+      || fail "$label: the $vendor endpoint does not check the model against $vendor's own list"
+  done
   sysdef_gets="$(live_code "$handler" | grep -oE 'systemDefinition[.A-Za-z]*\([^)]*\)' | tr '\n' ' ')"
   [ "$sysdef_gets" = 'systemDefinition.get(name) ' ] \
     || fail "$label: the proxy reads the system definition outside readItem: $sysdef_gets"
@@ -455,12 +515,12 @@ done
 # more.
 echo "=== the panel's configuration and package"
 node - "$WORK_DIR" "$SEED_DIR/.genx/versions.json" "$SEED_DIR/.genx/ai-consumer.json" \
-  "$AI_UI" "$AI_UI_ANTHROPIC" "$AI_UI_BREAKERS" "$AI_UI_EXTRAS_CLEAN" "$AI_UI_EXTRAS" <<'NODE' \
+  "$AI_UI" "$AI_UI_ANTHROPIC" "$AI_UI_BREAKERS" "$AI_UI_EXTRAS_CLEAN" "$AI_UI_EXTRAS" "$AI_UI_OPENAI" <<'NODE' \
   || fail "on: the panel's configuration or the client package.json is not what the AI path writes (see above)"
 const fs = require('fs');
 const path = require('path');
 const { isDeepStrictEqual } = require('util');
-const [work, versionsFile, consumerFile, geminiUi, anthropicUi, breakersUi, extrasCleanUi, extrasUi] = process.argv.slice(2);
+const [work, versionsFile, consumerFile, geminiUi, anthropicUi, breakersUi, extrasCleanUi, extrasUi, openaiUi] = process.argv.slice(2);
 const version = JSON.parse(fs.readFileSync(versionsFile, 'utf8')).UI;
 const passed = `passed to @genesislcap/ai-assistant ${version}`;
 // The block as sent, minus what the declaration withholds: the same file the writer reads. A customCode
@@ -494,7 +554,7 @@ const dropLines = (log) => log.split('\n').filter((line) => line.includes('ai: d
 const problems = [];
 const read = (label, rel) => fs.readFileSync(path.join(work, label, 'demo', rel), 'utf8');
 // Each app: the block it was sent, and the clean block it must come out as.
-for (const [label, sent, clean] of [['on', geminiUi, geminiUi], ['onanthropic', anthropicUi, anthropicUi], ['extras', extrasUi, extrasCleanUi], ['breakers', breakersUi, breakersUi]]) {
+for (const [label, sent, clean] of [['on', geminiUi, geminiUi], ['onanthropic', anthropicUi, anthropicUi], ['onopenai', openaiUi, openaiUi], ['extras', extrasUi, extrasCleanUi], ['breakers', breakersUi, breakersUi]]) {
   const raw = read(label, 'client/src/ai/generated/ai-config.json');
   if (raw.includes('{{')) problems.push(`${label}: ai-config.json still holds {{ for Handlebars to expand`);
   let written;
@@ -533,7 +593,7 @@ NODE
 
 # The seed seeds no rights: the project's rights files belong to the generator that sends them.
 echo "=== no rights written"
-for label in on onanthropic; do
+for label in on onanthropic onopenai; do
   grep -rqs 'AI_CHAT' "$WORK_DIR/$label/demo/$MODULE/data/" && fail "$label: the seed wrote an AI_CHAT row; rights belong to the generator"
 done
 
@@ -782,7 +842,7 @@ NODE
 # Every React app depends on the assistant package, AI on or off, so a prebuilt base already has it: at
 # exactly the UI version, the pin the generated app gets, never a range. A non-React app does not.
 echo "=== package: every React app depends on the assistant"
-node - "$WORK_DIR" "$SEED_DIR/.genx/versions.json" default off on onanthropic breakers extras ${case_labels[@]+"${case_labels[@]}"} <<'NODE' \
+node - "$WORK_DIR" "$SEED_DIR/.genx/versions.json" default off on onanthropic onopenai breakers extras ${case_labels[@]+"${case_labels[@]}"} <<'NODE' \
   || fail "package: an app does not depend on the assistant as every React app must (see above)"
 const fs = require('fs');
 const path = require('path');
@@ -802,7 +862,7 @@ NODE
 # Create refuses an export carrying any of these (server/archive-generation-service/export-leak-guard.js,
 # LEAK_RULES, copied): catching one here is cheaper than a 422 on a customer's export.
 echo "=== nothing Create's export guard refuses"
-node - "$WORK_DIR" on onanthropic ${case_labels[@]+"${case_labels[@]}"} ${row_labels[@]+"${row_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
+node - "$WORK_DIR" on onanthropic onopenai ${case_labels[@]+"${case_labels[@]}"} ${row_labels[@]+"${row_labels[@]}"} <<'NODE' || fail "leaks: a generated file carries something Create's export guard refuses (see above)"
 const fs = require('fs');
 const path = require('path');
 const [work, ...labels] = process.argv.slice(2);
@@ -839,7 +899,7 @@ NODE
 # abbreviated task name can run it). No live Gradle line may mention the launcher, apart from its plugin
 # id, nor a key it also reads bare. And Google's repository stays last and androidx-only.
 echo "=== genesis start: desktop unless a headless script asks"
-node - "$SEED_DIR" "$WORK_DIR" default off on onanthropic nonreact <<'NODE' \
+node - "$SEED_DIR" "$WORK_DIR" default off on onanthropic onopenai nonreact <<'NODE' \
   || fail "genesis start: the launcher is configured where it must not be (see above)"
 const fs = require('fs');
 const path = require('path');
@@ -931,19 +991,21 @@ if [ "${GRADLE:-0}" = "1" ]; then
   # scan's own summary is the assertion — a green build alone proves nothing about permissioning.
   # `--rerun` because a scan restored from the build cache prints no summary at all, and the endpoint
   # count because a scan that found nothing would also report nothing insecure. Whole lines only:
-  # "Total endpoints: 2" is inside "Total endpoints: 20", and every per-type line ends "Insecure: N".
-  if ! grep -qx "  Total endpoints: 2" "$WORK_DIR/scan.log" || ! grep -qx "  Insecure: 0" "$WORK_DIR/scan.log"; then
+  # "Total endpoints: 4" is inside "Total endpoints: 40", and every per-type line ends "Insecure: N".
+  if ! grep -qx "  Total endpoints: 4" "$WORK_DIR/scan.log" || ! grep -qx "  Insecure: 0" "$WORK_DIR/scan.log"; then
     show_log "$WORK_DIR/scan.log"
-    fail "gradle: the security scan did not report the two chat endpoints, both secure (see the log above)"
+    fail "gradle: the security scan did not report the four AI endpoints (three chat, one vendor), all secure (see the log above)"
   fi
 
   # Scripts compile only when the router starts, so neither the build nor the scan above notices a
   # proxy that no longer compiles against this Genesis version. The platform's own preCompileScripts
-  # compiles the router's web handlers with the real script host. The Anthropic proxy goes in beside
-  # the Gemini one under a second name, after the scan so the scan never counts it.
-  echo "=== gradle: compile both proxies with the platform's preCompileScripts"
+  # compiles the router's web handlers with the real script host. The Anthropic and OpenAI proxies go in
+  # beside the Gemini one under names of their own, after the scan so the scan never counts them.
+  echo "=== gradle: compile all three proxies with the platform's preCompileScripts"
   cp "$WORK_DIR/onanthropic/demo/$MODULE/scripts/ai-service-web-handler.kts" \
     "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-anthropic-web-handler.kts"
+  cp "$WORK_DIR/onopenai/demo/$MODULE/scripts/ai-service-web-handler.kts" \
+    "$WORK_DIR/on/demo/$MODULE/scripts/ai-service-openai-web-handler.kts"
   # Next to two tables that each have an ENUM field RESULT, as the Reconciliation PBC does. Each one
   # generates an `enum class Result` that the script host imports into every script, so a proxy that
   # names kotlin's Result without its package stops compiling, and the router never starts.
@@ -968,7 +1030,7 @@ KTS
   enums="$(find "$WORK_DIR/on/demo/server/build" -path '*/gen/dao/enums/*' -name Result.kt | wc -l | tr -d ' ')"
   [ "$enums" = "2" ] || fail "gradle: the fixture generated $enums enum classes named Result, expected 2"
   # And both were really compiled: a file the task never picked up would pass by never being built.
-  for name in ai-service-web-handler.kts ai-service-anthropic-web-handler.kts; do
+  for name in ai-service-web-handler.kts ai-service-anthropic-web-handler.kts ai-service-openai-web-handler.kts; do
     grep -q "GENESIS_ROUTER: Compiled script $name " "$WORK_DIR/compile.log" \
       || fail "gradle: preCompileScripts never compiled $name"
   done
@@ -981,8 +1043,9 @@ KTS
   # --rerun so it renders even when Gradle would call it up to date.
   echo "=== gradle: no key the proxy reads lands in the build's files"
   canary="canary-$$-not-a-key"
-  ( export AI_GEMINI_API_KEY="$canary-gemini" AI_ANTHROPIC_API_KEY="$canary-anthropic" \
-      GENESIS_SYSDEF_AI_GEMINI_API_KEY="$canary-old-gemini" GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY="$canary-old-anthropic"
+  ( export AI_GEMINI_API_KEY="$canary-gemini" AI_ANTHROPIC_API_KEY="$canary-anthropic" AI_OPENAI_API_KEY="$canary-openai" \
+      GENESIS_SYSDEF_AI_GEMINI_API_KEY="$canary-old-gemini" GENESIS_SYSDEF_AI_ANTHROPIC_API_KEY="$canary-old-anthropic" \
+      GENESIS_SYSDEF_AI_OPENAI_API_KEY="$canary-old-openai"
     gradle_in_on_app "$WORK_DIR/keys.log" :server:demo-app:prepareProcessTemplates --rerun ) \
     || fail "gradle: the render with canary keys failed (see the log above)"
   # The files under the AI app that hold a value, with every jar and zip looked into as well.
@@ -992,7 +1055,7 @@ KTS
         | while read -r archive; do unzip -p "$archive" 2>/dev/null | grep -qF "$1" && echo "$archive"; done
     } | sed "s#^$WORK_DIR/on/demo/##" | sort -u | tr '\n' ' '
   }
-  for vendor in GEMINI ANTHROPIC; do
+  for vendor in GEMINI ANTHROPIC OPENAI; do
     lower="$(echo "$vendor" | tr 'A-Z' 'a-z')"
     found="$(holding "$canary-$lower")"
     [ -z "$found" ] || fail "gradle: AI_${vendor}_API_KEY reached the build's files: $found"
